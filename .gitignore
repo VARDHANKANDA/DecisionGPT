@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+.next/
+out/
+frontend/.turbo/
+
+# Env
+.env
+.env.local
+*.env.local
+
+# Data (never commit private business data or large platform datasets)
+data/business/*
+!data/business/demo/
+models/*
+!models/.gitkeep
+experiments/results/*
+!experiments/results/.gitkeep
+
+# ML artifacts
+*.pkl
+*.joblib
+mlruns/
+
+# DB
+*.sqlite3
+*.db
+postgres-data/
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Alembic
+backend/alembic/versions/__pycache__/

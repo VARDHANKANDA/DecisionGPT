@@ -1,0 +1,30 @@
+{
+  "dataset_id": "platform-forecasting-v1",
+  "name": "Synthetic D2C Sales Time Series",
+  "source": "synthetic (scripts/generate_platform_data.py)",
+  "license": "N/A - synthetically generated, no third-party data",
+  "date_range": [
+    "2023-01-01",
+    "2024-12-31"
+  ],
+  "preprocessing": [
+    "none (raw generator output)"
+  ],
+  "limitations": [
+    "Not derived from real transactions; seasonal/festival effects are illustrative multipliers, not empirically measured Indian consumer behaviour.",
+    "Marketing-spend-to-demand relationship is a fixed synthetic function; real elasticity varies by business.",
+    "Intended for offline model training/evaluation only \u2014 never surfaced to SME users (see AGENTS.md)."
+  ],
+  "evidence_level": "SYNTHETIC",
+  "rows": 29200,
+  "columns": [
+    "series_id",
+    "date",
+    "units_sold",
+    "revenue",
+    "price",
+    "marketing_spend",
+    "promotion_flag"
+  ],
+  "generated_with_seed": 42
+}
