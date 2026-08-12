@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas.decision import AnalyzeGoalRequest, DecisionOut, DecisionSummaryOut
+from app.schemas.decision import AnalyzeGoalRequest, DecisionExplanationOut, DecisionOut, DecisionSummaryOut
 from app.services import decision_service
 
 router = APIRouter()
@@ -21,3 +21,10 @@ def list_decisions(business_id: str, db: Session = Depends(get_db)):
 @router.get("/businesses/{business_id}/decisions/{decision_id}", response_model=DecisionSummaryOut)
 def get_decision(business_id: str, decision_id: str, db: Session = Depends(get_db)):
     return decision_service.get_decision(db, business_id, decision_id)
+
+
+@router.get(
+    "/businesses/{business_id}/decisions/{decision_id}/explanation", response_model=DecisionExplanationOut
+)
+def explain_decision(business_id: str, decision_id: str, db: Session = Depends(get_db)):
+    return decision_service.explain_decision(db, business_id, decision_id)

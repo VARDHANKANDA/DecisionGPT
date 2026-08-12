@@ -10,18 +10,22 @@ invents a strategy's outcome, only generates the candidate action grid and
 persists the full chain for traceability (docs/RESEARCH_TRACEABILITY.md).
 """
 from dataclasses import dataclass, field
+from datetime import timedelta
 
+import pandas as pd
 from sqlalchemy.orm import Session
 
 from app.agents import business_analyst, financial_advisor, risk_manager, strategy_optimizer
 from app.agents.base import AgentEvaluationResult
-from app.analytics import digital_twin_service, forecast_service
+from app.analytics import digital_twin_service, explainability_service, forecast_service
 from app.analytics.digital_twin_service import Action, SimulationOutput
+from app.analytics.explainability_service import Explanation
 from app.core.errors import AppError, InsufficientDataError, NotFoundError
 from app.models.agent import AgentEvaluation, AgentRun
 from app.models.causal import CausalGraph
 from app.models.decision import Decision
 from app.models.goal import Goal
+from app.models.ml_model import MLModel
 from app.models.strategy import Strategy
 from app.services.llm_service import LLMService
 
@@ -263,3 +267,88 @@ def get_decision(db: Session, business_id: str, decision_id: str) -> Decision:
 
 def list_decisions(db: Session, business_id: str) -> list[Decision]:
     return db.query(Decision).filter(Decision.business_id == business_id).order_by(Decision.created_at.desc()).all()
+
+
+@dataclass
+class DecisionExplanation:
+    decision_id: str
+    explanation: Explanation
+    reasoning: str
+    agent_reviews: dict[str, str]
+    counterfactual: dict
+    uncertainty: dict
+    assumptions: list[str]
+
+
+def explain_decision(db: Session, business_id: str, decision_id: str) -> DecisionExplanation:
+    """docs/PRD.md §28/§30 "What influenced this recommendation?" /
+    "How did AI reach this decision?" — recomputed on demand from the
+    decision's stored strategy + model reference, against this business's
+    *current* data (the same freshness convention every other analytics
+    endpoint uses; the decision itself is a permanent record, but its
+    explanation reflects today's data the same way a fresh forecast would).
+    """
+    decision = get_decision(db, business_id, decision_id)
+
+    strategy = db.get(Strategy, decision.selected_strategy_id)
+    if strategy is None or strategy.business_id != business_id:
+        raise NotFoundError(f"Strategy for decision {decision_id} not found.")
+
+    outcome = decision.expected_outcome_json
+    model_row = (
+        db.query(MLModel)
+        .filter(MLModel.model_name == outcome.get("model_name"), MLModel.version == outcome.get("model_version"))
+        .first()
+    )
+    if model_row is None:
+        raise NotFoundError(
+            f"The model used for this decision ({outcome.get('model_name')} v{outcome.get('model_version')}) "
+            "is no longer registered."
+        )
+
+    baseline_row = scenario_row = None
+    history = forecast_service.build_daily_series(db, business_id)
+    if not history.empty:
+        history = history.copy()
+        history["date"] = pd.to_datetime(history["date"])
+        units_series = list(history["units_sold"])
+        forecast_date = history["date"].iloc[-1] + timedelta(days=1)
+
+        actions = [Action(type=a["type"], value=a["value"]) for a in strategy.actions_json]
+        baseline_price, baseline_marketing_spend, scenario_price, scenario_marketing_spend, _ = (
+            digital_twin_service.compute_scenario_inputs(history, actions)
+        )
+        baseline_row = forecast_service.build_feature_row(units_series, forecast_date, baseline_price, baseline_marketing_spend)
+        scenario_row = forecast_service.build_feature_row(units_series, forecast_date, scenario_price, scenario_marketing_spend)
+
+    model = forecast_service.load_model(model_row)
+    explanation = explainability_service.build_explanation(model_row, model, baseline_row, scenario_row)
+
+    llm = LLMService()
+    agent_runs = db.query(AgentRun).filter(AgentRun.decision_id == decision_id).all()
+    agent_reviews = {run.agent_name: llm.evaluate_agent(run.agent_name, run.output_json) for run in agent_runs}
+
+    counterfactual = {
+        "baseline_units_sold": outcome.get("baseline_units_sold"),
+        "expected_units_sold": outcome.get("expected_units_sold"),
+        "baseline_revenue": outcome.get("baseline_revenue"),
+        "expected_revenue": outcome.get("expected_revenue"),
+        "baseline_profit": outcome.get("baseline_profit"),
+        "expected_profit": outcome.get("expected_profit"),
+    }
+    uncertainty = {
+        "risk_level": decision.risk_level,
+        "risk_score": float(decision.confidence) if decision.confidence is not None else None,
+        "revenue_lower_bound": outcome.get("revenue_lower_bound"),
+        "revenue_upper_bound": outcome.get("revenue_upper_bound"),
+    }
+
+    return DecisionExplanation(
+        decision_id=decision_id,
+        explanation=explanation,
+        reasoning=decision.reasoning or "",
+        agent_reviews=agent_reviews,
+        counterfactual=counterfactual,
+        uncertainty=uncertainty,
+        assumptions=outcome.get("assumptions", []),
+    )

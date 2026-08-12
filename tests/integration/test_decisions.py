@@ -158,3 +158,67 @@ def test_candidate_strategies_are_genuinely_differentiated_not_arbitrary(client,
     # Not every candidate collapses onto the same score — genuine spread exists.
     distinct_scores = {s["strategy_score"] for s in all_strategies if s["strategy_score"] is not None}
     assert len(distinct_scores) >= 3
+
+
+def test_explain_decision_returns_shap_local_and_global_explanations(client, db_session):
+    model_registry_service.sync_from_file_registry(db_session)
+    business_id = _create_business(client)
+    _seed_rich_business(client, business_id)
+    goal_id = _create_goal(client, business_id, "Increase revenue by 10% in 2 months")
+
+    decision = client.post(
+        f"/api/v1/businesses/{business_id}/decisions/analyze", json={"goal_id": goal_id}
+    ).json()
+
+    response = client.get(f"/api/v1/businesses/{business_id}/decisions/{decision['id']}/explanation")
+    assert response.status_code == 200, response.text
+    body = response.json()
+
+    assert body["decision_id"] == decision["id"]
+
+    explanation = body["explanation"]
+    # _seed_rich_business's registered best model is expected to be XGBoost
+    # (lowest MAE) in this environment's trained registry — a tree model,
+    # so SHAP must actually be available, not gracefully degraded.
+    assert explanation["shap_available"] is True
+    assert explanation["model_name"] == decision["expected_outcome"]["model_name"]
+    assert len(explanation["local_factors"]) > 0
+    for factor in explanation["local_factors"]:
+        assert factor["direction"] in {"increased", "decreased", "unchanged"}
+        assert "label" in factor and factor["label"]
+
+    assert len(explanation["global_importance"]) == 10  # all FEATURE_COLUMNS
+    global_by_feature = {g["feature"]: g["contribution"] for g in explanation["global_importance"]}
+    assert all(v >= 0 for v in global_by_feature.values())  # mean |SHAP|, never negative
+    # Ranked descending.
+    values = [g["contribution"] for g in explanation["global_importance"]]
+    assert values == sorted(values, reverse=True)
+
+    assert body["reasoning"] == decision["reasoning"]
+    assert set(body["agent_reviews"].keys()) == {"business_analyst", "financial_advisor", "risk_manager"}
+    assert body["counterfactual"]["expected_revenue"] == decision["expected_outcome"]["expected_revenue"]
+    assert body["uncertainty"]["risk_level"] == decision["risk_level"]
+    assert len(body["assumptions"]) > 0
+
+
+def test_explain_decision_is_isolated_per_business(client, db_session):
+    model_registry_service.sync_from_file_registry(db_session)
+    business_a = _create_business(client)
+    _seed_rich_business(client, business_a)
+    goal_id = _create_goal(client, business_a, "Increase revenue by 10% in 2 months")
+    decision_id = client.post(
+        f"/api/v1/businesses/{business_a}/decisions/analyze", json={"goal_id": goal_id}
+    ).json()["id"]
+
+    business_b = _create_business(client)
+    response = client.get(f"/api/v1/businesses/{business_b}/decisions/{decision_id}/explanation")
+    assert response.status_code == 404
+
+
+def test_explain_nonexistent_decision_returns_not_found(client, db_session):
+    model_registry_service.sync_from_file_registry(db_session)
+    business_id = _create_business(client)
+    response = client.get(
+        f"/api/v1/businesses/{business_id}/decisions/00000000-0000-0000-0000-000000000000/explanation"
+    )
+    assert response.status_code == 404

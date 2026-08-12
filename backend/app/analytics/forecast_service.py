@@ -128,6 +128,39 @@ def check_forecast_sufficiency(db: Session, business_id: str) -> tuple[bool, str
     return True, None
 
 
+def build_feature_row(series: list[float], forecast_date, price: float, marketing_spend: float) -> pd.DataFrame:
+    """The exact feature row the model sees for one prediction step, given
+    the units-sold history so far. Exposed (not just inlined in
+    run_recursive_forecast) so explainability_service can compute SHAP
+    values against the identical row a forecast/simulation actually used —
+    an explanation of a feature row the model never saw would be
+    meaningless.
+    """
+    from ml.features.forecasting_features import FEATURE_COLUMNS
+
+    lag_1 = series[-1]
+    lag_7 = series[-7] if len(series) >= 7 else series[0]
+    rolling_mean_7 = sum(series[-7:]) / min(7, len(series))
+    rolling_mean_28 = sum(series[-28:]) / min(28, len(series))
+
+    return pd.DataFrame(
+        [
+            {
+                "lag_1": lag_1,
+                "lag_7": lag_7,
+                "rolling_mean_7": rolling_mean_7,
+                "rolling_mean_28": rolling_mean_28,
+                "day_of_week": forecast_date.dayofweek,
+                "is_weekend": int(forecast_date.dayofweek >= 5),
+                "month": forecast_date.month,
+                "price": price,
+                "marketing_spend": marketing_spend,
+                "promotion_flag": 0,
+            }
+        ]
+    )[FEATURE_COLUMNS]
+
+
 def run_recursive_forecast(
     model,
     units_series: list[float],
@@ -146,33 +179,11 @@ def run_recursive_forecast(
     — so "what changes" is entirely the model's own learned response to
     those two features, never a hand-picked multiplier.
     """
-    from ml.features.forecasting_features import FEATURE_COLUMNS
-
     series = list(units_series)
     points: list[ForecastPoint] = []
     for step in range(1, horizon_days + 1):
         forecast_date = last_date + timedelta(days=step)
-        lag_1 = series[-1]
-        lag_7 = series[-7] if len(series) >= 7 else series[0]
-        rolling_mean_7 = sum(series[-7:]) / min(7, len(series))
-        rolling_mean_28 = sum(series[-28:]) / min(28, len(series))
-
-        feature_row = pd.DataFrame(
-            [
-                {
-                    "lag_1": lag_1,
-                    "lag_7": lag_7,
-                    "rolling_mean_7": rolling_mean_7,
-                    "rolling_mean_28": rolling_mean_28,
-                    "day_of_week": forecast_date.dayofweek,
-                    "is_weekend": int(forecast_date.dayofweek >= 5),
-                    "month": forecast_date.month,
-                    "price": price,
-                    "marketing_spend": marketing_spend,
-                    "promotion_flag": 0,
-                }
-            ]
-        )[FEATURE_COLUMNS]
+        feature_row = build_feature_row(series, forecast_date, price, marketing_spend)
 
         predicted = max(0.0, float(model.predict(feature_row)[0]))
         series.append(predicted)

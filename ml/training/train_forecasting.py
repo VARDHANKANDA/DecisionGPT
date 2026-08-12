@@ -16,6 +16,7 @@ from pathlib import Path
 from sklearn.linear_model import LinearRegression
 from xgboost import XGBRegressor
 
+from ml.evaluation.explainability import tree_shap_global_importance
 from ml.evaluation.metrics import regression_metrics
 from ml.features.forecasting_features import FEATURE_COLUMNS, TARGET_COLUMN, build_forecasting_features
 from ml.pipeline.loaders import load_platform_dataset
@@ -58,6 +59,10 @@ def run(random_seed: int = RANDOM_SEED) -> dict:
         model.fit(X_train, y_train)
         preds = model.predict(X_test)
         metrics = regression_metrics(y_test.to_numpy(), preds)
+
+        if model_type == "xgboost":
+            sample = X_test.sample(min(200, len(X_test)), random_state=random_seed)
+            metrics["shap_global_importance"] = tree_shap_global_importance(model, sample)
 
         manifest = save_model_artifact(
             model=model,

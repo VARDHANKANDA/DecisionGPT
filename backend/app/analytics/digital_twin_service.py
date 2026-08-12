@@ -201,6 +201,28 @@ def _risk_from_extrapolation(history: dict[str, tuple[float, float]], scenario: 
     return level, risk_score
 
 
+def compute_scenario_inputs(
+    history: pd.DataFrame, actions: list[Action]
+) -> tuple[float, float, float, float, dict[str, Action]]:
+    """Baseline vs scenario (price, marketing_spend), given this business's
+    real recent history and a strategy's actions — the exact inputs fed to
+    forecast_service.run_recursive_forecast for both runs. Factored out so
+    explainability_service can reconstruct the identical feature rows a
+    decision's simulation actually used, without duplicating this logic.
+    """
+    baseline_price = float(history["price"].iloc[-1])
+    baseline_marketing_spend = forecast_service.recent_marketing_spend(history)
+
+    by_type = {a.type: a for a in actions}
+    price_pct = by_type["price_change"].value if "price_change" in by_type else 0.0
+    marketing_pct = by_type["marketing_change"].value if "marketing_change" in by_type else 0.0
+
+    scenario_price = round(baseline_price * (1 + price_pct / 100), 2)
+    scenario_marketing_spend = round(max(0.0, baseline_marketing_spend * (1 + marketing_pct / 100)), 2)
+
+    return baseline_price, baseline_marketing_spend, scenario_price, scenario_marketing_spend, by_type
+
+
 def simulate_strategy(
     db: Session, business_id: str, actions: list[Action], goal_id: str | None = None, horizon_days: int = 14
 ) -> SimulationResult:
@@ -237,16 +259,10 @@ def simulate_strategy(
 
     units_series = list(history["units_sold"])
     last_date = history["date"].iloc[-1]
-    baseline_price = float(history["price"].iloc[-1])
-    baseline_marketing_spend = forecast_service.recent_marketing_spend(history)
-
-    by_type = {a.type: a for a in actions}
-    price_pct = by_type["price_change"].value if "price_change" in by_type else 0.0
-    marketing_pct = by_type["marketing_change"].value if "marketing_change" in by_type else 0.0
+    baseline_price, baseline_marketing_spend, scenario_price, scenario_marketing_spend, by_type = (
+        compute_scenario_inputs(history, actions)
+    )
     inventory_pct = by_type["inventory_change"].value if "inventory_change" in by_type else None
-
-    scenario_price = round(baseline_price * (1 + price_pct / 100), 2)
-    scenario_marketing_spend = round(max(0.0, baseline_marketing_spend * (1 + marketing_pct / 100)), 2)
 
     if inventory_pct is not None and _current_inventory_units(db, business_id) is None:
         raise ValidationFailedError(

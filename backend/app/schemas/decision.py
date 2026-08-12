@@ -35,6 +35,38 @@ class DecisionOut(BaseModel):
     skipped_strategies: list[str]
 
 
+class FeatureContributionOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    feature: str
+    label: str
+    contribution: float
+    direction: str
+
+
+class ExplanationOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    model_name: str
+    model_version: str
+    shap_available: bool
+    unavailable_reason: str | None
+    local_factors: list[FeatureContributionOut]
+    global_importance: list[FeatureContributionOut]
+
+
+class DecisionExplanationOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    decision_id: str
+    explanation: ExplanationOut
+    reasoning: str
+    agent_reviews: dict[str, str]
+    counterfactual: dict
+    uncertainty: dict
+    assumptions: list[str]
+
+
 class DecisionSummaryOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
