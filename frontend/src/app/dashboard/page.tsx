@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   CartesianGrid,
@@ -10,14 +11,33 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { api, ApiError, type ForecastResult, type KPISnapshot, type RevenueTrendPoint } from "@/lib/api";
+import {
+  api,
+  ApiError,
+  type ForecastResult,
+  type Goal,
+  type KPISnapshot,
+  type PeriodComparison,
+  type RevenueTrendPoint,
+} from "@/lib/api";
 import { useBusiness } from "@/lib/business-context";
 import { Card, EmptyState, PageHeader, PrimaryButton, SecondaryLink, Stat, formatINR } from "@/components/ui";
+
+const OBJECTIVE_LABELS: Record<string, string> = {
+  increase_revenue: "Increase revenue",
+  increase_profit: "Increase profit",
+  increase_sales: "Increase sales",
+  reduce_churn: "Reduce churn",
+  improve_marketing_roi: "Improve marketing ROI",
+  reduce_inventory_risk: "Reduce inventory risk",
+};
 
 export default function DashboardPage() {
   const { business, loading: businessLoading } = useBusiness();
   const [kpis, setKpis] = useState<KPISnapshot | null>(null);
   const [trend, setTrend] = useState<RevenueTrendPoint[]>([]);
+  const [comparison, setComparison] = useState<PeriodComparison | null>(null);
+  const [activeGoal, setActiveGoal] = useState<Goal | null>(null);
   const [loading, setLoading] = useState(true);
   const [forecast, setForecast] = useState<ForecastResult | null>(null);
   const [forecastError, setForecastError] = useState<string | null>(null);
@@ -26,10 +46,17 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!business) return;
     let cancelled = false;
-    Promise.all([api.getKpis(business.id), api.getRevenueTrend(business.id, 90)]).then(([k, t]) => {
+    Promise.all([
+      api.getKpis(business.id),
+      api.getRevenueTrend(business.id, 90),
+      api.getPeriodComparison(business.id, 30),
+      api.listGoals(business.id),
+    ]).then(([k, t, c, goals]) => {
       if (cancelled) return;
       setKpis(k);
       setTrend(t);
+      setComparison(c);
+      setActiveGoal(goals.find((g) => g.status === "active") ?? null);
       setLoading(false);
     });
     return () => {
@@ -114,6 +141,52 @@ export default function DashboardPage() {
               {kpis.notes.join(" ")}
             </div>
           ) : null}
+
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {comparison && comparison.change_pct !== null ? (
+              <Card>
+                <p className="text-sm font-medium text-accent">AI Opportunity</p>
+                <p className="mt-2 text-foreground">
+                  {comparison.change_pct >= 0 ? (
+                    <>
+                      Revenue grew <strong>{(comparison.change_pct * 100).toFixed(1)}%</strong> over the previous
+                      30 days ({formatINR(comparison.previous_revenue)} → {formatINR(comparison.current_revenue)}).
+                    </>
+                  ) : (
+                    <>
+                      Revenue fell <strong>{Math.abs(comparison.change_pct * 100).toFixed(1)}%</strong> compared to
+                      the previous 30 days ({formatINR(comparison.previous_revenue)} →{" "}
+                      {formatINR(comparison.current_revenue)}).
+                    </>
+                  )}
+                </p>
+                <div className="mt-4">
+                  <SecondaryLink href={activeGoal ? `/decision?goal=${activeGoal.id}` : "/goals"}>
+                    {activeGoal ? "Explore decision" : "Set a goal to explore this"}
+                  </SecondaryLink>
+                </div>
+              </Card>
+            ) : null}
+
+            {activeGoal ? (
+              <Card>
+                <p className="text-sm font-medium text-accent">Active goal</p>
+                <p className="mt-2 text-foreground">
+                  {OBJECTIVE_LABELS[activeGoal.objective] ?? activeGoal.objective} by {activeGoal.target_value}
+                  {activeGoal.target_unit === "percent" ? "%" : ` ${activeGoal.target_unit}`}
+                  {activeGoal.time_horizon ? ` over ${activeGoal.time_horizon} month(s)` : ""}
+                </p>
+                <div className="mt-4">
+                  <Link
+                    href={`/decision?goal=${activeGoal.id}`}
+                    className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition hover:opacity-90"
+                  >
+                    Analyse goal
+                  </Link>
+                </div>
+              </Card>
+            ) : null}
+          </div>
 
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <Card className="lg:col-span-2">

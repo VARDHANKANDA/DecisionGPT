@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-decisiongpt}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-decisiongpt}
+      POSTGRES_DB: ${POSTGRES_DB:-decisiongpt}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-decisiongpt}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file:
+      - .env
+    environment:
+      # Derived from the POSTGRES_* vars above rather than trusting
+      # .env's own DATABASE_URL to stay in sync with them.
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-decisiongpt}:${POSTGRES_PASSWORD:-decisiongpt}@postgres:5432/${POSTGRES_DB:-decisiongpt}
+      MODEL_REGISTRY_PATH: /app/models
+    ports:
+      - "8000:8000"
+    volumes:
+      # Trained model artifacts and experiment results persist across
+      # `docker compose down`/`up` instead of living only in the container.
+      - ./models:/app/models
+      - ./experiments/results:/app/experiments/results
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000/api/v1}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres-data:

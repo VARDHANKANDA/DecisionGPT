@@ -63,23 +63,37 @@ DecisionGPT/
 ## Setup
 
 ### Prerequisites
-- Docker + Docker Compose (for the target deployment — not yet wired up, see Build status)
+- Docker + Docker Compose (target deployment)
 - Python 3.11+, Node 20+, PostgreSQL 15+ (for local dev)
 
 ### Quick start (Docker)
-
-Docker Compose / Dockerfiles are Phase 29 of the build and aren't in this
-repo yet. Once they land:
 
 ```bash
 cp .env.example .env
 docker compose up --build
 docker compose exec backend alembic upgrade head
+docker compose exec backend python -m ml.training.train_forecasting
+docker compose exec backend python -m ml.training.train_churn
+curl -X POST http://localhost:8000/api/v1/research/models/sync \
+  -H "X-Research-Token: <RESEARCH_CONSOLE_TOKEN from .env>"
 ```
+
+- Backend: http://localhost:8000/docs · Frontend: http://localhost:3000
+
+The backend build context is the **repo root** (`backend/Dockerfile` COPYs
+both `backend/` and the sibling `ml/` package into the image — the runtime
+imports `ml.*` for feature engineering, see AGENTS.md). The frontend build
+uses Next.js's standalone output. `docker build`/`docker compose up` haven't
+been run against a real Docker daemon in this environment (none was
+available) — the Dockerfiles, compose file, and Alembic migrations were
+verified by other means (offline `alembic upgrade head --sql` DDL
+generation, `next build` producing the standalone output, YAML validation)
+but the full container build is unverified end-to-end. Please report any
+build issue you hit.
 
 ### Quick start (local dev, no Docker/Postgres)
 
-This is the path actually verified so far. It uses SQLite instead of
+This is the path actually verified end-to-end so far. It uses SQLite instead of
 Postgres purely as a local-dev convenience (see `app/db/types.py`'s
 cross-dialect `GUID` type) — production always targets Postgres via Alembic
 migrations.
@@ -137,30 +151,73 @@ Platform datasets live under `data/platform/<domain>/` and are never served to
 SME users. To (re)train models:
 
 ```bash
-docker compose exec backend python -m ml.pipeline.run --dataset forecasting
+python -m ml.training.train_forecasting   # naive / linear / XGBoost, registers all three
+python -m ml.training.train_churn         # logistic regression / random forest / XGBoost
+curl -X POST http://localhost:8000/api/v1/research/models/sync \
+  -H "X-Research-Token: <RESEARCH_CONSOLE_TOKEN>"
 ```
 
 Trained artifacts are versioned into the model registry (`models` table +
 `models/` artifact directory) and picked up by the runtime analytics engine —
-the runtime never touches raw platform training data directly.
+the runtime never touches raw platform training data directly. The Research
+Console's Experiment Runner (`/research/experiments`) triggers the same two
+scripts over the API.
+
+## SME application routes
+
+`/` `/onboarding` `/dashboard` `/data` `/data/upload` `/goals` `/decision`
+`/simulation` `/causal-graph` `/history` `/chat` — the full loop (dashboard →
+data → goals → decision → simulation → causal graph → history → AI
+assistant), all reading live from the API, no mock data anywhere.
+
+## AI Assistant
+
+`/chat` is a narrow, rule-based intent router (`app/services/
+assistant_service.py`), not a general chatbot — it recognizes a handful of
+question shapes ("why did revenue fall", "should I raise price", "what
+should I focus on", "why did you recommend this") and answers each from a
+real analytical call (a KPI comparison, a fresh Digital Twin simulation, or
+a stored Decision's own reasoning). Anything else, or anything it can't back
+with real data, gets an explicit "I don't have enough data to answer that
+reliably" rather than a guess. Every answer cites what was actually queried.
 
 ## Research Console
 
-A private console at `/research` (not linked from SME navigation) exposes the
-dataset registry, model registry, experiment runner, ablation studies, and
-paper-ready exports (CSV/JSON/Markdown/LaTeX). Every value shown there is read
-from stored experiment/model records — nothing is hard-coded.
+A private console at `/research` (token-gated via `RESEARCH_CONSOLE_TOKEN`,
+never linked from SME navigation — `TopNav` hides itself under `/research`)
+exposing:
+
+- **Dataset Registry** — real metadata read from `data/platform/*/metadata.json`.
+- **Model Registry / Performance** — every forecasting/churn model actually trained.
+- **Experiment Runner** — triggers and permanently records one of seven real
+  experiment types: `forecasting`, `churn` (retrain from platform data),
+  `digital_twin` (predicted vs. real recorded business outcomes, aggregated
+  across all businesses), `causal` (synthetic ground-truth Granger-recovery
+  test — precision/recall/SHD), `decision_architecture` (A/B/C/D comparison
+  on a synthetic scenario), `multi_agent` (single-agent vs. full multi-agent),
+  `ablation` (full system vs. each major component removed).
+- **Paper-ready exports** — CSV/JSON/Markdown/LaTeX, generated only from a
+  recorded `ExperimentRun` or the model registry — never a new computation.
+
+Every number the console shows traces back to a stored row; nothing is
+hard-coded (docs/RESEARCH_SPECIFICATION.md §11 "no result is entered into
+the paper until produced by a recorded experiment").
 
 ## Testing
 
 ```bash
+# local (see "Quick start (local dev)" above for environment setup)
+PYTHONPATH=. backend/.venv/Scripts/python -m pytest
+
+# once Docker is set up
 docker compose exec backend pytest
 ```
 
 Covers unit, integration, API, and the critical end-to-end business workflow
 (create business → upload data → validate → KPIs → goal → forecast → digital
 twin → causal graph → multi-agent → recommendation → save decision → record
-outcome), plus a business-isolation test (Business A cannot read Business B).
+outcome), plus business-isolation tests (Business A cannot read Business B)
+and the Research Console's own token-gating and experiment-recording tests.
 
 ## Research methodology & limitations
 

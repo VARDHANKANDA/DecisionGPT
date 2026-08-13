@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, ApiError, type Goal } from "@/lib/api";
 import { useBusiness } from "@/lib/business-context";
@@ -129,9 +130,17 @@ export default function GoalsPage() {
                       Tracking: {goal.primary_kpi}
                     </p>
                   </div>
-                  <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">
-                    {goal.status}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={`/decision?goal=${goal.id}`}
+                      className="text-sm font-medium text-accent underline underline-offset-4"
+                    >
+                      Analyse
+                    </Link>
+                    <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">
+                      {goal.status}
+                    </span>
+                  </div>
                 </Card>
               </li>
             ))}

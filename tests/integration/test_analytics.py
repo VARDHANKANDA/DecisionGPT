@@ -153,3 +153,110 @@ def test_churn_with_sufficient_customers_and_registered_model(client, db_session
     assert len(body["predictions"]) == 40
     for pred in body["predictions"]:
         assert 0.0 <= pred["churn_probability"] <= 1.0
+
+
+def test_period_comparison_reflects_real_recent_vs_prior_revenue(client):
+    business_id = _create_business(client)
+    _seed_rich_business(client, business_id)
+
+    response = client.get(f"/api/v1/businesses/{business_id}/analytics/period-comparison?days=30")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["current_revenue"] >= 0
+    assert body["previous_revenue"] >= 0
+    assert body["change_absolute"] == round(body["current_revenue"] - body["previous_revenue"], 2)
+
+
+def test_period_comparison_with_no_data_is_zero_not_fabricated(client):
+    business_id = _create_business(client)
+    response = client.get(f"/api/v1/businesses/{business_id}/analytics/period-comparison")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["current_revenue"] == 0
+    assert body["previous_revenue"] == 0
+    assert body["change_pct"] is None
+
+
+def test_top_products_reflects_real_sales(client):
+    business_id = _create_business(client)
+    _seed_rich_business(client, business_id)
+
+    response = client.get(f"/api/v1/businesses/{business_id}/analytics/products")
+    assert response.status_code == 200
+    products = response.json()
+    assert len(products) == 5
+    revenues = [p["revenue"] for p in products]
+    assert revenues == sorted(revenues, reverse=True)
+    assert sum(p["units_sold"] for p in products) > 0
+
+
+def test_marketing_by_channel_reflects_real_campaigns(client):
+    business_id = _create_business(client)
+    _seed_rich_business(client, business_id)
+
+    response = client.get(f"/api/v1/businesses/{business_id}/analytics/marketing-channels")
+    assert response.status_code == 200
+    channels = response.json()
+    assert len(channels) == 1
+    assert channels[0]["channel"] == "Instagram"
+    assert channels[0]["spend"] > 0
+    assert channels[0]["roi"] is not None
+
+
+def test_marketing_by_channel_empty_when_no_campaigns(client):
+    business_id = _create_business(client)
+    response = client.get(f"/api/v1/businesses/{business_id}/analytics/marketing-channels")
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_customer_summary_reflects_real_customers(client):
+    business_id = _create_business(client)
+    _seed_rich_business(client, business_id)
+
+    response = client.get(f"/api/v1/businesses/{business_id}/analytics/customers")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total_customers"] == 40
+    assert body["customers_with_purchase_history"] == 40
+    assert body["avg_monetary_value"] is not None
+
+
+def test_inventory_status_empty_when_no_inventory_data(client):
+    business_id = _create_business(client)
+    _seed_rich_business(client, business_id)
+    response = client.get(f"/api/v1/businesses/{business_id}/analytics/inventory")
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_inventory_status_flags_low_stock_from_real_data(client):
+    import pandas as pd
+    from datetime import date
+
+    business_id = _create_business(client)
+    _seed_rich_business(client, business_id)
+
+    inventory_rows = [
+        {"Product ID": "P000", "Date": date.today().isoformat(), "Stock Level": 2, "Reorder Level": 10},
+        {"Product ID": "P001", "Date": date.today().isoformat(), "Stock Level": 500, "Reorder Level": 10},
+    ]
+    _upload_csv(client, business_id, "inventory", pd.DataFrame(inventory_rows))
+
+    response = client.get(f"/api/v1/businesses/{business_id}/analytics/inventory")
+    assert response.status_code == 200
+    statuses = {s["product_id"]: s for s in response.json()}
+    low = [s for s in statuses.values() if s["current_stock"] == 2][0]
+    healthy = [s for s in statuses.values() if s["current_stock"] == 500][0]
+    assert low["low_stock"] is True
+    assert healthy["low_stock"] is False
+
+
+def test_analytics_breakdowns_are_isolated_per_business(client):
+    business_a = _create_business(client)
+    _seed_rich_business(client, business_a)
+    business_b = _create_business(client)
+
+    response = client.get(f"/api/v1/businesses/{business_b}/analytics/products")
+    assert response.status_code == 200
+    assert response.json() == []

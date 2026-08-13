@@ -81,6 +81,8 @@ def parse_and_validate_goal(db: Session, business_id: str, source_text: str) -> 
 
 
 def create_goal(db: Session, business_id: str, source_text: str) -> Goal:
+    from app.services import memory_service
+
     parsed = parse_and_validate_goal(db, business_id, source_text)
     goal = Goal(
         business_id=business_id,
@@ -93,6 +95,16 @@ def create_goal(db: Session, business_id: str, source_text: str) -> Goal:
         status="active",
     )
     db.add(goal)
+    db.flush()
+
+    memory_service.log_memory(
+        db,
+        business_id,
+        "goal",
+        f"Goal set: {parsed.objective} by {parsed.target_value}{'%' if parsed.target_unit == 'percent' else f' {parsed.target_unit}'}.",
+        metadata={"goal_id": goal.id},
+    )
+
     db.commit()
     db.refresh(goal)
     return goal

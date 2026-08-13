@@ -33,6 +33,7 @@ class DecisionOut(BaseModel):
     agent_reviews: dict[str, str]
     alternatives: list[AlternativeStrategyOut]
     skipped_strategies: list[str]
+    memory_insights: list[str]
 
 
 class FeatureContributionOut(BaseModel):

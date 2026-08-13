@@ -79,6 +79,23 @@ export function Stat({
   );
 }
 
+export function RiskBadge({ level }: { level: string }) {
+  const normalized = level.toLowerCase();
+  const styles: Record<string, string> = {
+    low: "bg-success-soft text-success",
+    medium: "bg-warning-soft text-warning",
+    moderate: "bg-warning-soft text-warning",
+    high: "bg-danger-soft text-danger",
+  };
+  return (
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-medium capitalize ${styles[normalized] ?? "bg-muted-surface text-muted"}`}
+    >
+      {level}
+    </span>
+  );
+}
+
 export function formatINR(value: number | null): string {
   if (value === null) return "—";
   return new Intl.NumberFormat("en-IN", {

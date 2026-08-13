@@ -59,7 +59,10 @@ def save_model_artifact(
         feature_version=feature_version,
         parameters=parameters,
         metrics=metrics,
-        artifact_path=str(artifact_path.relative_to(MODELS_ROOT.parent)),
+        # .as_posix() (not str()) so the stored path always uses forward
+        # slashes — trained-on-Windows registry entries must still resolve
+        # correctly when the backend runs in a Linux container.
+        artifact_path=artifact_path.relative_to(MODELS_ROOT.parent).as_posix(),
         trained_at=datetime.now(timezone.utc).isoformat(),
         random_seed=random_seed,
     )

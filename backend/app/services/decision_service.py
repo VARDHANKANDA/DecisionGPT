@@ -27,6 +27,7 @@ from app.models.decision import Decision
 from app.models.goal import Goal
 from app.models.ml_model import MLModel
 from app.models.strategy import Strategy
+from app.services import memory_service
 from app.services.llm_service import LLMService
 
 # Docs/DIGITAL_TWIN_SPECIFICATION.md §7's suggested grid (marketing ±5/±10%,
@@ -76,9 +77,10 @@ class DecisionResult:
     agent_reviews: dict = field(default_factory=dict)
     alternatives: list[dict] = field(default_factory=list)
     skipped_strategies: list[str] = field(default_factory=list)
+    memory_insights: list[str] = field(default_factory=list)
 
 
-def _strategy_name(actions: list[dict]) -> str:
+def strategy_name_for_actions(actions: list[dict]) -> str:
     parts = []
     for a in actions:
         sign = "+" if a["value"] >= 0 else ""
@@ -125,7 +127,7 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
 
     for action_dicts in CANDIDATE_GRID:
         actions = [Action(type=a["type"], value=a["value"]) for a in action_dicts]
-        strategy_name = _strategy_name(action_dicts)
+        strategy_name = strategy_name_for_actions(action_dicts)
 
         strategy_row = Strategy(
             business_id=business_id, goal_id=goal_id, strategy_name=strategy_name, actions_json=action_dicts
@@ -208,6 +210,10 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
 
     causal_graph_version = _latest_causal_graph_version(db, business_id)
 
+    memory_insights = memory_service.get_relevant_outcome_insights(
+        db, business_id, action_types=[a["type"] for a in best.actions]
+    )
+
     decision_row = Decision(
         business_id=business_id,
         goal_id=goal_id,
@@ -237,6 +243,14 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
             )
         )
 
+    memory_service.log_memory(
+        db,
+        business_id,
+        "decision",
+        f"Decision made: selected '{best.strategy_name}' (score {best.strategy_score}, risk {risk_level}).",
+        metadata={"decision_id": decision_row.id, "goal_id": goal_id},
+    )
+
     db.commit()
     db.refresh(decision_row)
 
@@ -251,6 +265,7 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         risk_level=risk_level,
         confidence=confidence,
         reasoning=reasoning,
+        memory_insights=memory_insights,
         causal_graph_version=causal_graph_version,
         agent_reviews=agent_reviews,
         alternatives=[_alt_summary(a) for a in alternatives],

@@ -153,11 +153,205 @@ export interface Goal {
   updated_at: string;
 }
 
+export interface PeriodComparison {
+  current_revenue: number;
+  previous_revenue: number;
+  change_absolute: number;
+  change_pct: number | null;
+  current_orders: number;
+  previous_orders: number;
+}
+
+export interface ProductPerformance {
+  product_id: string;
+  name: string;
+  units_sold: number;
+  revenue: number;
+}
+
+export interface ChannelPerformance {
+  channel: string;
+  spend: number;
+  attributed_revenue: number | null;
+  roi: number | null;
+  campaigns: number;
+}
+
+export interface CustomerSummary {
+  total_customers: number;
+  customers_with_purchase_history: number;
+  avg_monetary_value: number | null;
+  avg_purchase_frequency: number | null;
+  new_customers_last_30_days: number;
+}
+
+export interface InventoryStatus {
+  product_id: string;
+  product_name: string;
+  current_stock: number;
+  reorder_level: number | null;
+  low_stock: boolean;
+}
+
+export type ActionType = "price_change" | "marketing_change" | "inventory_change";
+
+export interface SimulationAction {
+  type: ActionType;
+  value: number;
+}
+
+export interface SimulationOutput {
+  expected_units_sold: number;
+  baseline_units_sold: number;
+  expected_revenue: number;
+  baseline_revenue: number;
+  expected_profit: number | null;
+  baseline_profit: number | null;
+  profit_note: string | null;
+  customer_impact: number | null;
+  inventory_constrained: boolean;
+  risk_level: "LOW" | "MODERATE" | "HIGH";
+  risk_score: number;
+  revenue_lower_bound: number;
+  revenue_upper_bound: number;
+  model_name: string;
+  model_version: string;
+  assumptions: string[];
+}
+
+export interface SimulationResult {
+  id: string;
+  business_id: string;
+  goal_id: string | null;
+  input_state: Record<string, unknown>;
+  actions: SimulationAction[];
+  output: SimulationOutput;
+}
+
+export interface CausalEdge {
+  source_node: string;
+  target_node: string;
+  relationship: string;
+  strength: number | null;
+  confidence: number | null;
+  evidence_type: "assumed" | "observational" | "data_supported" | "causally_validated";
+  time_lag: number | null;
+  note: string;
+}
+
+export interface CausalGraph {
+  id: string;
+  business_id: string;
+  version: string;
+  method: string;
+  evidence_summary: string;
+  created_at: string | null;
+  edges: CausalEdge[];
+}
+
+export interface AlternativeStrategy {
+  strategy_id: string;
+  strategy_name: string;
+  actions: SimulationAction[];
+  strategy_score: number;
+  risk_level: string;
+  expected_revenue: number;
+}
+
+export interface Decision {
+  id: string;
+  business_id: string;
+  goal_id: string;
+  selected_strategy_id: string;
+  selected_strategy_name: string;
+  selected_strategy_score: number;
+  expected_outcome: Record<string, unknown> & {
+    expected_revenue: number;
+    baseline_revenue: number;
+    expected_units_sold: number;
+    baseline_units_sold: number;
+    expected_profit: number | null;
+    baseline_profit: number | null;
+    assumptions: string[];
+  };
+  risk_level: string;
+  confidence: number;
+  reasoning: string;
+  causal_graph_version: string | null;
+  agent_reviews: Record<string, string>;
+  alternatives: AlternativeStrategy[];
+  skipped_strategies: string[];
+  memory_insights: string[];
+}
+
+export interface DecisionSummary {
+  id: string;
+  business_id: string;
+  goal_id: string;
+  selected_strategy_id: string | null;
+  expected_outcome_json: Record<string, unknown>;
+  risk_level: string;
+  confidence: number | null;
+  reasoning: string | null;
+  causal_graph_version: string | null;
+  created_at: string;
+}
+
+export interface FeatureContribution {
+  feature: string;
+  label: string;
+  contribution: number;
+  direction: string;
+}
+
+export interface DecisionExplanation {
+  decision_id: string;
+  explanation: {
+    model_name: string;
+    model_version: string;
+    shap_available: boolean;
+    unavailable_reason: string | null;
+    local_factors: FeatureContribution[];
+    global_importance: FeatureContribution[];
+  };
+  reasoning: string;
+  agent_reviews: Record<string, string>;
+  counterfactual: Record<string, number | null>;
+  uncertainty: Record<string, unknown>;
+  assumptions: string[];
+}
+
+export interface DecisionOutcome {
+  id: string;
+  decision_id: string;
+  actual_outcome_json: Record<string, unknown>;
+  goal_achieved: boolean | null;
+  goal_achievement_score: number | null;
+  recorded_at: string;
+}
+
+export interface BusinessMemoryEntry {
+  id: string;
+  business_id: string;
+  memory_type: string;
+  content: string;
+  metadata_json: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface ChatResponse {
+  answer: string;
+  intent: string;
+  sources: string[];
+  sufficient_evidence: boolean;
+}
+
 // ---- API surface ----
 
 export const api = {
   createBusiness: (input: BusinessCreateInput) =>
     apiPost<Business>("/businesses", { country: "IN", currency: "INR", ...input }),
+  createDemoBusiness: () => apiPost<Business>("/businesses/demo"),
   getBusiness: (businessId: string) => apiGet<Business>(`/businesses/${businessId}`),
 
   uploadData: (businessId: string, file: File, dataType?: string) => {
@@ -180,4 +374,51 @@ export const api = {
   createGoal: (businessId: string, text: string) =>
     apiPost<Goal>(`/businesses/${businessId}/goals`, { text }),
   listGoals: (businessId: string) => apiGet<Goal[]>(`/businesses/${businessId}/goals`),
+  getGoal: (businessId: string, goalId: string) => apiGet<Goal>(`/businesses/${businessId}/goals/${goalId}`),
+
+  getPeriodComparison: (businessId: string, days = 30) =>
+    apiGet<PeriodComparison>(`/businesses/${businessId}/analytics/period-comparison?days=${days}`),
+  getTopProducts: (businessId: string, limit = 10) =>
+    apiGet<ProductPerformance[]>(`/businesses/${businessId}/analytics/products?limit=${limit}`),
+  getMarketingChannels: (businessId: string) =>
+    apiGet<ChannelPerformance[]>(`/businesses/${businessId}/analytics/marketing-channels`),
+  getCustomerSummary: (businessId: string) =>
+    apiGet<CustomerSummary>(`/businesses/${businessId}/analytics/customers`),
+  getInventoryStatus: (businessId: string) =>
+    apiGet<InventoryStatus[]>(`/businesses/${businessId}/analytics/inventory`),
+
+  simulate: (businessId: string, actions: SimulationAction[], goalId?: string, horizonDays = 14) =>
+    apiPost<SimulationResult>(`/businesses/${businessId}/digital-twin/simulate`, {
+      actions,
+      goal_id: goalId ?? null,
+      horizon_days: horizonDays,
+    }),
+  getSimulation: (businessId: string, simulationId: string) =>
+    apiGet<SimulationResult>(`/businesses/${businessId}/digital-twin/simulations/${simulationId}`),
+
+  buildCausalGraph: (businessId: string) =>
+    apiPost<CausalGraph>(`/businesses/${businessId}/causal-graph/build`),
+  getCausalGraph: (businessId: string) => apiGet<CausalGraph>(`/businesses/${businessId}/causal-graph`),
+
+  analyzeGoal: (businessId: string, goalId: string) =>
+    apiPost<Decision>(`/businesses/${businessId}/decisions/analyze`, { goal_id: goalId }),
+  listDecisions: (businessId: string) => apiGet<DecisionSummary[]>(`/businesses/${businessId}/decisions`),
+  getDecision: (businessId: string, decisionId: string) =>
+    apiGet<DecisionSummary>(`/businesses/${businessId}/decisions/${decisionId}`),
+  explainDecision: (businessId: string, decisionId: string) =>
+    apiGet<DecisionExplanation>(`/businesses/${businessId}/decisions/${decisionId}/explanation`),
+  recordOutcome: (businessId: string, decisionId: string, actualOutcome: Record<string, number>) =>
+    apiPost<DecisionOutcome>(`/businesses/${businessId}/decisions/${decisionId}/outcome`, {
+      actual_outcome: actualOutcome,
+    }),
+  getOutcome: (businessId: string, decisionId: string) =>
+    apiGet<DecisionOutcome>(`/businesses/${businessId}/decisions/${decisionId}/outcome`),
+
+  listMemory: (businessId: string, memoryType?: string) =>
+    apiGet<BusinessMemoryEntry[]>(
+      `/businesses/${businessId}/memory${memoryType ? `?memory_type=${memoryType}` : ""}`
+    ),
+
+  chat: (businessId: string, message: string) =>
+    apiPost<ChatResponse>(`/businesses/${businessId}/chat`, { message }),
 };

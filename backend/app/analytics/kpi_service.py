@@ -114,6 +114,53 @@ def compute_kpis(db: Session, business_id: str, period_days: int | None = None) 
     )
 
 
+@dataclass
+class PeriodComparison:
+    current_revenue: float
+    previous_revenue: float
+    change_absolute: float
+    change_pct: float | None
+    current_orders: int
+    previous_orders: int
+
+
+def period_over_period(db: Session, business_id: str, days: int = 30) -> PeriodComparison:
+    """Trailing `days` vs the `days` immediately before that — the real,
+    computed basis for the dashboard's "AI Opportunity" card (docs/PRD.md
+    §21). `change_pct` is None (not 0) when there's no previous-period
+    revenue to divide by — an undefined percentage is not the same as 0%.
+    """
+    today = date.today()
+    current_start = today - timedelta(days=days)
+    previous_start = current_start - timedelta(days=days)
+    previous_end = current_start - timedelta(days=1)
+
+    current_sales = (
+        db.query(Sale)
+        .filter(Sale.business_id == business_id, Sale.sale_date >= current_start, Sale.sale_date <= today)
+        .all()
+    )
+    previous_sales = (
+        db.query(Sale)
+        .filter(Sale.business_id == business_id, Sale.sale_date >= previous_start, Sale.sale_date <= previous_end)
+        .all()
+    )
+
+    current_revenue = float(sum(s.revenue for s in current_sales))
+    previous_revenue = float(sum(s.revenue for s in previous_sales))
+    change_absolute = current_revenue - previous_revenue
+    change_pct = round(change_absolute / previous_revenue, 4) if previous_revenue > 0 else None
+
+    return PeriodComparison(
+        current_revenue=round(current_revenue, 2),
+        previous_revenue=round(previous_revenue, 2),
+        change_absolute=round(change_absolute, 2),
+        change_pct=change_pct,
+        current_orders=len(current_sales),
+        previous_orders=len(previous_sales),
+    )
+
+
 def revenue_trend(db: Session, business_id: str, days: int = 90) -> list[dict]:
     """Daily revenue series for the trailing `days` — used by the dashboard
     trend chart. Returns only dates that actually have sales; the frontend

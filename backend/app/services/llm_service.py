@@ -158,3 +158,66 @@ class LLMService:
         if evaluation.get("risks"):
             sentences.append("Risks: " + " ".join(evaluation["risks"]))
         return " ".join(sentences)
+
+    def generate_business_response(self, context: dict) -> str:
+        """AI Assistant answers (docs/PRD.md §30). `context` always contains
+        already-computed real numbers (KPI comparisons, a Digital Twin
+        simulation output, a stored Decision) — this method only ever
+        narrates them; app.services.assistant_service decides *what* to
+        say, this decides how to phrase it.
+        """
+        if self.enabled:
+            try:
+                return self._generate_business_response_via_llm(context)
+            except Exception:
+                pass
+        return self._generate_business_response_template(context)
+
+    def _generate_business_response_via_llm(self, context: dict) -> str:  # pragma: no cover
+        raise NotImplementedError("No LLM provider is wired up yet.")
+
+    def _generate_business_response_template(self, context: dict) -> str:
+        kind = context.get("type")
+
+        if kind == "why_kpi_fell":
+            c = context["comparison"]
+            direction = "grew" if c.change_pct >= 0 else "fell"
+            return (
+                f"Your revenue {direction} {abs(c.change_pct) * 100:.1f}% over the last 30 days "
+                f"(₹{c.previous_revenue:,.0f} → ₹{c.current_revenue:,.0f})."
+            )
+
+        if kind == "simulation_advice":
+            o = context["output"]
+            change = o.expected_revenue - o.baseline_revenue
+            verb = "increase" if context["value"] >= 0 else "decrease"
+            label = "price" if context["action_type"] == "price_change" else "marketing spend"
+            direction = "improve" if change >= 0 else "reduce"
+            return (
+                f"Simulating a {abs(context['value'])}% {verb} in {label}: expected revenue would {direction} by "
+                f"₹{abs(change):,.0f} (to ₹{o.expected_revenue:,.0f}), with {o.risk_level.lower()} risk."
+            )
+
+        if kind == "what_focus":
+            c = context["comparison"]
+            goal = context.get("goal")
+            parts = []
+            if c.change_pct is not None and c.change_pct < 0:
+                parts.append(
+                    f"Revenue is down {abs(c.change_pct) * 100:.1f}% over the last 30 days — that's worth "
+                    "investigating first."
+                )
+            if goal is not None:
+                unit = "%" if goal.target_unit == "percent" else f" {goal.target_unit}"
+                parts.append(
+                    f"You have an active goal to {goal.objective.replace('_', ' ')} by {goal.target_value}{unit} "
+                    "— run a decision analysis to get a concrete recommendation."
+                )
+            if not parts:
+                parts.append(
+                    "Your revenue hasn't moved much recently. Consider setting a goal so DecisionGPT can "
+                    "recommend a concrete next step."
+                )
+            return " ".join(parts)
+
+        return "I looked into this using your business data."

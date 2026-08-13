@@ -1,0 +1,21 @@
+# Backend build context is the repo root — keep the image lean and avoid
+# ever baking in local venvs, node_modules, or dev artifacts.
+**/__pycache__/
+**/*.pyc
+backend/.venv/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+frontend/node_modules/
+frontend/.next/
+backend/dev.db
+*.sqlite3
+.git/
+.env
+models/*
+!models/.gitkeep
+experiments/results/*
+!experiments/results/.gitkeep
+data/business/*
+!data/business/demo/
