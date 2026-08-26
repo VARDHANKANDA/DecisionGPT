@@ -36,10 +36,14 @@ def upgrade() -> None:
     op.create_index("ix_users_email", "users", ["email"], unique=True)
     op.create_index("ix_users_role", "users", ["role"])
 
-    op.add_column(
-        "businesses",
-        sa.Column("owner_user_id", _uuid(), sa.ForeignKey("users.id", ondelete="SET NULL"), nullable=True),
-    )
+    # batch_alter_table so SQLite (dev / tests) can ALTER in a column that
+    # carries a FK constraint; on PostgreSQL this is a plain ALTER. The FK
+    # must be named for SQLite batch mode.
+    with op.batch_alter_table("businesses") as batch:
+        batch.add_column(sa.Column("owner_user_id", _uuid(), nullable=True))
+        batch.create_foreign_key(
+            "fk_businesses_owner_user_id", "users", ["owner_user_id"], ["id"], ondelete="SET NULL"
+        )
     op.create_index("ix_businesses_owner_user_id", "businesses", ["owner_user_id"])
 
     # --- research datasets ----------------------------------------------
@@ -130,5 +134,7 @@ def downgrade() -> None:
     op.drop_table("research_dataset_versions")
     op.drop_table("research_datasets")
     op.drop_index("ix_businesses_owner_user_id", "businesses")
-    op.drop_column("businesses", "owner_user_id")
+    with op.batch_alter_table("businesses") as batch:
+        batch.drop_constraint("fk_businesses_owner_user_id", type_="foreignkey")
+        batch.drop_column("owner_user_id")
     op.drop_table("users")

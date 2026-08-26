@@ -208,6 +208,26 @@ export interface ExperimentRun {
   created_at: string;
 }
 
+export interface ExperimentManifest {
+  generated_at: string;
+  experiment_count: number;
+  experiments: {
+    experiment_id: string;
+    experiment_name: string;
+    experiment_type: string;
+    status: string;
+    random_seed: number | null;
+    dataset_version: string | null;
+    model_versions: Record<string, string>;
+    configuration: Record<string, unknown>;
+    created_at: string | null;
+    started_at: string | null;
+    completed_at: string | null;
+    error_message: string | null;
+    metric_summary: Record<string, unknown>;
+  }[];
+}
+
 export interface ResearchOverview {
   uploaded_dataset_count: number;
   uploaded_dataset_version_count: number;
@@ -284,6 +304,7 @@ export const researchApi = {
   listExperiments: (experimentType?: ExperimentType) =>
     researchGet<ExperimentRun[]>(`/research/experiments${experimentType ? `?experiment_type=${experimentType}` : ""}`),
   getExperiment: (id: string) => researchGet<ExperimentRun>(`/research/experiments/${id}`),
+  experimentManifest: () => researchGet<ExperimentManifest>("/research/experiments/manifest"),
 
   exportTable: (table: ExportTable, format: ExportFormat, experimentId?: string) =>
     researchPostText("/research/export", { table, format, experiment_id: experimentId ?? null }),

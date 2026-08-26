@@ -90,7 +90,24 @@ export default function ExperimentsPage() {
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div>
-          <h2 className="text-sm font-medium text-foreground">History</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-medium text-foreground">History</h2>
+            <button
+              onClick={async () => {
+                const m = await researchApi.experimentManifest();
+                const blob = new Blob([JSON.stringify(m, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "experiment_manifest.json";
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="text-xs font-medium text-accent underline underline-offset-4"
+            >
+              Download reproducibility manifest
+            </button>
+          </div>
           {runs === null ? (
             <p className="mt-2 text-sm text-muted">Loading…</p>
           ) : runs.length === 0 ? (

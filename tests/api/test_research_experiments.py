@@ -101,3 +101,52 @@ def test_forecasting_experiment_run_retrains_and_registers_real_models(client):
     assert set(results.keys()) == {"naive", "linear", "xgboost"}
     for metrics in results.values():
         assert metrics["mae"] > 0
+
+
+def test_experiment_records_model_versions_for_reproducibility(client, db_session):
+    model_registry_service.sync_from_file_registry(db_session)
+    # decision_architecture uses the active forecasting models — their
+    # versions must be recorded so the run is reproducible.
+    r = client.post(
+        "/api/v1/research/experiments/run",
+        json={"experiment_type": "decision_architecture", "configuration": {"seed": 3}},
+        headers=_headers(),
+    )
+    assert r.status_code == 200, r.text
+    mv = r.json()["model_versions_json"]
+    assert mv, "decision_architecture must record the forecasting model versions it used"
+    assert any(k.startswith("sales_forecast_") for k in mv)
+
+
+def test_experiment_manifest_is_reproducibility_complete(client, db_session):
+    model_registry_service.sync_from_file_registry(db_session)
+    for et in ("causal", "decision_architecture"):
+        client.post(
+            "/api/v1/research/experiments/run",
+            json={"experiment_type": et, "configuration": {"seed": 9, "name": f"{et}-manifest-test"}},
+            headers=_headers(),
+        )
+    m = client.get("/api/v1/research/experiments/manifest", headers=_headers())
+    assert m.status_code == 200, m.text
+    body = m.json()
+    assert body["generated_at"]
+    assert body["experiment_count"] >= 2
+    for e in body["experiments"]:
+        for key in (
+            "experiment_id",
+            "experiment_type",
+            "status",
+            "random_seed",
+            "dataset_version",
+            "model_versions",
+            "configuration",
+            "created_at",
+            "started_at",
+            "completed_at",
+            "metric_summary",
+        ):
+            assert key in e, key
+
+
+def test_manifest_requires_token(client):
+    assert client.get("/api/v1/research/experiments/manifest").status_code == 403

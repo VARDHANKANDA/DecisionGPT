@@ -1,20 +1,29 @@
-"""Conservative causal-evidence feedback from real decision outcomes
-(docs Phase 5 / docs/CAUSAL_GRAPH_SPECIFICATION.md §3, §9, §11).
+"""Conservative, per-edge causal-evidence feedback from real decision
+outcomes (docs Phase 5 / Phase 8, docs/CAUSAL_GRAPH_SPECIFICATION.md
+§3, §9, §11).
 
 One recorded outcome NEVER proves causation. This mechanism does exactly
-one thing: after enough real interventions on the same lever have moved the
-outcome in the direction the Digital Twin predicted, it lifts the affected
-edges from ASSUMED to OBSERVATIONAL — and nothing further. DATA_SUPPORTED
+one thing, and only per individual edge:
+
+    intervention lever / upstream node
+        -> downstream causal node
+        -> hypothesised direction (edge.relationship)
+        -> the actual metric the SME recorded for that node
+        -> direction consistency
+
+After >= MIN_OUTCOMES_FOR_OBSERVATIONAL real interventions have moved BOTH
+ends of a specific ASSUMED edge in a way consistent with its hypothesised
+sign (>= CONSISTENCY_THRESHOLD of the time), that one edge is lifted to
+OBSERVATIONAL — and nothing further. Edges whose downstream node was never
+actually recorded get no verdict and are left untouched. DATA_SUPPORTED
 still requires the Granger test in causal_graph_service; CAUSALLY_VALIDATED
 is never assigned by any automated path.
 
 Every change writes a fully-inspectable ``CausalEvidenceUpdate`` row
-(graph id + version, edge, previous/new level, supporting decision/outcome
-ids, method, sample size, consistency count, timestamp) and produces a new
-CausalGraph version so the change is a first-class, versioned event.
+(graph id + version, edge, previous/new level, the specific supporting
+decision/outcome ids, method, per-edge sample size + consistency count,
+timestamp) and produces a new versioned CausalGraph.
 """
-from datetime import datetime
-
 from sqlalchemy.orm import Session
 
 from app.models.causal import CausalEdge, CausalGraph
@@ -25,16 +34,35 @@ from app.models.strategy import Strategy
 ASSUMED = "assumed"
 OBSERVATIONAL = "observational"
 
-# Conservative thresholds. Deliberately not configurable via the request —
-# a caller can never lower the bar for "observational".
+# Conservative thresholds. Deliberately not request-configurable — a caller
+# can never lower the bar for "observational".
 MIN_OUTCOMES_FOR_OBSERVATIONAL = 3
 CONSISTENCY_THRESHOLD = 2 / 3
 
-# Which causal-graph lever an SME action operates on.
+# Graph node <-> SME action lever.
 ACTION_START_NODE = {
     "marketing_change": "marketing_spend",
     "price_change": "price",
     "inventory_change": "inventory",
+}
+NODE_TO_ACTION = {v: k for k, v in ACTION_START_NODE.items()}
+
+# Graph node -> (baseline_key, predicted_key) in expected_outcome_json.
+_NODE_EXPECTED = {
+    "revenue": ("baseline_revenue", "expected_revenue"),
+    "profit": ("baseline_profit", "expected_profit"),
+    "orders": ("baseline_units_sold", "expected_units_sold"),
+    "sales": ("baseline_units_sold", "expected_units_sold"),
+    "demand": ("baseline_units_sold", "expected_units_sold"),
+}
+# Graph node -> the actual_outcome_json keys the SME might record for it.
+_NODE_ACTUAL_KEYS = {
+    "revenue": ["revenue"],
+    "profit": ["profit"],
+    "orders": ["orders", "sales", "units"],
+    "sales": ["orders", "sales", "units"],
+    "demand": ["orders", "sales", "units"],
+    "marketing_spend": ["marketing_spend"],
 }
 
 
@@ -44,20 +72,58 @@ def _sign(x: float | None) -> int:
     return 1 if x > 0 else -1
 
 
-def _direction_confirmed(decision: Decision, outcome: DecisionOutcome) -> bool | None:
-    """Did reality move revenue in the same direction the simulation
-    predicted for this decision? None when either side is ~flat."""
-    exp = decision.expected_outcome_json or {}
-    act = outcome.actual_outcome_json or {}
-    base = exp.get("baseline_revenue")
-    pred = exp.get("expected_revenue")
-    actual = act.get("revenue")
-    if base is None or pred is None or actual is None:
+def _num(v) -> float | None:
+    try:
+        return float(v)
+    except (TypeError, ValueError):
         return None
-    ps, as_ = _sign(pred - base), _sign(actual - base)
-    if ps == 0 or as_ == 0:
+
+
+def _action_map(db: Session, decision: Decision) -> dict[str, float]:
+    strategy = db.get(Strategy, decision.selected_strategy_id) if decision.selected_strategy_id else None
+    if strategy is None:
+        return {}
+    return {a["type"]: a["value"] for a in (strategy.actions_json or [])}
+
+
+def _node_change_dir(actions: dict[str, float], exp: dict, act: dict, node: str) -> int | None:
+    """The observed change direction of a causal node for one recorded
+    outcome: from the intervention when the node is a lever, otherwise from
+    the actually-recorded metric vs the simulation's baseline. None when
+    unavailable or flat."""
+    # 1. lever node — direction is the sign of the SME's action on it.
+    action_type = NODE_TO_ACTION.get(node)
+    if action_type and action_type in actions:
+        return _sign(actions[action_type])
+
+    # 2. recorded downstream metric vs baseline.
+    exp_keys = _NODE_EXPECTED.get(node)
+    if exp_keys is None:
         return None
-    return ps == as_
+    baseline = _num(exp.get(exp_keys[0]))
+    if baseline is None:
+        return None
+    for k in _NODE_ACTUAL_KEYS.get(node, []):
+        if k in act:
+            actual = _num(act[k])
+            if actual is not None:
+                return _sign(actual - baseline)
+    return None
+
+
+def _edge_confirmed(
+    actions: dict[str, float], exp: dict, act: dict, source: str, target: str, relationship: str
+) -> bool | None:
+    """Did both ends of this specific edge move consistently with its
+    hypothesised sign for this recorded outcome? None when either end
+    wasn't observed."""
+    sd = _node_change_dir(actions, exp, act, source)
+    td = _node_change_dir(actions, exp, act, target)
+    if sd in (0, None) or td in (0, None):
+        return None
+    expected_same_direction = relationship == "positive"
+    observed_same_direction = sd == td
+    return observed_same_direction == expected_same_direction
 
 
 def _latest_graph(db: Session, business_id: str) -> CausalGraph | None:
@@ -69,16 +135,16 @@ def _latest_graph(db: Session, business_id: str) -> CausalGraph | None:
     )
 
 
-def _edges_acted_on(decision: Decision) -> set[tuple[str, str]]:
-    """(source, target) pairs the chosen strategy's causal pathways touch,
-    from the decision's stored causal context."""
+def _edges_acted_on(decision: Decision) -> set[tuple[str, str, str]]:
+    """(source, target, relationship) triples the chosen strategy's causal
+    pathways touch, from the decision's stored causal context."""
     ctx = decision.causal_context_json or {}
-    pairs: set[tuple[str, str]] = set()
+    out: set[tuple[str, str, str]] = set()
     for p in ctx.get("pathways", []):
         for link in p.get("links", []):
             if link.get("source") and link.get("target"):
-                pairs.add((link["source"], link["target"]))
-    return pairs
+                out.add((link["source"], link["target"], link.get("relationship", "positive")))
+    return out
 
 
 def _action_types_of(db: Session, decision: Decision) -> set[str]:
@@ -97,8 +163,8 @@ def apply_outcome_feedback(
     if graph is None:
         return []
 
-    candidate_edges = _edges_acted_on(decision)
-    if not candidate_edges:
+    candidate_triples = _edges_acted_on(decision)
+    if not candidate_triples:
         return []
 
     edge_rows = {
@@ -106,64 +172,61 @@ def apply_outcome_feedback(
         for e in db.query(CausalEdge).filter(CausalEdge.causal_graph_id == graph.id).all()
     }
     upgradable = [
-        pair for pair in candidate_edges
-        if pair in edge_rows and edge_rows[pair].evidence_type == ASSUMED
+        (s, t, rel)
+        for (s, t, rel) in candidate_triples
+        if (s, t) in edge_rows and edge_rows[(s, t)].evidence_type == ASSUMED
     ]
     if not upgradable:
         return []
 
-    # Gather every recorded outcome for this business whose decision's
-    # strategy used a lever that feeds these pathways.
-    lever_action_types = {
-        atype for atype, node in ACTION_START_NODE.items()
-        if any(node == src for (src, _t) in upgradable) or any(node in (src, tgt) for (src, tgt) in upgradable)
-    }
-    # Fall back to this decision's own action types if the mapping is loose.
-    lever_action_types |= _action_types_of(db, decision)
-
-    business_decisions = (
-        db.query(Decision).filter(Decision.business_id == business_id).all()
-    )
-    supporting: list[tuple[Decision, DecisionOutcome, bool]] = []
+    # Candidate supporting decisions: same business, strategy shares an
+    # action lever with this decision (so the same edge could plausibly
+    # have been exercised).
+    lever_action_types = _action_types_of(db, decision)
+    business_decisions = db.query(Decision).filter(Decision.business_id == business_id).all()
+    dec_outcomes: list[tuple[Decision, DecisionOutcome, dict, dict, dict]] = []
     for d in business_decisions:
-        if not (_action_types_of(db, d) & lever_action_types):
+        if lever_action_types and not (_action_types_of(db, d) & lever_action_types):
             continue
         o = db.query(DecisionOutcome).filter(DecisionOutcome.decision_id == d.id).first()
         if o is None:
             continue
-        confirmed = _direction_confirmed(d, o)
-        if confirmed is None:
-            continue
-        supporting.append((d, o, confirmed))
+        dec_outcomes.append(
+            (d, o, _action_map(db, d), d.expected_outcome_json or {}, o.actual_outcome_json or {})
+        )
 
-    n = len(supporting)
-    consistent = sum(1 for (_d, _o, ok) in supporting if ok)
-    if n < MIN_OUTCOMES_FOR_OBSERVATIONAL or consistent / n < CONSISTENCY_THRESHOLD:
-        # Not enough evidence — do NOT touch the graph. This is the common
-        # case and it must be silent, not a fabricated upgrade.
+    # Per-edge verdicts.
+    per_edge: dict[tuple[str, str], dict] = {}
+    for (s, t, rel) in upgradable:
+        verdicts: list[tuple[str, str, bool]] = []
+        for (d, o, actions, exp, act) in dec_outcomes:
+            v = _edge_confirmed(actions, exp, act, s, t, rel)
+            if v is None:
+                continue
+            verdicts.append((d.id, o.id, v))
+        n = len(verdicts)
+        consistent = sum(1 for (_d, _o, ok) in verdicts if ok)
+        if n >= MIN_OUTCOMES_FOR_OBSERVATIONAL and consistent / n >= CONSISTENCY_THRESHOLD:
+            per_edge[(s, t)] = {
+                "relationship": rel,
+                "sample_size": n,
+                "consistent": consistent,
+                "decision_ids": [d for (d, _o, _ok) in verdicts],
+                "outcome_ids": [o for (_d, o, _ok) in verdicts],
+            }
+
+    if not per_edge:
         return []
 
-    decision_ids = [d.id for (d, _o, _ok) in supporting]
-    outcome_ids = [o.id for (_d, o, _ok) in supporting]
-    rationale = (
-        f"{consistent}/{n} recorded interventions on this lever moved revenue in the direction the "
-        f"Digital Twin predicted (threshold {CONSISTENCY_THRESHOLD:.2f}, minimum {MIN_OUTCOMES_FOR_OBSERVATIONAL} "
-        "outcomes). This is observational support only — not identified causation, and not the "
-        "Granger 'data_supported' bar."
-    )
-
-    # New graph version: copy the graph, apply only the ASSUMED->OBSERVATIONAL
-    # upgrades, everything else unchanged.
-    version_count = (
-        db.query(CausalGraph).filter(CausalGraph.business_id == business_id).count()
-    )
+    # New graph version: copy edges, apply only the per-edge upgrades.
+    version_count = db.query(CausalGraph).filter(CausalGraph.business_id == business_id).count()
     new_graph = CausalGraph(
         business_id=business_id,
         version=f"v{version_count + 1}",
         graph_json=dict(graph.graph_json or {}),
         method=(graph.method or "") + "+outcome_feedback",
         evidence_summary=(
-            f"{len(upgradable)} edge(s) lifted ASSUMED->OBSERVATIONAL from real outcome feedback "
+            f"{len(per_edge)} edge(s) lifted ASSUMED->OBSERVATIONAL from per-edge outcome feedback "
             f"(see causal_evidence_updates). {graph.evidence_summary or ''}"
         ).strip(),
     )
@@ -171,10 +234,8 @@ def apply_outcome_feedback(
     db.flush()
 
     updates: list[CausalEvidenceUpdate] = []
-    for pair, old_edge in edge_rows.items():
-        new_evidence = old_edge.evidence_type
-        if pair in upgradable:
-            new_evidence = OBSERVATIONAL
+    for (src, tgt), old_edge in edge_rows.items():
+        upgrade = per_edge.get((src, tgt))
         db.add(
             CausalEdge(
                 causal_graph_id=new_graph.id,
@@ -183,25 +244,32 @@ def apply_outcome_feedback(
                 relationship=old_edge.relationship,
                 strength=old_edge.strength,
                 confidence=old_edge.confidence,
-                evidence_type=new_evidence,
+                evidence_type=OBSERVATIONAL if upgrade else old_edge.evidence_type,
                 time_lag=old_edge.time_lag,
             )
         )
-        if pair in upgradable:
+        if upgrade:
+            rationale = (
+                f"{upgrade['consistent']}/{upgrade['sample_size']} recorded interventions moved "
+                f"'{src}' and '{tgt}' consistently with the hypothesised '{upgrade['relationship']}' "
+                f"relationship (per-edge; threshold {CONSISTENCY_THRESHOLD:.2f}, minimum "
+                f"{MIN_OUTCOMES_FOR_OBSERVATIONAL}). Observational support only — not identified "
+                "causation, and not the Granger 'data_supported' bar."
+            )
             upd = CausalEvidenceUpdate(
                 business_id=business_id,
                 causal_graph_id=new_graph.id,
                 graph_version=new_graph.version,
-                source_node=pair[0],
-                target_node=pair[1],
+                source_node=src,
+                target_node=tgt,
                 previous_evidence=ASSUMED,
                 new_evidence=OBSERVATIONAL,
                 method=CAUSAL_FEEDBACK_METHOD,
                 rationale=rationale,
-                supporting_decision_ids_json=decision_ids,
-                supporting_outcome_ids_json=outcome_ids,
-                sample_size=n,
-                consistent_direction_count=consistent,
+                supporting_decision_ids_json=upgrade["decision_ids"],
+                supporting_outcome_ids_json=upgrade["outcome_ids"],
+                sample_size=upgrade["sample_size"],
+                consistent_direction_count=upgrade["consistent"],
             )
             db.add(upd)
             updates.append(upd)

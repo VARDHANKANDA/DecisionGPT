@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -18,6 +20,16 @@ def run_experiment(payload: RunExperimentRequest, db: Session = Depends(get_db))
 @router.get("/experiments", response_model=list[ExperimentRunOut])
 def list_experiments(experiment_type: str | None = None, db: Session = Depends(get_db)):
     return experiment_service.list_experiments(db, experiment_type)
+
+
+@router.get("/experiments/manifest")
+def experiment_manifest(db: Session = Depends(get_db)):
+    """Reproducibility manifest for every recorded experiment — id, seed,
+    dataset version, model versions, config, timings, headline metrics.
+    Suitable for a paper's methodology appendix."""
+    manifest = experiment_service.build_manifest(db)
+    manifest["generated_at"] = datetime.now(timezone.utc).isoformat()
+    return manifest
 
 
 @router.get("/experiments/{experiment_id}", response_model=ExperimentRunOut)
