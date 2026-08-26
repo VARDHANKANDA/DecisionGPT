@@ -50,7 +50,7 @@ class ParsedGoal:
 
 class LLMService:
     """Thin façade. Swap `_parse_goal_via_llm` for a real provider call
-    (OpenAI/Anthropic/etc, chosen via LLM_PROVIDER) without touching any
+    (OpenAI/etc, chosen via LLM_PROVIDER) without touching any
     caller — every caller only ever sees this class."""
 
     def __init__(self):
