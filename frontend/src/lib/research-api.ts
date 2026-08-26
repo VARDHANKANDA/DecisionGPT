@@ -287,4 +287,226 @@ export const researchApi = {
 
   exportTable: (table: ExportTable, format: ExportFormat, experimentId?: string) =>
     researchPostText("/research/export", { table, format, experiment_id: experimentId ?? null }),
+
+  // --- dedicated evaluation pages (real recorded data) ----------------
+  modelPerformance: (params?: {
+    task?: string;
+    dataset_version?: string;
+    model_name?: string;
+    training_run_id?: string;
+  }) => {
+    const q = new URLSearchParams();
+    Object.entries(params ?? {}).forEach(([k, v]) => v && q.set(k, String(v)));
+    const qs = q.toString();
+    return researchGet<ModelPerformance>(`/research/model-performance${qs ? `?${qs}` : ""}`);
+  },
+  digitalTwinEvaluation: () => researchGet<DigitalTwinEvaluation>("/research/digital-twin-evaluation"),
+  digitalTwinEvaluationBackfill: () =>
+    researchPost<{ evaluations_created: number }>("/research/digital-twin-evaluation/backfill"),
+  causalEvaluation: () => researchGet<CausalEvaluation>("/research/causal-evaluation"),
+  agentEvaluation: () => researchGet<AgentEvaluation>("/research/agent-evaluation"),
+  paperResults: () => researchGet<PaperResults>("/research/paper-results"),
 };
+
+// ---- Evaluation response types ----
+
+interface MetricAgg {
+  mae: number | null;
+  rmse: number | null;
+  sample_size: number;
+  mape?: number | null;
+}
+export interface BestMetric {
+  metric: string;
+  value: number;
+  model: string;
+  model_id: string;
+}
+export interface PerfModelRow {
+  id: string;
+  model_name: string;
+  model_type: string;
+  version: string;
+  status: string;
+  source: string;
+  task: string | null;
+  dataset_version: string;
+  training_run_id: string | null;
+  created_at: string | null;
+  metrics: Record<string, number | null>;
+}
+export interface ModelPerformance {
+  summary: {
+    registered_models: number;
+    active_models: number;
+    experimental_models: number;
+    completed_training_runs: number;
+    failed_training_runs: number;
+    best_forecasting: BestMetric | null;
+    best_churn: BestMetric | null;
+  };
+  forecasting: { metrics: string[]; models: PerfModelRow[]; chart: Record<string, number | string | null>[] };
+  classification: { metrics: string[]; models: PerfModelRow[]; chart: Record<string, number | string | null>[] };
+  training_history: {
+    id: string;
+    task: string;
+    model_type: string;
+    status: string;
+    dataset_version_label: string | null;
+    model_name: string | null;
+    model_version: string | null;
+    metrics: Record<string, unknown>;
+    error_message: string | null;
+    created_at: string | null;
+  }[];
+  filters: { tasks: string[]; dataset_versions: string[]; model_names: string[] };
+  empty_state: string | null;
+}
+
+export interface DtEvalRow {
+  evaluation_id: string;
+  decision_id: string;
+  outcome_id: string;
+  simulation_id: string | null;
+  strategy_name: string | null;
+  predicted_baseline: number | null;
+  predicted: number | null;
+  actual: number | null;
+  predicted_change: number | null;
+  actual_change: number | null;
+  error: number | null;
+  abs_pct_error: number | null;
+  metrics: Record<string, { predicted_change: number; actual_change: number; error: number; abs_pct_error: number | null }>;
+  causal_graph_version: string | null;
+  model_versions: Record<string, string>;
+  recorded_at: string | null;
+}
+export interface DigitalTwinEvaluation {
+  summary: {
+    evaluated_predictions: number;
+    outcomes_recorded: number;
+    decisions_awaiting_outcome: number;
+    revenue_mae: number | null;
+    revenue_mape: number | null;
+  };
+  metrics: { revenue: MetricAgg; profit: MetricAgg };
+  rows: DtEvalRow[];
+  charts: {
+    predicted_vs_actual: { decision_id: string; predicted: number | null; actual: number | null }[];
+    error_over_time: { recorded_at: string | null; error: number | null }[];
+    error_distribution: { range: string; count: number }[];
+  };
+  method: string;
+  empty_state: string | null;
+}
+
+export interface CausalGraphSummary {
+  graph_id: string;
+  business_id: string;
+  version: string;
+  method: string;
+  created_at: string | null;
+  node_count: number;
+  edge_count: number;
+  evidence_counts: Record<"assumed" | "observational" | "data_supported" | "causally_validated", number>;
+  edges: {
+    source: string;
+    target: string;
+    relationship: string;
+    evidence_type: string;
+    strength: number | null;
+    confidence: number | null;
+    time_lag: number | null;
+  }[];
+}
+export interface CausalEvaluation {
+  overview: {
+    total_graph_versions: number;
+    businesses_with_a_graph: number;
+    evidence_counts_latest_per_business: Record<string, number>;
+  };
+  graphs: CausalGraphSummary[];
+  method_validation: {
+    experiment_id: string;
+    seed: number | null;
+    label: string;
+    precision: number | null;
+    recall: number | null;
+    f1: number | null;
+    structural_hamming_distance: number | null;
+    recovered_edges: string[][];
+    missing_edges: string[][];
+    extra_edges: string[][];
+    notes: string[];
+  } | null;
+  ground_truth_comparison: { available: boolean; message: string };
+  evidence_feedback_log: {
+    id: string;
+    graph_version: string;
+    edge: string;
+    previous_evidence: string;
+    new_evidence: string;
+    method: string;
+    rationale: string | null;
+    sample_size: number;
+    consistent_direction_count: number;
+    supporting_decision_ids: string[];
+    created_at: string | null;
+  }[];
+  empty_state: string | null;
+}
+
+export interface AgentEvaluation {
+  architecture_comparison: {
+    experiment_id: string | null;
+    seed: number | null;
+    created_at: string | null;
+    goal_target_percent: number | null;
+    rows: {
+      architecture: string;
+      label: string;
+      selected_strategy: string | null;
+      goal_achievement: number | null;
+      risk_adjusted_score: number | null;
+      expected_benefit: number | null;
+      latency_seconds: number | null;
+      note: string;
+    }[];
+  };
+  single_vs_multi_agent: { experiment_id: string; single_agent: unknown; multi_agent: unknown } | null;
+  ablation: { experiment_id: string | null; configs: unknown[]; comparisons: unknown[] };
+  debate_analysis: {
+    decisions_with_debate: number;
+    message?: string;
+    avg_agents_involved?: number | null;
+    total_conflicts?: number;
+    avg_conflicts_per_decision?: number;
+    decisions_with_full_agreement?: number;
+    post_review_score_changes?: number;
+    avg_confidence?: number | null;
+    latest_decision?: {
+      decision_id: string;
+      rounds: number;
+      round1_scores: Record<string, number> | null;
+      round2_scores: Record<string, number> | null;
+      conflicts: { raised_by: string; concern: string }[] | null;
+      resolution_rationale: string | null;
+      confidence: number | null;
+    };
+  };
+  empty_state: string | null;
+}
+
+export interface PaperResults {
+  summary: { tables_total: number; tables_ready: number; tables_missing: number };
+  tables: {
+    key: string;
+    title: string;
+    available: boolean;
+    missing_reason: string | null;
+    export_tables: string[];
+    sections: { name: string; headers: string[]; rows: (string | number | null)[][]; row_count: number }[];
+    source_refs: Record<string, unknown>;
+  }[];
+  export_formats: string[];
+}

@@ -15,6 +15,7 @@ from app.api.v1.endpoints import (
     memory,
 )
 from app.api.v1.endpoints.research import datasets as research_datasets
+from app.api.v1.endpoints.research import evaluations as research_evaluations
 from app.api.v1.endpoints.research import experiments as research_experiments
 from app.api.v1.endpoints.research import export as research_export
 from app.api.v1.endpoints.research import models as research_models
@@ -46,4 +47,5 @@ api_router.include_router(research_models.router, prefix="/research", tags=["res
 api_router.include_router(research_datasets.router, prefix="/research", tags=["research"])
 api_router.include_router(research_training.router, prefix="/research", tags=["research"])
 api_router.include_router(research_experiments.router, prefix="/research", tags=["research"])
+api_router.include_router(research_evaluations.router, prefix="/research", tags=["research"])
 api_router.include_router(research_export.router, prefix="/research", tags=["research"])

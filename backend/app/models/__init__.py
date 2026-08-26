@@ -7,6 +7,7 @@ from app.models.causal import CausalEdge, CausalGraph
 from app.models.customer import Customer
 from app.models.decision import Decision, DecisionOutcome
 from app.models.digital_twin import DigitalTwinSimulation, DigitalTwinState
+from app.models.evaluation import CausalEvidenceUpdate, PredictionEvaluation
 from app.models.experiment import ExperimentRun
 from app.models.forecast import Forecast
 from app.models.goal import Goal
@@ -26,6 +27,8 @@ __all__ = [
     "ResearchDatasetVersion",
     "TrainingRun",
     "User",
+    "CausalEvidenceUpdate",
+    "PredictionEvaluation",
     "AgentEvaluation",
     "AgentRun",
     "MarketBenchmark",

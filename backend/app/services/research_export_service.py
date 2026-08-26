@@ -11,10 +11,32 @@ import json
 from sqlalchemy.orm import Session
 
 from app.core.errors import ValidationFailedError
+from app.models.evaluation import PredictionEvaluation
 from app.models.experiment import ExperimentRun
 from app.models.ml_model import MLModel
 
 SUPPORTED_FORMATS = {"csv", "json", "markdown", "latex"}
+
+# Which experiment_type backs each experiment-derived table.
+TABLE_EXPERIMENT_TYPE = {
+    "decision_architecture": "decision_architecture",
+    "ablation": "ablation",
+    "causal_evaluation": "causal",
+    "digital_twin_evaluation": "digital_twin",
+}
+
+
+def latest_experiment_id(db: Session, table: str) -> str | None:
+    exp_type = TABLE_EXPERIMENT_TYPE.get(table)
+    if exp_type is None:
+        return None
+    run = (
+        db.query(ExperimentRun)
+        .filter(ExperimentRun.experiment_type == exp_type, ExperimentRun.status == "completed")
+        .order_by(ExperimentRun.created_at.desc())
+        .first()
+    )
+    return run.id if run else None
 
 
 def _rows_to_csv(headers: list[str], rows: list[list]) -> str:
@@ -129,13 +151,32 @@ def causal_evaluation_table(db: Session, experiment_id: str | None) -> tuple[lis
 
 
 def digital_twin_evaluation_table(db: Session, experiment_id: str | None) -> tuple[list[str], list[list]]:
-    run = db.get(ExperimentRun, experiment_id) if experiment_id else None
-    if run is None or run.experiment_type != "digital_twin":
-        return [], []
     headers = ["Decision ID", "Strategy", "Predicted change", "Actual change", "Error", "% error"]
+    run = db.get(ExperimentRun, experiment_id) if experiment_id else None
+    if run is not None and run.experiment_type == "digital_twin" and run.metrics_json.get("rows"):
+        rows = [
+            [r["decision_id"], r["strategy_name"], r["predicted_change"], r["actual_change"], r["error"], r["percentage_error"]]
+            for r in run.metrics_json.get("rows", [])
+        ]
+        return headers, rows
+    # Fallback: read persisted PredictionEvaluation rows directly, so this
+    # table works from real recorded outcomes even without a run.
+    evals = (
+        db.query(PredictionEvaluation)
+        .filter(PredictionEvaluation.revenue_error.isnot(None))
+        .order_by(PredictionEvaluation.recorded_at)
+        .all()
+    )
     rows = [
-        [r["decision_id"], r["strategy_name"], r["predicted_change"], r["actual_change"], r["error"], r["percentage_error"]]
-        for r in run.metrics_json.get("rows", [])
+        [
+            e.decision_id,
+            e.strategy_name or "unknown",
+            float(e.predicted_revenue_change) if e.predicted_revenue_change is not None else None,
+            float(e.actual_revenue_change) if e.actual_revenue_change is not None else None,
+            float(e.revenue_error) if e.revenue_error is not None else None,
+            float(e.revenue_abs_pct_error) if e.revenue_abs_pct_error is not None else None,
+        ]
+        for e in evals
     ]
     return headers, rows
 
@@ -157,6 +198,11 @@ def export_table(db: Session, table: str, fmt: str, experiment_id: str | None = 
         raise ValidationFailedError(
             f"Unknown export format '{fmt}'.", details={"supported_formats": sorted(SUPPORTED_FORMATS)}
         )
+
+    # Auto-resolve the most recent completed experiment for experiment-backed
+    # tables (except digital_twin_evaluation, which also reads persisted evals).
+    if experiment_id is None and table in TABLE_EXPERIMENT_TYPE and table != "digital_twin_evaluation":
+        experiment_id = latest_experiment_id(db, table)
 
     headers, rows = TABLE_BUILDERS[table](db, experiment_id)
 

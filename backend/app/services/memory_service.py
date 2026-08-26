@@ -133,7 +133,28 @@ def record_outcome(
 
     db.commit()
     db.refresh(outcome)
+
+    # --- Research feedback loop (docs Phase 3 / Phase 5) --------------
+    # Runs in its own transaction AFTER the outcome is safely persisted, so
+    # a feedback failure can never lose the SME's recorded outcome. It also
+    # never retrains a model and never claims causation from one datapoint.
+    _run_feedback_loop(db, business_id, decision_id, outcome.id)
     return outcome
+
+
+def _run_feedback_loop(db: Session, business_id: str, decision_id: str, outcome_id: str) -> None:
+    from app.services import causal_feedback_service, digital_twin_evaluation_service
+
+    try:
+        decision = db.get(Decision, decision_id)
+        outcome = db.get(DecisionOutcome, outcome_id)
+        if decision is None or outcome is None:
+            return
+        digital_twin_evaluation_service.evaluate_decision_outcome(db, decision, outcome)
+        causal_feedback_service.apply_outcome_feedback(db, business_id, decision, outcome)
+        db.commit()
+    except Exception:  # noqa: BLE001 - feedback is best-effort, never fatal
+        db.rollback()
 
 
 def get_outcome(db: Session, business_id: str, decision_id: str) -> DecisionOutcome:

@@ -11,7 +11,11 @@ const RESEARCH_NAV = [
   { href: "/research/training", label: "Training Center" },
   { href: "/research/models", label: "Model Registry" },
   { href: "/research/experiments", label: "Experiments" },
-  { href: "/research/ablation", label: "Ablation" },
+  { href: "/research/model-performance", label: "Model Performance" },
+  { href: "/research/digital-twin-evaluation", label: "Digital Twin Evaluation" },
+  { href: "/research/causal-evaluation", label: "Causal Graph Evaluation" },
+  { href: "/research/agent-evaluation", label: "Multi-Agent Evaluation" },
+  { href: "/research/ablation", label: "Ablation Studies" },
   { href: "/research/export", label: "Paper Results" },
 ];
 
