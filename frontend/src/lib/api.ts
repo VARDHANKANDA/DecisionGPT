@@ -1,5 +1,13 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
+export const TOKEN_STORAGE_KEY = "decisiongpt.token";
+
+function authHeader(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  const token = window.localStorage.getItem(TOKEN_STORAGE_KEY);
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 export class ApiError extends Error {
   code: string;
   details: Record<string, unknown>;
@@ -34,14 +42,20 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 async function apiGet<T>(path: string): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, { cache: "no-store" });
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    cache: "no-store",
+    headers: { ...authHeader() },
+  });
   return handleResponse<T>(response);
 }
 
 async function apiPost<T>(path: string, body?: unknown): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method: "POST",
-    headers: body !== undefined ? { "Content-Type": "application/json" } : undefined,
+    headers: {
+      ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+      ...authHeader(),
+    },
     body: body !== undefined ? JSON.stringify(body) : undefined,
     cache: "no-store",
   });
@@ -55,8 +69,24 @@ async function apiUpload<T>(path: string, file: File): Promise<T> {
     method: "POST",
     body: formData,
     cache: "no-store",
+    headers: { ...authHeader() },
   });
   return handleResponse<T>(response);
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  full_name: string | null;
+  role: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface AuthToken {
+  access_token: string;
+  token_type: string;
+  user: AuthUser;
 }
 
 // ---- Types (mirrors backend/app/schemas/*.py) ----
@@ -282,6 +312,70 @@ export interface Decision {
   alternatives: AlternativeStrategy[];
   skipped_strategies: string[];
   memory_insights: string[];
+  causal_context: CausalContextInfo;
+  debate: DebateInfo;
+  strategy_generation: StrategyGenerationInfo;
+  trace: Record<string, unknown>;
+}
+
+export interface CausalContextInfo {
+  built: boolean;
+  graph_version: string | null;
+  method: string | null;
+  strongest_pathway_evidence: string;
+  summary: string;
+  caveats: string[];
+  pathways: { nodes: string[]; weakest_evidence: string; links: CausalEdge[] }[];
+}
+
+export interface DebateInfo {
+  rounds: number;
+  multi_agent: boolean;
+  round1: Record<string, { score: number; key_points: string[]; risks: string[] }>;
+  round2_reviews: {
+    agent: string;
+    concurs: boolean;
+    challenges: string[];
+    adjusted_score: number | null;
+    rationale: string;
+  }[];
+  resolution: {
+    final_score: number;
+    confidence: number;
+    resolution_rationale: string;
+    conflicts: { raised_by: string; concern: string }[];
+    confidence_basis: Record<string, number | string>;
+  };
+}
+
+export interface StrategyGenerationInfo {
+  objective: string;
+  candidate_count: number;
+  excluded: string[];
+  constraints_applied: string[];
+  notes: string[];
+  goal_projection: {
+    primary_kpi: string;
+    projected_on: string;
+    baseline: number;
+    projected: number;
+    delta: number;
+    relative_change: number;
+    improves_goal: boolean;
+  };
+}
+
+export interface DecisionTrace {
+  decision_id: string;
+  business_state_version: string | null;
+  candidate_strategy_ids: string[];
+  simulation_ids: string[];
+  agent_run_ids: string[];
+  agent_runs: { id: string; agent_name: string; input: Record<string, unknown>; output: Record<string, unknown> }[];
+  model_versions: Record<string, string>;
+  causal_graph_version: string | null;
+  reproducible: { ok: boolean; reasons: string[] };
+  prompt_version: string | null;
 }
 
 export interface DecisionSummary {
@@ -407,6 +501,8 @@ export const api = {
     apiGet<DecisionSummary>(`/businesses/${businessId}/decisions/${decisionId}`),
   explainDecision: (businessId: string, decisionId: string) =>
     apiGet<DecisionExplanation>(`/businesses/${businessId}/decisions/${decisionId}/explanation`),
+  decisionTrace: (businessId: string, decisionId: string) =>
+    apiGet<DecisionTrace>(`/businesses/${businessId}/decisions/${decisionId}/trace`),
   recordOutcome: (businessId: string, decisionId: string, actualOutcome: Record<string, number>) =>
     apiPost<DecisionOutcome>(`/businesses/${businessId}/decisions/${decisionId}/outcome`, {
       actual_outcome: actualOutcome,
@@ -421,4 +517,9 @@ export const api = {
 
   chat: (businessId: string, message: string) =>
     apiPost<ChatResponse>(`/businesses/${businessId}/chat`, { message }),
+
+  register: (input: { email: string; password: string; full_name?: string; role?: string }) =>
+    apiPost<AuthToken>("/auth/register", input),
+  login: (input: { email: string; password: string }) => apiPost<AuthToken>("/auth/login", input),
+  me: () => apiGet<AuthUser>("/auth/me"),
 };

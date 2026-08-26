@@ -63,6 +63,16 @@ async function researchPost<T>(path: string, body?: unknown): Promise<T> {
   return handleResponse<T>(response);
 }
 
+async function researchUpload<T>(path: string, form: FormData): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: "POST",
+    headers: { ...authHeaders() },
+    body: form,
+    cache: "no-store",
+  });
+  return handleResponse<T>(response);
+}
+
 async function researchPostText(path: string, body?: unknown): Promise<string> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method: "POST",
@@ -78,7 +88,7 @@ async function researchPostText(path: string, body?: unknown): Promise<string> {
 
 // ---- Types ----
 
-export interface DatasetEntry {
+export interface PlatformDatasetEntry {
   domain: string;
   dataset_id: string;
   name: string;
@@ -93,6 +103,46 @@ export interface DatasetEntry {
   evidence_level: string;
 }
 
+export interface DatasetVersion {
+  id: string;
+  dataset_id: string;
+  version: number;
+  file_type: string;
+  row_count: number;
+  column_count: number;
+  columns: { name: string; dtype: string }[];
+  missing_summary: Record<string, number>;
+  duplicates_summary: Record<string, number>;
+  quality_report: {
+    missing_value_counts?: Record<string, number>;
+    duplicate_row_count?: number;
+    issues?: string[];
+  };
+  validation_ok: boolean;
+  created_at: string;
+  created_by: string | null;
+}
+
+export interface UploadedDataset {
+  id: string;
+  dataset_id: string;
+  name: string;
+  description: string | null;
+  domain: string;
+  source: string | null;
+  license: string | null;
+  created_at: string;
+  created_by: string | null;
+  version_count: number;
+  latest_version: number | null;
+  versions: DatasetVersion[];
+}
+
+export interface DatasetsResponse {
+  platform: PlatformDatasetEntry[];
+  uploaded: UploadedDataset[];
+}
+
 export interface ModelEntry {
   id: string;
   model_name: string;
@@ -104,6 +154,32 @@ export interface ModelEntry {
   metrics_json: Record<string, number | Record<string, number>>;
   model_path: string;
   status: string;
+  created_at: string;
+  task: string | null;
+  source: string | null;
+  promoted_at: string | null;
+}
+
+export interface TrainingRun {
+  id: string;
+  task: string;
+  model_type: string;
+  dataset_version_id: string | null;
+  platform_domain: string | null;
+  dataset_version_label: string | null;
+  features_json: string[];
+  target: string | null;
+  parameters_json: Record<string, unknown>;
+  random_seed: number;
+  status: "pending" | "running" | "completed" | "failed";
+  started_at: string | null;
+  completed_at: string | null;
+  metrics_json: Record<string, number>;
+  model_id: string | null;
+  model_name: string | null;
+  model_version: string | null;
+  artifact_path: string | null;
+  error_message: string | null;
   created_at: string;
 }
 
@@ -126,7 +202,26 @@ export interface ExperimentRun {
   metrics_json: Record<string, unknown>;
   random_seed: number | null;
   status: string;
+  started_at: string | null;
+  completed_at: string | null;
+  error_message: string | null;
   created_at: string;
+}
+
+export interface ResearchOverview {
+  uploaded_dataset_count: number;
+  uploaded_dataset_version_count: number;
+  platform_dataset_count: number;
+  model_count: number;
+  active_model_count: number;
+  experimental_model_count: number;
+  training_run_count: number;
+  training_runs_failed: number;
+  experiment_count: number;
+  experiments_completed: number;
+  experiments_failed: number;
+  latest_experiment: { id: string; experiment_type: string; status: string; created_at: string } | null;
+  best_metrics: Record<string, { value: number; model: string }>;
 }
 
 export type ExportFormat = "csv" | "json" | "markdown" | "latex";
@@ -139,10 +234,50 @@ export type ExportTable =
   | "digital_twin_evaluation";
 
 export const researchApi = {
-  listDatasets: () => researchGet<DatasetEntry[]>("/research/datasets"),
-  listModels: (modelType?: string) =>
-    researchGet<ModelEntry[]>(`/research/models${modelType ? `?model_type=${modelType}` : ""}`),
+  overview: () => researchGet<ResearchOverview>("/research/overview"),
+
+  listDatasets: () => researchGet<DatasetsResponse>("/research/datasets"),
+  uploadDataset: (input: {
+    file: File;
+    name: string;
+    domain: string;
+    description?: string;
+    source?: string;
+    license?: string;
+  }) => {
+    const form = new FormData();
+    form.append("file", input.file);
+    form.append("name", input.name);
+    form.append("domain", input.domain);
+    if (input.description) form.append("description", input.description);
+    if (input.source) form.append("source", input.source);
+    if (input.license) form.append("license", input.license);
+    return researchUpload<DatasetVersion>("/research/datasets/upload", form);
+  },
+
+  listModels: (opts?: { modelType?: string; status?: string }) => {
+    const q = new URLSearchParams();
+    if (opts?.modelType) q.set("model_type", opts.modelType);
+    if (opts?.status) q.set("status", opts.status);
+    const qs = q.toString();
+    return researchGet<ModelEntry[]>(`/research/models${qs ? `?${qs}` : ""}`);
+  },
   syncModels: () => researchPost<ModelEntry[]>("/research/models/sync"),
+  promoteModel: (id: string) => researchPost<ModelEntry>(`/research/models/${id}/promote`),
+  archiveModel: (id: string) => researchPost<ModelEntry>(`/research/models/${id}/archive`),
+
+  trainingTasks: () =>
+    researchGet<Record<string, { model_types: string[]; metrics: string[] }>>("/research/training/tasks"),
+  runTraining: (input: {
+    task: string;
+    model_type: string;
+    dataset_version_id?: string;
+    platform_domain?: string;
+    parameters?: Record<string, unknown>;
+    seed?: number;
+  }) => researchPost<TrainingRun>("/research/training/run", input),
+  listTrainingRuns: (task?: string) =>
+    researchGet<TrainingRun[]>(`/research/training/runs${task ? `?task=${task}` : ""}`),
 
   runExperiment: (experimentType: ExperimentType, configuration: Record<string, unknown> = {}) =>
     researchPost<ExperimentRun>("/research/experiments/run", { experiment_type: experimentType, configuration }),

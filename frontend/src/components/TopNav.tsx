@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 import { useBusiness } from "@/lib/business-context";
 
 const NAV_LINKS = [
@@ -17,6 +18,7 @@ const NAV_LINKS = [
 
 export function TopNav() {
   const { business, clearBusiness } = useBusiness();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
 
   // The Research Console (docs/PRD.md §8) is a separate, private surface
@@ -30,19 +32,34 @@ export function TopNav() {
           DecisionGPT
         </Link>
 
-        {business ? (
-          <div className="flex shrink-0 items-center gap-3 order-2 sm:order-3">
-            <span className="max-w-[10rem] truncate text-sm text-muted sm:max-w-none">{business.name}</span>
+        <div className="flex shrink-0 items-center gap-3 order-2 sm:order-3">
+          {business ? (
+            <>
+              <span className="max-w-[10rem] truncate text-sm text-muted sm:max-w-none">{business.name}</span>
+              <button
+                onClick={clearBusiness}
+                className="whitespace-nowrap text-sm text-muted underline decoration-dotted underline-offset-4 hover:text-foreground"
+              >
+                Switch business
+              </button>
+            </>
+          ) : null}
+          {user ? (
             <button
-              onClick={clearBusiness}
+              onClick={logout}
               className="whitespace-nowrap text-sm text-muted underline decoration-dotted underline-offset-4 hover:text-foreground"
             >
-              Switch business
+              Sign out ({user.email})
             </button>
-          </div>
-        ) : (
-          <div className="w-24" />
-        )}
+          ) : (
+            <Link
+              href="/login"
+              className="whitespace-nowrap text-sm text-muted underline decoration-dotted underline-offset-4 hover:text-foreground"
+            >
+              Sign in
+            </Link>
+          )}
+        </div>
 
         {business ? (
           <nav className="order-3 flex w-full items-center gap-1 overflow-x-auto sm:order-2 sm:w-auto">

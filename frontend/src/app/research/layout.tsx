@@ -7,10 +7,12 @@ import { clearResearchToken, getResearchToken, researchApi, setResearchToken } f
 
 const RESEARCH_NAV = [
   { href: "/research", label: "Overview" },
-  { href: "/research/datasets", label: "Datasets" },
-  { href: "/research/models", label: "Models" },
+  { href: "/research/datasets", label: "Dataset Registry" },
+  { href: "/research/training", label: "Training Center" },
+  { href: "/research/models", label: "Model Registry" },
   { href: "/research/experiments", label: "Experiments" },
-  { href: "/research/export", label: "Export" },
+  { href: "/research/ablation", label: "Ablation" },
+  { href: "/research/export", label: "Paper Results" },
 ];
 
 export default function ResearchLayout({ children }: { children: React.ReactNode }) {
@@ -34,7 +36,7 @@ export default function ResearchLayout({ children }: { children: React.ReactNode
     setError(null);
     setResearchToken(input.trim());
     try {
-      await researchApi.listDatasets();
+      await researchApi.overview();
       setHasToken(true);
     } catch {
       clearResearchToken();

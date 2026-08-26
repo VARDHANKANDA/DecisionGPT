@@ -243,6 +243,10 @@ function DecisionResult({
         ) : null}
       </Card>
 
+      <StrategyGenerationCard info={decision.strategy_generation} />
+      <CausalEvidenceCard ctx={decision.causal_context} />
+      <DebateCard debate={decision.debate} />
+
       {outcome.assumptions?.length > 0 ? (
         <Card>
           <h3 className="text-sm font-medium text-foreground">Assumptions</h3>
@@ -257,6 +261,122 @@ function DecisionResult({
       <ExplanationSection businessId={business_id} decisionId={decision.id} />
       <OutcomeSection businessId={business_id} decisionId={decision.id} />
     </div>
+  );
+}
+
+function StrategyGenerationCard({ info }: { info: Decision["strategy_generation"] }) {
+  if (!info) return null;
+  const gp = info.goal_projection;
+  return (
+    <Card>
+      <h3 className="text-sm font-medium text-foreground">How these strategies were chosen</h3>
+      <p className="mt-2 text-sm text-muted">
+        Goal-aware generation for <strong>{info.objective.replace(/_/g, " ")}</strong> produced{" "}
+        {info.candidate_count} candidate{info.candidate_count === 1 ? "" : "s"}.
+        {info.constraints_applied.length > 0
+          ? ` Constraints applied: ${info.constraints_applied.join(", ")}.`
+          : ""}
+      </p>
+      {gp && !gp.improves_goal ? (
+        <p className="mt-2 rounded-xl bg-warning-soft px-3 py-2 text-sm text-warning">
+          No strategy in the supported action space is projected to improve {info.objective.replace(/_/g, " ")}{" "}
+          for this business right now — the option shown is the least-harmful of those evaluated.
+        </p>
+      ) : null}
+      {info.excluded.length > 0 || info.notes.length > 0 ? (
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-muted">
+          {info.excluded.map((e, i) => (
+            <li key={`e${i}`}>{e}</li>
+          ))}
+          {info.notes.map((n, i) => (
+            <li key={`n${i}`}>{n}</li>
+          ))}
+        </ul>
+      ) : null}
+    </Card>
+  );
+}
+
+const EVIDENCE_STYLE: Record<string, string> = {
+  assumed: "text-muted",
+  observational: "text-accent",
+  data_supported: "text-success",
+  causally_validated: "text-success",
+};
+
+function CausalEvidenceCard({ ctx }: { ctx: Decision["causal_context"] }) {
+  if (!ctx || !ctx.built) return null;
+  return (
+    <Card>
+      <h3 className="text-sm font-medium text-foreground">Causal evidence</h3>
+      <p className="mt-2 text-sm text-muted">{ctx.summary}</p>
+      <p className="mt-1 text-xs text-muted">
+        Graph {ctx.graph_version} · method {ctx.method} · strongest end-to-end evidence:{" "}
+        <span className={EVIDENCE_STYLE[ctx.strongest_pathway_evidence] ?? "text-muted"}>
+          {ctx.strongest_pathway_evidence.replace(/_/g, " ")}
+        </span>
+      </p>
+      {ctx.pathways.slice(0, 4).map((p, i) => (
+        <div key={i} className="mt-2 text-xs">
+          <span className="font-medium text-foreground">{p.nodes.join(" → ")}</span>{" "}
+          <span className={EVIDENCE_STYLE[p.weakest_evidence] ?? "text-muted"}>
+            ({p.weakest_evidence.replace(/_/g, " ")})
+          </span>
+        </div>
+      ))}
+      {ctx.caveats.length > 0 ? (
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-muted">
+          {ctx.caveats.map((c, i) => (
+            <li key={i}>{c}</li>
+          ))}
+        </ul>
+      ) : null}
+    </Card>
+  );
+}
+
+function DebateCard({ debate }: { debate: Decision["debate"] }) {
+  if (!debate) return null;
+  const res = debate.resolution;
+  return (
+    <Card>
+      <h3 className="text-sm font-medium text-foreground">
+        Agent {debate.multi_agent ? "debate" : "review"} ({debate.rounds} round{debate.rounds === 1 ? "" : "s"})
+      </h3>
+
+      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {Object.entries(debate.round1).map(([agent, ev]) => (
+          <div key={agent} className="rounded-xl bg-muted-surface p-3 text-xs">
+            <p className="font-medium text-foreground">{agent.replace(/_/g, " ")}</p>
+            <p className="mt-1 text-muted">Round-1 score {ev.score.toFixed(3)}</p>
+          </div>
+        ))}
+      </div>
+
+      {res.conflicts.length > 0 ? (
+        <div className="mt-3">
+          <p className="text-xs font-medium text-muted">Conflicts raised in review</p>
+          <ul className="mt-1 list-disc space-y-1 pl-5 text-xs text-muted">
+            {res.conflicts.map((c, i) => (
+              <li key={i}>
+                <span className="font-medium">{c.raised_by.replace(/_/g, " ")}:</span> {c.concern}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p className="mt-3 text-xs text-muted">All agents concurred — no conflicts raised.</p>
+      )}
+
+      <p className="mt-3 text-xs text-muted">{res.resolution_rationale}</p>
+      <p className="mt-2 text-xs text-muted">
+        Confidence {(res.confidence * 100).toFixed(0)}% ={" "}
+        {Object.entries(res.confidence_basis)
+          .filter(([k]) => k !== "formula")
+          .map(([k, v]) => `${k.replace(/_/g, " ")} ${typeof v === "number" ? v.toFixed(2) : v}`)
+          .join(" × ")}
+      </p>
+    </Card>
   );
 }
 
