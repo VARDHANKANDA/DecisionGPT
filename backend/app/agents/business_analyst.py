@@ -7,13 +7,17 @@ vs baseline for this strategy. 0% growth -> neutral 0.5; +/-50% or more
 growth/decline saturates the score at 1.0/0.0. This is the one fixed
 formula this agent uses (docs/MULTI_AGENT_SPECIFICATION.md §7 "fix the
 scoring formula").
+
+Round 2 (`review`): the analyst reacts to the Financial Advisor's and Risk
+Manager's round-1 assessments — it can flag a strategic-fit problem when a
+strategy the finance/risk side likes actually erodes sales volume.
 """
-from app.agents.base import AgentEvaluationResult, clamp01
+from app.agents.base import AgentEvaluationResult, PeerReview, clamp01
 from app.analytics.digital_twin_service import SimulationOutput
 from app.models.goal import Goal
 
 
-def evaluate(output: SimulationOutput, goal: Goal) -> AgentEvaluationResult:
+def evaluate(output: SimulationOutput, goal: Goal, causal_context=None) -> AgentEvaluationResult:
     baseline = output.baseline_units_sold
     growth = (output.expected_units_sold - baseline) / baseline if baseline > 1e-9 else 0.0
     score = clamp01(0.5 + growth)
@@ -30,5 +34,47 @@ def evaluate(output: SimulationOutput, goal: Goal) -> AgentEvaluationResult:
         risks.append("This strategy is projected to reduce sales volume.")
 
     assumptions = [f"Based on the Digital Twin simulation using {output.model_name} v{output.model_version}."]
+    if causal_context is not None:
+        assumptions.append(
+            f"Causal pathway to demand/revenue: {causal_context.strongest_pathway_evidence.replace('_', ' ')} "
+            "(from the business's own causal graph)."
+        )
 
     return AgentEvaluationResult("business_analyst", round(score, 4), key_points, risks, assumptions)
+
+
+def review(own: AgentEvaluationResult, peers: dict[str, AgentEvaluationResult], output: SimulationOutput) -> PeerReview:
+    fa = peers.get("financial_advisor")
+    rm = peers.get("risk_manager")
+    challenges: list[str] = []
+    adjusted: float | None = None
+
+    growth = (
+        (output.expected_units_sold - output.baseline_units_sold) / output.baseline_units_sold
+        if output.baseline_units_sold > 1e-9
+        else 0.0
+    )
+
+    # Finance likes it (price-up margin play) but it costs real volume.
+    if fa is not None and fa.score >= 0.6 and growth <= -0.10:
+        challenges.append(
+            f"Financial Advisor scores this {fa.score:.2f}, but it is projected to cut unit sales "
+            f"{growth * 100:+.1f}% — a strategic-fit concern if market share matters."
+        )
+
+    # Everyone else is negative and volume is falling — concur on the downside.
+    if rm is not None and fa is not None and rm.score < 0.5 and fa.score < 0.5 and growth < 0:
+        challenges.append("Concur with Risk/Finance: this strategy weakens the core sales trajectory.")
+        adjusted = round(clamp01(own.score - 0.05), 4)
+
+    return PeerReview(
+        agent="business_analyst",
+        concurs=not challenges or adjusted is None,
+        challenges=challenges,
+        adjusted_score=adjusted,
+        rationale=(
+            "Reviewed peer assessments for demand/growth consistency."
+            if challenges
+            else "No strategic-fit conflict with peer assessments."
+        ),
+    )

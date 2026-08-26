@@ -58,6 +58,12 @@ def _score_outcome(expected: dict, actual: dict) -> tuple[bool | None, float | N
     predicted_change = expected_revenue - baseline_revenue
     actual_change = actual_revenue - baseline_revenue
     if abs(predicted_change) < 1e-9:
+        # The simulation predicted no change. If reality also showed no
+        # change, the prediction was exactly accurate (score 1.0) — but no
+        # goal gain was made. If reality *did* move, there's no predicted
+        # magnitude to score the realised change against.
+        if abs(actual_change) < 1e-9:
+            return False, 1.0
         return None, None
 
     score = round(actual_change / predicted_change, 4)

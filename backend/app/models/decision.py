@@ -23,6 +23,22 @@ class Decision(UUIDPKMixin, BusinessScopedMixin, TimestampMixin, Base):
     reasoning: Mapped[str | None] = mapped_column(Text)
     causal_graph_version: Mapped[str | None] = mapped_column(String(50))
 
+    # --- Full traceability record (docs/RESEARCH_TRACEABILITY.md) -------
+    # Every field below lets a stored decision be reproduced and inspected
+    # without re-deriving anything. All nullable so older rows still load.
+    business_state_version: Mapped[str | None] = mapped_column(String(64))
+    business_state_json: Mapped[dict | None] = mapped_column(JSON)
+    candidate_strategy_ids_json: Mapped[list | None] = mapped_column(JSON)
+    simulation_ids_json: Mapped[list | None] = mapped_column(JSON)
+    agent_run_ids_json: Mapped[list | None] = mapped_column(JSON)
+    model_versions_json: Mapped[dict | None] = mapped_column(JSON)
+    assumptions_json: Mapped[list | None] = mapped_column(JSON)
+    uncertainty_json: Mapped[dict | None] = mapped_column(JSON)
+    causal_context_json: Mapped[dict | None] = mapped_column(JSON)
+    debate_json: Mapped[dict | None] = mapped_column(JSON)
+    strategy_generation_json: Mapped[dict | None] = mapped_column(JSON)
+    prompt_version: Mapped[str | None] = mapped_column(String(50))
+
 
 class DecisionOutcome(UUIDPKMixin, Base):
     __tablename__ = "decision_outcomes"

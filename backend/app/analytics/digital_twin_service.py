@@ -224,7 +224,13 @@ def compute_scenario_inputs(
 
 
 def simulate_strategy(
-    db: Session, business_id: str, actions: list[Action], goal_id: str | None = None, horizon_days: int = 14
+    db: Session,
+    business_id: str,
+    actions: list[Action],
+    goal_id: str | None = None,
+    horizon_days: int = 14,
+    strategy_id: str | None = None,
+    causal_context=None,
 ) -> SimulationResult:
     from ml.features.forecasting_features import build_forecasting_features
 
@@ -294,11 +300,20 @@ def simulate_strategy(
         "learned response to those inputs, not a fixed multiplier.",
         "Aggregates across all products using a single business-wide average daily price; it does not "
         "model per-product price elasticity.",
-        "Reflects a correlational pattern learned from your historical data, not a causally validated "
-        "effect (the Dynamic Causal Graph, which would validate this, is not yet consulted here).",
         f"Assumes marketing/price effects observed in your history (last {len(units_series)} days) "
         "continue to hold at the requested scale.",
     ]
+    if causal_context is not None and getattr(causal_context, "built", False):
+        assumptions.append(
+            f"Causal context ({causal_context.method}, graph {causal_context.graph_version}): "
+            f"{causal_context.summary} Strongest end-to-end evidence: "
+            f"{causal_context.strongest_pathway_evidence.replace('_', ' ')}."
+        )
+    else:
+        assumptions.append(
+            "Reflects a correlational pattern learned from your historical data, not a causally "
+            "validated effect (no causal graph was available to attach)."
+        )
     assumptions = zero_baseline_notes + assumptions
 
     inventory_constrained = False
@@ -369,12 +384,13 @@ def simulate_strategy(
     simulation_row = DigitalTwinSimulation(
         business_id=business_id,
         goal_id=goal_id,
+        strategy_id=strategy_id,
         input_state_json=input_state,
         actions_json=[{"type": a.type, "value": a.value} for a in actions],
         output_state_json=output_to_dict(output),
         risk_score=risk_score,
         model_version=f"{model_row.model_name}:{model_row.version}",
-        graph_version=None,
+        graph_version=(getattr(causal_context, "graph_version", None) if causal_context is not None else None),
         assumptions_json=assumptions,
     )
     db.add(simulation_row)

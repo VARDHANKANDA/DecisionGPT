@@ -21,3 +21,43 @@ class AgentEvaluationResult:
     key_points: list[str] = field(default_factory=list)
     risks: list[str] = field(default_factory=list)
     assumptions: list[str] = field(default_factory=list)
+    meta: dict = field(default_factory=dict)  # internal, not persisted
+
+    def to_dict(self) -> dict:
+        return {
+            "agent": self.agent,
+            "score": self.score,
+            "key_points": list(self.key_points),
+            "risks": list(self.risks),
+            "assumptions": list(self.assumptions),
+        }
+
+
+@dataclass
+class PeerReview:
+    """Round-2 output: one agent's reaction to its peers' round-1
+    assessments of the same strategy (docs/MULTI_AGENT_SPECIFICATION.md §4
+    "structured peer information"). Deterministic — an agent only ever
+    reacts to numbers already produced in round 1, never invents new ones.
+    """
+
+    agent: str
+    concurs: bool = True
+    challenges: list[str] = field(default_factory=list)
+    adjusted_score: float | None = None  # None => no change from round 1
+    rationale: str = ""
+    round: int = 2
+
+    def to_dict(self) -> dict:
+        return {
+            "agent": self.agent,
+            "round": self.round,
+            "concurs": self.concurs,
+            "challenges": list(self.challenges),
+            "adjusted_score": self.adjusted_score,
+            "rationale": self.rationale,
+        }
+
+
+def _mean(values: list[float]) -> float:
+    return sum(values) / len(values) if values else 0.0

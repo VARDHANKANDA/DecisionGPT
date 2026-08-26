@@ -142,22 +142,23 @@ def test_candidate_strategies_are_genuinely_differentiated_not_arbitrary(client,
     ]
     by_name = {s["strategy_name"]: s for s in all_strategies}
 
-    # This business never uploaded marketing data, so baseline marketing
-    # spend is ₹0 — a percentage change of ₹0 is a no-op either direction
-    # (docs/DIGITAL_TWIN_SPECIFICATION.md behavior tested in Phase 10), so
-    # these two must simulate identically.
-    marketing_up = next(a for a in body["alternatives"] if a["strategy_name"] == "Marketing +10%")
-    marketing_down = next(a for a in body["alternatives"] if a["strategy_name"] == "Marketing -10%")
-    assert marketing_up["strategy_score"] == marketing_down["strategy_score"]
+    # Goal-aware generation: this business never uploaded marketing data, so
+    # marketing-based candidates must be excluded rather than simulated
+    # against a ₹0 baseline (strategy_generation_service).
+    assert not any("Marketing" in name for name in by_name), by_name
+    assert body["strategy_generation"]["objective"] == "increase_revenue"
+    assert any("marketing" in e.lower() for e in body["strategy_generation"]["excluded"])
 
-    # Price is genuinely non-zero and a real model input — a +5% and -5%
-    # price scenario must NOT collapse to the same prediction.
-    price_scores = {name: s["strategy_score"] for name, s in by_name.items() if name in {"Price +5%", "Price -5%"}}
-    assert len(set(price_scores.values())) == 2
+    # The surviving candidates are all price moves at different magnitudes —
+    # price is a real model input, so different magnitudes must NOT collapse
+    # onto the same simulated score.
+    price_scores = {name: s["strategy_score"] for name, s in by_name.items() if name.startswith("Price ")}
+    assert len(price_scores) >= 2
+    assert len(set(price_scores.values())) == len(price_scores)
 
-    # Not every candidate collapses onto the same score — genuine spread exists.
+    # Genuine spread exists across the candidate set.
     distinct_scores = {s["strategy_score"] for s in all_strategies if s["strategy_score"] is not None}
-    assert len(distinct_scores) >= 3
+    assert len(distinct_scores) >= 2
 
 
 def test_explain_decision_returns_shap_local_and_global_explanations(client, db_session):

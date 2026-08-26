@@ -1,14 +1,21 @@
-"""Multi-Agent Decision Engine orchestration — docs/MULTI_AGENT_SPECIFICATION.md §3:
+"""Multi-Agent Decision Engine orchestration — docs/MULTI_AGENT_SPECIFICATION.md §3-§4:
 
-    Goal -> Candidate Strategies -> Digital Twin
-         -> {Business Analyst, Financial Advisor, Risk Manager} -> Strategy Optimizer -> Decision
+    Goal
+     -> goal-aware candidate strategies (strategy_generation_service)
+     -> Digital Twin simulation per candidate (with causal context attached)
+     -> Round 1: Business Analyst / Financial Advisor / Risk Manager (independent)
+     -> Round 2: structured peer review / debate
+     -> Strategy Optimizer: resolve conflicts, pick best, derive documented confidence
+     -> Decision (persisted with a full reproducible trace)
 
 Every number an agent sees already came from a real, tested analytical
 component (app.analytics.digital_twin_service, itself the registered
-forecasting model re-run with each strategy's actions) — this module never
-invents a strategy's outcome, only generates the candidate action grid and
-persists the full chain for traceability (docs/RESEARCH_TRACEABILITY.md).
+forecasting model re-run with each strategy's actions). This module never
+invents a strategy's outcome or a confidence value — see
+docs/RESEARCH_TRACEABILITY.md and AGENTS.md.
 """
+import hashlib
+import json
 from dataclasses import dataclass, field
 from datetime import timedelta
 
@@ -16,8 +23,15 @@ import pandas as pd
 from sqlalchemy.orm import Session
 
 from app.agents import business_analyst, financial_advisor, risk_manager, strategy_optimizer
-from app.agents.base import AgentEvaluationResult
-from app.analytics import digital_twin_service, explainability_service, forecast_service
+from app.agents.base import AgentEvaluationResult, PeerReview
+from app.agents.strategy_optimizer import ResolvedDecision
+from app.analytics import (
+    causal_context_service,
+    digital_twin_service,
+    explainability_service,
+    forecast_service,
+)
+from app.analytics.causal_context_service import CausalContext
 from app.analytics.digital_twin_service import Action, SimulationOutput
 from app.analytics.explainability_service import Explanation
 from app.core.errors import AppError, InsufficientDataError, NotFoundError
@@ -27,14 +41,14 @@ from app.models.decision import Decision
 from app.models.goal import Goal
 from app.models.ml_model import MLModel
 from app.models.strategy import Strategy
-from app.services import memory_service
+from app.services import memory_service, strategy_generation_service
 from app.services.llm_service import LLMService
 
-# Docs/DIGITAL_TWIN_SPECIFICATION.md §7's suggested grid (marketing ±5/±10%,
-# price ±5%), kept small and fixed — "avoid combinatorial explosion".
-# inventory_change is intentionally excluded from the default grid: not
-# every business has inventory data on file, and this keeps every candidate
-# simulatable for any business that clears the forecast-sufficiency check.
+LLM_PROMPT_VERSION = "decision-v2"
+
+# Retained for the Research Console's Decision Architecture experiment
+# (a deliberately fixed, goal-agnostic grid used only for controlled A/B/C/D
+# comparison — the SME pipeline no longer uses it).
 CANDIDATE_GRID: list[list[dict]] = [
     [{"type": "marketing_change", "value": 10}],
     [{"type": "marketing_change", "value": 5}],
@@ -52,13 +66,30 @@ ACTION_LABELS = {"marketing_change": "Marketing", "price_change": "Price", "inve
 class StrategyAnalysis:
     strategy_id: str
     strategy_name: str
+    rationale: str
     actions: list[dict]
     simulation_id: str
-    business_analyst: AgentEvaluationResult
-    financial_advisor: AgentEvaluationResult
-    risk_manager: AgentEvaluationResult
-    strategy_score: float
+    causal_context: CausalContext
+    round1: dict[str, AgentEvaluationResult]
+    reviews: list[PeerReview]
+    resolved: ResolvedDecision
     output: SimulationOutput
+
+    @property
+    def business_analyst(self) -> AgentEvaluationResult:
+        return self.round1["business_analyst"]
+
+    @property
+    def financial_advisor(self) -> AgentEvaluationResult:
+        return self.round1["financial_advisor"]
+
+    @property
+    def risk_manager(self) -> AgentEvaluationResult:
+        return self.round1["risk_manager"]
+
+    @property
+    def strategy_score(self) -> float:
+        return self.resolved.final_score
 
 
 @dataclass
@@ -78,6 +109,10 @@ class DecisionResult:
     alternatives: list[dict] = field(default_factory=list)
     skipped_strategies: list[str] = field(default_factory=list)
     memory_insights: list[str] = field(default_factory=list)
+    causal_context: dict = field(default_factory=dict)
+    debate: dict = field(default_factory=dict)
+    strategy_generation: dict = field(default_factory=dict)
+    trace: dict = field(default_factory=dict)
 
 
 def strategy_name_for_actions(actions: list[dict]) -> str:
@@ -86,6 +121,13 @@ def strategy_name_for_actions(actions: list[dict]) -> str:
         sign = "+" if a["value"] >= 0 else ""
         parts.append(f"{ACTION_LABELS[a['type']]} {sign}{a['value']:g}%")
     return " & ".join(parts)
+
+
+def _state_version(state: dict) -> str:
+    """Stable short hash of the business-state snapshot a decision was made
+    against — lets a stored decision be checked for reproducibility."""
+    blob = json.dumps(state, sort_keys=True, default=str).encode()
+    return hashlib.sha256(blob).hexdigest()[:16]
 
 
 def _latest_causal_graph_version(db: Session, business_id: str) -> str | None:
@@ -102,10 +144,50 @@ def _alt_summary(analysis: StrategyAnalysis) -> dict:
     return {
         "strategy_id": analysis.strategy_id,
         "strategy_name": analysis.strategy_name,
+        "rationale": analysis.rationale,
         "actions": analysis.actions,
         "strategy_score": analysis.strategy_score,
+        "confidence": analysis.resolved.confidence,
         "risk_level": RISK_LEVEL_MAP[analysis.output.risk_level],
         "expected_revenue": analysis.output.expected_revenue,
+        "conflicts": analysis.resolved.conflicts,
+    }
+
+
+def _goal_projection(goal: Goal, output: SimulationOutput) -> dict:
+    """How far the selected strategy is projected to move the goal's own
+    primary KPI — surfaced so a no-op / negative recommendation is never
+    presented as if it advanced the goal."""
+    kpi = goal.primary_kpi
+    if kpi == "profit" and output.expected_profit is not None and output.baseline_profit is not None:
+        base, exp = output.baseline_profit, output.expected_profit
+        basis = "profit"
+    elif kpi in ("orders", "sales"):
+        base, exp = output.baseline_units_sold, output.expected_units_sold
+        basis = "units_sold"
+    else:
+        base, exp = output.baseline_revenue, output.expected_revenue
+        basis = "revenue"
+    delta = exp - base
+    rel = (delta / base) if abs(base) > 1e-9 else 0.0
+    return {
+        "primary_kpi": kpi,
+        "projected_on": basis,
+        "baseline": round(base, 2),
+        "projected": round(exp, 2),
+        "delta": round(delta, 2),
+        "relative_change": round(rel, 4),
+        "improves_goal": delta > 1e-6,
+    }
+
+
+def _evaluation_json(result: AgentEvaluationResult, round_no: int) -> dict:
+    return {
+        "round": round_no,
+        "score": result.score,
+        "key_points": result.key_points,
+        "risks": result.risks,
+        "assumptions": result.assumptions,
     }
 
 
@@ -114,63 +196,107 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
     if goal is None or goal.business_id != business_id:
         raise NotFoundError(f"Goal {goal_id} not found for this business.")
 
-    # All candidates share the same underlying data-sufficiency requirement
-    # (forecast_service.check_forecast_sufficiency) — if the business can't
-    # support one simulation it can't support any, so this is checked once,
-    # up front, rather than failing candidate-by-candidate.
     sufficient, reason = forecast_service.check_forecast_sufficiency(db, business_id)
     if not sufficient:
         raise InsufficientDataError(reason or "Not enough sales history to analyze this goal.")
 
+    gen = strategy_generation_service.generate_candidates(db, business_id, goal)
+    if not gen.candidates:
+        raise InsufficientDataError(
+            "No candidate strategy could be generated for this goal with the data on file.",
+            details={"excluded": gen.excluded, "notes": gen.notes, "objective": gen.objective},
+        )
+
+    business_state = digital_twin_service.get_current_state(db, business_id)
+    state_version = _state_version(business_state)
+
     analyses: list[StrategyAnalysis] = []
     skipped: list[str] = []
+    candidate_strategy_ids: list[str] = []
+    simulation_ids: list[str] = []
+    model_versions: dict[str, str] = {}
 
-    for action_dicts in CANDIDATE_GRID:
-        actions = [Action(type=a["type"], value=a["value"]) for a in action_dicts]
-        strategy_name = strategy_name_for_actions(action_dicts)
+    for cand in gen.candidates:
+        actions = [Action(type=a["type"], value=a["value"]) for a in cand.actions]
 
         strategy_row = Strategy(
-            business_id=business_id, goal_id=goal_id, strategy_name=strategy_name, actions_json=action_dicts
+            business_id=business_id,
+            goal_id=goal_id,
+            strategy_name=cand.name,
+            description=cand.rationale,
+            actions_json=cand.actions,
         )
         db.add(strategy_row)
         db.flush()
+        candidate_strategy_ids.append(strategy_row.id)
+
+        ctx = causal_context_service.get_causal_context(
+            db, business_id, [a["type"] for a in cand.actions], extra_targets=cand.targets
+        )
 
         try:
-            simulation = digital_twin_service.simulate_strategy(db, business_id, actions, goal_id=goal_id)
+            simulation = digital_twin_service.simulate_strategy(
+                db, business_id, actions, goal_id=goal_id, strategy_id=strategy_row.id, causal_context=ctx
+            )
         except AppError as exc:
-            skipped.append(f"{strategy_name}: {exc.message}")
+            skipped.append(f"{cand.name}: {exc.message}")
             continue
 
-        ba = business_analyst.evaluate(simulation.output, goal)
-        fa = financial_advisor.evaluate(simulation.output, goal)
-        rm = risk_manager.evaluate(simulation.output, goal)
+        simulation_ids.append(simulation.id)
+        model_versions["forecasting"] = f"{simulation.output.model_name}:{simulation.output.model_version}"
 
-        for agent_result in (ba, fa, rm):
+        ba = business_analyst.evaluate(simulation.output, goal, causal_context=ctx)
+        fa = financial_advisor.evaluate(simulation.output, goal, causal_context=ctx)
+        rm = risk_manager.evaluate(simulation.output, goal, causal_context=ctx)
+        round1 = {"business_analyst": ba, "financial_advisor": fa, "risk_manager": rm}
+
+        # Round 2 — each agent sees the other two's round-1 assessments.
+        reviews = [
+            risk_manager.review(rm, {"business_analyst": ba, "financial_advisor": fa}, simulation.output),
+            financial_advisor.review(fa, {"business_analyst": ba, "risk_manager": rm}, simulation.output),
+            business_analyst.review(ba, {"financial_advisor": fa, "risk_manager": rm}, simulation.output),
+        ]
+
+        resolved = strategy_optimizer.resolve(
+            round1,
+            reviews,
+            simulation.output,
+            causal_evidence_factor=causal_context_service.evidence_confidence_factor(ctx),
+        )
+
+        # Persist per-strategy agent evaluations (round 1 + round 2).
+        for r in (ba, fa, rm):
             db.add(
                 AgentEvaluation(
                     strategy_id=strategy_row.id,
-                    agent_name=agent_result.agent,
-                    evaluation_json={
-                        "key_points": agent_result.key_points,
-                        "risks": agent_result.risks,
-                        "assumptions": agent_result.assumptions,
-                    },
-                    score=agent_result.score,
+                    agent_name=r.agent,
+                    evaluation_json=_evaluation_json(r, 1),
+                    score=r.score,
+                    prompt_version=LLM_PROMPT_VERSION,
                 )
             )
-
-        strategy_score = strategy_optimizer.compute_strategy_score(ba.score, fa.score, rm.score)
+        for rv in reviews:
+            db.add(
+                AgentEvaluation(
+                    strategy_id=strategy_row.id,
+                    agent_name=rv.agent,
+                    evaluation_json=rv.to_dict(),
+                    score=rv.adjusted_score,
+                    prompt_version=LLM_PROMPT_VERSION,
+                )
+            )
 
         analyses.append(
             StrategyAnalysis(
                 strategy_id=strategy_row.id,
-                strategy_name=strategy_name,
-                actions=action_dicts,
+                strategy_name=cand.name,
+                rationale=cand.rationale,
+                actions=cand.actions,
                 simulation_id=simulation.id,
-                business_analyst=ba,
-                financial_advisor=fa,
-                risk_manager=rm,
-                strategy_score=strategy_score,
+                causal_context=ctx,
+                round1=round1,
+                reviews=reviews,
+                resolved=resolved,
                 output=simulation.output,
             )
         )
@@ -179,18 +305,15 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         db.rollback()
         raise InsufficientDataError(
             "No candidate strategy could be simulated for this business right now.",
-            details={"skipped": skipped},
+            details={"skipped": skipped, "excluded": gen.excluded},
         )
 
-    analyses.sort(key=lambda a: a.strategy_score, reverse=True)
+    analyses.sort(key=lambda a: a.resolved.final_score, reverse=True)
     best = analyses[0]
-    # Every candidate in CANDIDATE_GRID was actually simulated and scored —
-    # surface all of them (it's a small, fixed grid, not an unbounded list)
-    # rather than arbitrarily hiding some from the response.
     alternatives = analyses[1:]
 
     risk_level = RISK_LEVEL_MAP[best.output.risk_level]
-    confidence = best.risk_manager.score
+    confidence = best.resolved.confidence  # documented — see ResolvedDecision.confidence_basis
 
     llm = LLMService()
     agent_reviews = {
@@ -200,19 +323,62 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         )
         for agent in (best.business_analyst, best.financial_advisor, best.risk_manager)
     }
-    reasoning = llm.generate_strategy_explanation(
+    base_reasoning = llm.generate_strategy_explanation(
         {
             "strategy_name": best.strategy_name,
             "expected_revenue": best.output.expected_revenue,
             "risk_level": risk_level,
         }
     )
+    reasoning = f"{base_reasoning} {best.rationale} {best.resolved.resolution_rationale}"
 
-    causal_graph_version = _latest_causal_graph_version(db, business_id)
+    goal_projection = _goal_projection(goal, best.output)
+    if not goal_projection["improves_goal"]:
+        reasoning += (
+            f" Note: no strategy in the supported action space is projected to improve "
+            f"{goal.objective.replace('_', ' ')} for this business given its current data — "
+            "the option shown is the least-harmful of those evaluated."
+        )
+
+    causal_graph_version = best.causal_context.graph_version or _latest_causal_graph_version(db, business_id)
 
     memory_insights = memory_service.get_relevant_outcome_insights(
         db, business_id, action_types=[a["type"] for a in best.actions]
     )
+
+    uncertainty = {
+        "risk_level": risk_level,
+        "risk_score": best.output.risk_score,
+        "revenue_lower_bound": best.output.revenue_lower_bound,
+        "revenue_upper_bound": best.output.revenue_upper_bound,
+        "confidence": confidence,
+        "confidence_basis": best.resolved.confidence_basis,
+    }
+    debate = {
+        "rounds": 2,
+        "selected_strategy_id": best.strategy_id,
+        "round1": {a: _evaluation_json(r, 1) for a, r in best.round1.items()},
+        "round2_reviews": [rv.to_dict() for rv in best.reviews],
+        "resolution": best.resolved.to_dict(),
+        "all_candidates": [
+            {
+                "strategy_id": a.strategy_id,
+                "strategy_name": a.strategy_name,
+                "final_score": a.resolved.final_score,
+                "confidence": a.resolved.confidence,
+                "conflicts": a.resolved.conflicts,
+            }
+            for a in analyses
+        ],
+    }
+    strategy_generation = {
+        "objective": gen.objective,
+        "candidate_count": len(gen.candidates),
+        "excluded": gen.excluded,
+        "constraints_applied": gen.constraints_applied,
+        "notes": gen.notes,
+        "goal_projection": goal_projection,
+    }
 
     decision_row = Decision(
         business_id=business_id,
@@ -223,31 +389,66 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         confidence=confidence,
         reasoning=reasoning,
         causal_graph_version=causal_graph_version,
+        business_state_version=state_version,
+        business_state_json=business_state,
+        candidate_strategy_ids_json=candidate_strategy_ids,
+        simulation_ids_json=simulation_ids,
+        model_versions_json=model_versions,
+        assumptions_json=best.output.assumptions,
+        uncertainty_json=uncertainty,
+        causal_context_json=best.causal_context.to_dict(),
+        debate_json=debate,
+        strategy_generation_json=strategy_generation,
+        prompt_version=LLM_PROMPT_VERSION,
     )
     db.add(decision_row)
     db.flush()
 
-    for agent in (best.business_analyst, best.financial_advisor, best.risk_manager):
-        db.add(
-            AgentRun(
-                business_id=business_id,
-                decision_id=decision_row.id,
-                agent_name=agent.agent,
-                input_json={"strategy_id": best.strategy_id, "actions": best.actions},
-                output_json={
-                    "score": agent.score,
-                    "key_points": agent.key_points,
-                    "risks": agent.risks,
-                    "assumptions": agent.assumptions,
-                },
-            )
+    # AgentRun rows for the selected strategy — round 1, round 2, optimizer.
+    agent_run_ids: list[str] = []
+    for r in (best.business_analyst, best.financial_advisor, best.risk_manager):
+        run = AgentRun(
+            business_id=business_id,
+            decision_id=decision_row.id,
+            agent_name=r.agent,
+            prompt_version=LLM_PROMPT_VERSION,
+            input_json={"round": 1, "strategy_id": best.strategy_id, "actions": best.actions},
+            output_json=_evaluation_json(r, 1),
         )
+        db.add(run)
+        db.flush()
+        agent_run_ids.append(run.id)
+    for rv in best.reviews:
+        run = AgentRun(
+            business_id=business_id,
+            decision_id=decision_row.id,
+            agent_name=rv.agent,
+            prompt_version=LLM_PROMPT_VERSION,
+            input_json={"round": 2, "strategy_id": best.strategy_id},
+            output_json=rv.to_dict(),
+        )
+        db.add(run)
+        db.flush()
+        agent_run_ids.append(run.id)
+    opt_run = AgentRun(
+        business_id=business_id,
+        decision_id=decision_row.id,
+        agent_name="strategy_optimizer",
+        prompt_version=LLM_PROMPT_VERSION,
+        input_json={"strategy_id": best.strategy_id, "candidates_considered": len(analyses)},
+        output_json=best.resolved.to_dict(),
+    )
+    db.add(opt_run)
+    db.flush()
+    agent_run_ids.append(opt_run.id)
+    decision_row.agent_run_ids_json = agent_run_ids
 
     memory_service.log_memory(
         db,
         business_id,
         "decision",
-        f"Decision made: selected '{best.strategy_name}' (score {best.strategy_score}, risk {risk_level}).",
+        f"Decision made: selected '{best.strategy_name}' (score {best.resolved.final_score}, "
+        f"confidence {confidence}, risk {risk_level}).",
         metadata={"decision_id": decision_row.id, "goal_id": goal_id},
     )
 
@@ -260,7 +461,7 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         goal_id=goal_id,
         selected_strategy_id=best.strategy_id,
         selected_strategy_name=best.strategy_name,
-        selected_strategy_score=best.strategy_score,
+        selected_strategy_score=best.resolved.final_score,
         expected_outcome=decision_row.expected_outcome_json,
         risk_level=risk_level,
         confidence=confidence,
@@ -270,6 +471,17 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         agent_reviews=agent_reviews,
         alternatives=[_alt_summary(a) for a in alternatives],
         skipped_strategies=skipped,
+        causal_context=best.causal_context.to_dict(),
+        debate=debate,
+        strategy_generation=strategy_generation,
+        trace={
+            "business_state_version": state_version,
+            "candidate_strategy_ids": candidate_strategy_ids,
+            "simulation_ids": simulation_ids,
+            "agent_run_ids": agent_run_ids,
+            "model_versions": model_versions,
+            "prompt_version": LLM_PROMPT_VERSION,
+        },
     )
 
 
@@ -281,7 +493,87 @@ def get_decision(db: Session, business_id: str, decision_id: str) -> Decision:
 
 
 def list_decisions(db: Session, business_id: str) -> list[Decision]:
-    return db.query(Decision).filter(Decision.business_id == business_id).order_by(Decision.created_at.desc()).all()
+    return (
+        db.query(Decision)
+        .filter(Decision.business_id == business_id)
+        .order_by(Decision.created_at.desc())
+        .all()
+    )
+
+
+def get_decision_trace(db: Session, business_id: str, decision_id: str) -> dict:
+    """The complete, inspectable trace for one decision
+    (docs/RESEARCH_TRACEABILITY.md "Required Metadata")."""
+    decision = get_decision(db, business_id, decision_id)
+    strategy = db.get(Strategy, decision.selected_strategy_id) if decision.selected_strategy_id else None
+    agent_runs = db.query(AgentRun).filter(AgentRun.decision_id == decision_id).all()
+
+    return {
+        "decision_id": decision.id,
+        "business_id": decision.business_id,
+        "goal_id": decision.goal_id,
+        "created_at": decision.created_at,
+        "business_state_version": decision.business_state_version,
+        "business_state": decision.business_state_json,
+        "selected_strategy": {
+            "id": strategy.id if strategy else None,
+            "name": strategy.strategy_name if strategy else None,
+            "actions": strategy.actions_json if strategy else None,
+            "rationale": strategy.description if strategy else None,
+        },
+        "candidate_strategy_ids": decision.candidate_strategy_ids_json or [],
+        "simulation_ids": decision.simulation_ids_json or [],
+        "agent_run_ids": decision.agent_run_ids_json or [],
+        "agent_runs": [
+            {
+                "id": r.id,
+                "agent_name": r.agent_name,
+                "prompt_version": r.prompt_version,
+                "input": r.input_json,
+                "output": r.output_json,
+            }
+            for r in agent_runs
+        ],
+        "model_versions": decision.model_versions_json or {},
+        "causal_graph_version": decision.causal_graph_version,
+        "causal_context": decision.causal_context_json or {},
+        "debate": decision.debate_json or {},
+        "strategy_generation": decision.strategy_generation_json or {},
+        "assumptions": decision.assumptions_json or [],
+        "uncertainty": decision.uncertainty_json or {},
+        "expected_outcome": decision.expected_outcome_json,
+        "reasoning": decision.reasoning,
+        "confidence": float(decision.confidence) if decision.confidence is not None else None,
+        "prompt_version": decision.prompt_version,
+        "reproducible": _check_reproducible(db, decision),
+    }
+
+
+def _check_reproducible(db: Session, decision: Decision) -> dict:
+    """A stored decision is 'reproducible' if the model version it used is
+    still registered and its recorded business-state hash still matches a
+    fresh snapshot of the same business."""
+    reasons: list[str] = []
+    outcome = decision.expected_outcome_json or {}
+    model_row = (
+        db.query(MLModel)
+        .filter(
+            MLModel.model_name == outcome.get("model_name"),
+            MLModel.version == outcome.get("model_version"),
+        )
+        .first()
+    )
+    if model_row is None:
+        reasons.append(
+            f"Model {outcome.get('model_name')} v{outcome.get('model_version')} is no longer registered."
+        )
+    try:
+        fresh_state = digital_twin_service.get_current_state(db, decision.business_id)
+        if decision.business_state_version and _state_version(fresh_state) != decision.business_state_version:
+            reasons.append("Business data has changed since this decision was made.")
+    except AppError:
+        reasons.append("Business state can no longer be computed.")
+    return {"ok": not reasons, "reasons": reasons}
 
 
 @dataclass
@@ -293,16 +585,12 @@ class DecisionExplanation:
     counterfactual: dict
     uncertainty: dict
     assumptions: list[str]
+    causal_context: dict = field(default_factory=dict)
 
 
 def explain_decision(db: Session, business_id: str, decision_id: str) -> DecisionExplanation:
-    """docs/PRD.md §28/§30 "What influenced this recommendation?" /
-    "How did AI reach this decision?" — recomputed on demand from the
-    decision's stored strategy + model reference, against this business's
-    *current* data (the same freshness convention every other analytics
-    endpoint uses; the decision itself is a permanent record, but its
-    explanation reflects today's data the same way a fresh forecast would).
-    """
+    """docs/PRD.md §28/§30 — recomputed on demand from the decision's stored
+    strategy + model reference, against this business's *current* data."""
     decision = get_decision(db, business_id, decision_id)
 
     strategy = db.get(Strategy, decision.selected_strategy_id)
@@ -333,15 +621,23 @@ def explain_decision(db: Session, business_id: str, decision_id: str) -> Decisio
         baseline_price, baseline_marketing_spend, scenario_price, scenario_marketing_spend, _ = (
             digital_twin_service.compute_scenario_inputs(history, actions)
         )
-        baseline_row = forecast_service.build_feature_row(units_series, forecast_date, baseline_price, baseline_marketing_spend)
-        scenario_row = forecast_service.build_feature_row(units_series, forecast_date, scenario_price, scenario_marketing_spend)
+        baseline_row = forecast_service.build_feature_row(
+            units_series, forecast_date, baseline_price, baseline_marketing_spend
+        )
+        scenario_row = forecast_service.build_feature_row(
+            units_series, forecast_date, scenario_price, scenario_marketing_spend
+        )
 
     model = forecast_service.load_model(model_row)
     explanation = explainability_service.build_explanation(model_row, model, baseline_row, scenario_row)
 
     llm = LLMService()
     agent_runs = db.query(AgentRun).filter(AgentRun.decision_id == decision_id).all()
-    agent_reviews = {run.agent_name: llm.evaluate_agent(run.agent_name, run.output_json) for run in agent_runs}
+    agent_reviews = {
+        run.agent_name: llm.evaluate_agent(run.agent_name, run.output_json)
+        for run in agent_runs
+        if run.agent_name != "strategy_optimizer"
+    }
 
     counterfactual = {
         "baseline_units_sold": outcome.get("baseline_units_sold"),
@@ -351,7 +647,7 @@ def explain_decision(db: Session, business_id: str, decision_id: str) -> Decisio
         "baseline_profit": outcome.get("baseline_profit"),
         "expected_profit": outcome.get("expected_profit"),
     }
-    uncertainty = {
+    uncertainty = decision.uncertainty_json or {
         "risk_level": decision.risk_level,
         "risk_score": float(decision.confidence) if decision.confidence is not None else None,
         "revenue_lower_bound": outcome.get("revenue_lower_bound"),
@@ -365,5 +661,6 @@ def explain_decision(db: Session, business_id: str, decision_id: str) -> Decisio
         agent_reviews=agent_reviews,
         counterfactual=counterfactual,
         uncertainty=uncertainty,
-        assumptions=outcome.get("assumptions", []),
+        assumptions=(decision.assumptions_json or outcome.get("assumptions", [])),
+        causal_context=decision.causal_context_json or {},
     )

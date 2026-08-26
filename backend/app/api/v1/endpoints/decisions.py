@@ -2,7 +2,13 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas.decision import AnalyzeGoalRequest, DecisionExplanationOut, DecisionOut, DecisionSummaryOut
+from app.schemas.decision import (
+    AnalyzeGoalRequest,
+    DecisionExplanationOut,
+    DecisionOut,
+    DecisionSummaryOut,
+    DecisionTraceOut,
+)
 from app.services import decision_service
 
 router = APIRouter()
@@ -28,3 +34,11 @@ def get_decision(business_id: str, decision_id: str, db: Session = Depends(get_d
 )
 def explain_decision(business_id: str, decision_id: str, db: Session = Depends(get_db)):
     return decision_service.explain_decision(db, business_id, decision_id)
+
+
+@router.get(
+    "/businesses/{business_id}/decisions/{decision_id}/trace", response_model=DecisionTraceOut
+)
+def decision_trace(business_id: str, decision_id: str, db: Session = Depends(get_db)):
+    """Full reproducible trace for a decision (docs/RESEARCH_TRACEABILITY.md)."""
+    return decision_service.get_decision_trace(db, business_id, decision_id)

@@ -8,12 +8,17 @@ class AnalyzeGoalRequest(BaseModel):
 
 
 class AlternativeStrategyOut(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
     strategy_id: str
     strategy_name: str
     actions: list[dict]
     strategy_score: float
     risk_level: str
     expected_revenue: float
+    rationale: str | None = None
+    confidence: float | None = None
+    conflicts: list[dict] = Field(default_factory=list)
 
 
 class DecisionOut(BaseModel):
@@ -34,6 +39,10 @@ class DecisionOut(BaseModel):
     alternatives: list[AlternativeStrategyOut]
     skipped_strategies: list[str]
     memory_insights: list[str]
+    causal_context: dict = Field(default_factory=dict)
+    debate: dict = Field(default_factory=dict)
+    strategy_generation: dict = Field(default_factory=dict)
+    trace: dict = Field(default_factory=dict)
 
 
 class FeatureContributionOut(BaseModel):
@@ -66,6 +75,7 @@ class DecisionExplanationOut(BaseModel):
     counterfactual: dict
     uncertainty: dict
     assumptions: list[str]
+    causal_context: dict = Field(default_factory=dict)
 
 
 class DecisionSummaryOut(BaseModel):
@@ -81,3 +91,31 @@ class DecisionSummaryOut(BaseModel):
     reasoning: str | None
     causal_graph_version: str | None
     created_at: datetime
+
+
+class DecisionTraceOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    decision_id: str
+    business_id: str
+    goal_id: str
+    created_at: datetime
+    business_state_version: str | None
+    business_state: dict | None
+    selected_strategy: dict
+    candidate_strategy_ids: list[str]
+    simulation_ids: list[str]
+    agent_run_ids: list[str]
+    agent_runs: list[dict]
+    model_versions: dict
+    causal_graph_version: str | None
+    causal_context: dict
+    debate: dict
+    strategy_generation: dict
+    assumptions: list[str]
+    uncertainty: dict
+    expected_outcome: dict
+    reasoning: str | None
+    confidence: float | None
+    prompt_version: str | None
+    reproducible: dict

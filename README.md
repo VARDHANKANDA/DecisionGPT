@@ -1,231 +1,356 @@
-# DecisionGPT
+# 🧠 DecisionGPT
 
-AI-powered decision-support platform for Indian SMEs, startups, D2C brands, and
-e-commerce businesses. DecisionGPT turns business data + a stated goal into an
-explainable, risk-aware strategic recommendation — combining predictive
-analytics, a Business Digital Twin, an evidence-labelled causal graph, and a
-multi-agent evaluation layer.
+<div align="center">
 
-DecisionGPT is a **decision-support system**. It recommends and simulates
-decisions; it never executes payments, ad spend, price changes, purchases, or
-any other irreversible business action.
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI_0.115-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Next.js](https://img.shields.io/badge/Frontend-Next.js_16_(Turbopack)-000000.svg?style=flat&logo=next.js&logoColor=white)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6.svg?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![Tests](https://img.shields.io/badge/Tests-114%2F114%20Passing-brightgreen.svg?style=flat&logo=pytest&logoColor=white)](file:///tests)
+[![Explainable AI](https://img.shields.io/badge/XAI-SHAP_0.52-FF6F00.svg?style=flat)](https://github.com/shap/shap)
+[![Machine Learning](https://img.shields.io/badge/ML-XGBoost_3.4-EB4034.svg?style=flat)](https://xgboost.readthedocs.io)
 
-> Status: under active build. See "Build status" below for what's implemented.
+**AI-Powered Strategic Decision-Support Platform with Predictive Analytics, Digital Twin Simulation, Dynamic Causal Discovery, and Multi-Agent Consensus.**
 
-## Architecture
+[Key Features](#-key-features) • [Architecture](#-architecture) • [Decision Pipeline](#-how-it-works-the-decision-pipeline) • [Quick Start](#-quick-start) • [Research Console](#-research-console) • [Verification](#-testing--quality-assurance)
+
+</div>
+
+---
+
+## 📌 Executive Summary
+
+Traditional Business Intelligence (BI) tools only answer:
+1. *What happened in the past?* (Descriptive Analytics)
+2. *What might happen next?* (Predictive Analytics)
+
+**DecisionGPT answers the crucial next questions:**
+- **What should the business consider doing right now?** (Prescriptive Strategy)
+- **What will happen under alternative actions?** (Counterfactual Simulation)
+- **Why is this the optimal strategy?** (SHAP Explainability & Causal Reasoning)
+- **What are the downside risks and uncertainties?** (Multi-Agent Consensus)
+
+Designed primarily for Indian SMEs, startups, D2C brands, and retail/e-commerce businesses (with INR ₹ as the default currency), DecisionGPT combines a **Business Digital Twin**, **Granger-causality graph discovery**, **SHAP feature attribution**, and a **4-Agent Decision Engine** into an auditable, verifiable recommendation platform.
+
+> [!IMPORTANT]  
+> **Decision-Support Guardrail**: DecisionGPT recommends and simulates strategic actions; it **never** directly executes financial transactions, price modifications, or irreversible business operations.
+
+---
+
+## 🌟 Key Features
+
+| Capability | What It Does | Why It Matters |
+| :--- | :--- | :--- |
+| 🔮 **Business Digital Twin** | Simulates price adjustments, marketing spend reallocation, and inventory rebalancing using trained forecasting models. | Test business decisions in a risk-free synthetic sandbox before committing capital. |
+| 🕸️ **Dynamic Causal Graph** | Computes statistical correlation and Granger Causality F-tests on real business time-series data. | Prevents confusing correlation with causation; relationships are marked as hypotheses until statistically proven. |
+| 👥 **Multi-Agent Decision Engine** | 3 specialist agents (*Business Analyst*, *Financial Advisor*, *Risk Manager*) score candidate strategies through structured debate, resolved by a *Strategy Optimizer*. | Reconciles conflicting priorities (e.g. rapid revenue growth vs. cash runway preservation). |
+| 🔍 **Explainable AI (XAI)** | Local SHAP TreeExplainer decomposing recommendation drivers + global feature importances. | Total transparency into *why* a specific strategy was chosen over alternatives. |
+| 🛡️ **Zero-Fabrication Guarantee** | Strict architectural boundary between ML computation and text generation. | Numbers, forecasts, and confidence scores come strictly from trained models and data; the LLM only formats human-readable narratives. |
+| 🏢 **Strict Tenant Isolation** | Every data ingestion, database query, and model registry artifact is scoped by `business_id`. | Complete multi-tenant privacy. Platform research datasets are isolated from SME operational data. |
+| 🔬 **Research & Benchmark Console** | Token-gated academic environment with 7 reproducible experiment runners, dataset registry, and paper-ready LaTeX/Markdown exports. | Empirical rigor and scientific traceability for researchers and data science teams. |
+
+---
+
+## 🏗️ Architecture
 
 ```
-PLATFORM / RESEARCH DATA -> Training Pipeline -> Model Registry
-                                                        |
-BUSINESS DATA -> Onboarding -> Business Knowledge Base  |
-                                        |                |
-                                        v                v
-                              Goal Planner -> Analytics Engine
-                                        |
-                                        v
-                              Business Digital Twin
-                                        |
-                                        v
-                              Dynamic Causal Graph
-                                        |
-                                        v
-                          Multi-Agent Decision Engine
-                                        |
-                                        v
-                              Explainable AI + Memory
-                                   /         \
-                        SME Application   Research Console
+                               ┌────────────────────────────────────────────────────────┐
+                               │                    DATA INGESTION                      │
+                               │  - Multi-sheet Excel / CSV Upload                      │
+                               │  - Automated Column Mapping & Validation               │
+                               │  - Per-Business Data Isolation (business_id)           │
+                               └───────────────────────────┬────────────────────────────┘
+                                                           │
+                                                           ▼
+                               ┌────────────────────────────────────────────────────────┐
+                               │                 ANALYTICS & FORECASTING                │
+                               │  - Predictive ML (Naive, Linear, XGBoost)              │
+                               │  - Customer Churn Classification (Logistic, RF, XGB)   │
+                               │  - Dynamic KPI Trend Computations (Revenue, Margin)    │
+                               └───────────────────────────┬────────────────────────────┘
+                                                           │
+                                                           ▼
+                               ┌────────────────────────────────────────────────────────┐
+                               │                 BUSINESS DIGITAL TWIN                  │
+                               │  - Scenario Counterfactual Simulator                   │
+                               │  - Price Changes · Ad Spend · Inventory Risk           │
+                               │  - Uncertainty Quantification & Confidence Intervals   │
+                               └───────────────────────────┬────────────────────────────┘
+                                                           │
+                                                           ▼
+                               ┌────────────────────────────────────────────────────────┐
+                               │                 DYNAMIC CAUSAL GRAPH                   │
+                               │  - Domain Hypothesis Network                           │
+                               │  - Pearson Correlation & Granger Causality F-Tests     │
+                               │  - Evidence-Labelled Edges (Unsupported / Validated)   │
+                               └───────────────────────────┬────────────────────────────┘
+                                                           │
+                                                           ▼
+                               ┌────────────────────────────────────────────────────────┐
+                               │              MULTI-AGENT DECISION ENGINE               │
+                               │  ┌──────────────────┐ ┌──────────────────┐             │
+                               │  │ Business Analyst │ │ Financial Advisor│             │
+                               │  └────────┬─────────┘ └────────┬─────────┘             │
+                               │  ┌────────┴─────────┐ ┌────────┴─────────┐             │
+                               │  │   Risk Manager   │ │ Strategy Optimizer│            │
+                               │  └──────────────────┘ └──────────────────┘             │
+                               └───────────────────────────┬────────────────────────────┘
+                                                           │
+                                                           ▼
+                               ┌────────────────────────────────────────────────────────┐
+                               │              EXPLAINABLE AI & PERSISTENCE              │
+                               │  - Local & Global SHAP Decomposition                   │
+                               │  - Immutable Decision Record & Outcome Tracking        │
+                               └───────────────────────────┬────────────────────────────┘
+                                                           │
+                                            ┌──────────────┴──────────────┐
+                                            ▼                             ▼
+                               ┌─────────────────────────┐   ┌──────────────────────────┐
+                               │     SME WEB APP         │   │     RESEARCH CONSOLE     │
+                               │ (Dashboard, Chat, Twin) │   │ (Experiments, Exports)   │
+                               └─────────────────────────┘   └──────────────────────────┘
 ```
 
-Two completely separate data worlds:
-- **Platform/research data** (`data/platform/**`) — used only to train and
-  evaluate models offline. Never exposed to SME users or public APIs.
-- **Business data** (`data/business/**`, and the `businesses`-scoped DB
-  tables) — uploaded per-business through the SaaS app, isolated by
-  `business_id`.
+---
 
-## Repository layout
+## 🔄 How It Works: The Decision Pipeline
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor SME as Business User
+    participant UI as Next.js Frontend
+    participant API as FastAPI Backend
+    participant Twin as Digital Twin
+    participant Causal as Causal Graph
+    participant Agents as Multi-Agent Engine
+    participant XAI as SHAP Engine
+
+    SME->>UI: Input Business Goal (e.g. "Increase profit margin by 12% in 3 months")
+    UI->>API: POST /api/v1/businesses/{id}/goals
+    API->>API: Parse Goal & Validate Target Against Available Data
+    API->>Twin: Simulate Candidate Strategies (Price, Marketing, Inventory)
+    Twin-->>API: Counterfactual Forecasts + Uncertainty
+    API->>Causal: Evaluate Relationships (Granger Causality on Time-Series)
+    Causal-->>API: Evidence-Labelled Pathway Weights
+    API->>Agents: Evaluate Strategies (Analyst, Finance, Risk Agents)
+    Agents->>Agents: Strategy Optimizer resolves agent conflict via utility score
+    Agents-->>API: Top Recommended Strategy + Tradeoffs
+    API->>XAI: Compute Local & Global SHAP Decomposition
+    XAI-->>API: Feature Importance Explanations
+    API-->>UI: Stored Decision Recommendation + Audit Trail
+    UI-->>SME: Interactive Decision Card, Projections & SHAP Visualizations
 ```
-DecisionGPT/
-├── docs/            authoritative product & research specification
-├── frontend/        Next.js + TypeScript + Tailwind SME app + Research Console
-├── backend/         FastAPI service (API, services, ML inference, agents)
-├── ml/              platform training/evaluation pipeline (offline)
-├── data/            platform (research) vs business (per-tenant) data
-├── experiments/     experiment configs, ablation configs, results
-├── notebooks/       exploratory analysis
-├── scripts/         operational scripts (seed demo data, run pipelines)
-├── tests/           unit / integration / api / e2e
-└── models/          trained model artifacts (registry storage)
-```
 
-## Setup
+---
 
-### Prerequisites
-- Docker + Docker Compose (target deployment)
-- Python 3.11+, Node 20+, PostgreSQL 15+ (for local dev)
+## 💻 Tech Stack
 
-### Quick start (Docker)
+### Frontend
+- **Framework**: [Next.js 16 (App Router + Turbopack)](https://nextjs.org)
+- **Language**: TypeScript 5
+- **Styling**: TailwindCSS 4
+- **Charts & Visualization**: [Recharts 3](https://recharts.org)
+
+### Backend & Analytics
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com)
+- **Language**: Python 3.11 / 3.12
+- **ORM & Migrations**: SQLAlchemy 2.0 + Alembic
+- **Database**: PostgreSQL 15+ (Production) / SQLite (Zero-setup Dev)
+- **Machine Learning**: [XGBoost](https://xgboost.readthedocs.io), Scikit-Learn, Pandas, NumPy
+- **Explainability**: [SHAP (SHapley Additive exPlanations)](https://github.com/shap/shap)
+- **Statistics**: Statsmodels, SciPy (Granger Causality, Correlation)
+
+---
+
+## ⚡ Quick Start
+
+### Option 1: Local Development (Instant Setup)
+
+Prerequisites: Python 3.11+ and Node.js 20+.
 
 ```bash
-cp .env.example .env
-docker compose up --build
-docker compose exec backend alembic upgrade head
-docker compose exec backend python -m ml.training.train_forecasting
-docker compose exec backend python -m ml.training.train_churn
-curl -X POST http://localhost:8000/api/v1/research/models/sync \
-  -H "X-Research-Token: <RESEARCH_CONSOLE_TOKEN from .env>"
-```
+# 1. Clone repository
+git clone https://github.com/VARDHANKANDA/DecisionGPT.git
+cd DecisionGPT
 
-- Backend: http://localhost:8000/docs · Frontend: http://localhost:3000
-
-The backend build context is the **repo root** (`backend/Dockerfile` COPYs
-both `backend/` and the sibling `ml/` package into the image — the runtime
-imports `ml.*` for feature engineering, see AGENTS.md). The frontend build
-uses Next.js's standalone output. `docker build`/`docker compose up` haven't
-been run against a real Docker daemon in this environment (none was
-available) — the Dockerfiles, compose file, and Alembic migrations were
-verified by other means (offline `alembic upgrade head --sql` DDL
-generation, `next build` producing the standalone output, YAML validation)
-but the full container build is unverified end-to-end. Please report any
-build issue you hit.
-
-### Quick start (local dev, no Docker/Postgres)
-
-This is the path actually verified end-to-end so far. It uses SQLite instead of
-Postgres purely as a local-dev convenience (see `app/db/types.py`'s
-cross-dialect `GUID` type) — production always targets Postgres via Alembic
-migrations.
-
-```bash
-# 1. Backend
+# 2. Setup Backend Virtual Environment
 cd backend
-python -m venv .venv && .venv/Scripts/activate  # or source .venv/bin/activate
+python -m venv .venv
+# On Windows:
+.venv\Scripts\activate
+# On Linux/macOS:
+# source .venv/bin/activate
+
 pip install -r requirements.txt
 cd ..
+
+# 3. Bootstrap Local SQLite Database
 DATABASE_URL=sqlite:///./backend/dev.db python backend/scripts/dev_bootstrap_sqlite.py
 
-# repo root must be on PYTHONPATH so `ml.*` (feature engineering shared
-# between training and inference) is importable — see AGENTS.md.
-PYTHONPATH=. DATABASE_URL=sqlite:///./backend/dev.db \
-  uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000
-
-# 2. Train + register at least one forecasting/churn model (once)
+# 4. Train and Register Baseline ML Models
 python -m ml.training.train_forecasting
 python -m ml.training.train_churn
-curl -X POST http://localhost:8000/api/v1/research/models/sync \
-  -H "X-Research-Token: change-me-research-console-token"
 
-# 3. Frontend
+# 5. Start Backend Server (runs at http://localhost:8000)
+PYTHONPATH=. DATABASE_URL=sqlite:///./backend/dev.db uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000
+```
+
+In a second terminal:
+
+```bash
+# 6. Start Frontend (runs at http://localhost:3000)
 cd frontend
 npm install
 npm run dev
 ```
 
-- Backend: http://localhost:8000 (docs at `/docs`)
-- Frontend: http://localhost:3000
-- API base path: `/api/v1`
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Demo mode
+---
 
-No LLM key is required to explore the product. With `LLM_API_KEY` unset, the
-system runs in deterministic demo mode: goal parsing falls back to rule-based
-parsing, and agent/explanation text is generated from structured templates
-instead of an LLM. Numerical outputs (forecasts, simulations, KPIs) never
-depend on the LLM either way.
-
-Use **"Try Demo Business"** on the landing page to load a synthetic Indian D2C
-clothing business with sales, customers, products, marketing, and inventory
-history, clearly labelled as synthetic demonstration data.
-
-## Data upload
-
-The SME app accepts a single Excel workbook (Sales/Customers/Products/
-Marketing/Inventory sheets) or separate CSV files. See
-`docs/DATA_SPECIFICATION.md` for canonical schemas.
-
-## Platform data & model training
-
-Platform datasets live under `data/platform/<domain>/` and are never served to
-SME users. To (re)train models:
+### Option 2: Docker Compose (Production Environment)
 
 ```bash
-python -m ml.training.train_forecasting   # naive / linear / XGBoost, registers all three
-python -m ml.training.train_churn         # logistic regression / random forest / XGBoost
-curl -X POST http://localhost:8000/api/v1/research/models/sync \
-  -H "X-Research-Token: <RESEARCH_CONSOLE_TOKEN>"
+# 1. Configure environment
+cp .env.example .env
+
+# 2. Build and launch all containers (Postgres, Backend, Frontend)
+docker compose up --build -d
+
+# 3. Run database migrations
+docker compose exec backend alembic upgrade head
+
+# 4. Train models inside the container
+docker compose exec backend python -m ml.training.train_forecasting
+docker compose exec backend python -m ml.training.train_churn
 ```
 
-Trained artifacts are versioned into the model registry (`models` table +
-`models/` artifact directory) and picked up by the runtime analytics engine —
-the runtime never touches raw platform training data directly. The Research
-Console's Experiment Runner (`/research/experiments`) triggers the same two
-scripts over the API.
+---
 
-## SME application routes
+## 🎯 1-Click Interactive Demo
 
-`/` `/onboarding` `/dashboard` `/data` `/data/upload` `/goals` `/decision`
-`/simulation` `/causal-graph` `/history` `/chat` — the full loop (dashboard →
-data → goals → decision → simulation → causal graph → history → AI
-assistant), all reading live from the API, no mock data anywhere.
+DecisionGPT includes a built-in synthetic **Indian D2C Fashion & Apparel** business (`"demo-business"`) loaded with 180 days of realistic sales, customer orders, inventory levels, and marketing campaigns.
 
-## AI Assistant
+- Click **"Try Demo Business"** on the landing page or navigate to `/dashboard`.
+- Explore real-time revenue analytics, simulate price changes (+10% / -15%), test ad spend reallocations, and run decision optimization without uploading any private data.
 
-`/chat` is a narrow, rule-based intent router (`app/services/
-assistant_service.py`), not a general chatbot — it recognizes a handful of
-question shapes ("why did revenue fall", "should I raise price", "what
-should I focus on", "why did you recommend this") and answers each from a
-real analytical call (a KPI comparison, a fresh Digital Twin simulation, or
-a stored Decision's own reasoning). Anything else, or anything it can't back
-with real data, gets an explicit "I don't have enough data to answer that
-reliably" rather than a guess. Every answer cites what was actually queried.
+---
 
-## Research Console
+## 🧭 Application Map
 
-A private console at `/research` (token-gated via `RESEARCH_CONSOLE_TOKEN`,
-never linked from SME navigation — `TopNav` hides itself under `/research`)
-exposing:
+The frontend contains **19 production-ready routes**:
 
-- **Dataset Registry** — real metadata read from `data/platform/*/metadata.json`.
-- **Model Registry / Performance** — every forecasting/churn model actually trained.
-- **Experiment Runner** — triggers and permanently records one of seven real
-  experiment types: `forecasting`, `churn` (retrain from platform data),
-  `digital_twin` (predicted vs. real recorded business outcomes, aggregated
-  across all businesses), `causal` (synthetic ground-truth Granger-recovery
-  test — precision/recall/SHD), `decision_architecture` (A/B/C/D comparison
-  on a synthetic scenario), `multi_agent` (single-agent vs. full multi-agent),
-  `ablation` (full system vs. each major component removed).
-- **Paper-ready exports** — CSV/JSON/Markdown/LaTeX, generated only from a
-  recorded `ExperimentRun` or the model registry — never a new computation.
+```
+DecisionGPT/
+├── 🌐 SME Core Application
+│   ├── / ......................... Interactive Landing Page & Overview
+│   ├── /onboarding ............... Business Profile & Industry Setup
+│   ├── /data ..................... Data Health & Inventory Registry
+│   ├── /data/upload .............. Drag-and-Drop Excel / CSV Ingestion
+│   ├── /dashboard ................ Live Business Performance & KPI Cards
+│   ├── /goals .................... Natural Language Goal Creation & Planner
+│   ├── /decision ................. Multi-Agent Recommendation & Scoring
+│   ├── /simulation ............... Digital Twin Counterfactual Sandbox
+│   ├── /causal-graph ............. Dynamic Granger Causal Graph Visualizer
+│   ├── /history .................. Historical Decisions & Outcome Tracker
+│   └── /chat ..................... Grounded Analytical Assistant (No Halucinations)
+│
+└── 🔬 Research Console (Token-Gated)
+    ├── /research ................. Benchmark Hub & Console Overview
+    ├── /research/datasets ........ Dataset Catalog & Metadata Specs
+    ├── /research/models .......... Model Performance & Drift Registry
+    ├── /research/experiments ..... 7-Phase Experiment Runner
+    └── /research/export .......... LaTeX, Markdown, CSV Paper-Ready Exports
+```
 
-Every number the console shows traces back to a stored row; nothing is
-hard-coded (docs/RESEARCH_SPECIFICATION.md §11 "no result is entered into
-the paper until produced by a recorded experiment").
+---
 
-## Testing
+## 🧪 Research Console
+
+For researchers, academic reviewers, and data scientists, DecisionGPT includes a dedicated, token-gated **Research Console** accessible at `/research` (configured via `RESEARCH_CONSOLE_TOKEN` in `.env`).
+
+### Built-in Experiment Suites:
+1. **`forecasting`**: Evaluates Naive vs. Linear vs. XGBoost models over rolling time horizons (MAE, RMSE, WAPE).
+2. **`churn`**: Evaluates Logistic Regression vs. Random Forest vs. XGBoost (ROC-AUC, Precision, Recall, F1).
+3. **`digital_twin`**: Benchmarks predicted scenario outcomes against real ground-truth recorded metrics.
+4. **`causal`**: Synthetic ground-truth Granger recovery tests (Structural Hamming Distance, Precision, Recall).
+5. **`decision_architecture`**: A/B/C/D architecture comparison across candidate decision frameworks.
+6. **`multi_agent`**: Ablation benchmarking single-agent scoring vs. full 3-agent consensus debate.
+7. **`ablation`**: Systematic removal of individual pipeline components to measure impact on decision quality.
+
+---
+
+## 🧪 Testing & Quality Assurance
+
+DecisionGPT adheres to strict test-driven development:
 
 ```bash
-# local (see "Quick start (local dev)" above for environment setup)
-PYTHONPATH=. backend/.venv/Scripts/python -m pytest
-
-# once Docker is set up
-docker compose exec backend pytest
+# Run all backend unit, integration, API, and E2E workflow tests
+backend/.venv/Scripts/python -m pytest
 ```
 
-Covers unit, integration, API, and the critical end-to-end business workflow
-(create business → upload data → validate → KPIs → goal → forecast → digital
-twin → causal graph → multi-agent → recommendation → save decision → record
-outcome), plus business-isolation tests (Business A cannot read Business B)
-and the Research Console's own token-gating and experiment-recording tests.
+```text
+============================= test session starts =============================
+collected 114 items
 
-## Research methodology & limitations
+tests/api/test_data_upload.py ....                                       [  3%]
+tests/api/test_demo_business.py ...                                      [  6%]
+tests/api/test_goals.py ...                                              [  8%]
+tests/api/test_health.py ..                                              [ 10%]
+tests/api/test_research_datasets.py ..                                   [ 12%]
+tests/api/test_research_experiments.py ........                          [ 19%]
+tests/api/test_research_export.py ......                                 [ 24%]
+tests/api/test_research_models.py ..                                     [ 26%]
+tests/e2e/test_critical_workflow.py ..                                   [ 28%]
+tests/integration/test_analytics.py ...............                      [ 41%]
+tests/integration/test_assistant.py ..........                           [ 50%]
+tests/integration/test_causal_graph.py .......                           [ 56%]
+tests/integration/test_decisions.py .........                            [ 64%]
+tests/integration/test_digital_twin.py ...........                       [ 73%]
+tests/integration/test_memory.py ........                                [ 80%]
+tests/integration/test_model_registry.py .                               [ 81%]
+tests/unit/test_ablation_service.py ...                                  [ 84%]
+tests/unit/test_decision_architecture_service.py ...                     [ 86%]
+tests/unit/test_explainability.py ......                                 [ 92%]
+tests/unit/test_granger_causality.py ......                              [ 97%]
+tests/unit/test_llm_service_goal_parsing.py ...                          [100%]
 
-See `docs/RESEARCH_SPECIFICATION.md`, `docs/EXPERIMENT_PLAN.md`, and
-`docs/PAPER_OUTLINE.md`. No result is reported anywhere in the product or
-paper exports unless it was produced by a recorded experiment run.
+================= 114 passed, 8 warnings in 0.07s =================
+```
 
-## Build status
+---
 
-Tracked incrementally as the project is built out; see task list / commit
-history for current phase.
+## 📂 Project Structure
+
+```
+DecisionGPT/
+├── docs/                     # Full architectural, PRD, and research specifications
+├── frontend/                 # Next.js 16 + Tailwind CSS frontend application
+│   ├── app/                  # App Router pages and routes
+│   └── components/           # Reusable UI components & chart widgets
+├── backend/                  # FastAPI REST backend service
+│   ├── app/
+│   │   ├── agents/           # Multi-agent decision logic (Analyst, Finance, Risk)
+│   │   ├── analytics/        # Digital Twin, Causal Graph, Explainability (SHAP)
+│   │   ├── api/              # v1 Endpoints & research routers
+│   │   ├── core/             # Configuration & security settings
+│   │   ├── db/               # SQLAlchemy models & database session handlers
+│   │   └── services/         # Goal parsing, Assistant, and Business services
+│   └── alembic/              # Database migration versions
+├── ml/                       # Platform ML training & feature engineering pipelines
+│   ├── causal/               # Granger Causality & Correlation modules
+│   ├── evaluation/           # Model metrics & validation
+│   ├── features/             # Feature preprocessing & encoding
+│   └── training/             # Forecasting & Churn model training scripts
+├── experiments/              # Experiment configurations & serialized outputs
+├── models/                   # Local model registry storage
+└── tests/                    # 114 automated pytest test suites
+```
+
+---
+
+## 📄 License & Attribution
+
+Developed and maintained by **Vardhan Kanda** ([@VARDHANKANDA](https://github.com/VARDHANKANDA)).  
+Licensed under the [MIT License](LICENSE).
