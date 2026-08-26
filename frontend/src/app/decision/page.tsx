@@ -10,6 +10,7 @@ import {
   type Goal,
 } from "@/lib/api";
 import { useBusiness } from "@/lib/business-context";
+import { OutcomeForm } from "@/components/OutcomeForm";
 import { Card, EmptyState, PageHeader, PrimaryButton, RiskBadge, SecondaryLink, formatINR } from "@/components/ui";
 
 const OBJECTIVE_LABELS: Record<string, string> = {
@@ -259,7 +260,20 @@ function DecisionResult({
       ) : null}
 
       <ExplanationSection businessId={business_id} decisionId={decision.id} />
-      <OutcomeSection businessId={business_id} decisionId={decision.id} />
+      <Card>
+        <h3 className="text-sm font-medium text-foreground">Record what actually happened</h3>
+        <p className="mt-1 text-xs text-muted">
+          Once you&apos;ve acted on this and have real numbers, record them here. DecisionGPT compares them
+          against the prediction (Digital Twin Evaluation) and references them next time it evaluates a
+          similar strategy.
+        </p>
+        <OutcomeForm
+          businessId={business_id}
+          decisionId={decision.id}
+          expectedOutcome={decision.expected_outcome}
+          goalObjective={goal?.objective}
+        />
+      </Card>
     </div>
   );
 }
@@ -440,65 +454,6 @@ function ExplanationSection({ businessId, decisionId }: { businessId: string; de
           )}
         </div>
       ) : null}
-    </Card>
-  );
-}
-
-function OutcomeSection({ businessId, decisionId }: { businessId: string; decisionId: string }) {
-  const [revenue, setRevenue] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [result, setResult] = useState<{ score: number | null; achieved: boolean | null } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!revenue) return;
-    setSubmitting(true);
-    setError(null);
-    try {
-      const outcome = await api.recordOutcome(businessId, decisionId, { revenue: Number(revenue) });
-      setResult({ score: outcome.goal_achievement_score, achieved: outcome.goal_achieved });
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Could not record that outcome.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  if (result) {
-    return (
-      <Card>
-        <h3 className="text-sm font-medium text-foreground">Outcome recorded</h3>
-        <p className="mt-2 text-sm text-muted">
-          {result.score !== null
-            ? `Achieved ${(result.score * 100).toFixed(0)}% of the predicted revenue change.`
-            : "Thanks — recorded for your business history."}
-        </p>
-      </Card>
-    );
-  }
-
-  return (
-    <Card>
-      <h3 className="text-sm font-medium text-foreground">Record what actually happened</h3>
-      <p className="mt-1 text-xs text-muted">
-        Once you&apos;ve acted on this and have real numbers, record them here — DecisionGPT will reference this
-        the next time it evaluates a similar strategy.
-      </p>
-      <form onSubmit={submit} className="mt-3 flex items-center gap-3">
-        <input
-          type="number"
-          value={revenue}
-          onChange={(e) => setRevenue(e.target.value)}
-          placeholder="Actual revenue (₹)"
-          className="input"
-          required
-        />
-        <PrimaryButton type="submit" disabled={submitting}>
-          {submitting ? "Saving…" : "Save"}
-        </PrimaryButton>
-      </form>
-      {error ? <p className="mt-2 text-sm text-danger">{error}</p> : null}
     </Card>
   );
 }

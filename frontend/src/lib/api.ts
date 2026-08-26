@@ -503,7 +503,7 @@ export const api = {
     apiGet<DecisionExplanation>(`/businesses/${businessId}/decisions/${decisionId}/explanation`),
   decisionTrace: (businessId: string, decisionId: string) =>
     apiGet<DecisionTrace>(`/businesses/${businessId}/decisions/${decisionId}/trace`),
-  recordOutcome: (businessId: string, decisionId: string, actualOutcome: Record<string, number>) =>
+  recordOutcome: (businessId: string, decisionId: string, actualOutcome: Record<string, number | string>) =>
     apiPost<DecisionOutcome>(`/businesses/${businessId}/decisions/${decisionId}/outcome`, {
       actual_outcome: actualOutcome,
     }),

@@ -4,28 +4,33 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { api, ApiError, type DecisionOutcome, type DecisionSummary } from "@/lib/api";
 import { useBusiness } from "@/lib/business-context";
+import { OutcomeForm } from "@/components/OutcomeForm";
 import { Card, EmptyState, PageHeader, RiskBadge, SecondaryLink, formatINR } from "@/components/ui";
 
 export default function HistoryPage() {
   const { business, loading: businessLoading } = useBusiness();
   const [decisions, setDecisions] = useState<DecisionSummary[] | null>(null);
   const [outcomes, setOutcomes] = useState<Record<string, DecisionOutcome | null>>({});
+  const [recording, setRecording] = useState<string | null>(null);
+
+  function loadOutcomes(list: DecisionSummary[], businessId: string) {
+    Promise.all(
+      list.map(async (d) => {
+        try {
+          return [d.id, await api.getOutcome(businessId, d.id)] as const;
+        } catch (err) {
+          if (err instanceof ApiError && err.status === 404) return [d.id, null] as const;
+          throw err;
+        }
+      })
+    ).then((entries) => setOutcomes(Object.fromEntries(entries)));
+  }
 
   useEffect(() => {
     if (!business) return;
-    api.listDecisions(business.id).then(async (list) => {
+    api.listDecisions(business.id).then((list) => {
       setDecisions(list);
-      const entries = await Promise.all(
-        list.map(async (d) => {
-          try {
-            return [d.id, await api.getOutcome(business.id, d.id)] as const;
-          } catch (err) {
-            if (err instanceof ApiError && err.status === 404) return [d.id, null] as const;
-            throw err;
-          }
-        })
-      );
-      setOutcomes(Object.fromEntries(entries));
+      loadOutcomes(list, business.id);
     });
   }, [business]);
 
@@ -85,7 +90,12 @@ export default function HistoryPage() {
                       {outcome === undefined ? (
                         <span className="text-muted">Checking for a recorded outcome…</span>
                       ) : outcome === null ? (
-                        <span className="text-muted">No outcome recorded yet</span>
+                        <button
+                          onClick={() => setRecording(recording === d.id ? null : d.id)}
+                          className="font-medium text-accent underline underline-offset-4"
+                        >
+                          {recording === d.id ? "Cancel" : "Record actual outcome"}
+                        </button>
                       ) : (
                         <span className="text-foreground">
                           Outcome recorded
@@ -102,6 +112,21 @@ export default function HistoryPage() {
                       View details
                     </Link>
                   </div>
+
+                  {recording === d.id && outcome === null ? (
+                    <div className="mt-3 rounded-xl bg-muted-surface p-4">
+                      <OutcomeForm
+                        businessId={business!.id}
+                        decisionId={d.id}
+                        expectedOutcome={d.expected_outcome_json}
+                        onRecorded={() => {
+                          setRecording(null);
+                          if (decisions) loadOutcomes(decisions, business!.id);
+                        }}
+                        compact
+                      />
+                    </div>
+                  ) : null}
                 </Card>
               </li>
             );

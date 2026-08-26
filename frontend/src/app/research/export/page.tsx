@@ -4,136 +4,141 @@ import { useEffect, useState } from "react";
 import {
   researchApi,
   ResearchApiError,
-  type ExperimentRun,
   type ExportFormat,
   type ExportTable,
+  type PaperResults,
 } from "@/lib/research-api";
-
-const TABLES: { value: ExportTable; label: string; needsExperiment: boolean }[] = [
-  { value: "forecasting_performance", label: "Forecasting performance", needsExperiment: false },
-  { value: "churn_performance", label: "Churn performance", needsExperiment: false },
-  { value: "decision_architecture", label: "Decision architecture comparison", needsExperiment: true },
-  { value: "ablation", label: "Ablation study", needsExperiment: true },
-  { value: "causal_evaluation", label: "Causal evaluation", needsExperiment: true },
-  { value: "digital_twin_evaluation", label: "Digital Twin evaluation", needsExperiment: true },
-];
+import { DataTable, Metric, Panel, PageIntro, StatGrid } from "@/components/research-ui";
 
 const FORMATS: ExportFormat[] = ["csv", "json", "markdown", "latex"];
 
-export default function ExportPage() {
-  const [table, setTable] = useState<ExportTable>("forecasting_performance");
-  const [format, setFormat] = useState<ExportFormat>("markdown");
-  const [experiments, setExperiments] = useState<ExperimentRun[]>([]);
-  const [experimentId, setExperimentId] = useState<string>("");
-  const [output, setOutput] = useState<string | null>(null);
+export default function PaperResultsPage() {
+  const [data, setData] = useState<PaperResults | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [format, setFormat] = useState<ExportFormat>("markdown");
+  const [output, setOutput] = useState<{ title: string; text: string } | null>(null);
+  const [busyTable, setBusyTable] = useState<string | null>(null);
 
   useEffect(() => {
-    researchApi.listExperiments().then(setExperiments);
+    researchApi.paperResults().then(setData).catch((e) => setError(String(e?.message ?? e)));
   }, []);
 
-  const tableInfo = TABLES.find((t) => t.value === table)!;
-  const matchingExperiments = experiments.filter((e) => e.experiment_type === tableToExperimentType(table));
-
-  async function generate() {
-    setLoading(true);
+  async function exportTable(exportTable: string, title: string) {
+    setBusyTable(exportTable);
     setError(null);
-    setOutput(null);
     try {
-      const result = await researchApi.exportTable(table, format, experimentId || undefined);
-      setOutput(result);
-    } catch (err) {
-      setError(err instanceof ResearchApiError ? err.message : "Could not generate that export.");
+      const text = await researchApi.exportTable(exportTable as ExportTable, format);
+      setOutput({ title: `${title} (${format})`, text });
+    } catch (e) {
+      setError(e instanceof ResearchApiError ? e.message : "Export failed.");
     } finally {
-      setLoading(false);
+      setBusyTable(null);
     }
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-foreground">Paper-ready exports</h1>
-      <p className="mt-1 text-muted">CSV, JSON, Markdown, and LaTeX — generated only from recorded data.</p>
+      <PageIntro
+        title="Paper Results"
+        subtitle="Collects the five paper tables from real recorded data. Each table shows whether it is ready or which experiment still needs to run — no table is fabricated. Every exported row traces back to an experiment id, training run, model version, or decision id."
+      />
 
-      <div className="mt-6 rounded-2xl border border-border bg-surface p-6 shadow-sm">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-foreground">Table</span>
-            <select value={table} onChange={(e) => setTable(e.target.value as ExportTable)} className="input">
-              {TABLES.map((t) => (
-                <option key={t.value} value={t.value}>
-                  {t.label}
-                </option>
-              ))}
-            </select>
-          </label>
+      {error ? <p className="text-sm text-danger">{error}</p> : null}
+      {!data ? (
+        <p className="text-sm text-muted">Loading…</p>
+      ) : (
+        <div className="space-y-6">
+          <StatGrid>
+            <Metric label="Tables ready" value={`${data.summary.tables_ready} / ${data.summary.tables_total}`} />
+            <Metric label="Tables missing data" value={data.summary.tables_missing} />
+            <div className="col-span-2 flex items-end">
+              <label className="flex w-full flex-col gap-1 text-xs text-muted">
+                Export format
+                <select className="input" value={format} onChange={(e) => setFormat(e.target.value as ExportFormat)}>
+                  {FORMATS.map((f) => (
+                    <option key={f} value={f}>
+                      {f.toUpperCase()}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </StatGrid>
 
-          {tableInfo.needsExperiment ? (
-            <label className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium text-foreground">Experiment run</span>
-              <select value={experimentId} onChange={(e) => setExperimentId(e.target.value)} className="input">
-                <option value="">Select a run…</option>
-                {matchingExperiments.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {new Date(e.created_at).toLocaleString("en-IN")} (seed {e.random_seed})
-                  </option>
-                ))}
-              </select>
-            </label>
-          ) : (
-            <div />
-          )}
-
-          <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-foreground">Format</span>
-            <select value={format} onChange={(e) => setFormat(e.target.value as ExportFormat)} className="input">
-              {FORMATS.map((f) => (
-                <option key={f} value={f}>
-                  {f.toUpperCase()}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <div className="mt-4">
-          <button
-            onClick={generate}
-            disabled={loading || (tableInfo.needsExperiment && !experimentId)}
-            className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
-          >
-            {loading ? "Generating…" : "Generate"}
-          </button>
-        </div>
-        {error ? <p className="mt-3 text-sm text-danger">{error}</p> : null}
-      </div>
-
-      {output !== null ? (
-        <div className="mt-6 rounded-2xl border border-border bg-surface p-6 shadow-sm">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-medium text-foreground">Output</h2>
-            <button
-              onClick={() => navigator.clipboard.writeText(output)}
-              className="text-sm font-medium text-accent underline underline-offset-4"
+          {data.tables.map((t) => (
+            <Panel
+              key={t.key}
+              title={t.title}
+              right={
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                      t.available ? "bg-success-soft text-success" : "bg-warning-soft text-warning"
+                    }`}
+                  >
+                    {t.available ? "ready" : "missing data"}
+                  </span>
+                  {t.export_tables.map((et) => (
+                    <button
+                      key={et}
+                      onClick={() => exportTable(et, t.title)}
+                      disabled={!t.available || busyTable === et}
+                      className="rounded-full border border-border px-3 py-1 text-xs hover:bg-muted-surface disabled:opacity-40"
+                    >
+                      {busyTable === et ? "…" : `Export ${et}`}
+                    </button>
+                  ))}
+                </div>
+              }
             >
-              Copy
-            </button>
-          </div>
-          <pre className="mt-3 max-h-[28rem] overflow-auto whitespace-pre-wrap text-xs text-foreground">{output || "(no rows)"}</pre>
+              {!t.available ? (
+                <p className="text-sm text-muted">{t.missing_reason}</p>
+              ) : (
+                <div className="space-y-4">
+                  {t.sections.map((s) => (
+                    <div key={s.name}>
+                      {t.sections.length > 1 ? (
+                        <p className="mb-2 text-xs font-medium text-muted">{s.name} · {s.row_count} rows</p>
+                      ) : (
+                        <p className="mb-2 text-xs text-muted">{s.row_count} rows</p>
+                      )}
+                      <DataTable
+                        headers={s.headers}
+                        rows={s.rows.map((r) => r.map((c) => (typeof c === "number" ? c.toLocaleString("en-IN") : c)))}
+                      />
+                    </div>
+                  ))}
+                  <p className="text-xs text-muted">
+                    Traceability:{" "}
+                    {Object.entries(t.source_refs)
+                      .filter(([, v]) => v != null && (!Array.isArray(v) || v.length))
+                      .map(([k, v]) => `${k}=${Array.isArray(v) ? `${v.length} refs` : String(v)}`)
+                      .join(" · ") || "—"}
+                  </p>
+                </div>
+              )}
+            </Panel>
+          ))}
+
+          {output ? (
+            <Panel
+              title={output.title}
+              right={
+                <button
+                  onClick={() => navigator.clipboard.writeText(output.text)}
+                  className="text-xs font-medium text-accent underline underline-offset-4"
+                >
+                  Copy
+                </button>
+              }
+            >
+              <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap text-xs text-foreground">
+                {output.text || "(no rows)"}
+              </pre>
+            </Panel>
+          ) : null}
         </div>
-      ) : null}
+      )}
     </div>
   );
-}
-
-function tableToExperimentType(table: ExportTable): string | null {
-  const map: Record<ExportTable, string | null> = {
-    forecasting_performance: null,
-    churn_performance: null,
-    decision_architecture: "decision_architecture",
-    ablation: "ablation",
-    causal_evaluation: "causal",
-    digital_twin_evaluation: "digital_twin",
-  };
-  return map[table];
 }
