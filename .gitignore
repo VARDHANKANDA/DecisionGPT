@@ -45,3 +45,6 @@ postgres-data/
 
 # Alembic
 backend/alembic/versions/__pycache__/
+
+# Research Console dataset uploads (runtime data)
+data/research_uploads/
