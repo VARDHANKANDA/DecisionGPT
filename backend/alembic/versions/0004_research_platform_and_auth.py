@@ -8,6 +8,7 @@ from typing import Sequence, Union
 
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy.dialects import postgresql
 
 revision: str = "0004"
 down_revision: Union[str, None] = "0003"
@@ -15,11 +16,15 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
+def _uuid():
+    return postgresql.UUID(as_uuid=False)
+
+
 def upgrade() -> None:
     # --- users -------------------------------------------------------------
     op.create_table(
         "users",
-        sa.Column("id", sa.String(36), primary_key=True),
+        sa.Column("id", _uuid(), primary_key=True),
         sa.Column("email", sa.String(255), nullable=False),
         sa.Column("password_hash", sa.String(255), nullable=False),
         sa.Column("full_name", sa.String(255)),
@@ -31,13 +36,16 @@ def upgrade() -> None:
     op.create_index("ix_users_email", "users", ["email"], unique=True)
     op.create_index("ix_users_role", "users", ["role"])
 
-    op.add_column("businesses", sa.Column("owner_user_id", sa.String(36), nullable=True))
+    op.add_column(
+        "businesses",
+        sa.Column("owner_user_id", _uuid(), sa.ForeignKey("users.id", ondelete="SET NULL"), nullable=True),
+    )
     op.create_index("ix_businesses_owner_user_id", "businesses", ["owner_user_id"])
 
     # --- research datasets ----------------------------------------------
     op.create_table(
         "research_datasets",
-        sa.Column("id", sa.String(36), primary_key=True),
+        sa.Column("id", _uuid(), primary_key=True),
         sa.Column("dataset_id", sa.String(120), nullable=False),
         sa.Column("name", sa.String(255), nullable=False),
         sa.Column("description", sa.Text()),
@@ -52,8 +60,8 @@ def upgrade() -> None:
 
     op.create_table(
         "research_dataset_versions",
-        sa.Column("id", sa.String(36), primary_key=True),
-        sa.Column("dataset_id", sa.String(36), sa.ForeignKey("research_datasets.id", ondelete="CASCADE"), nullable=False),
+        sa.Column("id", _uuid(), primary_key=True),
+        sa.Column("dataset_id", _uuid(), sa.ForeignKey("research_datasets.id", ondelete="CASCADE"), nullable=False),
         sa.Column("version", sa.Integer(), nullable=False),
         sa.Column("file_type", sa.String(16), nullable=False),
         sa.Column("storage_path", sa.String(500), nullable=False),
@@ -74,8 +82,8 @@ def upgrade() -> None:
     # --- training runs -------------------------------------------------
     op.create_table(
         "training_runs",
-        sa.Column("id", sa.String(36), primary_key=True),
-        sa.Column("dataset_version_id", sa.String(36), sa.ForeignKey("research_dataset_versions.id", ondelete="SET NULL")),
+        sa.Column("id", _uuid(), primary_key=True),
+        sa.Column("dataset_version_id", _uuid(), sa.ForeignKey("research_dataset_versions.id", ondelete="SET NULL")),
         sa.Column("platform_domain", sa.String(60)),
         sa.Column("dataset_version_label", sa.String(120)),
         sa.Column("task", sa.String(40), nullable=False),
@@ -88,7 +96,7 @@ def upgrade() -> None:
         sa.Column("started_at", sa.DateTime(timezone=True)),
         sa.Column("completed_at", sa.DateTime(timezone=True)),
         sa.Column("metrics_json", sa.JSON(), nullable=False),
-        sa.Column("model_id", sa.String(36), sa.ForeignKey("models.id", ondelete="SET NULL")),
+        sa.Column("model_id", _uuid(), sa.ForeignKey("models.id", ondelete="SET NULL")),
         sa.Column("model_name", sa.String(100)),
         sa.Column("model_version", sa.String(50)),
         sa.Column("artifact_path", sa.String(500)),

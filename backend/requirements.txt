@@ -7,6 +7,7 @@ alembic==1.13.3
 psycopg[binary]==3.2.2
 python-multipart==0.0.9
 openpyxl==3.1.5
+pyarrow==17.0.0  # optional: enables Parquet dataset uploads in the Research Console
 pandas==2.2.3
 numpy==1.26.4
 scikit-learn==1.5.2
