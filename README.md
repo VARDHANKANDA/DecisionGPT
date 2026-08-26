@@ -6,7 +6,7 @@
 [![Next.js](https://img.shields.io/badge/Frontend-Next.js_16_(Turbopack)-000000.svg?style=flat&logo=next.js&logoColor=white)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6.svg?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/Tests-114%2F114%20Passing-brightgreen.svg?style=flat&logo=pytest&logoColor=white)](file:///tests)
+[![Tests](https://img.shields.io/badge/Tests-177%20Passing-brightgreen.svg?style=flat&logo=pytest&logoColor=white)](file:///tests)
 [![Explainable AI](https://img.shields.io/badge/XAI-SHAP_0.52-FF6F00.svg?style=flat)](https://github.com/shap/shap)
 [![Machine Learning](https://img.shields.io/badge/ML-XGBoost_3.4-EB4034.svg?style=flat)](https://xgboost.readthedocs.io)
 
@@ -188,7 +188,7 @@ cd ..
 # 3. Bootstrap Local SQLite Database
 DATABASE_URL=sqlite:///./backend/dev.db python backend/scripts/dev_bootstrap_sqlite.py
 
-# 4. Train and Register Baseline ML Models
+# 4. Train and Register Baseline ML Models (required — models/ holds no artifacts on a fresh clone)
 python -m ml.training.train_forecasting
 python -m ml.training.train_churn
 
@@ -345,7 +345,7 @@ DecisionGPT/
 │   └── training/             # Forecasting & Churn model training scripts
 ├── experiments/              # Experiment configurations & serialized outputs
 ├── models/                   # Local model registry storage
-└── tests/                    # 114 automated pytest test suites
+└── tests/                    # automated pytest suites (177 passing)
 ```
 
 ---

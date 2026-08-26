@@ -5,6 +5,8 @@ Postgres instance — see backend/app/db/types.py's cross-dialect GUID type
 and AGENTS.md. Production always runs on Postgres (docker-compose.yml);
 SQLite here is a test-only substitute so the suite works without Docker.
 """
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -14,6 +16,23 @@ from sqlalchemy.pool import StaticPool
 import app.models  # noqa: F401 - populate Base.metadata
 from app.db.session import Base, get_db
 from app.main import app as fastapi_app
+
+_REGISTRY_INDEX = Path(__file__).resolve().parents[1] / "models" / "registry_index.jsonl"
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _ensure_baseline_models():
+    """Many tests sync the file model registry and then run forecasting /
+    churn / decision code. The trained artifacts are build products, not
+    source (``models/`` is gitignored), so on a fresh checkout train the
+    deterministic (seed=42) baselines once before the suite runs."""
+    if _REGISTRY_INDEX.exists():
+        return
+    from ml.training.train_churn import run as train_churn
+    from ml.training.train_forecasting import run as train_forecasting
+
+    train_forecasting(random_seed=42)
+    train_churn(random_seed=42)
 
 
 @pytest.fixture()
