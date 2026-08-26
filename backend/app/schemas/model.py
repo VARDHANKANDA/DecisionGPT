@@ -17,3 +17,8 @@ class ModelOut(BaseModel):
     model_path: str
     status: str
     created_at: datetime
+    task: str | None = None
+    features_json: list | None = None
+    training_run_id: str | None = None
+    source: str | None = None
+    promoted_at: datetime | None = None

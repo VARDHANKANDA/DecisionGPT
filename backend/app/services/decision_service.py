@@ -22,7 +22,13 @@ from datetime import timedelta
 import pandas as pd
 from sqlalchemy.orm import Session
 
-from app.agents import business_analyst, financial_advisor, risk_manager, strategy_optimizer
+from app.agents import (
+    business_analyst,
+    financial_advisor,
+    risk_manager,
+    single_agent,
+    strategy_optimizer,
+)
 from app.agents.base import AgentEvaluationResult, PeerReview
 from app.agents.strategy_optimizer import ResolvedDecision
 from app.analytics import (
@@ -63,6 +69,31 @@ ACTION_LABELS = {"marketing_change": "Marketing", "price_change": "Price", "inve
 
 
 @dataclass
+class PipelineOptions:
+    """Component toggles for ablation studies (docs/PRD.md §14). Default =
+    Full DecisionGPT. Every toggle runs the *real* pipeline with that
+    component removed — never a fabricated delta."""
+
+    use_causal_graph: bool = True
+    use_multi_agent: bool = True  # False -> single blended agent, no debate
+    use_memory: bool = True
+    use_explainability: bool = True  # informational only; doesn't change the selected strategy
+
+    def label(self) -> str:
+        off = [
+            name
+            for name, on in (
+                ("causal_graph", self.use_causal_graph),
+                ("multi_agent", self.use_multi_agent),
+                ("memory", self.use_memory),
+                ("explainability", self.use_explainability),
+            )
+            if not on
+        ]
+        return "full" if not off else "without_" + "+".join(off)
+
+
+@dataclass
 class StrategyAnalysis:
     strategy_id: str
     strategy_name: str
@@ -76,20 +107,24 @@ class StrategyAnalysis:
     output: SimulationOutput
 
     @property
-    def business_analyst(self) -> AgentEvaluationResult:
-        return self.round1["business_analyst"]
+    def business_analyst(self) -> AgentEvaluationResult | None:
+        return self.round1.get("business_analyst")
 
     @property
-    def financial_advisor(self) -> AgentEvaluationResult:
-        return self.round1["financial_advisor"]
+    def financial_advisor(self) -> AgentEvaluationResult | None:
+        return self.round1.get("financial_advisor")
 
     @property
-    def risk_manager(self) -> AgentEvaluationResult:
-        return self.round1["risk_manager"]
+    def risk_manager(self) -> AgentEvaluationResult | None:
+        return self.round1.get("risk_manager")
 
     @property
     def strategy_score(self) -> float:
         return self.resolved.final_score
+
+    @property
+    def is_multi_agent(self) -> bool:
+        return "single_agent" not in self.round1
 
 
 @dataclass
@@ -191,7 +226,40 @@ def _evaluation_json(result: AgentEvaluationResult, round_no: int) -> dict:
     }
 
 
-def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
+def _score_candidate(
+    output: SimulationOutput, goal: Goal, ctx, options: PipelineOptions
+) -> tuple[dict[str, AgentEvaluationResult], list[PeerReview], ResolvedDecision]:
+    """Round 1 + round 2 + optimizer for a single simulated candidate,
+    honouring the pipeline component toggles."""
+    agent_ctx = ctx if (ctx is not None and getattr(ctx, "built", False) and options.use_causal_graph) else None
+    causal_factor = (
+        causal_context_service.evidence_confidence_factor(ctx)
+        if (ctx is not None and options.use_causal_graph)
+        else 1.0
+    )
+
+    if not options.use_multi_agent:
+        sa = single_agent.evaluate(output)
+        resolved = strategy_optimizer.resolve_single(sa, output, causal_evidence_factor=causal_factor)
+        return {"single_agent": sa}, [], resolved
+
+    ba = business_analyst.evaluate(output, goal, causal_context=agent_ctx)
+    fa = financial_advisor.evaluate(output, goal, causal_context=agent_ctx)
+    rm = risk_manager.evaluate(output, goal, causal_context=agent_ctx)
+    round1 = {"business_analyst": ba, "financial_advisor": fa, "risk_manager": rm}
+    reviews = [
+        risk_manager.review(rm, {"business_analyst": ba, "financial_advisor": fa}, output),
+        financial_advisor.review(fa, {"business_analyst": ba, "risk_manager": rm}, output),
+        business_analyst.review(ba, {"financial_advisor": fa, "risk_manager": rm}, output),
+    ]
+    resolved = strategy_optimizer.resolve(round1, reviews, output, causal_evidence_factor=causal_factor)
+    return round1, reviews, resolved
+
+
+def analyze_goal(
+    db: Session, business_id: str, goal_id: str, options: PipelineOptions | None = None
+) -> DecisionResult:
+    options = options or PipelineOptions()
     goal = db.get(Goal, goal_id)
     if goal is None or goal.business_id != business_id:
         raise NotFoundError(f"Goal {goal_id} not found for this business.")
@@ -230,13 +298,21 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         db.flush()
         candidate_strategy_ids.append(strategy_row.id)
 
-        ctx = causal_context_service.get_causal_context(
-            db, business_id, [a["type"] for a in cand.actions], extra_targets=cand.targets
-        )
+        if options.use_causal_graph:
+            ctx = causal_context_service.get_causal_context(
+                db, business_id, [a["type"] for a in cand.actions], extra_targets=cand.targets
+            )
+        else:
+            ctx = causal_context_service.disabled_context()
 
         try:
             simulation = digital_twin_service.simulate_strategy(
-                db, business_id, actions, goal_id=goal_id, strategy_id=strategy_row.id, causal_context=ctx
+                db,
+                business_id,
+                actions,
+                goal_id=goal_id,
+                strategy_id=strategy_row.id,
+                causal_context=(ctx if options.use_causal_graph else None),
             )
         except AppError as exc:
             skipped.append(f"{cand.name}: {exc.message}")
@@ -245,27 +321,10 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         simulation_ids.append(simulation.id)
         model_versions["forecasting"] = f"{simulation.output.model_name}:{simulation.output.model_version}"
 
-        ba = business_analyst.evaluate(simulation.output, goal, causal_context=ctx)
-        fa = financial_advisor.evaluate(simulation.output, goal, causal_context=ctx)
-        rm = risk_manager.evaluate(simulation.output, goal, causal_context=ctx)
-        round1 = {"business_analyst": ba, "financial_advisor": fa, "risk_manager": rm}
-
-        # Round 2 — each agent sees the other two's round-1 assessments.
-        reviews = [
-            risk_manager.review(rm, {"business_analyst": ba, "financial_advisor": fa}, simulation.output),
-            financial_advisor.review(fa, {"business_analyst": ba, "risk_manager": rm}, simulation.output),
-            business_analyst.review(ba, {"financial_advisor": fa, "risk_manager": rm}, simulation.output),
-        ]
-
-        resolved = strategy_optimizer.resolve(
-            round1,
-            reviews,
-            simulation.output,
-            causal_evidence_factor=causal_context_service.evidence_confidence_factor(ctx),
-        )
+        round1, reviews, resolved = _score_candidate(simulation.output, goal, ctx, options)
 
         # Persist per-strategy agent evaluations (round 1 + round 2).
-        for r in (ba, fa, rm):
+        for r in round1.values():
             db.add(
                 AgentEvaluation(
                     strategy_id=strategy_row.id,
@@ -321,7 +380,7 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
             agent.agent,
             {"key_points": agent.key_points, "risks": agent.risks, "assumptions": agent.assumptions},
         )
-        for agent in (best.business_analyst, best.financial_advisor, best.risk_manager)
+        for agent in best.round1.values()
     }
     base_reasoning = llm.generate_strategy_explanation(
         {
@@ -342,8 +401,12 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
 
     causal_graph_version = best.causal_context.graph_version or _latest_causal_graph_version(db, business_id)
 
-    memory_insights = memory_service.get_relevant_outcome_insights(
-        db, business_id, action_types=[a["type"] for a in best.actions]
+    memory_insights = (
+        memory_service.get_relevant_outcome_insights(
+            db, business_id, action_types=[a["type"] for a in best.actions]
+        )
+        if options.use_memory
+        else []
     )
 
     uncertainty = {
@@ -355,7 +418,8 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         "confidence_basis": best.resolved.confidence_basis,
     }
     debate = {
-        "rounds": 2,
+        "rounds": 2 if best.is_multi_agent else 1,
+        "multi_agent": best.is_multi_agent,
         "selected_strategy_id": best.strategy_id,
         "round1": {a: _evaluation_json(r, 1) for a, r in best.round1.items()},
         "round2_reviews": [rv.to_dict() for rv in best.reviews],
@@ -379,6 +443,13 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         "notes": gen.notes,
         "goal_projection": goal_projection,
     }
+    pipeline_options = {
+        "use_causal_graph": options.use_causal_graph,
+        "use_multi_agent": options.use_multi_agent,
+        "use_memory": options.use_memory,
+        "use_explainability": options.use_explainability,
+        "label": options.label(),
+    }
 
     decision_row = Decision(
         business_id=business_id,
@@ -397,7 +468,7 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
         assumptions_json=best.output.assumptions,
         uncertainty_json=uncertainty,
         causal_context_json=best.causal_context.to_dict(),
-        debate_json=debate,
+        debate_json={**debate, "pipeline_options": pipeline_options},
         strategy_generation_json=strategy_generation,
         prompt_version=LLM_PROMPT_VERSION,
     )
@@ -406,7 +477,7 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
 
     # AgentRun rows for the selected strategy — round 1, round 2, optimizer.
     agent_run_ids: list[str] = []
-    for r in (best.business_analyst, best.financial_advisor, best.risk_manager):
+    for r in best.round1.values():
         run = AgentRun(
             business_id=business_id,
             decision_id=decision_row.id,
@@ -443,14 +514,15 @@ def analyze_goal(db: Session, business_id: str, goal_id: str) -> DecisionResult:
     agent_run_ids.append(opt_run.id)
     decision_row.agent_run_ids_json = agent_run_ids
 
-    memory_service.log_memory(
-        db,
-        business_id,
-        "decision",
-        f"Decision made: selected '{best.strategy_name}' (score {best.resolved.final_score}, "
-        f"confidence {confidence}, risk {risk_level}).",
-        metadata={"decision_id": decision_row.id, "goal_id": goal_id},
-    )
+    if options.use_memory:
+        memory_service.log_memory(
+            db,
+            business_id,
+            "decision",
+            f"Decision made: selected '{best.strategy_name}' (score {best.resolved.final_score}, "
+            f"confidence {confidence}, risk {risk_level}).",
+            metadata={"decision_id": decision_row.id, "goal_id": goal_id},
+        )
 
     db.commit()
     db.refresh(decision_row)

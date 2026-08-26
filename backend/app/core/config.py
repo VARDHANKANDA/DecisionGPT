@@ -22,10 +22,13 @@ class Settings(BaseSettings):
     # Frontend / CORS
     frontend_origin: str = "http://localhost:3000"
 
-    # LLM provider (abstracted — see app/services/llm_service.py)
-    llm_provider: Optional[str] = None
+    # LLM provider (abstracted — see app/services/llm_service.py).
+    # Leave llm_api_key unset to run in deterministic template mode.
+    llm_provider: Optional[str] = None  # openai | openai_compatible | anthropic
     llm_api_key: Optional[str] = None
     llm_model: Optional[str] = None
+    llm_base_url: Optional[str] = None  # defaults per provider
+    llm_timeout_seconds: int = 30
 
     # Research console
     research_console_enabled: bool = True
@@ -33,6 +36,16 @@ class Settings(BaseSettings):
 
     # Model registry
     model_registry_path: str = "./models"
+
+    # Research platform: where uploaded research datasets are stored
+    research_data_path: str = "./data/research_uploads"
+
+    # Auth (Phase 4). When auth_enabled is False the API runs open (local
+    # dev / tests); when True every SME + research route requires a bearer
+    # token issued by /api/v1/auth/login.
+    auth_enabled: bool = False
+    jwt_secret: str = "change-me-jwt-secret"
+    jwt_ttl_seconds: int = 60 * 60 * 12
 
     @property
     def llm_enabled(self) -> bool:

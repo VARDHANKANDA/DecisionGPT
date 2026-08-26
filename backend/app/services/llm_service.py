@@ -8,10 +8,37 @@ mode — see docs/AI_MODULE_SPECIFICATION.md §8 and §13 "No Fabrication":
 the LLM is never the source of truth for numbers, so a missing LLM key
 degrades explanation *quality*, not correctness.
 """
+import json
 import re
 from dataclasses import dataclass, field
 
 from app.core.config import get_settings
+
+_NARRATION_SYSTEM = (
+    "You are a business analytics writing assistant for DecisionGPT. You are given "
+    "structured, already-computed results (numbers, scores, model outputs). Your ONLY job "
+    "is to phrase them clearly and concisely for an SME owner. You must NEVER invent, "
+    "estimate, or alter any number, forecast, score, probability, or causal claim. If a "
+    "value is not in the input, do not mention it. 2-4 sentences, plain English."
+)
+
+# Constraint tokens strategy_generation_service understands.
+_CONSTRAINT_PATTERNS = {
+    "no_price_increase": [r"without raising price", r"don'?t raise price", r"no price increase", r"keep price", r"not increase price"],
+    "no_price_decrease": [r"without (?:cutting|lowering|dropping) price", r"no discount", r"don'?t discount", r"no price cut"],
+    "no_price_change": [r"without changing price", r"keep prices the same", r"hold price"],
+    "no_marketing_increase": [r"without (?:increasing|raising) (?:marketing|ad) (?:budget|spend)", r"keep (?:the )?(?:marketing|ad) budget", r"same marketing budget", r"no extra (?:marketing|ad) spend"],
+    "no_marketing_decrease": [r"without (?:cutting|reducing) (?:marketing|ad) (?:budget|spend)"],
+}
+
+
+def extract_constraints(text: str) -> list[str]:
+    lowered = text.lower()
+    found = []
+    for token, patterns in _CONSTRAINT_PATTERNS.items():
+        if any(re.search(p, lowered) for p in patterns):
+            found.append(token)
+    return found
 
 OBJECTIVE_KEYWORDS: dict[str, list[str]] = {
     "increase_profit": ["profit", "margin"],
@@ -68,8 +95,53 @@ class LLMService:
                 pass  # fall through to deterministic parsing rather than fail the request
         return self._parse_goal_rule_based(text)
 
-    def _parse_goal_via_llm(self, text: str) -> ParsedGoal:  # pragma: no cover - no provider wired up yet
-        raise NotImplementedError("No LLM provider is wired up yet; falling back to rule-based parsing.")
+    def _client(self):
+        from app.services.llm_provider import LLMClient
+
+        return LLMClient()
+
+    def _parse_goal_via_llm(self, text: str) -> ParsedGoal:
+        """Ask the LLM only to *structure* the sentence. Every field is then
+        re-validated by goal_service against real data — the LLM never gets
+        to assert a KPI value or that enough data exists."""
+        system = (
+            "Extract a structured business goal from the user's sentence. Respond with a JSON object "
+            "with keys: objective (one of: increase_revenue, increase_profit, increase_sales, "
+            "reduce_churn, improve_marketing_roi, reduce_inventory_risk, or null), target_value "
+            "(number or null), target_unit ('percent' or null), time_horizon_months (integer or null), "
+            "constraints (array of any of: no_price_increase, no_price_decrease, no_price_change, "
+            "no_marketing_increase, no_marketing_decrease). Do not guess values that are not stated."
+        )
+        data = self._client().complete_json(system, text, max_tokens=250)
+        objective = data.get("objective")
+        if objective not in OBJECTIVE_TO_KPI:
+            objective = None
+        tv = data.get("target_value")
+        target_value = float(tv) if isinstance(tv, (int, float)) else None
+        unit = data.get("target_unit")
+        target_unit = "percent" if unit == "percent" and target_value is not None else None
+        th = data.get("time_horizon_months")
+        time_horizon = int(th) if isinstance(th, (int, float)) and th else None
+        constraints = [c for c in (data.get("constraints") or []) if c in _CONSTRAINT_PATTERNS]
+        if not constraints:
+            constraints = extract_constraints(text)
+
+        warnings: list[str] = []
+        if objective is None:
+            warnings.append("LLM could not map the text to a supported goal type.")
+        if target_value is None:
+            warnings.append("LLM found no measurable target.")
+
+        return ParsedGoal(
+            objective=objective,
+            target_value=target_value,
+            target_unit=target_unit,
+            primary_kpi=OBJECTIVE_TO_KPI.get(objective) if objective else None,
+            time_horizon_months=time_horizon,
+            constraints=constraints,
+            source_text=text,
+            parse_warnings=warnings,
+        )
 
     def _parse_goal_rule_based(self, text: str) -> ParsedGoal:
         lowered = text.lower()
@@ -109,6 +181,7 @@ class LLMService:
             target_unit=target_unit,
             primary_kpi=OBJECTIVE_TO_KPI.get(objective) if objective else None,
             time_horizon_months=time_horizon_months,
+            constraints=extract_constraints(text),
             source_text=text,
             parse_warnings=warnings,
         )
@@ -124,8 +197,13 @@ class LLMService:
                 pass
         return self._generate_strategy_explanation_template(context)
 
-    def _generate_strategy_explanation_via_llm(self, context: dict) -> str:  # pragma: no cover
-        raise NotImplementedError("No LLM provider is wired up yet.")
+    def _generate_strategy_explanation_via_llm(self, context: dict) -> str:
+        return self._client().complete(
+            _NARRATION_SYSTEM,
+            "Write a short recommendation summary from this structured result (narrate only, "
+            "invent nothing):\n" + json.dumps(context, default=str),
+            max_tokens=250,
+        )
 
     def _generate_strategy_explanation_template(self, context: dict) -> str:
         parts = [f"Strategy: {context.get('strategy_name', 'Unnamed strategy')}."]
@@ -149,8 +227,14 @@ class LLMService:
                 pass
         return self._evaluate_agent_template(agent_name, evaluation)
 
-    def _evaluate_agent_via_llm(self, agent_name: str, evaluation: dict) -> str:  # pragma: no cover
-        raise NotImplementedError("No LLM provider is wired up yet.")
+    def _evaluate_agent_via_llm(self, agent_name: str, evaluation: dict) -> str:
+        return self._client().complete(
+            _NARRATION_SYSTEM,
+            f"Agent: {agent_name}. Turn this agent's structured evaluation into one short "
+            "paragraph for an 'AI Business Review' (narrate only, invent no numbers):\n"
+            + json.dumps(evaluation, default=str),
+            max_tokens=200,
+        )
 
     def _evaluate_agent_template(self, agent_name: str, evaluation: dict) -> str:
         label = agent_name.replace("_", " ").title()
@@ -173,8 +257,18 @@ class LLMService:
                 pass
         return self._generate_business_response_template(context)
 
-    def _generate_business_response_via_llm(self, context: dict) -> str:  # pragma: no cover
-        raise NotImplementedError("No LLM provider is wired up yet.")
+    def _generate_business_response_via_llm(self, context: dict) -> str:
+        # The deterministic template already knows how to phrase each intent
+        # from real numbers; the LLM just makes it more natural. Give it the
+        # template answer as the ground truth to rephrase, so it cannot
+        # drift from the computed figures.
+        grounded = self._generate_business_response_template(context)
+        return self._client().complete(
+            _NARRATION_SYSTEM,
+            "Rephrase this answer to sound natural and helpful. Keep every number and figure "
+            "EXACTLY as written — do not add, remove, or change any number:\n" + grounded,
+            max_tokens=250,
+        )
 
     def _generate_business_response_template(self, context: dict) -> str:
         kind = context.get("type")

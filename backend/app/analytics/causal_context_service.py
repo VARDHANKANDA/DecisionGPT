@@ -95,6 +95,20 @@ class CausalContext:
         }
 
 
+def disabled_context() -> CausalContext:
+    """A causal context for an ablation run where the Dynamic Causal Graph
+    is switched off entirely. ``built=False`` so agents skip all
+    causal-evidence logic and confidence is not causally adjusted."""
+    return CausalContext(
+        graph_id=None,
+        graph_version=None,
+        method="disabled",
+        built=False,
+        summary="Dynamic Causal Graph disabled for this run (ablation).",
+        caveats=["Causal graph disabled — no causal pathways were consulted."],
+    )
+
+
 def _forward_adjacency() -> dict[str, list[str]]:
     adj: dict[str, list[str]] = {}
     for source, target, _direction in HYPOTHESIS_EDGES:
@@ -266,7 +280,12 @@ def evidence_confidence_factor(context: CausalContext) -> float:
     - observational       -> 0.75
     - data_supported      -> 0.9
     - causally_validated  -> 1.0
+
+    When the causal layer was not built/consulted at all (``built=False``),
+    there is nothing to down-weight for, so this returns 1.0.
     """
+    if not context.built:
+        return 1.0
     return {
         "assumed": 0.6,
         "observational": 0.75,

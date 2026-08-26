@@ -1,0 +1,79 @@
+"""Phase 5 — LLM wiring. No network: the provider client is monkeypatched.
+Verifies (a) template mode when no key, (b) the abstraction actually calls
+the provider when a key is set, (c) provider failures degrade gracefully.
+"""
+import pytest
+
+from app.services import llm_service
+from app.services.llm_service import LLMService, extract_constraints
+
+
+def test_no_api_key_uses_deterministic_templates(monkeypatch):
+    monkeypatch.setattr(LLMService, "enabled", property(lambda self: False))
+    svc = LLMService()
+    parsed = svc.parse_goal("Increase profit by 15% in 3 months")
+    assert parsed.objective == "increase_profit"
+    assert parsed.target_value == 15
+    text = svc.generate_strategy_explanation({"strategy_name": "Price +5%", "risk_level": "low"})
+    assert "Price +5%" in text
+
+
+def test_constraint_extraction_rules():
+    assert "no_price_increase" in extract_constraints("grow revenue without raising prices")
+    assert "no_marketing_increase" in extract_constraints("keep the marketing budget the same")
+    assert extract_constraints("increase sales") == []
+
+
+class _FakeClient:
+    def __init__(self):
+        self.calls = []
+
+    def complete(self, system, user, **kw):
+        self.calls.append(("complete", user))
+        return "LLM-NARRATED"
+
+    def complete_json(self, system, user, **kw):
+        self.calls.append(("json", user))
+        return {
+            "objective": "increase_revenue",
+            "target_value": 20,
+            "target_unit": "percent",
+            "time_horizon_months": 3,
+            "constraints": ["no_price_increase"],
+        }
+
+
+def test_llm_enabled_path_calls_provider(monkeypatch):
+    fake = _FakeClient()
+    monkeypatch.setattr(LLMService, "enabled", property(lambda self: True))
+    monkeypatch.setattr(LLMService, "_client", lambda self: fake)
+
+    svc = LLMService()
+    parsed = svc.parse_goal("bump revenue a lot")
+    assert parsed.objective == "increase_revenue"
+    assert parsed.target_value == 20
+    assert parsed.constraints == ["no_price_increase"]
+
+    narrated = svc.evaluate_agent("risk_manager", {"key_points": ["x"], "risks": []})
+    assert narrated == "LLM-NARRATED"
+    assert any(kind == "json" for kind, _ in fake.calls)
+
+
+def test_llm_failure_falls_back_to_template(monkeypatch):
+    class _Boom:
+        def complete(self, *a, **k):
+            raise RuntimeError("network down")
+
+        def complete_json(self, *a, **k):
+            raise RuntimeError("network down")
+
+    monkeypatch.setattr(LLMService, "enabled", property(lambda self: True))
+    monkeypatch.setattr(LLMService, "_client", lambda self: _Boom())
+    svc = LLMService()
+
+    # Goal parsing still works via the rule-based fallback.
+    parsed = svc.parse_goal("Increase profit by 15% in 3 months")
+    assert parsed.objective == "increase_profit"
+    # Narration falls back to the template.
+    text = svc.generate_strategy_explanation({"strategy_name": "Marketing +10%"})
+    assert "Marketing +10%" in text

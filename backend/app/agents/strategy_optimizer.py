@@ -58,6 +58,34 @@ class ResolvedDecision:
         }
 
 
+def resolve_single(sa: AgentEvaluationResult, output, causal_evidence_factor: float = 1.0) -> ResolvedDecision:
+    """Ablation 'without Multi-Agent' — a single blended agent, no debate.
+    Confidence uses the same documented components as the multi-agent path,
+    minus the inter-agent agreement term (there's only one agent)."""
+    band = output.revenue_upper_bound - output.revenue_lower_bound
+    uncertainty_ratio = band / output.expected_revenue if output.expected_revenue > 1e-9 else 1.0
+    uncertainty_penalty = min(0.5, uncertainty_ratio * 0.2)
+    confidence = round(
+        max(0.0, min(1.0, sa.score * causal_evidence_factor * (1.0 - uncertainty_penalty))), 4
+    )
+    return ResolvedDecision(
+        final_score=round(sa.score, 4),
+        round1_scores={"single_agent": sa.score},
+        round2_scores={"single_agent": sa.score},
+        conflicts=[],
+        resolution_rationale="Single-agent baseline (multi-agent debate disabled): score taken directly.",
+        confidence=confidence,
+        confidence_basis={
+            "single_agent_score": round(sa.score, 4),
+            "causal_evidence_factor": round(causal_evidence_factor, 4),
+            "uncertainty_penalty": round(uncertainty_penalty, 4),
+            "agreement_factor": 1.0,
+            "risk_factor": round(sa.score, 4),
+            "formula": "single_agent_score * causal_evidence * (1 - uncertainty_penalty)",
+        },
+    )
+
+
 def resolve(
     round1: dict[str, AgentEvaluationResult],
     reviews: list[PeerReview],

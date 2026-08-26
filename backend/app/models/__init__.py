@@ -16,10 +16,16 @@ from app.models.marketing import MarketingCampaign
 from app.models.memory import BusinessMemory
 from app.models.ml_model import MLModel
 from app.models.product import Product
+from app.models.research import ResearchDataset, ResearchDatasetVersion, TrainingRun
 from app.models.sale import Sale
 from app.models.strategy import Strategy
+from app.models.user import User
 
 __all__ = [
+    "ResearchDataset",
+    "ResearchDatasetVersion",
+    "TrainingRun",
+    "User",
     "AgentEvaluation",
     "AgentRun",
     "MarketBenchmark",

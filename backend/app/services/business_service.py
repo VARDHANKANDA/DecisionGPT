@@ -5,8 +5,8 @@ from app.models.business import Business
 from app.schemas.business import BusinessCreate, BusinessUpdate
 
 
-def create_business(db: Session, payload: BusinessCreate) -> Business:
-    business = Business(**payload.model_dump())
+def create_business(db: Session, payload: BusinessCreate, owner_user_id: str | None = None) -> Business:
+    business = Business(**payload.model_dump(), owner_user_id=owner_user_id)
     db.add(business)
     db.commit()
     db.refresh(business)

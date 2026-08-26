@@ -18,7 +18,9 @@ from pathlib import Path
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.errors import NotFoundError
 from app.models.ml_model import MLModel
+from app.models.common import utcnow
 
 REGISTRY_INDEX_PATH = Path(__file__).resolve().parents[3] / "models" / "registry_index.jsonl"
 
@@ -76,11 +78,48 @@ def sync_from_file_registry(db: Session, index_path: Path = REGISTRY_INDEX_PATH)
     return synced
 
 
-def list_models(db: Session, model_type: str | None = None) -> list[MLModel]:
-    stmt = select(MLModel).order_by(MLModel.model_name)
+def list_models(
+    db: Session, model_type: str | None = None, status: str | None = None
+) -> list[MLModel]:
+    stmt = select(MLModel).order_by(MLModel.model_name, MLModel.created_at.desc())
     if model_type:
         stmt = stmt.where(MLModel.model_type == model_type)
+    if status:
+        stmt = stmt.where(MLModel.status == status)
     return list(db.execute(stmt).scalars())
+
+
+def get_model(db: Session, model_id: str) -> MLModel:
+    model = db.get(MLModel, model_id)
+    if model is None:
+        raise NotFoundError(f"Model {model_id} not found.")
+    return model
+
+
+def promote_model(db: Session, model_id: str) -> MLModel:
+    """Make ``model_id`` the ACTIVE model for its model_name and archive
+    every other row for that name. Only ACTIVE models are used by the
+    production DecisionGPT pipeline (docs/PRD.md §17)."""
+    model = get_model(db, model_id)
+    siblings = db.execute(
+        select(MLModel).where(MLModel.model_name == model.model_name, MLModel.id != model.id)
+    ).scalars()
+    for other in siblings:
+        if other.status == "active":
+            other.status = "archived"
+    model.status = "active"
+    model.promoted_at = utcnow()
+    db.commit()
+    db.refresh(model)
+    return model
+
+
+def archive_model(db: Session, model_id: str) -> MLModel:
+    model = get_model(db, model_id)
+    model.status = "archived"
+    db.commit()
+    db.refresh(model)
+    return model
 
 
 def get_active_model(db: Session, model_name: str) -> MLModel | None:

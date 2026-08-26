@@ -27,6 +27,65 @@ from ml.training.baselines import NaiveLagForecaster
 RANDOM_SEED = 42
 RESULTS_DIR = Path(__file__).resolve().parents[2] / "experiments" / "results"
 
+SUPPORTED_MODEL_TYPES = ("naive", "linear", "xgboost")
+REQUIRED_COLUMNS = ["series_id", "date", TARGET_COLUMN, "price", "marketing_spend", "promotion_flag"]
+
+
+def _build_model(model_type: str, random_seed: int, params: dict | None):
+    params = params or {}
+    if model_type == "naive":
+        return NaiveLagForecaster(), {}
+    if model_type == "linear":
+        return LinearRegression(), {}
+    if model_type == "xgboost":
+        cfg = {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05, **params}
+        return (
+            XGBRegressor(random_state=random_seed, objective="reg:squarederror", **cfg),
+            cfg,
+        )
+    raise ValueError(f"Unsupported forecasting model_type {model_type!r} (expected {SUPPORTED_MODEL_TYPES}).")
+
+
+def train_one(df, model_type: str, random_seed: int = RANDOM_SEED, params: dict | None = None) -> dict:
+    """Train + evaluate a single forecasting model on an arbitrary raw
+    dataframe (Research Console Training Center). The df must carry the
+    columns in ``REQUIRED_COLUMNS``. Returns the fitted model, its test
+    metrics, and the feature/target contract used — nothing is persisted
+    here (the caller registers the artifact)."""
+    missing = [c for c in REQUIRED_COLUMNS if c not in df.columns]
+    if missing:
+        raise ValueError(f"Forecasting training needs columns {missing} that are not in the dataset.")
+
+    cleaned = clean_dataframe(df, date_columns=["date"])
+    featured = build_forecasting_features(cleaned)
+    if len(featured) < 30:
+        raise ValueError(f"Only {len(featured)} usable rows after feature engineering — need at least 30.")
+    train, val, test = chronological_split(featured, "date")
+    if len(train) == 0 or len(test) == 0:
+        raise ValueError("Chronological split produced an empty train or test partition.")
+
+    X_train, y_train = train[FEATURE_COLUMNS], train[TARGET_COLUMN]
+    X_test, y_test = test[FEATURE_COLUMNS], test[TARGET_COLUMN]
+
+    model, resolved_params = _build_model(model_type, random_seed, params)
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    metrics = regression_metrics(y_test.to_numpy(), preds)
+    if model_type == "xgboost":
+        sample = X_test.sample(min(200, len(X_test)), random_state=random_seed)
+        metrics["shap_global_importance"] = tree_shap_global_importance(model, sample)
+
+    return {
+        "model": model,
+        "metrics": metrics,
+        "parameters": resolved_params,
+        "feature_version": "forecasting_v1",
+        "feature_columns": list(FEATURE_COLUMNS),
+        "target": TARGET_COLUMN,
+        "train_rows": len(X_train),
+        "test_rows": len(X_test),
+    }
+
 
 def run(random_seed: int = RANDOM_SEED) -> dict:
     dataset = load_platform_dataset("forecasting", "sales_timeseries.csv")

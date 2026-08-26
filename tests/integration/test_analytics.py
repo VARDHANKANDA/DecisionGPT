@@ -6,35 +6,37 @@ import pandas as pd
 from app.services import model_registry_service
 
 
-def _create_business(client) -> str:
+def _create_business(client, headers: dict | None = None) -> str:
     response = client.post(
         "/api/v1/businesses",
         json={"name": "Analytics Co", "industry": "apparel", "business_type": "D2C", "business_size": "small"},
+        headers=headers,
     )
     assert response.status_code == 201
     return response.json()["id"]
 
 
-def _upload_csv(client, business_id: str, data_type: str, df: pd.DataFrame):
+def _upload_csv(client, business_id: str, data_type: str, df: pd.DataFrame, headers: dict | None = None):
     buf = io.StringIO()
     df.to_csv(buf, index=False)
     response = client.post(
         f"/api/v1/businesses/{business_id}/data/upload?data_type={data_type}",
         files={"file": (f"{data_type}.csv", buf.getvalue().encode(), "text/csv")},
+        headers=headers,
     )
     assert response.status_code == 200, response.text
     assert response.json()["status"] == "completed", response.json()
     return response.json()
 
 
-def _seed_rich_business(client, business_id: str):
+def _seed_rich_business(client, business_id: str, headers: dict | None = None):
     today = date.today()
     start = today - timedelta(days=90)
 
     products = pd.DataFrame(
         [{"Product ID": f"P{i:03d}", "Product Name": f"Item {i}", "Selling Price": 500 + i * 50} for i in range(5)]
     )
-    _upload_csv(client, business_id, "products", products)
+    _upload_csv(client, business_id, "products", products, headers=headers)
 
     customers = pd.DataFrame(
         [
@@ -48,7 +50,7 @@ def _seed_rich_business(client, business_id: str):
             for i in range(40)
         ]
     )
-    _upload_csv(client, business_id, "customers", customers)
+    _upload_csv(client, business_id, "customers", customers, headers=headers)
 
     sales_rows = []
     for day_offset in range(90):
@@ -66,7 +68,7 @@ def _seed_rich_business(client, business_id: str):
                     "Discount": 0,
                 }
             )
-    _upload_csv(client, business_id, "sales", pd.DataFrame(sales_rows))
+    _upload_csv(client, business_id, "sales", pd.DataFrame(sales_rows), headers=headers)
 
     marketing_rows = [
         {
@@ -80,7 +82,7 @@ def _seed_rich_business(client, business_id: str):
         }
         for i in range(0, 90, 3)
     ]
-    _upload_csv(client, business_id, "marketing_campaigns", pd.DataFrame(marketing_rows))
+    _upload_csv(client, business_id, "marketing_campaigns", pd.DataFrame(marketing_rows), headers=headers)
 
 
 def test_kpis_reflect_real_uploaded_data(client):

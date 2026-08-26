@@ -26,6 +26,66 @@ from ml.pipeline.registry import save_model_artifact
 RANDOM_SEED = 42
 RESULTS_DIR = Path(__file__).resolve().parents[2] / "experiments" / "results"
 
+SUPPORTED_MODEL_TYPES = ("logistic_regression", "random_forest", "xgboost")
+REQUIRED_COLUMNS = FEATURE_COLUMNS + [TARGET_COLUMN]
+
+
+def _build_model(model_type: str, random_seed: int, params: dict | None):
+    params = params or {}
+    if model_type == "logistic_regression":
+        cfg = {"max_iter": 1000, "scaled": True, **params}
+        return (
+            make_pipeline(StandardScaler(), LogisticRegression(max_iter=cfg["max_iter"], random_state=random_seed)),
+            cfg,
+        )
+    if model_type == "random_forest":
+        cfg = {"n_estimators": 200, "max_depth": 8, **params}
+        return RandomForestClassifier(random_state=random_seed, **{k: cfg[k] for k in ("n_estimators", "max_depth")}), cfg
+    if model_type == "xgboost":
+        cfg = {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05, **params}
+        return XGBClassifier(random_state=random_seed, eval_metric="logloss", **cfg), cfg
+    raise ValueError(f"Unsupported churn model_type {model_type!r} (expected {SUPPORTED_MODEL_TYPES}).")
+
+
+def train_one(df, model_type: str, random_seed: int = RANDOM_SEED, params: dict | None = None) -> dict:
+    """Train + evaluate a single churn model on an arbitrary raw dataframe
+    (Research Console Training Center). Returns the fitted model + metrics;
+    persistence is the caller's job."""
+    base_cols = [
+        "tenure_days", "recency_days", "frequency", "avg_order_value", "monetary_value", TARGET_COLUMN
+    ]
+    missing = [c for c in base_cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"Churn training needs columns {missing} that are not in the dataset.")
+
+    featured = build_churn_features(df)
+    X = featured[FEATURE_COLUMNS]
+    y = featured[TARGET_COLUMN].astype(int)
+    if y.nunique() < 2:
+        raise ValueError("Target column 'churned' has only one class — cannot train a classifier.")
+    if len(featured) < 50:
+        raise ValueError(f"Only {len(featured)} rows — need at least 50 for a churn model.")
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, stratify=y, random_state=random_seed
+    )
+    model, resolved_params = _build_model(model_type, random_seed, params)
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    proba = model.predict_proba(X_test)[:, 1]
+    metrics = classification_metrics(y_test.to_numpy(), preds, proba)
+
+    return {
+        "model": model,
+        "metrics": metrics,
+        "parameters": resolved_params,
+        "feature_version": "churn_v1",
+        "feature_columns": list(FEATURE_COLUMNS),
+        "target": TARGET_COLUMN,
+        "train_rows": len(X_train),
+        "test_rows": len(X_test),
+    }
+
 
 def run(random_seed: int = RANDOM_SEED) -> dict:
     dataset = load_platform_dataset("churn", "customers.csv")

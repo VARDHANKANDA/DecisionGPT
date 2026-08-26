@@ -45,7 +45,16 @@ def save_model_artifact(
     parameters: dict,
     metrics: dict,
     random_seed: int,
+    write_index: bool = True,
 ) -> ModelManifest:
+    """Persist a model artifact + manifest under ``models/``.
+
+    ``write_index`` appends the manifest to the flat ``registry_index.jsonl``
+    that ``model_registry_service.sync_from_file_registry`` scans to decide
+    the *active* model. The Research Console's Training Center passes
+    ``write_index=False`` — its models are registered directly in the DB as
+    ``experimental`` and must not be auto-activated by a later sync.
+    """
     out_dir = MODELS_ROOT / model_name / version
     out_dir.mkdir(parents=True, exist_ok=True)
     artifact_path = out_dir / "model.joblib"
@@ -68,11 +77,12 @@ def save_model_artifact(
     )
     (out_dir / "manifest.json").write_text(json.dumps(asdict(manifest), indent=2))
 
-    # Append to the flat index every registry reader can scan without
-    # walking the whole models/ tree.
-    index_path = MODELS_ROOT / "registry_index.jsonl"
-    with open(index_path, "a") as f:
-        f.write(json.dumps(asdict(manifest)) + "\n")
+    if write_index:
+        # Append to the flat index every registry reader can scan without
+        # walking the whole models/ tree.
+        index_path = MODELS_ROOT / "registry_index.jsonl"
+        with open(index_path, "a") as f:
+            f.write(json.dumps(asdict(manifest)) + "\n")
 
     return manifest
 
