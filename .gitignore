@@ -48,3 +48,6 @@ backend/alembic/versions/__pycache__/
 
 # Research Console dataset uploads (runtime data)
 data/research_uploads/
+
+# External benchmark raw data (large; re-download per docs/DATASET_DOWNLOAD_INSTRUCTIONS.md)
+data/external/**/raw/

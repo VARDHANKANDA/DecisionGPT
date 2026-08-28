@@ -310,3 +310,48 @@ curl -s localhost:8000/api/v1/research/paper-results $RT | python -m json.tool
 
 After this, **Paper Results** shows Tables 1, 3, 4, 5 as `available`;
 Table 2 becomes `available` after the first recorded decision outcome.
+
+---
+
+## External benchmark datasets (hybrid data strategy)
+
+The five experiments above run on **controlled synthetic** data (reproducible
+architecture / causal / ablation evaluation). To also evaluate the
+**predictive pipeline on real‑world data**, three external benchmarks are
+integrated through the *existing* Dataset Registry + Training Center — see
+`docs/DATASET_INTEGRATION_AUDIT.md` and `docs/EXTERNAL_DATASET_INTEGRATION_REPORT.md`.
+
+| Registry dataset | Country | Task(s) | Notes |
+|---|---|---|---|
+| `external-uci-online-retail-forecasting` | UK | forecasting | real transactions |
+| `external-uci-online-retail-derived-churn` | UK | churn | **DERIVED** inactivity label; does **not** replace `platform-churn-v1` |
+| `external-m5-forecasting-benchmark` | USA | forecasting | M5 competition, 40‑series subsample |
+| `external-regional-retail-myanmar-forecasting` | **Myanmar (not India)** | forecasting | small; regional relevance only |
+
+### Reproduce
+```bash
+# 1. obtain raw files (only needed to regenerate processed CSVs)
+#    -> docs/DATASET_DOWNLOAD_INSTRUCTIONS.md
+python scripts/build_external_datasets.py          # raw -> data/external/*/processed/*.csv (seed 42)
+
+# 2. register into the existing Dataset Registry (idempotent)
+DATABASE_URL=sqlite:///./backend/dev.db python scripts/register_external_datasets.py
+
+# 3. benchmark-train through the existing Training Center
+#    (every resulting model is status=experimental; active models untouched)
+DATABASE_URL=sqlite:///./backend/dev.db python scripts/run_external_benchmarks.py --seed 42
+```
+
+The processed CSVs are committed, so steps 2–3 work on a fresh clone
+without the multi‑GB raw files.
+
+### Where the results appear
+- **Research → Dataset Registry** — each dataset shows `Source: External Benchmark …` + its real licence, next to (not merged with) the `SYNTHETIC` platform datasets.
+- **Research → Training Center / Model Registry** — one `TrainingRun` + one `experimental` `MLModel` per (dataset × model_type), with full reproducibility metadata (seed, dataset version label `upload:<slug>:v<n>`, metrics, timings).
+- **Research → Model Performance** and **Paper Results → Table 1** — filter by `dataset_version` to compare the synthetic baseline vs each external benchmark. (These pages already read `MLModel` / `TrainingRun`; no new UI.)
+
+### Honesty
+- No external dataset feeds the SME Digital Twin / Causal Graph / Multi‑Agent engines.
+- `marketing_spend` / `promotion_flag` are `0` for every external forecasting adapter (those datasets have no such field — not invented).
+- `MAPE` is unreliable for M5 / UCI (many zero‑sales days); use `MAE` / `RMSE`.
+- The Myanmar dataset is **not** Indian; a genuine Indian dataset is documented for manual addition in `docs/DATASET_DOWNLOAD_INSTRUCTIONS.md §4`.

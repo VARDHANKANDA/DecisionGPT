@@ -1,0 +1,70 @@
+{
+  "dataset_id": "external-regional-retail-v1",
+  "dataset_name": "Supermarket Sales (Myanmar) - regional emerging-market retail",
+  "source": "Widely circulated 'Supermarket sales' dataset (attributed on Kaggle to Aung Pyae). Copy used: Plotly public datasets repository.",
+  "source_url": "https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales",
+  "download_url_used": "https://raw.githubusercontent.com/plotly/datasets/master/supermarket_Sales.csv",
+  "license": "The Plotly datasets repository is MIT-licensed. The original Kaggle upload lists its license as unspecified/other and is broadly used for education. Treat as: freely usable for research with attribution; not a formally licensed corpus.",
+  "citation": "Aung Pyae. Supermarket sales [Data set]. Kaggle. https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales  (copy obtained via https://github.com/plotly/datasets)",
+  "download_date": "2026-08-28",
+  "raw_files": [
+    "raw/supermarket_sales.csv"
+  ],
+  "raw_checksums_md5": {
+    "supermarket_sales.csv": "b281aeb11d2676751186461d83bdfc99"
+  },
+  "country_context": "Myanmar (branches in Yangon, Mandalay, Naypyitaw). South/Southeast Asian emerging-market retail. NOT India.",
+  "business_domain": "Supermarket retail across 6 product lines; one row per invoice; includes cost of goods and gross income (real margin fields).",
+  "data_type": "mixed",
+  "data_type_note": "The uploader describes it as historical records for a supermarket company over 3 months in 3 branches; several secondary sources treat it as simulated/anonymised. Conservatively marked 'mixed' (semi-synthetic).",
+  "row_count_raw": 1000,
+  "date_range": [
+    "2019-01-01",
+    "2019-03-30"
+  ],
+  "original_columns": [
+    "Invoice ID",
+    "Branch",
+    "City",
+    "Customer type",
+    "Gender",
+    "Product line",
+    "Unit price",
+    "Quantity",
+    "Tax 5%",
+    "Total",
+    "Date",
+    "Time",
+    "Payment",
+    "Cost of goods sold",
+    "Gross margin percentage",
+    "Gross income",
+    "Customer stratification rating"
+  ],
+  "supported_tasks": [
+    "forecasting",
+    "business_analytics_margin"
+  ],
+  "unsupported_tasks": [
+    "churn (no repeat-customer identity across invoices)",
+    "causal_graph_evaluation",
+    "digital_twin_wiring (benchmark only; model stays experimental)",
+    "multi_agent_evaluation",
+    "ablation_study",
+    "indian_context_validation (Myanmar, not India)"
+  ],
+  "preprocessing_required": true,
+  "processed_files": [
+    "processed/regional_retail_forecasting.csv",
+    "processed/regional_retail_analytics.csv"
+  ],
+  "evidence_level": "REGIONAL_EXTERNAL_BENCHMARK",
+  "known_limitations": [
+    "Myanmar, not India. Used only for regional emerging-market relevance; the paper must not call it Indian.",
+    "Only 89 days and 18 (branch x product-line) series after aggregation - a very small forecasting set; results are illustrative, high-variance.",
+    "Provenance is ambiguous (real vs simulated); marked 'mixed'.",
+    "No marketing-spend or promotion field; the forecasting adapter holds marketing_spend and promotion_flag at 0.",
+    "The analytics file (revenue/cogs/gross_income/margin_pct) is NOT consumed by any current DecisionGPT model; it is provided for descriptive business analytics only.",
+    "Only ~89 days total; the chronological test split is tiny (~50 rows), so forecasting metrics are high-variance and illustrative only."
+  ]
+}
