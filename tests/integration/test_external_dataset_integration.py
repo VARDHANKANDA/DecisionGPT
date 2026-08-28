@@ -1,5 +1,10 @@
 """External benchmark datasets flow through the EXISTING Dataset Registry
 and Training Center without disturbing production models.
+
+Active benchmark = the real Indian AGMARKNET mandi-price dataset (a
+price-forecasting benchmark: the canonical ``units_sold`` slot carries the
+daily modal price - the source has no quantity field). The retired non-Indian
+datasets must remain clearly labelled if they are ever re-registered.
 """
 import io
 
@@ -11,43 +16,31 @@ from app.models.ml_model import MLModel
 from app.services import model_registry_service, research_dataset_service, training_service
 
 
-def _forecasting_csv(days: int = 140) -> bytes:
+def _india_style_forecasting_csv(days: int = 240) -> bytes:
+    """Mimics ml/preprocessing/india_mandi_adapter.build_forecasting output:
+    units_sold = daily modal price, price = trailing median (backward only)."""
     rng = np.random.default_rng(0)
-    dates = pd.date_range("2024-01-01", periods=days, freq="D")
+    dates = pd.date_range("2018-01-01", periods=days, freq="D")
     frames = []
-    for s in ("EXT_A", "EXT_B"):
+    for s in ("MANDI_ONION__LASALGAON", "MANDI_TOMATO__KOLAR"):
+        modal = np.maximum(200, 1500 + np.cumsum(rng.normal(0, 25, days)))
+        trailing = pd.Series(modal).shift(1).rolling(28, min_periods=5).median()
+        trailing = trailing.fillna(pd.Series(modal).iloc[0]).to_numpy()
         frames.append(
             pd.DataFrame(
                 {
                     "series_id": s,
                     "date": dates.strftime("%Y-%m-%d"),
-                    "units_sold": rng.integers(20, 60, days),
-                    "price": 100.0,
+                    "units_sold": np.round(modal, 2),
+                    "price": np.round(trailing, 2),
                     "marketing_spend": 0.0,
                     "promotion_flag": 0,
+                    "modal_price": np.round(modal, 2),
                 }
             )
         )
     buf = io.BytesIO()
     pd.concat(frames).to_csv(buf, index=False)
-    return buf.getvalue()
-
-
-def _derived_churn_csv(n: int = 400) -> bytes:
-    rng = np.random.default_rng(1)
-    recency = rng.integers(0, 260, n)
-    df = pd.DataFrame(
-        {
-            "tenure_days": rng.integers(40, 900, n),
-            "recency_days": recency,
-            "frequency": rng.integers(1, 15, n),
-            "avg_order_value": rng.uniform(200, 3000, n).round(2),
-            "monetary_value": rng.uniform(400, 40000, n).round(2),
-            "churned": (recency > 150).astype(int),
-        }
-    )
-    buf = io.BytesIO()
-    df.to_csv(buf, index=False)
     return buf.getvalue()
 
 
@@ -59,16 +52,20 @@ def test_external_benchmark_registers_and_trains_experimental_only(client, db_se
     }
     assert active_before, "expected synced baseline models to be active"
 
-    # 1. register a "real" external forecasting benchmark through the existing service
+    # 1. register the real Indian benchmark through the existing service
     version = research_dataset_service.upload_dataset(
         db_session,
-        name="External M5-style Forecasting Benchmark (test)",
+        name="External India Mandi Prices - Forecasting (test)",
         domain="forecasting",
-        filename="ext_forecasting.csv",
-        content=_forecasting_csv(),
-        description="External Benchmark - synthetic stand-in for the M5 adapter output.",
-        source="External Benchmark - M5-style (data_type=real)",
-        license="CC BY 4.0 (test)",
+        filename="india_mandi_forecasting.csv",
+        content=_india_style_forecasting_csv(),
+        description=(
+            "INDIAN PRICE-FORECASTING BENCHMARK (AGMARKNET daily mandi modal prices, "
+            "data.gov.in, GODL-India). Canonical 'units_sold' carries the daily modal "
+            "price (INR/quintal); source has no quantity field."
+        ),
+        source="External Benchmark - India Agri-Commodity Daily Market Prices (data_type=real)",
+        license="Government Open Data License - India (GODL-India)",
     )
     assert version.validation_ok
     assert {c["name"] for c in version.schema_json} >= {
@@ -100,41 +97,37 @@ def test_external_benchmark_registers_and_trains_experimental_only(client, db_se
     assert best is not None and best.status == "active" and best.id != model.id
 
 
-def test_external_derived_churn_dataset_labelled_and_trains(client, db_session, isolate_research_artifacts):
+def test_retired_non_indian_dataset_is_clearly_labelled(client, db_session, isolate_research_artifacts):
+    """If a retired benchmark is ever re-registered (scripts/*.py --retired) it
+    must carry the RETIRED_NON_INDIAN_BENCHMARK marker so it can never be
+    mistaken for the active India-focused evaluation."""
     model_registry_service.sync_from_file_registry(db_session)
 
     version = research_dataset_service.upload_dataset(
         db_session,
-        name="External UCI-style Derived Churn (test)",
-        domain="churn",
-        filename="ext_churn.csv",
-        content=_derived_churn_csv(),
-        description="DERIVED CHURN LABEL (inactivity-based, time-aware split). Does NOT replace platform-churn-v1.",
-        source="External Benchmark - UCI-style (data_type=real)",
-        license="CC BY 4.0 (test)",
+        name="RETIRED_NON_INDIAN_BENCHMARK External M5 Forecasting Benchmark (test)",
+        domain="forecasting",
+        filename="m5.csv",
+        content=b"series_id,date,units_sold,price,marketing_spend,promotion_flag\n"
+                b"A,2016-01-01,5,3.5,0,0\nA,2016-01-02,6,3.5,0,0\n",
+        description="[RETIRED_NON_INDIAN_BENCHMARK] M5 Forecasting. Geography: USA.",
+        source="RETIRED_NON_INDIAN_BENCHMARK - External Benchmark - M5 Forecasting (data_type=real)",
+        license="M5 competition data (Walmart).",
     )
-    ds = version  # ResearchDatasetVersion
     listed = research_dataset_service.list_datasets(db_session)
-    entry = next(d for d in listed if d["id"] == ds.dataset_id)
-    assert "External Benchmark" in entry["source"]
-    assert "DERIVED CHURN LABEL" in entry["description"]
-
-    run = training_service.start_training(
-        db_session, task="churn", model_type="random_forest",
-        dataset_version_id=version.id, random_seed=42,
-    )
-    assert run.status == "completed"
-    assert set(["precision", "recall", "f1", "roc_auc"]).issubset(run.metrics_json)
-    assert db_session.get(MLModel, run.model_id).status == "experimental"
+    entry = next(d for d in listed if d["id"] == version.dataset_id)
+    assert "RETIRED_NON_INDIAN_BENCHMARK" in entry["source"]
+    assert "RETIRED_NON_INDIAN_BENCHMARK" in entry["description"]
+    assert "USA" in entry["description"]
 
 
 def test_registry_still_separates_platform_from_external(client, db_session, isolate_research_artifacts):
     """The platform (synthetic) datasets and the uploaded external ones are
     reported through distinct surfaces - no duplicate registry."""
     research_dataset_service.upload_dataset(
-        db_session, name="External thing (test)", domain="other",
+        db_session, name="External India thing (test)", domain="other",
         filename="x.csv", content=b"a,b\n1,2\n3,4\n",
-        source="External Benchmark - x", license="MIT",
+        source="External Benchmark - India (data_type=real)", license="GODL-India",
     )
     body = client.get(
         "/api/v1/research/datasets",

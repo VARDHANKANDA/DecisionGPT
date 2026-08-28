@@ -1,0 +1,4 @@
+# The processed CSVs (india_mandi_forecasting.csv,
+# india_mandi_regional_analytics.csv) are produced by
+# `python scripts/download_india_datasets.py && python scripts/build_external_datasets.py`.
+# Status: DATA_PENDING - see ../metadata.md.

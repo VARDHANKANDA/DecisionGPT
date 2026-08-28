@@ -1,10 +1,15 @@
-"""Build processed canonical CSVs for every external benchmark dataset.
+"""Build processed canonical CSVs for the external benchmark datasets.
 
 Reads only the UNMODIFIED raw files in ``data/external/<name>/raw/`` and
 writes deterministic, small ``data/external/<name>/processed/*.csv``.
 Re-runnable; overwrites the processed files in place.
 
-    python scripts/build_external_datasets.py [--only uci|m5|regional]
+    python scripts/build_external_datasets.py [--only india]
+    python scripts/build_external_datasets.py --retired [--only uci|m5|regional]
+
+Default target is the active **Indian** dataset(s). ``--retired`` rebuilds the
+archived non-Indian benchmarks under ``data/external/_retired_non_indian/``
+(kept only for historical reproducibility - see that folder's README).
 
 Raw files must be present first (see docs/DATASET_DOWNLOAD_INSTRUCTIONS.md).
 """
@@ -20,18 +25,15 @@ sys.path.insert(0, str(ROOT))
 import pandas as pd  # noqa: E402
 
 from ml.preprocessing import (  # noqa: E402
-    CHURN_CANONICAL_COLUMNS,
     FORECASTING_CANONICAL_COLUMNS,
-    m5_adapter,
-    supermarket_sales_adapter,
-    uci_online_retail_adapter,
+    india_mandi_adapter,
 )
 
 EXT = ROOT / "data" / "external"
+RETIRED = EXT / "_retired_non_indian"
 
 
-def _write(df: pd.DataFrame, rel: str) -> None:
-    path = EXT / rel
+def _write(df: pd.DataFrame, path: Path, rel: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(path, index=False)
     print(f"  wrote {rel}: {len(df):,} rows x {df.shape[1]} cols")
@@ -49,6 +51,8 @@ def _check_forecasting(df: pd.DataFrame, name: str) -> None:
 
 
 def _check_churn(df: pd.DataFrame, name: str) -> None:
+    from ml.preprocessing import CHURN_CANONICAL_COLUMNS
+
     missing = [c for c in CHURN_CANONICAL_COLUMNS if c not in df.columns]
     assert not missing, f"{name}: churn output missing {missing}"
     vc = df["churned"].value_counts().to_dict()
@@ -57,51 +61,87 @@ def _check_churn(df: pd.DataFrame, name: str) -> None:
     print(f"  [{name}] rows={len(df)} churn_balance={vc}")
 
 
-def build_uci() -> None:
-    raw = EXT / "uci_online_retail" / "raw"
-    print("UCI Online Retail:")
-    fc = uci_online_retail_adapter.build_forecasting(raw)
-    _check_forecasting(fc, "uci_forecasting")
-    _write(fc, "uci_online_retail/processed/uci_forecasting.csv")
-
-    rfm = uci_online_retail_adapter.build_customer_rfm(raw)
-    _write(rfm, "uci_online_retail/processed/uci_customer_rfm.csv")
-
-    churn = uci_online_retail_adapter.build_churn_derived(raw)
-    _check_churn(churn, "uci_churn_derived")
-    _write(churn, "uci_online_retail/processed/uci_churn_derived.csv")
+# --- active: Indian datasets ------------------------------------------
 
 
-def build_m5() -> None:
-    raw = EXT / "m5_forecasting" / "raw"
-    print("M5 Forecasting:")
-    fc = m5_adapter.build_forecasting(raw)
-    _check_forecasting(fc, "m5_forecasting")
-    _write(fc, "m5_forecasting/processed/m5_forecasting.csv")
+def build_india() -> None:
+    raw = EXT / "india_mandi_prices" / "raw"
+    print("India Agri-Commodity Daily Market Prices (AGMARKNET / data.gov.in):")
+    fc = india_mandi_adapter.build_forecasting(raw)
+    _check_forecasting(fc, "india_mandi_forecasting")
+    _write(fc, EXT / "india_mandi_prices/processed/india_mandi_forecasting.csv",
+           "india_mandi_prices/processed/india_mandi_forecasting.csv")
+
+    an = india_mandi_adapter.build_regional_analytics(raw)
+    _write(an, EXT / "india_mandi_prices/processed/india_mandi_regional_analytics.csv",
+           "india_mandi_prices/processed/india_mandi_regional_analytics.csv")
 
 
-def build_regional() -> None:
-    raw = EXT / "regional_retail" / "raw"
-    print("Supermarket Sales (regional, Myanmar):")
-    fc = supermarket_sales_adapter.build_forecasting(raw)
-    _check_forecasting(fc, "regional_retail_forecasting")
-    _write(fc, "regional_retail/processed/regional_retail_forecasting.csv")
-
-    an = supermarket_sales_adapter.build_analytics(raw)
-    _write(an, "regional_retail/processed/regional_retail_analytics.csv")
+ACTIVE_BUILDERS = {"india": build_india}
 
 
-BUILDERS = {"uci": build_uci, "m5": build_m5, "regional": build_regional}
+# --- retired: non-Indian benchmarks (reproducibility only) -----------
+
+
+def _retired_builders():
+    from ml.preprocessing import (
+        m5_adapter,
+        supermarket_sales_adapter,
+        uci_online_retail_adapter,
+    )
+
+    def build_uci() -> None:
+        raw = RETIRED / "uci_online_retail" / "raw"
+        print("[RETIRED] UCI Online Retail (UK):")
+        fc = uci_online_retail_adapter.build_forecasting(raw)
+        _check_forecasting(fc, "uci_forecasting")
+        _write(fc, RETIRED / "uci_online_retail/processed/uci_forecasting.csv",
+               "_retired_non_indian/uci_online_retail/processed/uci_forecasting.csv")
+        rfm = uci_online_retail_adapter.build_customer_rfm(raw)
+        _write(rfm, RETIRED / "uci_online_retail/processed/uci_customer_rfm.csv",
+               "_retired_non_indian/uci_online_retail/processed/uci_customer_rfm.csv")
+        churn = uci_online_retail_adapter.build_churn_derived(raw)
+        _check_churn(churn, "uci_churn_derived")
+        _write(churn, RETIRED / "uci_online_retail/processed/uci_churn_derived.csv",
+               "_retired_non_indian/uci_online_retail/processed/uci_churn_derived.csv")
+
+    def build_m5() -> None:
+        raw = RETIRED / "m5_forecasting" / "raw"
+        print("[RETIRED] M5 Forecasting (USA):")
+        fc = m5_adapter.build_forecasting(raw)
+        _check_forecasting(fc, "m5_forecasting")
+        _write(fc, RETIRED / "m5_forecasting/processed/m5_forecasting.csv",
+               "_retired_non_indian/m5_forecasting/processed/m5_forecasting.csv")
+
+    def build_regional() -> None:
+        raw = RETIRED / "regional_retail" / "raw"
+        print("[RETIRED] Supermarket Sales (Myanmar):")
+        fc = supermarket_sales_adapter.build_forecasting(raw)
+        _check_forecasting(fc, "regional_retail_forecasting")
+        _write(fc, RETIRED / "regional_retail/processed/regional_retail_forecasting.csv",
+               "_retired_non_indian/regional_retail/processed/regional_retail_forecasting.csv")
+        an = supermarket_sales_adapter.build_analytics(raw)
+        _write(an, RETIRED / "regional_retail/processed/regional_retail_analytics.csv",
+               "_retired_non_indian/regional_retail/processed/regional_retail_analytics.csv")
+
+    return {"uci": build_uci, "m5": build_m5, "regional": build_regional}
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--only", choices=list(BUILDERS), default=None)
+    ap.add_argument("--retired", action="store_true",
+                    help="rebuild the archived non-Indian benchmarks instead")
+    ap.add_argument("--only", default=None)
     args = ap.parse_args()
-    todo = [args.only] if args.only else list(BUILDERS)
+
+    builders = _retired_builders() if args.retired else ACTIVE_BUILDERS
+    if args.only and args.only not in builders:
+        ap.error(f"--only must be one of {list(builders)} "
+                 f"({'retired' if args.retired else 'active'} set)")
+    todo = [args.only] if args.only else list(builders)
     for key in todo:
         try:
-            BUILDERS[key]()
+            builders[key]()
         except FileNotFoundError as exc:
             print(f"  SKIP {key}: {exc}")
     print("done.")

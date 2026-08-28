@@ -1,6 +1,6 @@
 """Run the Training Center on every genuinely-compatible
-(external dataset x task x model_type), through the EXISTING
-training_service. Each run:
+(external dataset x task x model_type), through the EXISTING training_service.
+Each run:
 
   * creates a TrainingRun row (seed, dataset version, timings, metrics, status)
   * registers an MLModel with status = "experimental" (never "active")
@@ -8,7 +8,11 @@ training_service. Each run:
 Prints a summary and asserts that (a) all new models are experimental and
 (b) the set of ACTIVE models is unchanged.
 
-    python scripts/run_external_benchmarks.py [--seed 42] [--only uci|m5|regional]
+    python scripts/run_external_benchmarks.py [--seed 42] [--only india]
+    python scripts/run_external_benchmarks.py --retired [--only uci|m5|regional]
+
+Default target is the active **Indian** dataset(s). ``--retired`` reproduces
+the archived non-Indian benchmark runs.
 
 Run scripts/register_external_datasets.py first.
 """
@@ -27,10 +31,17 @@ from app.core.errors import AppError  # noqa: E402
 from app.db.session import SessionLocal  # noqa: E402
 from app.models.ml_model import MLModel  # noqa: E402
 from app.models.research import ResearchDataset, ResearchDatasetVersion  # noqa: E402
-from app.services import research_dataset_service, training_service  # noqa: E402
+from app.services import training_service  # noqa: E402
 
 # dataset registry slug -> (task, [model_types])
-PLAN = {
+ACTIVE_PLAN = {
+    "india": [
+        ("external-india-mandi-prices-forecasting", "forecasting",
+         ["naive", "linear", "xgboost"]),
+    ],
+}
+
+RETIRED_PLAN = {
     "uci": [
         ("external-uci-online-retail-forecasting", "forecasting", ["naive", "linear", "xgboost"]),
         ("external-uci-online-retail-derived-churn", "churn",
@@ -49,6 +60,14 @@ PLAN = {
 def _latest_version(db, slug: str) -> ResearchDatasetVersion | None:
     ds = db.query(ResearchDataset).filter(ResearchDataset.dataset_id == slug).one_or_none()
     if ds is None:
+        # retired datasets are registered with a RETIRED_NON_INDIAN_BENCHMARK- prefix
+        ds = (
+            db.query(ResearchDataset)
+            .filter(ResearchDataset.dataset_id.like(f"%{slug}"))
+            .order_by(ResearchDataset.created_at.desc())
+            .first()
+        )
+    if ds is None:
         return None
     return (
         db.query(ResearchDatasetVersion)
@@ -61,8 +80,13 @@ def _latest_version(db, slug: str) -> ResearchDatasetVersion | None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=42)
-    ap.add_argument("--only", choices=list(PLAN), default=None)
+    ap.add_argument("--retired", action="store_true")
+    ap.add_argument("--only", default=None)
     args = ap.parse_args()
+
+    plan = RETIRED_PLAN if args.retired else ACTIVE_PLAN
+    if args.only and args.only not in plan:
+        ap.error(f"--only must be one of {list(plan)} ({'retired' if args.retired else 'active'} set)")
 
     db = SessionLocal()
     try:
@@ -71,9 +95,9 @@ def main() -> None:
         }
 
         rows = []
-        keys = [args.only] if args.only else list(PLAN)
+        keys = [args.only] if args.only else list(plan)
         for key in keys:
-            for slug, task, model_types in PLAN[key]:
+            for slug, task, model_types in plan[key]:
                 version = _latest_version(db, slug)
                 if version is None:
                     print(f"SKIP {slug}: not registered (run register_external_datasets.py)")
@@ -97,7 +121,6 @@ def main() -> None:
                         rows.append((slug, task, mt, "failed", "-", "-", str(exc)[:120]))
                         print(f"FAIL {slug} / {task} / {mt}: {exc}")
 
-        # --- safety assertions ---------------------------------------
         new_models = db.query(MLModel).filter(MLModel.source == "training_center").all()
         non_experimental = [
             (m.model_name, m.version, m.status) for m in new_models if m.status != "experimental"

@@ -313,45 +313,53 @@ Table 2 becomes `available` after the first recorded decision outcome.
 
 ---
 
-## External benchmark datasets (hybrid data strategy)
+## External benchmark dataset — Indian real-world data (hybrid strategy)
 
 The five experiments above run on **controlled synthetic** data (reproducible
 architecture / causal / ablation evaluation). To also evaluate the
-**predictive pipeline on real‑world data**, three external benchmarks are
+**predictive pipeline on real Indian data**, one external benchmark is
 integrated through the *existing* Dataset Registry + Training Center — see
-`docs/DATASET_INTEGRATION_AUDIT.md` and `docs/EXTERNAL_DATASET_INTEGRATION_REPORT.md`.
+`docs/INDIAN_DATASET_INTEGRATION_REPORT.md` and `docs/FINAL_DATASET_INVENTORY.md`.
 
-| Registry dataset | Country | Task(s) | Notes |
+Strategy: `REAL INDIAN DATA  +  CONTROLLED SYNTHETIC DATA`.
+
+| Registry dataset | Geography | Task | Notes |
 |---|---|---|---|
-| `external-uci-online-retail-forecasting` | UK | forecasting | real transactions |
-| `external-uci-online-retail-derived-churn` | UK | churn | **DERIVED** inactivity label; does **not** replace `platform-churn-v1` |
-| `external-m5-forecasting-benchmark` | USA | forecasting | M5 competition, 40‑series subsample |
-| `external-regional-retail-myanmar-forecasting` | **Myanmar (not India)** | forecasting | small; regional relevance only |
+| `external-india-mandi-prices-forecasting` | **India** (multi-state) | **price** forecasting | AGMARKNET daily mandi modal prices, data.gov.in, GODL-India. `units_sold` slot carries the daily modal price (INR/quintal) — the source has **no quantity field**. |
+| `external-india-mandi-prices-regional-analytics` | India | (analytics) | state × commodity × month price level / volatility / spread. Not trained. |
+
+**Retired** (non-Indian, reproducibility only, `--retired` flag):
+`external-uci-online-retail-*` (UK), `external-m5-forecasting-benchmark` (USA),
+`external-regional-retail-myanmar-forecasting` (Myanmar). See
+`data/external/_retired_non_indian/README.md`.
 
 ### Reproduce
 ```bash
-# 1. obtain raw files (only needed to regenerate processed CSVs)
-#    -> docs/DATASET_DOWNLOAD_INSTRUCTIONS.md
-python scripts/build_external_datasets.py          # raw -> data/external/*/processed/*.csv (seed 42)
+# 1. download the Indian raw data (public data.gov.in JSON API; ~30-60 min on
+#    the demo key, <1 min with a free DATA_GOV_IN_API_KEY)
+python scripts/download_india_datasets.py
 
-# 2. register into the existing Dataset Registry (idempotent)
+# 2. build processed CSVs (seed 42)
+python scripts/build_external_datasets.py
+
+# 3. register into the existing Dataset Registry (idempotent)
 DATABASE_URL=sqlite:///./backend/dev.db python scripts/register_external_datasets.py
 
-# 3. benchmark-train through the existing Training Center
+# 4. benchmark-train through the existing Training Center
 #    (every resulting model is status=experimental; active models untouched)
 DATABASE_URL=sqlite:///./backend/dev.db python scripts/run_external_benchmarks.py --seed 42
 ```
 
-The processed CSVs are committed, so steps 2–3 work on a fresh clone
-without the multi‑GB raw files.
+The processed CSV is committed, so steps 3–4 work on a fresh clone without
+re-downloading.
 
 ### Where the results appear
-- **Research → Dataset Registry** — each dataset shows `Source: External Benchmark …` + its real licence, next to (not merged with) the `SYNTHETIC` platform datasets.
-- **Research → Training Center / Model Registry** — one `TrainingRun` + one `experimental` `MLModel` per (dataset × model_type), with full reproducibility metadata (seed, dataset version label `upload:<slug>:v<n>`, metrics, timings).
-- **Research → Model Performance** and **Paper Results → Table 1** — filter by `dataset_version` to compare the synthetic baseline vs each external benchmark. (These pages already read `MLModel` / `TrainingRun`; no new UI.)
+- **Research → Dataset Registry** — the Indian dataset shows `Source: External Benchmark - India … (data_type=real)` + `GODL-India`, next to (not merged with) the `SYNTHETIC` platform datasets.
+- **Research → Training Center / Model Registry** — one `TrainingRun` + one `experimental` `MLModel` per model_type, with full reproducibility metadata (seed, dataset version label `upload:<slug>:v<n>`, metrics, timings).
+- **Research → Model Performance** and **Paper Results → Table 1** — filter by `dataset_version` to compare the synthetic baseline vs the Indian benchmark. Report `REAL INDIAN` and `CONTROLLED SYNTHETIC` rows separately; never average across them.
 
 ### Honesty
 - No external dataset feeds the SME Digital Twin / Causal Graph / Multi‑Agent engines.
-- `marketing_spend` / `promotion_flag` are `0` for every external forecasting adapter (those datasets have no such field — not invented).
-- `MAPE` is unreliable for M5 / UCI (many zero‑sales days); use `MAE` / `RMSE`.
-- The Myanmar dataset is **not** Indian; a genuine Indian dataset is documented for manual addition in `docs/DATASET_DOWNLOAD_INSTRUCTIONS.md §4`.
+- The Indian dataset is agri-commodity **wholesale price** data — a genuine Indian benchmark, but not SME retail transactions. A real Indian transaction-level / churn dataset is **pending** (see `docs/DATASET_DOWNLOAD_INSTRUCTIONS.md §2`).
+- `units_sold` = daily modal price; `price` = 28-day backward rolling median (no leakage); `marketing_spend` / `promotion_flag` = `0` (absent in source — not invented).
+- `MAPE` can be noisy on price series with sharp spikes; prefer `MAE` / `RMSE`.

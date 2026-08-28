@@ -1,5 +1,11 @@
 # DecisionGPT — Dataset Integration Audit (Phase 0)
 
+> **Historical note (2026-08-28):** this Phase-0 audit was written for the
+> earlier generic-benchmark integration (M5 / UCI / Myanmar). Those datasets
+> are now **retired** in favour of a real Indian dataset; the architecture
+> findings below still hold. See `docs/INDIAN_DATASET_MIGRATION_PLAN.md` and
+> `docs/INDIAN_DATASET_INTEGRATION_REPORT.md`.
+
 Inspection performed **before any change to working code**. Goal: add a
 small external benchmark suite without touching the existing architecture,
 datasets, models, or migrations.

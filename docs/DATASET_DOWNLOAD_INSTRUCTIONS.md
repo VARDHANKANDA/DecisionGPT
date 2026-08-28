@@ -1,97 +1,128 @@
 # DecisionGPT — External Dataset Download Instructions
 
-The **processed** benchmark CSVs (`data/external/<name>/processed/*.csv`) are
-committed and are enough to register the datasets and run the benchmark
-training (`scripts/register_external_datasets.py` +
-`scripts/run_external_benchmarks.py`).
-
-The **raw** files are *not* committed (they total ~580 MB and are gitignored
-under `data/external/**/raw/`). You only need the raw files if you want to
-**regenerate** the processed CSVs with `scripts/build_external_datasets.py`
-(e.g. to change the subsample size or the churn window).
+DecisionGPT's active external benchmark is a real **Indian** dataset. The
+non-Indian datasets from the earlier task are **retired** (kept only for
+reproducibility) and appear at the bottom of this file.
 
 > No download here bypasses authentication, licensing, CAPTCHA, or terms of
-> service. Where a source requires an account (Kaggle), manual steps are
-> given and nothing is faked.
+> service. Where a source needs an account, manual steps are given and nothing
+> is faked.
+
+The **processed** CSVs (`data/external/<name>/processed/*.csv`) are committed
+and are enough to register + benchmark-train. The **raw** files are *not*
+committed (gitignored under `data/external/**/raw/`); you only need them to
+regenerate the processed CSVs.
 
 ---
 
-## 1. UCI Online Retail  — automatic, no account
+## 1. India Agri-Commodity Daily Market Prices (AGMARKNET) — ACTIVE
+
+Genuine Indian benchmark. Public JSON REST API on data.gov.in — no login.
 
 ```bash
-mkdir -p data/external/uci_online_retail/raw
-curl -L -o data/external/uci_online_retail/raw/online_retail.zip \
-  "https://archive.ics.uci.edu/static/public/352/online+retail.zip"
-cd data/external/uci_online_retail/raw && unzip -o online_retail.zip   # -> "Online Retail.xlsx"
+python scripts/download_india_datasets.py            # writes raw/india_mandi_prices_raw.csv
+python scripts/build_external_datasets.py            # -> processed/*.csv (seed 42)
 ```
 
-- **Source:** UCI Machine Learning Repository, dataset 352 — <https://archive.ics.uci.edu/dataset/352/online+retail>
-- **License:** CC BY 4.0
-- **Expected files:** `raw/Online Retail.xlsx` (≈23 MB), `raw/online_retail.zip`
-- **MD5:** `Online Retail.xlsx` = `8f8e6d94ba88f976f4d8290cb2dea7fd`
+- **Source:** Open Government Data (OGD) Platform India — `data.gov.in`,
+  resource `35985678-0d79-46b4-9ed6-6f13308a1d24`
+  ("Variety-wise Daily Market Prices Data of Commodity").
+  Directorate of Marketing & Inspection (DMI), Ministry of Agriculture &
+  Farmers Welfare, Government of India. Underlying system: AGMARKNET.
+- **Licence:** **Government Open Data License – India (GODL-India)** —
+  <https://www.data.gov.in/Godl>. Free use with attribution.
+- **Geography:** India (multi-state). `data_type: real`.
+- **Fields:** `Arrival_Date, State, District, Market, Commodity, Variety,
+  Grade, Min_Price, Max_Price, Modal_Price`. **No transaction-quantity field.**
+- **Access notes:**
+  - `download_india_datasets.py` uses the **demo API key that data.gov.in
+    publishes in its own API docs**. That key is rate-limited to ~10
+    records/call with a short burst window, so the script paginates with
+    `sort[Arrival_Date]=asc`, paces requests, checkpoints each series under
+    `raw/_parts/`, and resumes on restart. A full pull of the curated series
+    list takes ~30–60 min on the demo key.
+  - **Faster:** register a free key at <https://data.gov.in/user/register>
+    (a manual, legitimate step — an account is required) and run with
+    `DATA_GOV_IN_API_KEY=<your key> python scripts/download_india_datasets.py`.
+    A registered key returns 1000 records/call, so the pull takes < 1 min.
+  - The curated `(State, Commodity, Market)` series list is hard-coded in the
+    script (deterministic). Edit `SERIES` there to change coverage.
+- **Because the source has no quantity**, this is a **price-forecasting**
+  benchmark: the canonical `units_sold` column carries the daily **modal
+  price (INR/quintal)**; `price` is a 28-day backward rolling median (no
+  leakage); `marketing_spend` / `promotion_flag` are `0` (absent in source —
+  not invented). See `data/external/india_mandi_prices/metadata.md`.
 
-## 2. Supermarket Sales (Myanmar, regional)  — automatic, no account
+## 2. A genuine Indian *transaction-level* / *churn* dataset — PENDING (manual)
+
+Not integrated. Every Indian retail/e-commerce **transaction** dataset with the
+required shape (date, product/category, quantity, price/revenue, customer) that
+was located is **behind a Kaggle account + rules acceptance** (e.g.
+"Amazon Sale Report (India)", "E-commerce Sales Dataset"), or lacks a date
+column ("BigMart Sales" — no clearly-licensed public mirror), or is
+commodity-price-only ("Department of Consumer Affairs" retail prices — SPA-only
+catalog, no generic API resource). Bypassing Kaggle auth is not permitted, so
+this is documented for manual acquisition and is **not** part of the automatic
+integration. The synthetic churn dataset is retained for controlled churn
+experiments.
+
+To add one yourself:
+
+1. Pick ONE and record its **licence** and whether it is **real or synthetic**.
+2. Download it **through the source's own UI/API after accepting its terms**.
+   Do not scrape.
+3. Put raw file(s) in `data/external/indian_business/raw/` (create the folder).
+4. Write `data/external/indian_business/{metadata.json, metadata.md}` following
+   `data/external/india_mandi_prices/` (source, source_url, **verified
+   licence**, citation, download_date, `geography: "India"`, `data_type`).
+5. Add `ml/preprocessing/indian_business_adapter.py` mapping columns to a
+   canonical schema (`series_id, date, units_sold, price, marketing_spend=0,
+   promotion_flag=0` for forecasting; the churn canonical for churn). Reuse the
+   leakage-safe `build_forecasting_features` / `chronological_split` /
+   stratified split.
+6. Wire it into `scripts/build_external_datasets.py`,
+   `scripts/register_external_datasets.py`,
+   `scripts/run_external_benchmarks.py` (mirror the `india` entries).
+7. Re-run the regression suite.
+
+---
+
+## RETIRED — non-Indian datasets (reproducibility only)
+
+Retired from the active evaluation because DecisionGPT targets Indian SMEs.
+Data + metadata + adapters live under `data/external/_retired_non_indian/`.
+Reproduce with the `--retired` flag:
 
 ```bash
-mkdir -p data/external/regional_retail/raw
-curl -L -o data/external/regional_retail/raw/supermarket_sales.csv \
+python scripts/build_external_datasets.py    --retired
+python scripts/register_external_datasets.py --retired
+python scripts/run_external_benchmarks.py    --retired
+```
+
+### R1. UCI Online Retail — UK
+```bash
+mkdir -p data/external/_retired_non_indian/uci_online_retail/raw
+curl -L -o data/external/_retired_non_indian/uci_online_retail/raw/online_retail.zip \
+  "https://archive.ics.uci.edu/static/public/352/online+retail.zip"
+cd data/external/_retired_non_indian/uci_online_retail/raw && unzip -o online_retail.zip
+```
+UCI ML Repository dataset 352 · CC BY 4.0 · `Online Retail.xlsx` MD5 `8f8e6d94ba88f976f4d8290cb2dea7fd`.
+
+### R2. Supermarket Sales — Myanmar
+```bash
+mkdir -p data/external/_retired_non_indian/regional_retail/raw
+curl -L -o data/external/_retired_non_indian/regional_retail/raw/supermarket_sales.csv \
   "https://raw.githubusercontent.com/plotly/datasets/master/supermarket_Sales.csv"
 ```
+Plotly MIT-licensed `datasets` repo · `supermarket_sales.csv` MD5 `b281aeb11d2676751186461d83bdfc99` · Myanmar, **not India**.
 
-- **Origin:** "Supermarket sales" (attributed on Kaggle to *Aung Pyae*) — <https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales>
-- **Copy used:** Plotly's MIT‑licensed public `datasets` repo (link above).
-- **Expected file:** `raw/supermarket_sales.csv` (≈131 KB). **MD5:** `b281aeb11d2676751186461d83bdfc99`
-- **Note:** Myanmar, **not India**. Integrated as a regional emerging‑market retail benchmark.
-
-## 3. M5 Forecasting  — public mirror OR manual Kaggle
-
-### Option A — public mirror (used by this repo; no account)
+### R3. M5 Forecasting — USA
 ```bash
-mkdir -p data/external/m5_forecasting/raw
-curl -L -o data/external/m5_forecasting/raw/m5.zip \
+mkdir -p data/external/_retired_non_indian/m5_forecasting/raw
+curl -L -o data/external/_retired_non_indian/m5_forecasting/raw/m5.zip \
   "https://github.com/Nixtla/m5-forecasts/raw/main/datasets/m5.zip"
-cd data/external/m5_forecasting/raw && unzip -o m5.zip
-# -> calendar.csv, sales_train_validation.csv, sales_train_evaluation.csv,
-#    sales_test_*.csv, sell_prices.csv, weights_*.csv
+cd data/external/_retired_non_indian/m5_forecasting/raw && unzip -o m5.zip
 ```
-- **Mirror:** `github.com/Nixtla/m5-forecasts` — the redistribution used by Nixtla's MIT‑licensed `datasetsforecast` package. **MD5(`m5.zip`)** = `333d81b51e52a6f7a20540a2f0f092bf`.
-- The **underlying M5 data is Walmart's**, released for the M5 competition; its terms are unchanged by redistribution. Verify the competition terms before redistributing your own copy.
-
-### Option B — original Kaggle (requires a free Kaggle account + rules acceptance)
-1. Create/sign in to a Kaggle account and open <https://www.kaggle.com/competitions/m5-forecasting-accuracy>.
-2. Click **"Join Competition"** / accept the rules (one‑time).
-3. `pip install kaggle`, place your `kaggle.json` API token in `~/.kaggle/`.
-4. `kaggle competitions download -c m5-forecasting-accuracy -p data/external/m5_forecasting/raw`
-5. `unzip` into `raw/`. You will get `calendar.csv`, `sales_train_evaluation.csv`, `sell_prices.csv`, etc.
-
-- **Citation:** Makridakis, S., Spiliotis, E., & Assimakopoulos, V. (2022). *The M5 competition: Background, organization, and implementation.* International Journal of Forecasting, 38(4), 1325–1336.
-
----
-
-## 4. A genuine Indian‑context retail dataset  — MANUAL (not auto‑integrated)
-
-**No Indian retail transaction dataset with the required shape (date,
-product/category, quantity, price/revenue) could be obtained without a
-Kaggle account.** Bypassing Kaggle authentication is not permitted, so this
-dataset is **documented for manual acquisition and is NOT part of the
-automatic integration.** The regional Supermarket Sales dataset (Myanmar,
-§2) is integrated instead, honestly labelled as regional — **the paper must
-not describe it as Indian.**
-
-To add a real Indian dataset yourself:
-
-1. Pick ONE and record its **licence** and whether it is **real or synthetic**:
-   - *"E‑commerce Sales Dataset" / "Amazon Sale Report" (India)* — Kaggle (various uploaders). Contains order date, SKU/category, qty, amount, ship‑state. Licence varies by upload — **check it**.
-   - *"BigMart Sales"* — Kaggle. Indian retail *chain* context, but it has **no date column** → it does **not** fit the forecasting canonical schema without heavy reshaping; use only for descriptive analytics.
-   - *data.gov.in* retail/consumption series (needs a free API key) — mostly commodity **price** series, not transaction‑level sales.
-2. Download it **through the source's own UI/API after accepting its terms**. Do not scrape.
-3. Place the raw file(s) in `data/external/indian_business/raw/` (create the folder).
-4. Write `data/external/indian_business/{metadata.json, metadata.md}` following the pattern of the other three (source, source_url, **verified licence**, citation, download_date, `country_context: "India"`, `data_type`).
-5. Add an adapter `ml/preprocessing/indian_business_adapter.py` mapping the columns to the forecasting canonical schema (`series_id, date, units_sold, price, marketing_spend=0, promotion_flag=0`). Reuse the leakage‑safe `build_forecasting_features` + `chronological_split`.
-6. Wire it into `scripts/build_external_datasets.py`, `scripts/register_external_datasets.py`, `scripts/run_external_benchmarks.py` (mirror the `regional` entries).
-7. Re‑run the regression suite.
-
-Until then, the paper's Indian‑context claim should be limited to:
-> *evaluated additionally on a regional (Southeast Asian) retail dataset; a
-> genuine Indian‑context dataset integration path is documented but not yet
-> populated.*
+M5 competition (Walmart) via Nixtla's MIT mirror · `m5.zip` MD5 `333d81b51e52a6f7a20540a2f0f092bf`.
+Original Kaggle path: free account + `kaggle competitions download -c m5-forecasting-accuracy`.
+Citation: Makridakis, S., Spiliotis, E., & Assimakopoulos, V. (2022). *The M5 competition.* IJF 38(4), 1325–1336.

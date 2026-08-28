@@ -1,5 +1,15 @@
 # External Benchmark Dataset Integration — Final Report
 
+> ⚠️ **SUPERSEDED (2026-08-28).** The three datasets described here — M5 (USA),
+> UCI Online Retail (UK), Supermarket Sales (Myanmar) — have since been
+> **retired from the active India-focused evaluation** and moved to
+> `data/external/_retired_non_indian/`. They are kept only for historical
+> reproducibility (`scripts/*.py --retired`). DecisionGPT's active benchmark
+> layer is now a real **Indian** dataset — see
+> **`docs/INDIAN_DATASET_INTEGRATION_REPORT.md`** and
+> **`docs/FINAL_DATASET_INVENTORY.md`**. This document is retained as the record
+> of the earlier integration.
+
 **Date:** 2026-08-28
 **Scope:** Add real-world / regional benchmark datasets to DecisionGPT's research
 evaluation **without changing the platform architecture, the synthetic datasets,

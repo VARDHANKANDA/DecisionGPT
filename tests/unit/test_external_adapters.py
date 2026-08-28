@@ -1,7 +1,13 @@
-"""External benchmark adapters - contract, determinism, and leakage checks.
+"""RETIRED non-Indian benchmark adapters - contract, determinism, leakage.
 
-These build tiny synthetic RAW fixtures (the real multi-GB raw files are
-gitignored), so they run fast and on a fresh clone.
+M5 / UCI Online Retail / Myanmar Supermarket were retired from the active
+India-focused evaluation (see docs/INDIAN_DATASET_INTEGRATION_REPORT.md), but
+their adapters remain in the tree and are still reproducible via the
+``--retired`` flag on the benchmark scripts - so this contract coverage is
+kept. The active Indian adapter is covered by test_india_mandi_adapter.py.
+
+These build tiny synthetic RAW fixtures (the real raw files are gitignored),
+so they run fast and on a fresh clone.
 """
 from datetime import datetime, timedelta
 
@@ -191,8 +197,8 @@ def test_supermarket_forecasting_and_analytics(tmp_path):
 @pytest.mark.parametrize(
     "path,task",
     [
-        ("data/external/regional_retail/processed/regional_retail_forecasting.csv", "forecasting"),
-        ("data/external/uci_online_retail/processed/uci_churn_derived.csv", "churn"),
+        ("data/external/_retired_non_indian/regional_retail/processed/regional_retail_forecasting.csv", "forecasting"),
+        ("data/external/_retired_non_indian/uci_online_retail/processed/uci_churn_derived.csv", "churn"),
     ],
 )
 def test_committed_processed_files_satisfy_training_contract(path, task):
