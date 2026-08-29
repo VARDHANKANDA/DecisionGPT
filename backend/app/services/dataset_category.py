@@ -11,8 +11,10 @@
 """
 
 INDIA_REAL_BUSINESS = "INDIA_REAL_BUSINESS"
+INDIA_REAL_CUSTOMER = "INDIA_REAL_CUSTOMER"
 INDIA_PUBLIC_CONTEXT = "INDIA_PUBLIC_CONTEXT"
 INDIA_AGRICULTURAL_PRICE = "INDIA_AGRICULTURAL_PRICE"
+SYNTHETIC_INDIAN_CONTEXT = "SYNTHETIC_INDIAN_CONTEXT"
 SYNTHETIC_CONTROLLED = "SYNTHETIC_CONTROLLED"
 RETIRED_NON_INDIAN = "RETIRED_NON_INDIAN"
 EXTERNAL_BENCHMARK = "EXTERNAL_BENCHMARK"
@@ -27,13 +29,17 @@ def classify(*, source: str | None = None, evidence_level: str | None = None,
 
     if "retired_non_indian" in blob:
         return RETIRED_NON_INDIAN
-    if "synthetic" in blob:
-        return SYNTHETIC_CONTROLLED
+    if "synthetic_indian_context" in blob:
+        return SYNTHETIC_INDIAN_CONTEXT
+    if "synthetic" in blob or "simulated" in blob:
+        return SYNTHETIC_INDIAN_CONTEXT if "india" in blob else SYNTHETIC_CONTROLLED
     if "agmarknet" in blob or "agri-commodity" in blob or "agricultural_price" in blob:
         return INDIA_AGRICULTURAL_PRICE
     if "public_context" in blob or "festival" in blob or "macro" in blob or "repo rate" in blob:
         return INDIA_PUBLIC_CONTEXT
     if "external benchmark" in blob and "india" in blob:
+        if "customer" in blob:
+            return INDIA_REAL_CUSTOMER
         return INDIA_REAL_BUSINESS
     if "external benchmark" in blob:
         return EXTERNAL_BENCHMARK

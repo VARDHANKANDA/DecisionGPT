@@ -39,6 +39,10 @@ ACTIVE_PLAN = {
         ("external-india-agmarknet-forecasting", "forecasting",
          ["naive", "linear", "xgboost"]),
     ],
+    "benroshan": [
+        ("external-india-e-commerce-forecasting", "forecasting",
+         ["naive", "linear", "xgboost"]),
+    ],
 }
 
 RETIRED_PLAN = {

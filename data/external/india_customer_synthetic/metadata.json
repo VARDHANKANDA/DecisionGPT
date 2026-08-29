@@ -1,0 +1,42 @@
+{
+  "dataset_name": "India E-Commerce Customer Behaviour (SIMULATED)",
+  "dataset_id": "external-india-customer-synthetic-v1",
+  "registry_category": "SYNTHETIC_INDIAN_CONTEXT",
+  "display_label": "India - Customer Behaviour (SIMULATED)",
+  "status": "ACTIVE (standalone benchmark only)",
+  "source_name": "Kaggle - kundanbedmutha/indian-e-commerce-customer-behavior-and-purchase",
+  "source": "Kaggle dataset by Kundan Sagar Bedmutha. The dataset page states the 25,000 rows were 'generated to simulate realistic online shopping behavior in the Indian market' -> SIMULATED. Downloaded via Kaggle's public (anonymous) endpoint - CC BY 4.0.",
+  "source_url": "https://www.kaggle.com/datasets/kundanbedmutha/indian-e-commerce-customer-behavior-and-purchase",
+  "geography": "India (stated context; locations are integer-coded)",
+  "country_context": "Simulated Indian online-shopping sessions, calendar year 2024.",
+  "business_domain": "E-commerce customer sessions: visits, pages, cart, purchase, pricing, ratings",
+  "data_type": "synthetic",
+  "provenance": "Explicitly generated/simulated by the uploader (not a real export). Categorical columns are pre-integer-encoded with no decode map shipped.",
+  "license": "CC BY 4.0 (per the Kaggle dataset page)",
+  "citation": "Kundan Sagar Bedmutha. Indian E-Commerce Customer Behavior and Purchase [Data set]. Kaggle (CC BY 4.0).",
+  "download_date": "2026-08-29",
+  "original_files": ["Ecommerce.csv (25,000 rows x 29 cols)"],
+  "row_count": 25000,
+  "date_range": "2024-01-01 .. 2024-12-30 (visit_date)",
+  "target": "purchased (binary; 22.5% positive)",
+  "feature_columns": ["unit_price", "quantity", "discount_percent", "discount_amount", "pages_viewed", "time_on_site_sec", "added_to_cart", "device_type", "user_type", "marketing_channel", "product_category", "visit_month", "visit_weekday", "visit_season"],
+  "excluded_as_leakage": ["revenue / revenue_normalized (non-zero iff purchased)", "cart_abandoned (near-complement of the target)", "rating / review_text / review_helpful_votes (post-purchase)", "session_id / customer_id / product_id / visit_date (identifiers / raw)"],
+  "processed_files": [
+    {"file": "processed/india_customer_purchase_prediction.csv", "grain": "one row per session", "rows": 25000}
+  ],
+  "supported_tasks": ["purchase_prediction (binary classification, SIMULATED)", "conversion analysis", "cart-behaviour analysis"],
+  "unsupported_tasks": [
+    "churn - there is NO churn target; cart_abandoned is not churn and is excluded as leakage",
+    "real-world customer analytics - the data is simulated",
+    "training or influencing any production model"
+  ],
+  "preprocessing": "ml/preprocessing/india_customer_adapter.py (seed 42): select pre-decision features + target, drop leakage columns, dropna.",
+  "benchmark": "scripts/run_india_customer_benchmark.py - standalone sklearn (logistic/RF/xgboost), stratified 75/25 split, seed 42. NOT registered as an MLModel, NOT wired into the Training Center. Results in benchmark_results.json.",
+  "known_limitations": [
+    "SIMULATED - not real customer behaviour. Never combine its metrics with real Indian results.",
+    "Categorical columns are integer-coded with no shipped decode map.",
+    "Default-threshold precision/recall are poor due to class imbalance; ROC-AUC (~0.75) is the informative metric."
+  ],
+  "paper_usage": "May appear only as a clearly-labelled SYNTHETIC_INDIAN_CONTEXT demonstration of purchase-prediction; never in the real-world Indian tables, never averaged with real results.",
+  "evidence_level": "SYNTHETIC_INDIAN_CONTEXT"
+}

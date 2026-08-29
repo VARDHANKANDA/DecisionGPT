@@ -1,0 +1,52 @@
+{
+  "dataset_name": "India E-Commerce Orders (Benroshan)",
+  "dataset_id": "external-india-ecommerce-v1",
+  "registry_category": "INDIA_REAL_BUSINESS",
+  "display_label": "India - E-Commerce Orders (real, small)",
+  "status": "ACTIVE",
+  "source_name": "Kaggle - benroshan/ecommerce-data",
+  "source": "Kaggle dataset 'E-Commerce Data' by Ben Roshan ('Sales details from Indian e-commerce website'). Downloaded via Kaggle's public (anonymous) dataset-download endpoint - CC0, no login/token used.",
+  "source_url": "https://www.kaggle.com/datasets/benroshan/ecommerce-data",
+  "geography": "India (19 states)",
+  "country_context": "India - a single online retailer (Furniture / Clothing / Electronics), Apr 2018 - Mar 2019.",
+  "business_domain": "E-commerce retail orders + line items + monthly category targets",
+  "data_type": "real",
+  "provenance": "UNVERIFIED. The Kaggle uploader states: 'Dataset received from my University, Original Author unknown.' Treated as real Indian retail data with this caveat; not used to make strong population claims.",
+  "license": "CC0: Public Domain (per the Kaggle dataset page)",
+  "citation": "Ben Roshan. E-Commerce Data [Data set]. Kaggle. https://www.kaggle.com/datasets/benroshan/ecommerce-data (CC0).",
+  "download_date": "2026-08-29",
+  "original_files": ["List of Orders.csv (500 orders after dropping 60 trailing blank rows)", "Order Details.csv (1500 line items)", "Sales target.csv (36 monthly category targets)"],
+  "row_count": {"orders": 500, "line_items": 1500, "targets": 36},
+  "date_range": "2018-04-01 .. 2019-03-31",
+  "columns_available": ["order_id", "order_date", "customer_name", "State", "City", "category", "sub_category", "quantity", "Amount(=line revenue INR)", "profit", "monthly category target"],
+  "columns_absent": ["unit_price", "discount", "ship_date", "marketing_spend", "inventory", "customer_id", "churn_label"],
+  "derived_fields": {
+    "price (forecasting frame)": "implied unit price = daily revenue / daily units, forward/back-filled. DERIVED and documented - there is no unit-price field in the source.",
+    "marketing_spend / promotion_flag": "held at 0 - absent in source, not invented",
+    "margin_pct": "profit / revenue",
+    "avg_order_value": "revenue / distinct orders",
+    "attainment_pct": "monthly actual revenue / the dataset's own Target"
+  },
+  "processed_files": [
+    {"file": "processed/india_ecommerce_analytics.csv", "grain": "category x state", "rows": 57},
+    {"file": "processed/india_ecommerce_target_attainment.csv", "grain": "category x month vs target", "rows": 36},
+    {"file": "processed/india_ecommerce_forecasting.csv", "grain": "daily total units (1 zero-filled series)", "rows": 365}
+  ],
+  "supported_tasks": ["sales_analytics", "profit_margin_analytics", "geographic_analytics", "target_attainment_analysis", "small_scale_forecasting_benchmark"],
+  "unsupported_tasks": [
+    "discount analysis (no discount field)",
+    "unit-price / elasticity pricing analysis (only line Amount, not unit price)",
+    "churn / customer analytics (customers are names, not identified; single-year snapshot)",
+    "causal_graph_evaluation (no interventions)",
+    "large-scale forecasting (only ~1 year, 3 categories, ~500 orders)"
+  ],
+  "preprocessing": "ml/preprocessing/india_ecommerce_adapter.py (seed 42): drop trailing blank rows + full-row dups; join orders + line items; dayfirst date parse; daily zero-fill for the forecasting series; chronological split via the existing pipeline.",
+  "known_limitations": [
+    "Provenance unverified (see above).",
+    "Small: ~500 orders over 12 months, 3 product categories.",
+    "Profit values are volatile (large per-line losses) - inspect before drawing margin conclusions.",
+    "No unit price/discount -> pricing scenarios are limited; forecasting benchmark is small and high-variance."
+  ],
+  "paper_usage": "Table 1 (predictive performance) - small real Indian forecasting benchmark, labelled INDIA_REAL_BUSINESS, reported separately from synthetic. Primarily used for descriptive Indian retail analytics. Never merged with AGMARKNET (agri price) or synthetic metrics.",
+  "evidence_level": "INDIA_REAL_BUSINESS"
+}

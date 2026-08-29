@@ -323,10 +323,12 @@ integrated through the *existing* Dataset Registry + Training Center — see
 
 Strategy: `REAL INDIAN DATA  +  CONTROLLED SYNTHETIC DATA`.
 
-| Registry dataset | Geography | Task | Notes |
-|---|---|---|---|
-| `external-india-agmarknet-forecasting` | **India** (multi-state) | **price** forecasting | AGMARKNET daily mandi modal prices, data.gov.in, GODL-India. `units_sold` slot carries the daily modal price (INR/quintal) — the source has **no quantity field**. |
-| `external-india-agmarknet-regional-analytics` | India | (analytics) | state × commodity × month price level / volatility / spread. Not trained. |
+| Registry dataset | Geography | Category | Task | Notes |
+|---|---|---|---|---|
+| `external-india-e-commerce-forecasting` | **India** | `INDIA_REAL_BUSINESS` | small forecasting | Benroshan Kaggle e-commerce (CC0). Real, ~500 orders / 12 months. `price` is a DERIVED implied unit price. Small — indicative only. |
+| `external-india-e-commerce-category-state-analytics` / `-target-attainment` | India | `INDIA_REAL_BUSINESS` | analytics | category×state revenue/profit/margin; monthly actual vs target. Not trained. |
+| `external-india-agmarknet-forecasting` | India (multi-state) | `INDIA_AGRICULTURAL_PRICE` | **price** forecasting | AGMARKNET daily mandi modal prices, GODL-India. `units_sold` carries the modal price — **no quantity field**. `DATA_PENDING`. |
+| `external-india-customer-behaviour-simulated-purchase-prediction` | India | `SYNTHETIC_INDIAN_CONTEXT` | purchase prediction | Kundan Kaggle (CC BY 4.0). **Simulated.** Standalone `scripts/run_india_customer_benchmark.py` — NOT an `MLModel`, NOT in the Training Center. |
 
 **Retired** (non-Indian, reproducibility only, `--retired` flag):
 `external-uci-online-retail-*` (UK), `external-m5-forecasting-benchmark` (USA),
@@ -335,23 +337,34 @@ Strategy: `REAL INDIAN DATA  +  CONTROLLED SYNTHETIC DATA`.
 
 ### Reproduce
 ```bash
-# 1. download the Indian raw data (public data.gov.in JSON API; ~30-60 min on
-#    the demo key, <1 min with a free DATA_GOV_IN_API_KEY)
+# 1a. Indian e-commerce + customer datasets (Kaggle public CC0 / CC-BY, anonymous)
+python scripts/download_india_business_datasets.py
+
+# 1b. AGMARKNET raw (public data.gov.in JSON API; slow on the demo key,
+#     <1 min with a free DATA_GOV_IN_API_KEY) — optional, DATA_PENDING otherwise
 python scripts/download_india_datasets.py
 
 # 2. build processed CSVs (seed 42)
-python scripts/build_external_datasets.py
+python scripts/build_external_datasets.py                 # india (agmarknet), festivals, macro
+python scripts/build_external_datasets.py --only benroshan
+python scripts/build_external_datasets.py --only kundan
 
 # 3. register into the existing Dataset Registry (idempotent)
-DATABASE_URL=sqlite:///./backend/dev.db python scripts/register_external_datasets.py
+DATABASE_URL=sqlite:///./backend/dev.db python scripts/register_external_datasets.py             # agmarknet
+DATABASE_URL=sqlite:///./backend/dev.db python scripts/register_external_datasets.py --only benroshan
+DATABASE_URL=sqlite:///./backend/dev.db python scripts/register_external_datasets.py --only kundan
 
-# 4. benchmark-train through the existing Training Center
-#    (every resulting model is status=experimental; active models untouched)
-DATABASE_URL=sqlite:///./backend/dev.db python scripts/run_external_benchmarks.py --seed 42
+# 4. benchmarks
+#    - forecasting through the existing Training Center (status=experimental; active models untouched)
+DATABASE_URL=sqlite:///./backend/dev.db python scripts/run_external_benchmarks.py --seed 42                  # agmarknet (if DATA_PENDING -> SKIP)
+DATABASE_URL=sqlite:///./backend/dev.db python scripts/run_external_benchmarks.py --only benroshan --seed 42
+#    - purchase prediction: standalone, NOT registered as an MLModel
+python scripts/run_india_customer_benchmark.py --seed 42
 ```
 
-The processed CSV is committed, so steps 3–4 work on a fresh clone without
-re-downloading.
+The e-commerce / customer / festival / macro processed CSVs are committed, so
+steps 3–4 work on a fresh clone without re-downloading. Only AGMARKNET needs
+step 1b.
 
 ### Where the results appear
 - **Research → Dataset Registry** — the Indian dataset shows `Source: External Benchmark - India … (data_type=real)` + `GODL-India`, next to (not merged with) the `SYNTHETIC` platform datasets.

@@ -1,0 +1,62 @@
+{
+  "dataset": "external-india-customer-synthetic-v1",
+  "data_category": "SYNTHETIC_INDIAN_CONTEXT",
+  "task": "purchase_prediction",
+  "target": "purchased",
+  "seed": 42,
+  "n_rows": 25000,
+  "class_balance": {
+    "0": 19384,
+    "1": 5616
+  },
+  "train_rows": 18750,
+  "test_rows": 6250,
+  "features": [
+    "unit_price",
+    "quantity",
+    "discount_percent",
+    "discount_amount",
+    "pages_viewed",
+    "time_on_site_sec",
+    "added_to_cart",
+    "device_type",
+    "user_type",
+    "marketing_channel",
+    "product_category",
+    "visit_month",
+    "visit_weekday",
+    "visit_season"
+  ],
+  "excluded_as_leakage": [
+    "revenue",
+    "revenue_normalized",
+    "cart_abandoned",
+    "rating",
+    "review_text",
+    "review_helpful_votes"
+  ],
+  "results": [
+    {
+      "model": "logistic_regression",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.7604
+    },
+    {
+      "model": "random_forest",
+      "precision": 0.3816,
+      "recall": 0.062,
+      "f1": 0.1066,
+      "roc_auc": 0.7441
+    },
+    {
+      "model": "xgboost",
+      "precision": 0.3636,
+      "recall": 0.0114,
+      "f1": 0.0221,
+      "roc_auc": 0.7574
+    }
+  ],
+  "note": "SIMULATED dataset. Standalone benchmark - not registered as an MLModel, not wired into the Training Center. Never combined with real-world Indian results."
+}

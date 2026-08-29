@@ -15,3 +15,22 @@ def test_classify_from_source_strings():
 
 def test_explicit_always_wins():
     assert dc.classify(source="synthetic something", explicit="INDIA_PUBLIC_CONTEXT") == "INDIA_PUBLIC_CONTEXT"
+
+
+def test_synthetic_indian_context_vs_controlled():
+    # a simulated Indian dataset -> SYNTHETIC_INDIAN_CONTEXT, not SYNTHETIC_CONTROLLED
+    assert dc.classify(
+        source="External Benchmark - India E-Commerce Customer Behaviour (SIMULATED) (data_type=synthetic)"
+    ) == dc.SYNTHETIC_INDIAN_CONTEXT
+    # a synthetic dataset with no India context -> SYNTHETIC_CONTROLLED
+    assert dc.classify(evidence_level="SYNTHETIC") == dc.SYNTHETIC_CONTROLLED
+    assert dc.classify(explicit="SYNTHETIC_INDIAN_CONTEXT") == dc.SYNTHETIC_INDIAN_CONTEXT
+
+
+def test_real_indian_business_vs_customer():
+    assert dc.classify(
+        source="External Benchmark - India E-Commerce Orders (Benroshan) (data_type=real)"
+    ) == dc.INDIA_REAL_BUSINESS
+    assert dc.classify(
+        source="External Benchmark - India E-Commerce Customer Behaviour ... (data_type=real)"
+    ) == dc.INDIA_REAL_CUSTOMER

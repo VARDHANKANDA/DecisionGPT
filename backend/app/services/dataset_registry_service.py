@@ -21,6 +21,8 @@ DOMAINS = ["forecasting", "churn", "marketing", "pricing", "inventory", "causal"
 
 # file-based external datasets surfaced in the registry (docs/INDIAN_DATASET_CATALOG.md)
 _EXTERNAL_METADATA = [
+    "india_ecommerce/metadata.json",
+    "india_customer_synthetic/metadata.json",
     "india_agmarknet/metadata.json",
     "india_context/festivals/metadata.json",
     "india_context/macro/metadata.json",
@@ -129,8 +131,8 @@ def list_external_datasets() -> list[ExternalDatasetEntry]:
                 license=m.get("license", "unknown"),
                 geography=m.get("geography", "India"),
                 business_domain=m.get("business_domain", ""),
-                date_range=m.get("date_range"),
-                supported_tasks=m.get("target_tasks", []),
+                date_range=m.get("date_range") if isinstance(m.get("date_range"), str) else None,
+                supported_tasks=m.get("supported_tasks") or m.get("target_tasks") or [],
                 limitations=m.get("known_limitations", []),
             )
         )

@@ -50,6 +50,28 @@ ACTIVE_SPECS = {
          "State x commodity x month price level / volatility / spread table. "
          "Descriptive only; not consumed by any training task."),
     ],
+    "benroshan": [
+        (EXT, "india_ecommerce", "processed/india_ecommerce_forecasting.csv",
+         "External India E-Commerce - Forecasting", "forecasting",
+         "INDIA_REAL_BUSINESS (Kaggle benroshan/ecommerce-data, CC0). Small real "
+         "Indian e-commerce order data; daily total-units series. 'price' is a "
+         "DERIVED implied unit price; marketing_spend/promotion_flag=0 (absent). "
+         "Provenance unverified. Small (~500 orders / 12 months)."),
+        (EXT, "india_ecommerce", "processed/india_ecommerce_analytics.csv",
+         "External India E-Commerce - Category/State Analytics", "other",
+         "Category x state revenue / profit / margin / AOV. Descriptive only."),
+        (EXT, "india_ecommerce", "processed/india_ecommerce_target_attainment.csv",
+         "External India E-Commerce - Target Attainment", "other",
+         "Monthly per-category actual revenue vs the dataset's own Target. Descriptive only."),
+    ],
+    "kundan": [
+        (EXT, "india_customer_synthetic", "processed/india_customer_purchase_prediction.csv",
+         "External India Customer Behaviour (SIMULATED) - Purchase Prediction", "other",
+         "SYNTHETIC_INDIAN_CONTEXT (Kaggle kundanbedmutha/..., CC BY 4.0). SIMULATED "
+         "data. Registered for the standalone purchase-prediction benchmark only "
+         "(scripts/run_india_customer_benchmark.py) - NOT wired into the Training "
+         "Center, NOT an MLModel. cart_abandoned is not churn."),
+    ],
 }
 
 RETIRED_SPECS = {

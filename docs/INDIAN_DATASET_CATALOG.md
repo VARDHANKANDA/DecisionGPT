@@ -2,8 +2,70 @@
 
 Every dataset DecisionGPT uses, by category. Non-Indian datasets are **retired**
 and shown only for completeness. See `docs/INDIAN_SME_DATA_ARCHITECTURE.md` for
-how the layers fit together and `docs/FINAL_DATASET_INVENTORY.md` for the
-one-line status table.
+how the layers fit together, `docs/INDIAN_DATASET_EVALUATION.md` for the
+candidate scoring, and `docs/FINAL_DATASET_INVENTORY.md` for the one-line
+status table.
+
+---
+
+## INDIA_REAL_BUSINESS
+
+### India E-Commerce Orders (Benroshan)
+| | |
+|---|---|
+| Dataset | `external-india-ecommerce-v1` |
+| Source | Kaggle `benroshan/ecommerce-data` — "Sales details from Indian e-commerce website" |
+| URL | https://www.kaggle.com/datasets/benroshan/ecommerce-data |
+| Acquisition | Kaggle public **anonymous** download endpoint (CC0 — no login/token) |
+| License | **CC0: Public Domain** |
+| Geography | India, 19 states · `data_type: real` |
+| **Provenance** | **UNVERIFIED** — uploader: *"received from my University, original author unknown"* |
+| Rows | 500 orders / 1500 line items / 36 monthly targets |
+| Date range | 2018-04-01 .. 2019-03-31 |
+| Business domain | E-commerce retail (Furniture / Clothing / Electronics) |
+| Fields present | order id/date, customer name, state, city, category, sub-category, quantity, `Amount` (line revenue), profit, monthly category target |
+| Fields absent (not invented) | unit price, discount, ship date, marketing, inventory, customer id, churn |
+| Derived | `price` (forecasting) = daily revenue ÷ daily units, ffilled; `marketing_spend`/`promotion_flag` = 0; `margin_pct`, `avg_order_value`, `attainment_pct` |
+| Supported tasks | sales / profit-margin / geographic analytics, target-attainment, **small** forecasting benchmark |
+| Unsupported tasks | discount analysis, unit-price/elasticity pricing, churn / customer analytics, causal evaluation, large-scale forecasting |
+| Preprocessing | `ml/preprocessing/india_ecommerce_adapter.py` (seed 42): drop blank/dup rows, join orders+lines, dayfirst dates, daily zero-fill, existing chronological split |
+| Benchmark | forecasting naive/linear/xgboost via the Training Center (all `experimental`; active models unchanged). xgboost MAE 15.27 vs naive 19.92 on 51 test days — **indicative only** |
+| Limitations | provenance unverified; small; volatile profit; forecasting series small/high-variance |
+| Paper usage | Table 1 row labelled `INDIA_REAL_BUSINESS`, reported separately from synthetic and from AGMARKNET; primarily descriptive Indian retail analytics |
+
+### Real Indian *transaction* dataset with full field richness — still pending
+The candidates with unit-price + discount + ship-date + long history
+(`winstonbobby/indian-retail-sales`, `abuhumzakhan/store-data`) are **templated
+/ generated** (Global Superstore template; Faker names + sequential IDs) — see
+`docs/INDIAN_DATASET_EVALUATION.md`. Rejected rather than mislabelled.
+
+---
+
+## SYNTHETIC_INDIAN_CONTEXT
+
+### India E-Commerce Customer Behaviour (SIMULATED)
+| | |
+|---|---|
+| Dataset | `external-india-customer-synthetic-v1` |
+| Source | Kaggle `kundanbedmutha/indian-e-commerce-customer-behavior-and-purchase` |
+| URL | https://www.kaggle.com/datasets/kundanbedmutha/indian-e-commerce-customer-behavior-and-purchase |
+| Acquisition | Kaggle public **anonymous** download endpoint (CC BY 4.0 — no login/token) |
+| License | **CC BY 4.0** |
+| `data_type` | **synthetic** — the Kaggle page states the rows were "generated to simulate realistic online shopping behavior" |
+| Geography | India (stated; locations integer-coded) · Rows 25,000 · Date visit_date 2024 |
+| Task | **purchase prediction** — binary `purchased` (22.5% positive) |
+| Features | unit_price, quantity, discount_percent/amount, pages_viewed, time_on_site_sec, added_to_cart, device_type, user_type, marketing_channel, product_category, visit_month/weekday/season |
+| Excluded as leakage | `revenue`/`revenue_normalized` (non-zero iff purchased), `cart_abandoned` (near-complement — **not** churn), `rating`/`review_*` (post-purchase), identifiers |
+| Preprocessing | `ml/preprocessing/india_customer_adapter.py` (seed 42) |
+| Benchmark | `scripts/run_india_customer_benchmark.py` — **standalone** sklearn (logistic/RF/xgboost), stratified 75/25. **Not an `MLModel`, not wired into the Training Center.** ROC-AUC ≈ 0.75; default-threshold P/R poor (imbalance) |
+| Unsupported tasks | churn (no target); real-world customer analytics; training/influencing any production model |
+| Paper usage | only as a clearly-labelled `SYNTHETIC_INDIAN_CONTEXT` demonstration; never in real-world tables; never averaged with real results |
+
+### UPI Payment Transactions India — not integrated
+`maulikgajera/upi-payment-transactions-india` (CC0) is **synthetic** ("simulates
+that ecosystem", "fraud labels generated via a probabilistic model") and the
+brief requires it stay context-only. Referenced here as a synthetic
+digital-payments **context** reference; not registered, not trained.
 
 ---
 
@@ -75,22 +137,23 @@ then `build_external_datasets.py` → `register_external_datasets.py` →
 
 ---
 
-## INDIA_REAL_BUSINESS — real Indian transaction data
+## Still pending — a *large, field-rich* real Indian transaction dataset
 
-**Not integrated.** Every Indian retail / e-commerce / D2C **transaction**
-dataset with the required shape (date, product/category, quantity, revenue,
-price) that was evaluated is:
+The integrated Benroshan set (above) is real but **small and field-limited**
+(no unit price / discount / ship date, ~500 orders). A large real Indian
+transaction dataset with full field richness under an open licence was still
+not found:
 
 | Candidate | Blocker |
 |---|---|
-| "Amazon Sale Report (India)", "E-commerce Sales Dataset" | Kaggle account + rules acceptance required — auth not bypassed |
-| BigMart Sales | no clearly-licensed public mirror; **no date column** → unfit for chronological forecasting |
-| DoCA daily retail prices | SPA-only catalog, not served through the generic data.gov.in `/resource/` API |
+| `winstonbobby/indian-retail-sales`, `abuhumzakhan/store-data` | field-rich but **templated / Faker-generated** — synthetic, not real (see `INDIAN_DATASET_EVALUATION.md`) |
+| "Amazon Sale Report (India)" and similar | Kaggle datasets that are **not CC0/CC-BY** are not anonymously downloadable |
+| BigMart Sales | no clearly-licensed public mirror; **no date column** |
+| DoCA daily retail prices | SPA-only catalog, not on the generic data.gov.in `/resource/` API |
 
-Per the task rule, this is **documented, not substituted with poor-quality
-data**. The **primary** Indian business data source is the SME's own upload
-(the product design). A real Indian transaction benchmark remains the top
-pending item — manual path in `docs/DATASET_DOWNLOAD_INSTRUCTIONS.md §2`.
+The **primary** Indian business data source remains the SME's own upload (the
+product design). Manual path for adding another dataset:
+`docs/DATASET_DOWNLOAD_INSTRUCTIONS.md §2`.
 
 ### Business-population context (UDYAM / ASUSE / ASI) — extension points
 

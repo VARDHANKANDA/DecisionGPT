@@ -27,6 +27,8 @@ import pandas as pd  # noqa: E402
 from ml.preprocessing import (  # noqa: E402
     FORECASTING_CANONICAL_COLUMNS,
     india_agmarknet_adapter,
+    india_customer_adapter,
+    india_ecommerce_adapter,
     india_festival_adapter,
     india_macro_adapter,
 )
@@ -96,10 +98,38 @@ def build_macro() -> None:
            "india_context/macro/processed/india_macro_context.csv")
 
 
+def build_benroshan() -> None:
+    raw = EXT / "india_ecommerce" / "raw"
+    print("India e-commerce orders (Benroshan, CC0 -> INDIA_REAL_BUSINESS):")
+    an = india_ecommerce_adapter.build_analytics(raw)
+    _write(an, EXT / "india_ecommerce/processed/india_ecommerce_analytics.csv",
+           "india_ecommerce/processed/india_ecommerce_analytics.csv")
+    ta = india_ecommerce_adapter.build_target_attainment(raw)
+    _write(ta, EXT / "india_ecommerce/processed/india_ecommerce_target_attainment.csv",
+           "india_ecommerce/processed/india_ecommerce_target_attainment.csv")
+    fc = india_ecommerce_adapter.build_forecasting(raw)
+    _check_forecasting(fc, "india_ecommerce_forecasting")
+    _write(fc, EXT / "india_ecommerce/processed/india_ecommerce_forecasting.csv",
+           "india_ecommerce/processed/india_ecommerce_forecasting.csv")
+
+
+def build_kundan() -> None:
+    raw = EXT / "india_customer_synthetic" / "raw"
+    print("India customer behaviour (Kundan, SIMULATED -> SYNTHETIC_INDIAN_CONTEXT):")
+    pp = india_customer_adapter.build_purchase_prediction(raw)
+    vc = pp["purchased"].value_counts().to_dict()
+    assert set(pp["purchased"].unique()) <= {0, 1} and len(vc) == 2, f"bad target: {vc}"
+    _write(pp, EXT / "india_customer_synthetic/processed/india_customer_purchase_prediction.csv",
+           "india_customer_synthetic/processed/india_customer_purchase_prediction.csv")
+    print(f"  [purchase_prediction] rows={len(pp)} class_balance={vc}")
+
+
 ACTIVE_BUILDERS = {
     "india": build_india,
     "festivals": build_festivals,
     "macro": build_macro,
+    "benroshan": build_benroshan,
+    "kundan": build_kundan,
 }
 
 
