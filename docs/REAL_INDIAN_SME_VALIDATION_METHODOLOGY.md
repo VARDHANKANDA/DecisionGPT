@@ -70,7 +70,8 @@ number. Missing targets are reported as `n = 0` for that target, not imputed.
 
 Production stays **R0**. Aggregate records lack the price history to recompute
 the Digital-Twin extrapolation-risk score, so R0 vs R3 is reported as
-**`NO MEASURABLE DIFFERENCE`** unless an SME also supplies
+**`R0 vs R3 = NOT RECOMPUTABLE FROM OUTCOME RECORD`** (missing historical values
+are never reconstructed) unless an SME also supplies
 `historical_price_{min,max,median}` (reserved). The prior generalization study
 (`risk_manager_real_data_validation`, `70617412`) already found R0 and R1
 **identical** on real Indian implied-price data; that result is not hidden. R3

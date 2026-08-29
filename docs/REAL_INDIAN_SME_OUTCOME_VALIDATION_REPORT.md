@@ -72,7 +72,8 @@ decision type, out-of-range confidence/risk) are covered by
 - Predicted values must be supplied by the SME's own DecisionGPT run (production
   config R0); they are not recomputed here.
 - Aggregate records do not carry price history → no full R0-vs-R3 re-simulation
-  from them (`NO MEASURABLE DIFFERENCE` unless optional `historical_price_*`).
+  from them (`R0 vs R3 = NOT RECOMPUTABLE FROM OUTCOME RECORD` unless optional
+  `historical_price_*`; missing values are never reconstructed).
 - Target sample 5–10 is small → `DESCRIPTIVE ONLY`; clustering by business
   applies.
 

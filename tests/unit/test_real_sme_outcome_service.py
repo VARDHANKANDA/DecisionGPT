@@ -166,6 +166,10 @@ def test_report_populated_state_is_descriptive_only_and_separated(db_session):
     assert rep["provenance"]["all_india"] is True
     assert rep["digital_twin"]["revenue"]["n"] == 2
     assert "clustered" in rep["clustering_note"]
+    # R0 vs R3 on aggregate records: not recomputable, values never reconstructed
+    assert rep["r0_vs_r3"].startswith("R0 vs R3 = NOT RECOMPUTABLE FROM OUTCOME RECORD")
+    assert "not reconstructed" in rep["r0_vs_r3"]
+    assert "R0" in rep["r0_vs_r3"]
 
 
 def test_causal_threshold_constant_is_not_modified(db_session):

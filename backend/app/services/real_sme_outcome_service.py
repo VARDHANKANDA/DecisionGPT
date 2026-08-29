@@ -453,8 +453,7 @@ def get_real_sme_outcome_report(db: Session) -> dict:
         },
         "goal_achievement": {"achieved": achieved, "n": n,
                              "rate": round(achieved / n, 4) if n else None},
-        "r0_vs_r3": ("NO MEASURABLE DIFFERENCE — aggregate outcome records do not carry the price "
-                     "history needed to recompute R0/R3 risk; production stays R0"),
+        "r0_vs_r3": _r0_vs_r3_status(outcomes),
         "confidence_calibration": "DESCRIPTIVE ONLY" if small else "assessable",
         "causal_evidence": "INSUFFICIENT — real intervention feedback is applied through the existing "
                            f"causal_feedback_service rules (>= {_min_outcomes()} consistent per-edge "
@@ -475,3 +474,15 @@ def get_real_sme_outcome_report(db: Session) -> dict:
 def _min_outcomes() -> int:
     from app.services import causal_feedback_service
     return causal_feedback_service.MIN_OUTCOMES_FOR_OBSERVATIONAL
+
+
+def _r0_vs_r3_status(outcomes: list[DecisionOutcome]) -> str:
+    """R0 (production) vs R3 (experimental) on real outcomes. The Digital-Twin
+    extrapolation-risk score can only be recomputed with the business's price
+    history; an aggregate outcome record does not carry it. Historical values
+    are NEVER reconstructed (docs/REAL_EVIDENCE_STATUS_REPORT.md Track D)."""
+    if not outcomes:
+        return "NOT APPLICABLE — 0 real outcomes"
+    return ("R0 vs R3 = NOT RECOMPUTABLE FROM OUTCOME RECORD — the aggregate record has no "
+            "historical price range; R0/R3 risk cannot be recomputed and missing values are not "
+            "reconstructed. Production stays R0.")

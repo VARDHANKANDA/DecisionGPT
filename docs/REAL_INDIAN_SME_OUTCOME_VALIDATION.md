@@ -115,8 +115,8 @@ are reported as **separate** rows; no cross-unit aggregation.
 Aggregate outcome records do **not** carry the price history needed to recompute
 the Digital Twin's extrapolation-risk score, so a true R0-vs-R3 re-simulation is
 not possible from them → the report states
-`NO MEASURABLE DIFFERENCE — aggregate outcome records do not carry the price
-history needed to recompute R0/R3 risk`. If an SME also supplies
+`R0 vs R3 = NOT RECOMPUTABLE FROM OUTCOME RECORD` (missing historical values are
+never reconstructed). If an SME also supplies
 `historical_price_{min,max,median}`, R0 and R1 risk for the recorded strategy
 can be compared for that row; on the synthetic and Benroshan evidence to date
 R0 and R1 coincide except on degenerate (near-zero-variance) histories.
