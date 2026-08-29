@@ -29,7 +29,9 @@ def test_export_forecasting_performance_as_csv(client, db_session):
     )
     assert response.status_code == 200
     assert "sales_forecast_xgboost" in response.text
-    assert response.text.splitlines()[0] == "Model,Version,MAE,RMSE,MAPE,Dataset version"
+    assert response.text.splitlines()[0] == (
+        "Model,Version,Status,Data category,MAE,RMSE,MAPE,Dataset version"
+    )
 
 
 def test_export_forecasting_performance_as_all_formats(client, db_session):

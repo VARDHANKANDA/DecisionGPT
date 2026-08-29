@@ -376,3 +376,14 @@ step 1b.
 - The Indian dataset is agri-commodity **wholesale price** data — a genuine Indian benchmark, but not SME retail transactions. A real Indian transaction-level / churn dataset is **pending** (see `docs/DATASET_DOWNLOAD_INSTRUCTIONS.md §2`).
 - `units_sold` = daily modal price; `price` = 28-day backward rolling median (no leakage); `marketing_spend` / `promotion_flag` = `0` (absent in source — not invented).
 - `MAPE` can be noisy on price series with sharp spikes; prefer `MAE` / `RMSE`.
+
+---
+
+## Frozen paper run
+
+The complete frozen experimental evaluation (all 7 experiments, seed 42, with
+results, negative/zero/missing findings, and per-table READY / NOT READY) is in
+**`docs/RESEARCH_EXPERIMENT_REPORT.md`**. Reproduction environment, dataset and
+model versions, and the exact command sequence are in
+**`docs/RESEARCH_REPRODUCIBILITY.md`**. The machine-readable artifacts are
+`experiments/experiment_manifest.json` and `experiments/paper_results_snapshot.json`.

@@ -73,12 +73,36 @@ def _rows_to_latex(headers: list[str], rows: list[list], caption: str = "") -> s
     return "\n".join(lines)
 
 
+def _model_data_category(db: Session, dataset_version: str | None) -> str:
+    """Category label for a model row so Table 1 keeps real / synthetic /
+    Indian-agri results visibly separate (docs/RESEARCH_EXPERIMENT_REPORT.md)."""
+    from app.models.research import ResearchDataset, ResearchDatasetVersion
+    from app.services import dataset_category
+
+    dv = dataset_version or ""
+    if dv.lower().startswith("platform-"):
+        return dataset_category.SYNTHETIC_CONTROLLED
+    # Training Center models carry `upload:<dataset_uuid>:v<n>` — resolve the
+    # human dataset id so the category classifier can see it.
+    if dv.startswith("upload:"):
+        ref = dv.split(":", 2)[1]
+        ds = db.query(ResearchDataset).filter(ResearchDataset.id == ref).one_or_none()
+        if ds is None:
+            v = db.query(ResearchDatasetVersion).filter(ResearchDatasetVersion.id == ref).one_or_none()
+            if v is not None:
+                ds = db.query(ResearchDataset).filter(ResearchDataset.id == v.dataset_id).one_or_none()
+        if ds is not None:
+            return dataset_category.classify(source=ds.source, dataset_id=ds.dataset_id)
+    return dataset_category.classify(source=dv, dataset_id=dv)
+
+
 def forecasting_performance_table(db: Session, experiment_id: str | None = None) -> tuple[list[str], list[list]]:
     models = db.query(MLModel).filter(MLModel.model_type.like("forecasting_%")).order_by(MLModel.model_name).all()
-    headers = ["Model", "Version", "MAE", "RMSE", "MAPE", "Dataset version"]
+    headers = ["Model", "Version", "Status", "Data category", "MAE", "RMSE", "MAPE", "Dataset version"]
     rows = [
         [
-            m.model_name, m.version, m.metrics_json.get("mae"), m.metrics_json.get("rmse"),
+            m.model_name, m.version, m.status, _model_data_category(db, m.dataset_version),
+            m.metrics_json.get("mae"), m.metrics_json.get("rmse"),
             m.metrics_json.get("mape"), m.dataset_version,
         ]
         for m in models
@@ -88,10 +112,11 @@ def forecasting_performance_table(db: Session, experiment_id: str | None = None)
 
 def churn_performance_table(db: Session, experiment_id: str | None = None) -> tuple[list[str], list[list]]:
     models = db.query(MLModel).filter(MLModel.model_type.like("churn_%")).order_by(MLModel.model_name).all()
-    headers = ["Model", "Version", "Precision", "Recall", "F1", "ROC-AUC", "Dataset version"]
+    headers = ["Model", "Version", "Status", "Data category", "Precision", "Recall", "F1", "ROC-AUC", "Dataset version"]
     rows = [
         [
-            m.model_name, m.version, m.metrics_json.get("precision"), m.metrics_json.get("recall"),
+            m.model_name, m.version, m.status, _model_data_category(db, m.dataset_version),
+            m.metrics_json.get("precision"), m.metrics_json.get("recall"),
             m.metrics_json.get("f1"), m.metrics_json.get("roc_auc"), m.dataset_version,
         ]
         for m in models
