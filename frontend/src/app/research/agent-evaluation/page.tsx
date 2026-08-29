@@ -8,6 +8,7 @@ import {
   type MultiAgentDiagnostic,
   type RiskManagerCalibration,
   type RiskManagerDiagnostic,
+  type RiskManagerGeneralization,
 } from "@/lib/research-api";
 import { DataTable, EvalEmptyState, Metric, Panel, PageIntro, StatGrid, fmt, fmtInt } from "@/components/research-ui";
 
@@ -140,6 +141,10 @@ export default function AgentEvaluationPage() {
 
           {data.risk_manager_calibration ? (
             <RiskManagerCalibrationPanel d={data.risk_manager_calibration} />
+          ) : null}
+
+          {data.risk_manager_generalization ? (
+            <RiskManagerGeneralizationPanel d={data.risk_manager_generalization} />
           ) : null}
 
           {data.ablation.experiment_id ? (
@@ -741,6 +746,140 @@ function RiskManagerCalibrationPanel({ d }: { d: RiskManagerCalibration }) {
             </div>
           ))}
         </div>
+      </div>
+    </Panel>
+  );
+}
+
+function RiskManagerGeneralizationPanel({ d }: { d: RiskManagerGeneralization }) {
+  const num = (x: number | null | undefined, dp = 3) => (x == null ? "—" : x.toFixed(dp));
+  const ev = d.external_validation;
+  const ov = d.risk_regime_overall;
+  const dc = d.decision_comparison_simulated ?? {};
+  const hyp = d.hypotheses ?? {};
+  const regimes = ["LOW_VARIANCE", "MODERATE_VARIANCE", "HIGH_VARIANCE"];
+
+  const tone =
+    ev?.verdict === "VALIDATED FOR CONTROLLED PRODUCTION TEST" ? "text-success"
+    : ev?.verdict === "NOT VALIDATED" ? "text-danger"
+    : "text-foreground";
+
+  return (
+    <Panel
+      title="Risk Manager — generalization / real-Indian-data validation (research-only)"
+      right={
+        <span className="text-xs text-muted">
+          {d.experiment_name ?? "experiment"} {d.experiment_id.slice(0, 8)} · {d.dataset?.category}
+        </span>
+      }
+    >
+      <p className="mb-3 text-xs text-muted">
+        Tests whether R3 (robust extrapolation-risk scale + λ = 0.25), <span className="font-medium">PROMISING</span>{" "}
+        on the synthetic suite, generalizes to real Indian e-commerce data ({d.dataset?.name},{" "}
+        <span className="font-medium">{d.dataset?.provenance}</span> provenance). No λ re-tuned, no
+        threshold changed. Production stays {d.production_default ?? "R0"}.
+      </p>
+
+      <div className={`mb-4 rounded-xl border border-border bg-muted-surface p-3 text-sm font-medium ${tone}`}>
+        External validation verdict: {ev?.verdict ?? "—"}
+        <span className="ml-2 text-xs font-normal text-muted">
+          (central benefit confirmed on real data: {String(ev?.central_benefit_confirmed_on_real_data ?? "—")};
+          anything regressed: {String(ev?.anything_regressed_on_real_data ?? "—")})
+        </span>
+      </div>
+
+      <StatGrid>
+        <Metric label="Real price sub-series" value={String((d.sub_series ?? []).length)}
+          hint={regimes.map((r) => `${r.split("_")[0]} ${d.regime_counts?.[r] ?? 0}`).join(" · ")} />
+        <Metric label="R0 == R1 on all real rows" value={String(ov?.r0_equals_r1_all_rows ?? "—")}
+          hint="the zero-variance pathology does not occur on real data" />
+        <Metric label="Spearman ρ (dist vs risk)" value={num(ov?.spearman_rho_dist_vs_r1, 3)}
+          hint={`R0 ${num(ov?.spearman_rho_dist_vs_r0, 3)} · identical`} />
+        <Metric label="Monotonicity violations (R1)" value={String(ov?.monotonicity_violations_r1 ?? "—")}
+          hint={`extreme-probe penalised ${num(ov?.extreme_outside_range_penalised_r1, 2)}`} />
+      </StatGrid>
+
+      {/* risk by regime */}
+      <div className="mt-4 overflow-x-auto rounded-lg border border-border">
+        <table className="w-full text-xs">
+          <thead className="bg-muted-surface text-muted">
+            <tr>
+              <th className="px-2 py-1 text-left">Regime</th>
+              <th className="px-2 py-1 text-right">sub-series</th>
+              <th className="px-2 py-1 text-right">ρ R0</th>
+              <th className="px-2 py-1 text-right">ρ R1</th>
+              <th className="px-2 py-1 text-right">mono. viol. R1</th>
+              <th className="px-2 py-1 text-right">mean legit risk R0→R1</th>
+              <th className="px-2 py-1 text-right">R0==R1</th>
+            </tr>
+          </thead>
+          <tbody>
+            {regimes.map((r) => {
+              const a = d.risk_regime_by_regime?.[r];
+              if (!a) return null;
+              return (
+                <tr key={r} className="border-t border-border">
+                  <td className="px-2 py-1 text-foreground">{r.replace(/_/g, " ")}</td>
+                  <td className="px-2 py-1 text-right">{a.n_sub_series ?? "—"}</td>
+                  <td className="px-2 py-1 text-right">{num(a.spearman_rho_dist_vs_r0, 3)}</td>
+                  <td className="px-2 py-1 text-right">{num(a.spearman_rho_dist_vs_r1, 3)}</td>
+                  <td className="px-2 py-1 text-right">{a.monotonicity_violations_r1}</td>
+                  <td className="px-2 py-1 text-right">{num(a.mean_r0_risk_legit_moves, 3)} → {num(a.mean_r1_risk_legit_moves, 3)}</td>
+                  <td className="px-2 py-1 text-right">{String(a.r0_equals_r1_all_rows ?? "—")}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* SIMULATED decision comparison */}
+      <div className="mt-4">
+        <p className="mb-1 text-xs font-medium text-foreground">
+          Decision comparison — <span className="uppercase text-muted">simulated</span> (no real intervention outcome)
+        </p>
+        <DataTable
+          headers={["Variant", "Selected strategy", "Goal ach.", "Risk-adjusted", "Confidence", "Sel. DT-risk", "Changed vs R0"]}
+          rows={Object.entries(dc).map(([v, c]) => [
+            v, c.selected_strategy ?? "—", num(c.goal_achievement, 2),
+            num(c.risk_adjusted_score, 1), num(c.confidence, 3), num(c.selected_dt_risk, 3),
+            c.strategy_changed_vs_r0 ? "yes" : "no",
+          ])}
+        />
+      </div>
+
+      <div className="mt-4 grid gap-3 md:grid-cols-2 text-xs">
+        <div className="rounded-lg border border-border p-3">
+          <p className="font-medium text-foreground">Real-LLM validation</p>
+          <p className="mt-1 text-muted">
+            <span className={d.real_llm?.status === "AVAILABLE" ? "text-success" : "text-danger"}>
+              {d.real_llm?.status ?? "—"}
+            </span>{" "}
+            {d.real_llm?.reason ?? ""}
+          </p>
+        </div>
+        <div className="rounded-lg border border-border p-3">
+          <p className="font-medium text-foreground">DecisionOutcome validation</p>
+          <p className="mt-1 text-muted">
+            <span className={d.decision_outcome?.status === "AVAILABLE" ? "text-success" : "text-danger"}>
+              {d.decision_outcome?.status ?? "—"}
+            </span>{" "}
+            — {d.decision_outcome?.decision_outcome_records ?? 0} records; Table 2 {d.decision_outcome?.table_2 ?? "—"}
+          </p>
+        </div>
+      </div>
+
+      {/* hypotheses */}
+      <div className="mt-4 rounded-xl border border-border p-3 text-xs">
+        <p className="font-medium text-foreground">Pre-registered hypotheses</p>
+        <ul className="mt-1 space-y-0.5">
+          {Object.entries(hyp).filter(([k]) => !k.startsWith("_") && !k.endsWith("_note")).map(([k, v]) => (
+            <li key={k} className={String(v).startsWith("SUPPORTED") ? "text-success" : "text-muted"}>
+              <span className="font-medium">{k.replace(/_/g, " ")}:</span> {v}
+            </li>
+          ))}
+        </ul>
+        {hyp["H5_note"] ? <p className="mt-2 text-muted">{hyp["H5_note"]}</p> : null}
       </div>
     </Panel>
   );

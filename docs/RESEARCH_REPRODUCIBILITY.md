@@ -116,6 +116,19 @@ from app.services import experiment_service as e;d=SessionLocal();\
 print(e.run_experiment(d,'risk_manager_calibration',{'seeds':[42,43,44,45,46],'name':'risk_manager_calibration v1'}).status);d.close()"
 #   ~= 25-35 min (7 variants x 60 pairs x 1 analyze_goal). No variant is promoted.
 
+# --- R3 generalization / real-Indian-data validation
+#     (docs/RISK_MANAGER_GENERALIZATION_REPORT.md) ---
+# External validation of R3 on real Indian data (Benroshan external-india-ecommerce-v1,
+# INDIA_REAL_BUSINESS, provenance unverified). Part A: 23 real price sub-series
+# partitioned LOW/MODERATE/HIGH variance by robust CV (pre-registered thresholds),
+# R0 vs R1(=R3) extrapolation risk + Spearman/monotonicity. Part B: SIMULATED
+# R0/R1/R2-0.25/R3 decision comparison on the materialised IEC_TOTAL business.
+# Part C real-LLM: BLOCKED (no provider). Part D DecisionOutcome: 0 records.
+python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
+from app.services import experiment_service as e;d=SessionLocal();\
+print(e.run_experiment(d,'risk_manager_real_data_validation',{'name':'risk_manager_real_data_validation v1'}).status);d.close()"
+#   ~= 1-2 min. Deterministic. Verdict: PROMISING BUT NOT VALIDATED. Production stays R0.
+
 # a controlled decision (Digital Twin simulations + confidence basis) on the demo synthetic business
 python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
 from app.services import demo_business_service as db_,goal_service as g,decision_service as ds;\
@@ -144,6 +157,8 @@ curl -s localhost:8000/api/v1/research/paper-results     -H "X-Research-Token: $
 | **6 · Ablation A–F (multi, 12×5=60/config)** | most `Δ vs Full ≈ 0`; large effect only for removing the Digital Twin (config B → 0.00). See the completed `multi_scenario_ablation` run. Identical PRE (`be392694`) / POST (`db58455b`). |
 | **Candidate-space correction re-test** | `candidate_coverage_rate` 0.333 → **0.833**, `missing_supported_strategy_rate` 0.500 → **0.000** (invariant now holds). Architecture / ablation / pairwise aggregates **byte-identical** to pre-correction: D still 0.084, D<B p<0.0001, override rate 1.00 (0 improved / 45 degraded). Failure mode shifted `CANDIDATE_SET_MISMATCH` 30 → 0, `RISK_OVERRULE` 15 → 45. POST diagnostic `f24abc1b`. See `docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`. |
 | **Risk Manager diagnostic (`ba56e42b`)** | Optimizer formula verified on 390/390 strategy rows. RM-decisive 45/60 (75 %) — 35 improved / 0 degraded / 10 neutral. `RISK_SCORE_MISMATCH` = 0/390 (RM faithfully transmits the DT extrapolation-risk score: mean DT risk `Price +5%` 0.68, `Price +10%` 0.98). Sensitivity variant **D1** (risk penalty un-weighted): mean goal achievement **0.084 → 0.583**, paired Wilcoxon D1−D0 p<0.0001, r=0.89, 35 wins / 25 ties / 0 losses; D1 confidence 0.139 → 0.018. Outcome **A** (with caveats). See `docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md`. |
+| **Risk Manager calibration (`b8516eef`)** | R0 formula confirmed miscalibrated on low-variance histories (zero-variance diagnostic). **R3** (robust scale + λ=0.25): mean goal achievement 0.084 → 0.168 (paired Wilcoxon p=0.025, 5/60 non-zero), risk-adjusted −2 614.8 → +40.5, Spearman ρ 0.969, 0 monotonicity violations, confidence 0.109. Verdict **PROMISING** (R2-0.25 & R3 pass all 7 criteria). No variant promoted. See `docs/RISK_MANAGER_CALIBRATION_REPORT.md`. |
+| **R3 generalization / real-data validation (`70617412`)** | Benroshan real Indian e-commerce. 23 real price sub-series (3 LOW / 11 MOD / 9 HIGH variance): **R0 == R1 on all 184 test rows** — R0's pathology does not occur on real implied-price data; Spearman ρ 0.989 (identical), 0 monotonicity violations, 82 % of out-of-range extreme probes ≥ 0.15. SIMULATED decision comparison: R0/R1/R2-0.25/R3 all select `Price +10%`, identical GA/RA/confidence (risk penalty already ≈ 0). Real-LLM **BLOCKED**; `DecisionOutcome` count 0 → Table 2 NOT READY. Verdict **PROMISING BUT NOT VALIDATED**. Production stays R0. See `docs/RISK_MANAGER_GENERALIZATION_REPORT.md`. |
 | 7 · End-to-end (demo business) | selected "Marketing +20%", confidence 0.1468 = 0.9788 × 0.5 × 0.6 × (1−0.5) |
 
 `churn` platform: logreg F1 0.669 / AUC 0.798, RF F1 0.661 / AUC 0.793, xgb F1 0.658 / AUC 0.792.

@@ -224,6 +224,37 @@ def _risk_calibration_summary(run: ExperimentRun | None) -> dict | None:
     }
 
 
+def _risk_generalization_summary(run: ExperimentRun | None) -> dict | None:
+    """The R3 real-Indian-data generalization / external-validation study
+    (research-only). Every number is read from the stored
+    risk_manager_real_data_validation experiment. Production stays R0."""
+    if run is None:
+        return None
+    m = run.metrics_json or {}
+    pa = m.get("part_a_risk_regime") or {}
+    return {
+        "experiment_id": run.id,
+        "experiment_name": run.experiment_name,
+        "created_at": run.created_at.isoformat() if run.created_at else None,
+        "dataset": m.get("dataset"),
+        "synthetic_calibration_reference": m.get("synthetic_calibration_reference"),
+        "regime_classifier": pa.get("regime_classifier"),
+        "regime_counts": pa.get("regime_counts"),
+        "sub_series": pa.get("sub_series"),
+        "risk_regime_by_regime": pa.get("by_regime"),
+        "risk_regime_overall": pa.get("overall"),
+        "decision_comparison_simulated": (m.get("part_b_decision_comparison_simulated") or {}).get(
+            "decision_comparison"),
+        "decision_business_meta": (m.get("part_b_decision_comparison_simulated") or {}).get("business_meta"),
+        "leakage_check": (m.get("part_b_decision_comparison_simulated") or {}).get("leakage_check"),
+        "real_llm": m.get("part_c_real_llm"),
+        "decision_outcome": m.get("part_d_decision_outcome"),
+        "hypotheses": m.get("hypotheses"),
+        "external_validation": m.get("external_validation"),
+        "production_default": m.get("production_default"),
+    }
+
+
 def get_agent_evaluation(db: Session) -> dict:
     arch_run = _latest(db, "decision_architecture")
     ablation_run = _latest(db, "ablation")
@@ -231,6 +262,7 @@ def get_agent_evaluation(db: Session) -> dict:
     diagnostic_runs = _latest_n(db, "multi_agent_diagnostic", 2)
     rm_diagnostic_run = _latest(db, "risk_manager_diagnostic")
     rm_calibration_run = _latest(db, "risk_manager_calibration")
+    rm_generalization_run = _latest(db, "risk_manager_real_data_validation")
 
     architecture_rows = _architecture_rows(arch_run)
 
@@ -271,5 +303,6 @@ def get_agent_evaluation(db: Session) -> dict:
         ),
         "risk_manager_diagnostic": _risk_manager_diagnostic_summary(rm_diagnostic_run),
         "risk_manager_calibration": _risk_calibration_summary(rm_calibration_run),
+        "risk_manager_generalization": _risk_generalization_summary(rm_generalization_run),
         "empty_state": empty_state,
     }

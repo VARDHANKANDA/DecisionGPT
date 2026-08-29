@@ -213,7 +213,8 @@ export type ExperimentType =
   | "multi_scenario_ablation"
   | "multi_agent_diagnostic"
   | "risk_manager_diagnostic"
-  | "risk_manager_calibration";
+  | "risk_manager_calibration"
+  | "risk_manager_real_data_validation";
 
 export interface ExperimentRun {
   id: string;
@@ -544,7 +545,61 @@ export interface AgentEvaluation {
   multi_agent_diagnostic_previous: MultiAgentDiagnostic | null;
   risk_manager_diagnostic: RiskManagerDiagnostic | null;
   risk_manager_calibration: RiskManagerCalibration | null;
+  risk_manager_generalization: RiskManagerGeneralization | null;
   empty_state: string | null;
+}
+
+export interface RiskRegimeAgg {
+  label: string;
+  n_rows: number;
+  n_sub_series?: number;
+  spearman_rho_dist_vs_r0: number | null;
+  spearman_rho_dist_vs_r1: number | null;
+  monotonicity_violations_r0: number;
+  monotonicity_violations_r1: number;
+  r0_equals_r1_all_rows?: boolean;
+  r1_never_below_r0?: boolean;
+  mean_r0_risk_legit_moves: number | null;
+  mean_r1_risk_legit_moves: number | null;
+  mean_r0_risk_extreme_probes: number | null;
+  mean_r1_risk_extreme_probes: number | null;
+  extreme_outside_range_penalised_r1: number | null;
+  n_extreme_probes_outside_range?: number;
+}
+
+export interface RiskManagerGeneralization {
+  experiment_id: string;
+  experiment_name?: string;
+  created_at: string | null;
+  dataset: { id: string; name: string; category: string; provenance: string; license: string; geography: string } | null;
+  synthetic_calibration_reference: { experiment: string; r3_verdict: string } | null;
+  regime_classifier: { statistic: string; low_max: number; moderate_max: number } | null;
+  regime_counts: Record<string, number> | null;
+  sub_series: {
+    sub_series: string; grain: string; n_points: number; n_line_items: number;
+    price_variance_regime: string; historical_price_scale_rcv: number;
+    historical_price_min: number; historical_price_max: number; historical_price_median: number;
+  }[] | null;
+  risk_regime_by_regime: Record<string, RiskRegimeAgg> | null;
+  risk_regime_overall: RiskRegimeAgg | null;
+  decision_comparison_simulated: Record<string, {
+    selected_strategy: string | null; goal_achievement: number; risk_adjusted_score: number;
+    confidence: number | null; selected_dt_risk: number | null; mean_strategy_dt_risk: number | null;
+    strategy_changed_vs_r0: boolean;
+  }> | null;
+  decision_business_meta: Record<string, unknown> | null;
+  leakage_check: Record<string, unknown> | null;
+  real_llm: { status: string; reason?: string; provider?: string | null; model?: string | null } | null;
+  decision_outcome: { decision_outcome_records: number; matched_prediction_evaluations: number; status: string; table_2: string } | null;
+  hypotheses: Record<string, string> | null;
+  external_validation: {
+    criteria: Record<string, boolean>;
+    core_criteria_passed: boolean;
+    central_benefit_confirmed_on_real_data: boolean;
+    anything_regressed_on_real_data: boolean;
+    verdict: string;
+  } | null;
+  production_default: string | null;
 }
 
 export interface RiskCalibrationVariantAgg {

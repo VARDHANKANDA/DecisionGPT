@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-08-29T00:00:00Z",
-  "experiment_count": 15,
+  "experiment_count": 16,
   "multi_scenario": {
     "architecture": {
       "experiment_id": "0e1bd8dc-bc51-44ea-8e58-08a054201b85",
@@ -39,6 +39,56 @@
     }
   },
   "experiments": [
+    {
+      "experiment_id": "70617412-a5db-472f-85cb-d527e32a1e40",
+      "experiment_name": "risk_manager_real_data_validation v1",
+      "experiment_type": "risk_manager_real_data_validation",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "external-india-ecommerce-v1",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "name": "risk_manager_real_data_validation v1"
+      },
+      "created_at": "2026-08-29T15:08:03.142791",
+      "started_at": "2026-08-29T15:08:03.151325",
+      "completed_at": "2026-08-29T15:08:12.700189",
+      "error_message": null,
+      "metric_summary": {
+        "dataset": "external-india-ecommerce-v1",
+        "regime_counts": {
+          "LOW_VARIANCE": 3,
+          "MODERATE_VARIANCE": 11,
+          "HIGH_VARIANCE": 9
+        },
+        "overall_monotonicity_violations_r1": 0,
+        "r0_equals_r1_on_real_data": true,
+        "real_llm": "BLOCKED",
+        "decision_outcome": "INSUFFICIENT",
+        "hypotheses": {
+          "H1_low_variance_pathology_reduced": "NOT ASSESSABLE",
+          "H1_note": "NOT ASSESSABLE \u2014 R0 shows no low-variance inflation on this real data (mean R0 legit-move risk in LOW regime = 0.0); a real implied-price series still spans a wide min..max, so the R0 denominator never collapses. There is no pathology here for R1 to fix.",
+          "H2_ordering_preserved_realistic_variation": "SUPPORTED",
+          "H3_risk_adjusted_not_worse_simulated": "SUPPORTED",
+          "H3_note": "R3 risk-adjusted 5848.25 vs R0 5848.25; R2-0.25 5848.25. SIMULATED \u2014 no real intervention outcome.",
+          "H4_extreme_extrapolation_still_penalised": "SUPPORTED",
+          "H5_generalizes_beyond_one_regime": "SUPPORTED",
+          "H5_note": "R0 and R1 produce IDENTICAL risk on every real sub-series (r0_equals_r1_all_rows = True); R3 has NO measurable effect on this real data. H5 here means 'behaviour is regime-robust', not 'R3 helps'.",
+          "H6_survives_real_llm": "NOT TESTABLE \u2014 real-LLM validation BLOCKED (no provider configured)",
+          "_regimes_present_in_real_data": [
+            "LOW_VARIANCE",
+            "MODERATE_VARIANCE",
+            "HIGH_VARIANCE"
+          ],
+          "_r0_pathology_present_in_real_data": false
+        },
+        "verdict": "PROMISING BUT NOT VALIDATED"
+      }
+    },
     {
       "experiment_id": "b8516eef-f467-4e3d-91ed-1c51b2d0c8b3",
       "experiment_name": "risk_manager_calibration v1",

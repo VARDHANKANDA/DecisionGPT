@@ -39,6 +39,7 @@ SUPPORTED_EXPERIMENT_TYPES = {
     "multi_agent_diagnostic",
     "risk_manager_diagnostic",
     "risk_manager_calibration",
+    "risk_manager_real_data_validation",
 }
 
 
@@ -139,6 +140,12 @@ def _dispatch(db: Session, experiment_type: str, configuration: dict) -> tuple[d
         seeds = configuration.get("seeds") or multi_scenario_service.SEEDS
         metrics = risk_calibration_service.run_risk_calibration(db, seeds=[int(s) for s in seeds])
         return metrics, "synthetic_scenario_suite", _active_forecasting_versions(db)
+
+    if experiment_type == "risk_manager_real_data_validation":
+        from app.services import risk_manager_generalization_service
+
+        metrics = risk_manager_generalization_service.run_generalization_validation(db)
+        return metrics, "external-india-ecommerce-v1", _active_forecasting_versions(db)
 
     # ablation
     ablation_result = ablation_service.run_ablation_study(db, seed=seed)
@@ -273,6 +280,18 @@ def _metric_summary(run: ExperimentRun) -> dict:
             "r3_selection": m.get("r3_selection"),
             "verdict": m.get("verdict"),
             "verdict_by_variant": m.get("verdict_by_variant"),
+        }
+    if t == "risk_manager_real_data_validation":
+        pa = m.get("part_a_risk_regime", {})
+        return {
+            "dataset": (m.get("dataset") or {}).get("id"),
+            "regime_counts": pa.get("regime_counts"),
+            "overall_monotonicity_violations_r1": (pa.get("overall") or {}).get("monotonicity_violations_r1"),
+            "r0_equals_r1_on_real_data": (pa.get("overall") or {}).get("r0_equals_r1_all_rows"),
+            "real_llm": (m.get("part_c_real_llm") or {}).get("status"),
+            "decision_outcome": (m.get("part_d_decision_outcome") or {}).get("status"),
+            "hypotheses": m.get("hypotheses"),
+            "verdict": (m.get("external_validation") or {}).get("verdict"),
         }
     return {}
 

@@ -460,6 +460,105 @@ def test_agent_eval_exposes_risk_manager_calibration(client, db_session):
     assert rc["zero_variance_diagnostic"]["constant"]["+5%"]["R1"] < 1.0
 
 
+def test_agent_eval_exposes_risk_manager_generalization(client, db_session):
+    """The R3 real-Indian-data generalization / external-validation study is
+    surfaced on /agent-evaluation with the pre-registered verdict — read from
+    the stored risk_manager_real_data_validation experiment. Production = R0."""
+    from app.models.experiment import ExperimentRun
+
+    def _regime(rho, viol, r0eq):
+        return {
+            "label": "x", "n_rows": 60, "n_sub_series": 8,
+            "spearman_rho_dist_vs_r0": rho, "spearman_rho_dist_vs_r1": rho,
+            "monotonicity_violations_r0": viol, "monotonicity_violations_r1": viol,
+            "r0_equals_r1_all_rows": r0eq, "r1_never_below_r0": True,
+            "mean_r0_risk_legit_moves": 0.0, "mean_r1_risk_legit_moves": 0.0,
+            "mean_r0_risk_extreme_probes": 0.33, "mean_r1_risk_extreme_probes": 0.33,
+            "extreme_outside_range_penalised_r1": 0.82, "n_extreme_probes_outside_range": 30,
+        }
+
+    run = ExperimentRun(
+        experiment_name="risk_manager_real_data_validation v1",
+        experiment_type="risk_manager_real_data_validation",
+        status="completed",
+        configuration_json={},
+        metrics_json={
+            "label": "RISK_MANAGER_GENERALIZATION",
+            "dataset": {"id": "external-india-ecommerce-v1", "name": "India E-Commerce Orders (Benroshan)",
+                        "category": "INDIA_REAL_BUSINESS", "provenance": "UNVERIFIED",
+                        "license": "CC0", "geography": "India"},
+            "synthetic_calibration_reference": {"experiment": "risk_manager_calibration b8516eef",
+                                                "r3_verdict": "PROMISING"},
+            "part_a_risk_regime": {
+                "regime_classifier": {"statistic": "robust CV = 1.4826 * MAD / |median|",
+                                      "low_max": 0.15, "moderate_max": 0.40},
+                "regime_counts": {"LOW_VARIANCE": 3, "MODERATE_VARIANCE": 11, "HIGH_VARIANCE": 9},
+                "sub_series": [{"sub_series": "Clothing", "grain": "monthly", "n_points": 12,
+                                "n_line_items": 949, "price_variance_regime": "LOW_VARIANCE",
+                                "historical_price_scale_rcv": 0.129, "historical_price_min": 20.99,
+                                "historical_price_max": 55.82, "historical_price_median": 27.0}],
+                "by_regime": {"LOW_VARIANCE": _regime(0.9985, 0, True),
+                              "MODERATE_VARIANCE": _regime(0.9868, 0, True),
+                              "HIGH_VARIANCE": _regime(0.9925, 0, True)},
+                "overall": _regime(0.9892, 0, True),
+            },
+            "part_b_decision_comparison_simulated": {
+                "business_meta": {"forecast_origin_date": "2019-03-31", "n_sale_days": 307, "span_days": 365},
+                "leakage_check": {"history_last_date": "2019-03-31", "max_sale_date": "2019-03-31",
+                                  "forecast_origin_date": "2019-03-31", "no_future_rows_in_history": True},
+                "decision_comparison": {
+                    v: {"selected_strategy": "Price +10%", "goal_achievement": 1.0,
+                        "risk_adjusted_score": 5848.25, "confidence": 0.161,
+                        "selected_dt_risk": 0.0, "mean_strategy_dt_risk": 0.0,
+                        "strategy_changed_vs_r0": False}
+                    for v in ("R0", "R1", "R2-0.25", "R3", "D1")
+                },
+            },
+            "part_c_real_llm": {"status": "BLOCKED", "reason": "No LLM provider configured",
+                                "provider": "", "model": ""},
+            "part_d_decision_outcome": {"decision_outcome_records": 0,
+                                        "matched_prediction_evaluations": 0,
+                                        "status": "INSUFFICIENT", "table_2": "NOT READY"},
+            "hypotheses": {
+                "H1_low_variance_pathology_reduced": "NOT ASSESSABLE",
+                "H2_ordering_preserved_realistic_variation": "SUPPORTED",
+                "H3_risk_adjusted_not_worse_simulated": "SUPPORTED",
+                "H4_extreme_extrapolation_still_penalised": "SUPPORTED",
+                "H5_generalizes_beyond_one_regime": "SUPPORTED",
+                "H5_note": "R0 == R1 on all real rows; R3 has no measurable effect.",
+                "H6_survives_real_llm": "NOT TESTABLE — real-LLM validation BLOCKED",
+            },
+            "external_validation": {
+                "criteria": {"1_low_variance_inflation_reduced": False, "2_risk_ordering_monotonic": True,
+                             "3_extreme_extrapolation_not_low_risk": True, "4_risk_adjusted_not_worse": True,
+                             "5_confidence_not_collapsed": True, "6_not_dependent_on_single_regime": True,
+                             "7_reproducible": True, "8_survives_real_llm": False},
+                "core_criteria_passed": False,
+                "central_benefit_confirmed_on_real_data": False,
+                "anything_regressed_on_real_data": False,
+                "verdict": "PROMISING BUT NOT VALIDATED",
+            },
+            "production_default": "R0",
+        },
+    )
+    db_session.add(run)
+    db_session.commit()
+
+    body = client.get("/api/v1/research/agent-evaluation", headers=_h()).json()
+    rg = body["risk_manager_generalization"]
+    assert rg is not None
+    assert rg["experiment_name"] == "risk_manager_real_data_validation v1"
+    assert rg["dataset"]["category"] == "INDIA_REAL_BUSINESS"
+    assert rg["external_validation"]["verdict"] == "PROMISING BUT NOT VALIDATED"
+    assert rg["external_validation"]["central_benefit_confirmed_on_real_data"] is False
+    assert rg["risk_regime_overall"]["r0_equals_r1_all_rows"] is True
+    assert rg["risk_regime_overall"]["monotonicity_violations_r1"] == 0
+    assert rg["real_llm"]["status"] == "BLOCKED"
+    assert rg["decision_outcome"]["table_2"] == "NOT READY"
+    assert rg["decision_comparison_simulated"]["R3"]["selected_strategy"] == "Price +10%"
+    assert rg["production_default"] == "R0"
+
+
 # --- paper results ------------------------------------------------
 
 

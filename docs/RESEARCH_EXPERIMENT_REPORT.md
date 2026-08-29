@@ -410,6 +410,14 @@ continues to use **D0** (production Full DecisionGPT).
   risk ordering (ρ 0.969) and confidence (0.109). Verdict **PROMISING**; no
   variant promoted. See `docs/RISK_MANAGER_CALIBRATION_REPORT.md` and the
   pre-registration `docs/RISK_CALIBRATION_ANALYSIS.md`.
+- `risk_manager_real_data_validation` (`70617412`): external validation of R3 on
+  real Indian data (Benroshan, `INDIA_REAL_BUSINESS`). Across 23 real price
+  sub-series R0 and R1 are **byte-identical** — R0's pathology does not occur on
+  real implied-price data; risk ordering, monotonicity and extreme-extrapolation
+  penalisation all preserved; SIMULATED decision comparison identical across
+  variants. Real-LLM **BLOCKED**, `DecisionOutcome` count 0. Verdict:
+  **PROMISING BUT NOT VALIDATED** — hold; do not promote. See
+  `docs/RISK_MANAGER_GENERALIZATION_REPORT.md`.
 
 ## Paper figures
 
@@ -440,7 +448,12 @@ verification, scenario drill-down — and the **Risk Manager calibration** panel
 R0/D1/R1/R2-λ/R3 comparison table, variant-vs-goal-achievement and
 variant-vs-risk-adjusted charts, the zero-variance diagnostic, paired stats
 vs R0, the pre-specified criteria breakdown and the generated PROMISING /
-PARTIALLY PROMISING / NO SATISFACTORY CALIBRATION verdict), Ablation, Paper
+PARTIALLY PROMISING / NO SATISFACTORY CALIBRATION verdict; and the **Risk
+Manager generalization** panel: real-Indian-data risk-regime table (LOW /
+MODERATE / HIGH variance, Spearman ρ, monotonicity, R0 == R1 flag), SIMULATED
+decision comparison, real-LLM / DecisionOutcome availability, pre-registered
+H1–H6, and the VALIDATED / PROMISING BUT NOT VALIDATED / NOT VALIDATED
+verdict), Ablation, Paper
 Results (4/5 ready — Table
 4/5 now show the multi-scenario aggregates; Table 2 shows its missing-data
 reason). No hard-coded research metric; every number resolves to a stored row
@@ -533,10 +546,26 @@ reason). No hard-coded research metric; every number resolves to a stored row
    0.109 (vs D1's 0.018) — passing all seven pre-specified criteria. It closes
    only ~21 % of the Full-vs-Digital-Twin gap; the rest is the near-flat
    template-mode agent growth scores. **No variant promoted** — production stays
-   R0 / D0. Next: a controlled *production* calibration of R3, validated on
-   non-degenerate real histories and re-run with a real LLM.
-4. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
+   R0 / D0.
+4. **R3 was then externally validated on real Indian data** —
+   `docs/RISK_MANAGER_GENERALIZATION_REPORT.md` (`risk_manager_real_data_validation`
+   id `70617412`, Benroshan `INDIA_REAL_BUSINESS`, provenance unverified).
+   Across **23 real price sub-series / 184 test rows** (3 LOW / 11 MODERATE /
+   9 HIGH variance regimes), **R0 and R1 produce byte-identical risk scores** —
+   the zero/low-variance denominator-collapse pathology R3 fixes **does not
+   occur** on real Indian implied-price data (a real series still spans a wide
+   `min…max`, so `hi−lo` never collapses). Risk ordering (Spearman ρ 0.989),
+   monotonicity (0 violations) and extreme-extrapolation penalisation (82 % of
+   out-of-range probes ≥ 0.15) are all preserved; in the SIMULATED decision
+   comparison every variant makes the identical choice (risk penalty already
+   ≈ 0). **Real-LLM validation is BLOCKED** (no provider configured);
+   `DecisionOutcome` records = 0 → Table 2 stays NOT READY. **Verdict:
+   PROMISING BUT NOT VALIDATED** — nothing regressed, but R3's benefit is
+   unconfirmed outside the synthetic regime. **Recommendation: hold** — do not
+   promote, do not retune; revisit only with a dataset where R0's pathology
+   actually bites, a real-LLM run, and ≥ 5 real decision outcomes.
+5. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
    Table 2 / Figure 3 become real.
-5. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
+6. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
    second `INDIA_*` forecasting row; add repeated seeds to the forecasting /
    customer experiments for CIs.
