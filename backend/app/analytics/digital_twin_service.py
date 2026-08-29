@@ -192,13 +192,86 @@ def _risk_from_extrapolation(history: dict[str, tuple[float, float]], scenario: 
         elif value > hi:
             overshoot = max(overshoot, (value - hi) / span)
     risk_score = round(min(overshoot, 1.0), 4)
+    return _risk_band(risk_score), risk_score
+
+
+def _risk_band(risk_score: float) -> str:
     if risk_score < 0.15:
-        level = "LOW"
-    elif risk_score < 0.5:
-        level = "MODERATE"
-    else:
-        level = "HIGH"
-    return level, risk_score
+        return "LOW"
+    if risk_score < 0.5:
+        return "MODERATE"
+    return "HIGH"
+
+
+# --- Risk formulation versions (docs/RISK_CALIBRATION_ANALYSIS.md) ---------
+# R0 = the production formula above: extrapolation overshoot normalised by the
+#      raw observed range (max - min), floored at 1e-9. Degenerates when a
+#      feature's history barely varies (denominator -> 0 -> any move reads as
+#      risk 1.0). Unchanged; the default everywhere.
+RISK_FORMULA_VERSION = "extrapolation_range_v1"
+
+# R1 = same overshoot logic, but the normaliser is a *robust historical scale*
+#      that cannot collapse to zero for a low-variance series:
+#          scale = max( hi - lo,
+#                       1.4826 * MAD(series),        # robust sigma estimate
+#                       REL_FLOOR * |median(series)| ) # scale-aware floor
+#      REL_FLOOR is pre-specified (not tuned): a price/marketing move of this
+#      fraction off the historical median is the unit of extrapolation distance
+#      when the history is otherwise flat. 0.15 == a "materially large" business
+#      move. This never *reduces* the normaliser below the observed range, so a
+#      genuinely wide history is unaffected; it only lifts the denominator when
+#      the raw range is degenerate.
+RISK_FORMULA_VERSION_ROBUST = "extrapolation_robust_v1"
+ROBUST_SCALE_REL_FLOOR = 0.15
+_MAD_TO_SIGMA = 1.4826
+
+
+def _robust_feature_scale(series: "pd.Series") -> dict[str, float]:
+    """lo / hi / mad-sigma / relative-floor for one history series."""
+    vals = [float(x) for x in series if x is not None]
+    if not vals:
+        return {"lo": 0.0, "hi": 0.0, "mad_sigma": 0.0, "rel_floor": 0.0, "median": 0.0}
+    s = sorted(vals)
+    n = len(s)
+    med = s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2
+    devs = sorted(abs(v - med) for v in vals)
+    mad = devs[n // 2] if n % 2 else (devs[n // 2 - 1] + devs[n // 2]) / 2
+    return {
+        "lo": min(vals), "hi": max(vals),
+        "mad_sigma": _MAD_TO_SIGMA * mad,
+        "rel_floor": ROBUST_SCALE_REL_FLOOR * abs(med),
+        "median": med,
+    }
+
+
+def _feature_history_stats(history: "pd.DataFrame") -> dict[str, dict[str, float]]:
+    return {
+        "price": _robust_feature_scale(history["price"]),
+        "marketing_spend": _robust_feature_scale(history["marketing_spend"]),
+    }
+
+
+def _calibrated_risk_from_extrapolation(
+    stats: dict[str, dict[str, float]], scenario: dict[str, float], model: str
+) -> tuple[str, float]:
+    """R1 (`extrapolation_robust_v1`). Identical overshoot / clip / banding to
+    R0 — only the per-feature normaliser changes to a robust scale that does
+    not collapse for a low-variance history. `model` must be "R1"."""
+    if model != "R1":
+        raise ValueError(f"Unknown calibrated risk model '{model}'.")
+    overshoot = 0.0
+    for feature, value in scenario.items():
+        st = stats.get(feature)
+        if st is None:
+            continue
+        lo, hi = st["lo"], st["hi"]
+        scale = max(hi - lo, st["mad_sigma"], st["rel_floor"], 1e-9)
+        if value < lo:
+            overshoot = max(overshoot, (lo - value) / scale)
+        elif value > hi:
+            overshoot = max(overshoot, (value - hi) / scale)
+    risk_score = round(min(overshoot, 1.0), 4)
+    return _risk_band(risk_score), risk_score
 
 
 def compute_scenario_inputs(
@@ -231,7 +304,13 @@ def simulate_strategy(
     horizon_days: int = 14,
     strategy_id: str | None = None,
     causal_context=None,
+    risk_model: str | None = None,
 ) -> SimulationResult:
+    """`risk_model` is a research-only override for how extrapolation risk is
+    scored (docs/RISK_CALIBRATION_ANALYSIS.md). None / "R0" = the production
+    formula (`_risk_from_extrapolation`); "R1" = the robust-scale variant.
+    It changes ONLY `SimulationOutput.risk_score` / `.risk_level` — the
+    predicted units / revenue / profit and every other field are identical."""
     from ml.features.forecasting_features import build_forecasting_features
 
     _validate_actions(actions)
@@ -353,9 +432,13 @@ def simulate_strategy(
         "price": (float(history["price"].min()), float(history["price"].max())),
         "marketing_spend": (float(history["marketing_spend"].min()), float(history["marketing_spend"].max())),
     }
-    risk_level, risk_score = _risk_from_extrapolation(
-        history_ranges, {"price": scenario_price, "marketing_spend": scenario_marketing_spend}
-    )
+    scenario_features = {"price": scenario_price, "marketing_spend": scenario_marketing_spend}
+    if risk_model in (None, "R0"):
+        risk_level, risk_score = _risk_from_extrapolation(history_ranges, scenario_features)
+    else:
+        risk_level, risk_score = _calibrated_risk_from_extrapolation(
+            _feature_history_stats(history), scenario_features, risk_model
+        )
 
     output = SimulationOutput(
         expected_units_sold=round(scenario_units, 2),

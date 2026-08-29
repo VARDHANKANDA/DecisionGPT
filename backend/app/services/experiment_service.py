@@ -38,6 +38,7 @@ SUPPORTED_EXPERIMENT_TYPES = {
     "multi_scenario_ablation",
     "multi_agent_diagnostic",
     "risk_manager_diagnostic",
+    "risk_manager_calibration",
 }
 
 
@@ -130,6 +131,13 @@ def _dispatch(db: Session, experiment_type: str, configuration: dict) -> tuple[d
         metrics = risk_manager_diagnostic_service.run_risk_manager_diagnostic(
             db, seeds=[int(s) for s in seeds]
         )
+        return metrics, "synthetic_scenario_suite", _active_forecasting_versions(db)
+
+    if experiment_type == "risk_manager_calibration":
+        from app.services import multi_scenario_service, risk_calibration_service
+
+        seeds = configuration.get("seeds") or multi_scenario_service.SEEDS
+        metrics = risk_calibration_service.run_risk_calibration(db, seeds=[int(s) for s in seeds])
         return metrics, "synthetic_scenario_suite", _active_forecasting_versions(db)
 
     # ablation
@@ -252,6 +260,19 @@ def _metric_summary(run: ExperimentRun) -> dict:
             "rm_decisive_percentage": rd.get("percentage"),
             "paired_interpretation": (m.get("paired_d1_minus_d0") or {}).get("interpretation"),
             "outcome": (m.get("interpretation") or {}).get("outcome"),
+        }
+    if t == "risk_manager_calibration":
+        agg = m.get("aggregates", {})
+        return {
+            "seeds": m.get("seeds"),
+            "digital_twin_mean": m.get("digital_twin_mean_goal_achievement"),
+            "mean_goal_achievement": {
+                v: ((agg.get(v, {}).get("goal_achievement") or {}) or {}).get("mean")
+                for v in m.get("variants", [])
+            },
+            "r3_selection": m.get("r3_selection"),
+            "verdict": m.get("verdict"),
+            "verdict_by_variant": m.get("verdict_by_variant"),
         }
     return {}
 

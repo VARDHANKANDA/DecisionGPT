@@ -104,6 +104,18 @@ from app.services import experiment_service as e;d=SessionLocal();\
 print(e.run_experiment(d,'risk_manager_diagnostic',{'seeds':[42,43,44,45,46],'name':'risk_manager_diagnostic v1'}).status);d.close()"
 #   ~= 8-12 min (2 analyze_goal runs per scenario/seed; CPU-bound; deterministic).
 
+# --- Principled Risk Manager calibration study (docs/RISK_MANAGER_CALIBRATION_REPORT.md,
+#     docs/RISK_CALIBRATION_ANALYSIS.md) ---
+# Research-only variants: R0 (production) / D1 (no penalty) / R1 (robust
+# extrapolation-risk scale, PipelineOptions(risk_model="R1")) / R2-λ (ranking
+# penalty weight λ ∈ {0.25,0.50,0.75}, PipelineOptions(risk_penalty_lambda=λ)) /
+# R3 (R1 + the λ chosen by a pre-specified criterion). The Digital Twin's
+# predicted units/revenue/profit and the agent growth scores are unchanged.
+python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
+from app.services import experiment_service as e;d=SessionLocal();\
+print(e.run_experiment(d,'risk_manager_calibration',{'seeds':[42,43,44,45,46],'name':'risk_manager_calibration v1'}).status);d.close()"
+#   ~= 25-35 min (7 variants x 60 pairs x 1 analyze_goal). No variant is promoted.
+
 # a controlled decision (Digital Twin simulations + confidence basis) on the demo synthetic business
 python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
 from app.services import demo_business_service as db_,goal_service as g,decision_service as ds;\

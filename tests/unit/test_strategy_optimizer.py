@@ -33,6 +33,17 @@ def test_zero_weight_removes_only_the_risk_penalty_term():
     )
 
 
+def test_bounded_lambda_weights_scale_the_penalty_linearly():
+    # R2 variants: final = growth - λ·(1-RM). λ ∈ {0.25, 0.50, 0.75}.
+    growth_ba, growth_fa, rm = 0.5, 0.5, 0.0   # (1-RM) = 1.0
+    for lam in (0.25, 0.50, 0.75):
+        assert compute_strategy_score(growth_ba, growth_fa, rm, risk_penalty_weight=lam) == round(
+            0.5 - lam * 1.0, 4
+        )
+    # a partially-safe strategy: penalty shrinks with λ
+    assert compute_strategy_score(0.5, 0.5, 0.4, risk_penalty_weight=0.5) == round(0.5 - 0.5 * 0.6, 4)
+
+
 def test_zero_weight_lifts_a_price_move_above_a_zero_benefit_marketing_move():
     # the exact mechanism the diagnostic isolates: a price strategy with strong
     # growth scores but RM=0 loses under the production formula, wins without it.

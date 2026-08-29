@@ -6,6 +6,7 @@ import {
   researchApi,
   type AgentEvaluation,
   type MultiAgentDiagnostic,
+  type RiskManagerCalibration,
   type RiskManagerDiagnostic,
 } from "@/lib/research-api";
 import { DataTable, EvalEmptyState, Metric, Panel, PageIntro, StatGrid, fmt, fmtInt } from "@/components/research-ui";
@@ -135,6 +136,10 @@ export default function AgentEvaluationPage() {
 
           {data.risk_manager_diagnostic ? (
             <RiskManagerDiagnosticPanel d={data.risk_manager_diagnostic} />
+          ) : null}
+
+          {data.risk_manager_calibration ? (
+            <RiskManagerCalibrationPanel d={data.risk_manager_calibration} />
           ) : null}
 
           {data.ablation.experiment_id ? (
@@ -542,6 +547,199 @@ function RiskManagerDiagnosticPanel({ d }: { d: RiskManagerDiagnostic }) {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
+function RiskManagerCalibrationPanel({ d }: { d: RiskManagerCalibration }) {
+  const pct = (x: number | null | undefined) => (x == null ? "—" : `${(x * 100).toFixed(0)}%`);
+  const num = (x: number | null | undefined, dp = 3) => (x == null ? "—" : x.toFixed(dp));
+  const variants = d.variants ?? [];
+  const agg = d.aggregates ?? {};
+  const crit = d.criteria_evaluation ?? {};
+  const paired = d.paired_vs_r0 ?? {};
+  const zv = d.zero_variance_diagnostic ?? {};
+  const dtMean = d.digital_twin_mean_goal_achievement;
+
+  const gaChart = variants.map((v) => ({ variant: v, goal: agg[v]?.goal_achievement?.mean ?? 0 }));
+  const raChart = variants.map((v) => ({ variant: v, risk_adjusted: agg[v]?.risk_adjusted_score?.mean ?? 0 }));
+
+  const verdictTone =
+    d.verdict === "PROMISING" ? "text-success"
+    : d.verdict === "PARTIALLY PROMISING" ? "text-foreground"
+    : "text-danger";
+
+  return (
+    <Panel
+      title="Risk Manager calibration (research-only — no variant promoted)"
+      right={
+        <span className="text-xs text-muted">
+          {d.experiment_name ?? "experiment"} {d.experiment_id.slice(0, 8)} · {d.total_scenario_seed_pairs} scenario-seed pairs
+        </span>
+      }
+    >
+      <p className="mb-3 text-xs text-muted">
+        R0 = production (== D0). D1 = risk penalty removed (reference). R1 = robust historical scale
+        for extrapolation risk. R2-λ = R0 risk, ranking penalty weight λ. R3 = R1 + the λ chosen by a
+        pre-specified criterion ({d.r3_selection ? `λ=${d.r3_selection.lambda}` : "—"}). Only risk
+        estimation / contribution changes — Digital Twin predictions, candidates, agent scores,
+        scenarios and seeds are identical. Every variant is EXPERIMENTAL; production stays R0 / D0.
+      </p>
+
+      <div className={`mb-4 rounded-xl border border-border bg-muted-surface p-3 text-sm font-medium ${verdictTone}`}>
+        Risk Calibration Verdict: {d.verdict ?? "—"}
+        <span className="ml-2 text-xs font-normal text-muted">
+          (best calibration variant: {d.best_calibration_variant ?? "—"}; generated from the
+          pre-specified criteria, not chosen manually)
+        </span>
+      </div>
+
+      <div className="overflow-x-auto rounded-lg border border-border">
+        <table className="w-full text-xs">
+          <thead className="bg-muted-surface text-muted">
+            <tr>
+              <th className="px-2 py-1 text-left">Variant</th>
+              <th className="px-2 py-1 text-right">Goal achievement [95% CI]</th>
+              <th className="px-2 py-1 text-right">Risk-adjusted</th>
+              <th className="px-2 py-1 text-right">Confidence</th>
+              <th className="px-2 py-1 text-right">DT-best agree</th>
+              <th className="px-2 py-1 text-right">Spearman ρ</th>
+              <th className="px-2 py-1 text-right">Mono. viol.</th>
+              <th className="px-2 py-1 text-left">Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-t border-border bg-muted-surface/40">
+              <td className="px-2 py-1 font-medium text-foreground">Digital Twin (B)</td>
+              <td className="px-2 py-1 text-right">{num(dtMean)}</td>
+              <td className="px-2 py-1 text-right">—</td>
+              <td className="px-2 py-1 text-right">—</td>
+              <td className="px-2 py-1 text-right">—</td>
+              <td className="px-2 py-1 text-right">—</td>
+              <td className="px-2 py-1 text-right">—</td>
+              <td className="px-2 py-1">reference</td>
+            </tr>
+            {variants.map((v) => {
+              const a = agg[v];
+              const ga = a?.goal_achievement;
+              const mono = a?.risk_monotonicity;
+              return (
+                <tr key={v} className="border-t border-border">
+                  <td className="px-2 py-1 font-medium text-foreground">{v}</td>
+                  <td className="px-2 py-1 text-right">
+                    {ga ? `${ga.mean.toFixed(3)}${ga.ci95 ? ` [${ga.ci95[0].toFixed(3)}, ${ga.ci95[1].toFixed(3)}]` : ""}` : "—"}
+                  </td>
+                  <td className="px-2 py-1 text-right">{num(a?.risk_adjusted_score?.mean, 1)}</td>
+                  <td className="px-2 py-1 text-right">{num(a?.confidence?.mean)}</td>
+                  <td className="px-2 py-1 text-right">{pct(a?.dt_best_agreement_rate)}</td>
+                  <td className="px-2 py-1 text-right">{num(mono?.spearman_rho_distance_vs_risk, 3)}</td>
+                  <td className="px-2 py-1 text-right">{mono?.price10_safer_than_price5_violations ?? "—"}</td>
+                  <td className="px-2 py-1">{v === "R0" || v === "D1" ? "reference" : (crit[v]?.verdict ?? "—")}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <div>
+          <p className="mb-1 text-xs font-medium text-foreground">Variant vs goal achievement</p>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={gaChart}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="variant" tick={{ fontSize: 10 }} />
+              <YAxis tick={{ fontSize: 10 }} domain={[0, 1]} />
+              <Tooltip />
+              <Bar dataKey="goal" fill="var(--chart-1, #4f46e5)" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div>
+          <p className="mb-1 text-xs font-medium text-foreground">Variant vs risk-adjusted score</p>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={raChart}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="variant" tick={{ fontSize: 10 }} />
+              <YAxis tick={{ fontSize: 10 }} />
+              <Tooltip />
+              <Bar dataKey="risk_adjusted" fill="var(--chart-2, #059669)" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <p className="mb-1 text-xs font-medium text-foreground">
+          Zero-variance diagnostic — extrapolation risk by history type (R0 → R1)
+        </p>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-xs">
+            <thead className="bg-muted-surface text-muted">
+              <tr>
+                <th className="px-2 py-1 text-left">History</th>
+                {Object.keys(zv[Object.keys(zv)[0] ?? ""] ?? {}).map((mv) => (
+                  <th key={mv} className="px-2 py-1 text-right">{mv}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(zv).map(([hname, moves]) => (
+                <tr key={hname} className="border-t border-border">
+                  <td className="px-2 py-1 text-foreground">{hname.replace(/_/g, " ")}</td>
+                  {Object.entries(moves).map(([mv, rr]) => (
+                    <td key={mv} className="px-2 py-1 text-right">
+                      {rr.R0.toFixed(2)} → <span className="text-success">{rr.R1.toFixed(2)}</span>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <p className="mb-1 text-xs font-medium text-foreground">Paired vs R0 (goal achievement)</p>
+        <DataTable
+          headers={["Variant", "Mean diff", "95% CI", "Wins/Ties/Losses", "p", "r", "Interpretation"]}
+          rows={variants.filter((v) => v !== "R0").map((v) => {
+            const p = paired[v];
+            if (!p) return [v, "—", "—", "—", "—", "—", "—"];
+            const wins = (p[`${v}_wins`] as number | undefined) ?? 0;
+            return [
+              v,
+              p.mean_difference.toFixed(4),
+              p.mean_difference_ci95 ? `[${p.mean_difference_ci95[0]}, ${p.mean_difference_ci95[1]}]` : "—",
+              `${wins}/${p.ties}/${(p.r0_wins as number | undefined) ?? 0}`,
+              p.p_value != null ? String(p.p_value) : "—",
+              p.effect_size_r != null ? String(p.effect_size_r) : "—",
+              p.interpretation,
+            ];
+          })}
+        />
+      </div>
+
+      <div className="mt-4 rounded-xl border border-border p-3 text-xs">
+        <p className="font-medium text-foreground">Pre-specified criteria</p>
+        <ul className="mt-1 list-disc space-y-0.5 pl-5 text-muted">
+          {(d.pre_specified_criteria ?? []).map((c, i) => <li key={i}>{c}</li>)}
+        </ul>
+        <div className="mt-2 grid gap-2 md:grid-cols-3">
+          {Object.entries(crit).map(([v, c]) => (
+            <div key={v} className="rounded border border-border p-2">
+              <p className="font-medium text-foreground">{v} — {c.verdict} ({c.criteria_passed}/{c.criteria_total})</p>
+              <ul className="mt-1 space-y-0.5">
+                {Object.entries(c.checks).map(([k, ok]) => (
+                  <li key={k} className={ok ? "text-success" : "text-danger"}>
+                    {ok ? "✓" : "✗"} {k.replace(/_/g, " ")}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </Panel>

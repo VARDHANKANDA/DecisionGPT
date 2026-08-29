@@ -212,7 +212,8 @@ export type ExperimentType =
   | "multi_scenario_architecture"
   | "multi_scenario_ablation"
   | "multi_agent_diagnostic"
-  | "risk_manager_diagnostic";
+  | "risk_manager_diagnostic"
+  | "risk_manager_calibration";
 
 export interface ExperimentRun {
   id: string;
@@ -542,7 +543,59 @@ export interface AgentEvaluation {
   multi_agent_diagnostic: MultiAgentDiagnostic | null;
   multi_agent_diagnostic_previous: MultiAgentDiagnostic | null;
   risk_manager_diagnostic: RiskManagerDiagnostic | null;
+  risk_manager_calibration: RiskManagerCalibration | null;
   empty_state: string | null;
+}
+
+export interface RiskCalibrationVariantAgg {
+  variant: string;
+  n_pairs: number;
+  goal_achievement: StatSummary | null;
+  risk_adjusted_score: StatSummary | null;
+  confidence: StatSummary | null;
+  mean_selected_dt_risk: number | null;
+  mean_strategy_dt_risk: number | null;
+  mean_strategy_rm_score: number | null;
+  dt_best_agreement_rate: number | null;
+  override_rate: number | null;
+  override_improved: number;
+  override_degraded: number;
+  override_neutral: number;
+  risk_monotonicity: {
+    spearman_rho_distance_vs_risk: number | null;
+    price10_safer_than_price5_violations: number;
+    violation_pairs: { scenario_id: string; seed: number; price5_risk: number; price10_risk: number }[];
+  };
+}
+
+export interface RiskManagerCalibration {
+  experiment_id: string;
+  experiment_name?: string;
+  created_at: string | null;
+  seeds: number[] | null;
+  total_scenario_seed_pairs: number;
+  risk_formula_versions: { R0: string; R1_R3: string; robust_scale_rel_floor: number } | null;
+  r3_selection: { lambda: number; rule: string } | null;
+  digital_twin_mean_goal_achievement: number | null;
+  variants: string[] | null;
+  aggregates: Record<string, RiskCalibrationVariantAgg> | null;
+  paired_vs_r0: Record<string, {
+    comparison: string; difference_is: string; n_pairs: number;
+    mean_difference: number; median_difference: number; std_difference: number;
+    ties: number; mean_difference_ci95: [number, number] | null;
+    test?: string; p_value?: number | null; effect_size_r?: number | null;
+    interpretation: string;
+    [k: string]: unknown;
+  }> | null;
+  zero_variance_diagnostic: Record<string, Record<string, { R0: number; R1: number }>> | null;
+  pre_specified_criteria: string[] | null;
+  criteria_evaluation: Record<string, {
+    checks: Record<string, boolean>;
+    criteria_passed: number; criteria_total: number; verdict: string;
+  }> | null;
+  verdict: string | null;
+  verdict_by_variant: Record<string, string> | null;
+  best_calibration_variant: string | null;
 }
 
 export interface StatSummary {

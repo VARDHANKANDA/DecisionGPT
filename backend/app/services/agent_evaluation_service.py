@@ -196,12 +196,41 @@ def _risk_manager_diagnostic_summary(run: ExperimentRun | None) -> dict | None:
     }
 
 
+def _risk_calibration_summary(run: ExperimentRun | None) -> dict | None:
+    """The principled Risk Manager calibration study (research-only). Every
+    number is read from the stored risk_manager_calibration experiment. All
+    variants are EXPERIMENTAL — production stays R0 / D0."""
+    if run is None:
+        return None
+    m = run.metrics_json or {}
+    return {
+        "experiment_id": run.id,
+        "experiment_name": run.experiment_name,
+        "created_at": run.created_at.isoformat() if run.created_at else None,
+        "seeds": m.get("seeds"),
+        "total_scenario_seed_pairs": m.get("total_scenario_seed_pairs"),
+        "risk_formula_versions": m.get("risk_formula_versions"),
+        "r3_selection": m.get("r3_selection"),
+        "digital_twin_mean_goal_achievement": m.get("digital_twin_mean_goal_achievement"),
+        "variants": m.get("variants"),
+        "aggregates": m.get("aggregates"),
+        "paired_vs_r0": m.get("paired_vs_r0"),
+        "zero_variance_diagnostic": m.get("zero_variance_diagnostic"),
+        "pre_specified_criteria": m.get("pre_specified_criteria"),
+        "criteria_evaluation": m.get("criteria_evaluation"),
+        "verdict": m.get("verdict"),
+        "verdict_by_variant": m.get("verdict_by_variant"),
+        "best_calibration_variant": m.get("best_calibration_variant"),
+    }
+
+
 def get_agent_evaluation(db: Session) -> dict:
     arch_run = _latest(db, "decision_architecture")
     ablation_run = _latest(db, "ablation")
     multi_agent_run = _latest(db, "multi_agent")
     diagnostic_runs = _latest_n(db, "multi_agent_diagnostic", 2)
     rm_diagnostic_run = _latest(db, "risk_manager_diagnostic")
+    rm_calibration_run = _latest(db, "risk_manager_calibration")
 
     architecture_rows = _architecture_rows(arch_run)
 
@@ -241,5 +270,6 @@ def get_agent_evaluation(db: Session) -> dict:
             _diagnostic_summary(diagnostic_runs[1]) if len(diagnostic_runs) > 1 else None
         ),
         "risk_manager_diagnostic": _risk_manager_diagnostic_summary(rm_diagnostic_run),
+        "risk_manager_calibration": _risk_calibration_summary(rm_calibration_run),
         "empty_state": empty_state,
     }

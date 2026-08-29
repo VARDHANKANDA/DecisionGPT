@@ -396,14 +396,20 @@ Every table row traces to an `experiment_id` / `model_version` /
 `experiments/experiment_manifest.json` (which now carries a `multi_scenario`
 aggregate block) and `experiments/paper_results_snapshot.json`.
 
-**Appendix — Risk Manager Sensitivity Analysis.** Not a paper table. The
-`risk_manager_diagnostic` experiment (`ba56e42b`) records a controlled
-sensitivity variant **D1** (Full DecisionGPT, Risk Manager running but its
-penalty un-weighted in the ranking). D1 raises mean goal achievement 0.084 →
-0.583 (paired Wilcoxon p < 0.0001, r = 0.89). This is **supporting diagnostic
-evidence for the failure-analysis section only** — the main Table 4 conclusion
-continues to use **D0** (production Full DecisionGPT). See
-`docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md`.
+**Appendix — Risk Manager Sensitivity & Calibration Analysis.** Not a paper
+table; supporting failure-analysis evidence only — the main Table 4 conclusion
+continues to use **D0** (production Full DecisionGPT).
+- `risk_manager_diagnostic` (`ba56e42b`): sensitivity variant **D1** (Risk
+  Manager running, penalty un-weighted) raises mean goal achievement 0.084 →
+  0.583 (paired Wilcoxon p < 0.0001, r = 0.89) — the risk-penalty term is the
+  proximate mechanism. See `docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md`.
+- `risk_manager_calibration` (`b8516eef`): the R0 extrapolation-risk formula is
+  confirmed miscalibrated on low-variance histories; a robust scale + bounded
+  penalty weight (**R3**, λ = 0.25) improves mean goal achievement 0.084 →
+  0.168 (p = 0.025) and risk-adjusted score −2 614.8 → +40.5 while preserving
+  risk ordering (ρ 0.969) and confidence (0.109). Verdict **PROMISING**; no
+  variant promoted. See `docs/RISK_MANAGER_CALIBRATION_REPORT.md` and the
+  pre-registration `docs/RISK_CALIBRATION_ANALYSIS.md`.
 
 ## Paper figures
 
@@ -428,9 +434,14 @@ paired Wilcoxon interpretation, robustness table, failure-mode list and a
 scenario / seed / architecture-filterable per-observation table**), Model
 Performance, Digital Twin Evaluation (explicit empty state), Causal
 Evaluation, Multi-Agent Evaluation (now also renders the **Risk Manager
-diagnostic** panel: RM disagreement / RM-decisive rates, DT-risk vs RM-score
+diagnostic** panel — RM disagreement / RM-decisive rates, DT-risk vs RM-score
 calibration table, D0 vs D1 comparison, paired D1−D0 test, formula
-verification, scenario drill-down), Ablation, Paper Results (4/5 ready — Table
+verification, scenario drill-down — and the **Risk Manager calibration** panel:
+R0/D1/R1/R2-λ/R3 comparison table, variant-vs-goal-achievement and
+variant-vs-risk-adjusted charts, the zero-variance diagnostic, paired stats
+vs R0, the pre-specified criteria breakdown and the generated PROMISING /
+PARTIALLY PROMISING / NO SATISFACTORY CALIBRATION verdict), Ablation, Paper
+Results (4/5 ready — Table
 4/5 now show the multi-scenario aggregates; Table 2 shows its missing-data
 reason). No hard-coded research metric; every number resolves to a stored row
 (`experiment_id`, `scenario_id`, `seed`).
@@ -506,10 +517,24 @@ reason). No hard-coded research metric; every number resolves to a stored row
    faithfully transmitting the Digital Twin's own extrapolation-risk score
    (0.68 for `Price +5%`, 0.98 for `Price +10%`, driven by the synthetic
    businesses' near-constant price history); and D1's mean confidence collapses
-   0.139 → 0.018 and its risk-adjusted score stays negative. So the next task
-   is a **principled calibration experiment** on `_risk_from_extrapolation`'s
-   zero-variance-history handling and the optimizer's unbounded risk term —
-   not applied here.
+   0.139 → 0.018 and its risk-adjusted score stays negative.
+3. **The principled calibration study is complete** —
+   `docs/RISK_MANAGER_CALIBRATION_REPORT.md` (`risk_manager_calibration` id
+   `b8516eef`, 7 variants × 60 pairs). The zero-variance diagnostic confirms
+   R0's `_risk_from_extrapolation` **is** miscalibrated (a constant / low-variance
+   price history scores every move — including a price cut — at risk 1.0, and
+   `+5 %` cannot be ranked below `+10 %`). A robust historical scale
+   (`extrapolation_robust_v1`, normaliser `max(hi−lo, 1.4826·MAD, 0.15·|median|)`)
+   removes the pathology while preserving risk ordering (Spearman ρ 0.969,
+   0 monotonicity violations). **Verdict: PROMISING** — `R3` (robust scale +
+   bounded optimizer risk-penalty weight λ = 0.25) lifts mean goal achievement
+   **0.084 → 0.168** (paired Wilcoxon p = 0.025, 5 wins / 0 losses) **and**
+   turns mean risk-adjusted score −2 614.8 → **+40.5**, keeping confidence
+   0.109 (vs D1's 0.018) — passing all seven pre-specified criteria. It closes
+   only ~21 % of the Full-vs-Digital-Twin gap; the rest is the near-flat
+   template-mode agent growth scores. **No variant promoted** — production stays
+   R0 / D0. Next: a controlled *production* calibration of R3, validated on
+   non-degenerate real histories and re-run with a real LLM.
 4. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
    Table 2 / Figure 3 become real.
 5. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a

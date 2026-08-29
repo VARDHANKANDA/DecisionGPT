@@ -357,6 +357,109 @@ def test_agent_eval_exposes_risk_manager_diagnostic(client, db_session):
     assert rm["scenario_drilldown"][0]["d1_selected_strategy"] == "Price +10%"
 
 
+def test_agent_eval_exposes_risk_manager_calibration(client, db_session):
+    """The calibration study (R0/D1/R1/R2-λ/R3) is surfaced on /agent-evaluation
+    with the pre-specified verdict — read straight from the stored experiment.
+    All variants are EXPERIMENTAL; the payload never implies promotion."""
+    from app.models.experiment import ExperimentRun
+
+    def _summ(mean_, ci):
+        return {"n": 60, "mean": mean_, "median": mean_, "std": 0.1, "min": 0.0, "max": 1.0, "ci95": ci}
+
+    def _agg(v, ga, ra, cf, rho, viol):
+        return {
+            "variant": v, "n_pairs": 60,
+            "goal_achievement": _summ(ga, [ga - 0.05, ga + 0.05]),
+            "risk_adjusted_score": _summ(ra, [ra - 10, ra + 10]),
+            "confidence": _summ(cf, [cf - 0.01, cf + 0.01]),
+            "mean_selected_dt_risk": 0.5, "mean_strategy_dt_risk": 0.27, "mean_strategy_rm_score": 0.33,
+            "dt_best_agreement_rate": 0.0, "override_rate": 1.0,
+            "override_improved": 0, "override_degraded": 40, "override_neutral": 20,
+            "risk_monotonicity": {
+                "spearman_rho_distance_vs_risk": rho,
+                "price10_safer_than_price5_violations": viol, "violation_pairs": [],
+            },
+        }
+
+    variants = ["R0", "D1", "R1", "R2-0.25", "R2-0.50", "R2-0.75", "R3"]
+    run = ExperimentRun(
+        experiment_name="risk_manager_calibration v1",
+        experiment_type="risk_manager_calibration",
+        status="completed",
+        configuration_json={"seeds": [42, 43, 44, 45, 46]},
+        metrics_json={
+            "seeds": [42, 43, 44, 45, 46], "total_scenario_seed_pairs": 60,
+            "risk_formula_versions": {
+                "R0": "extrapolation_range_v1", "R1_R3": "extrapolation_robust_v1",
+                "robust_scale_rel_floor": 0.15,
+            },
+            "r3_selection": {"lambda": 0.25, "rule": "smallest lambda ..."},
+            "digital_twin_mean_goal_achievement": 0.4856,
+            "variants": variants,
+            "aggregates": {
+                "R0": _agg("R0", 0.0844, -2614.8, 0.139, 0.976, 0),
+                "D1": _agg("D1", 0.5834, -2522.0, 0.018, 0.976, 0),
+                "R1": _agg("R1", 0.0844, -2263.0, 0.141, 0.969, 0),
+                "R2-0.25": _agg("R2-0.25", 0.1678, -2614.8, 0.109, 0.976, 0),
+                "R2-0.50": _agg("R2-0.50", 0.0844, -2614.8, 0.139, 0.976, 0),
+                "R2-0.75": _agg("R2-0.75", 0.0844, -2614.8, 0.139, 0.976, 0),
+                "R3": _agg("R3", 0.1678, 40.5, 0.109, 0.969, 0),
+            },
+            "paired_vs_r0": {
+                v: {
+                    "comparison": f"{v} vs R0 (D0 / production)", "difference_is": f"{v} - R0",
+                    "metric": "goal_achievement", "n_pairs": 60,
+                    "mean_difference": 0.0833 if v in ("R2-0.25", "R3") else 0.0,
+                    "median_difference": 0.0, "std_difference": 0.2, "ties": 55,
+                    "mean_difference_ci95": [0.019, 0.148] if v in ("R2-0.25", "R3") else None,
+                    "test": "Wilcoxon signed-rank",
+                    "p_value": 0.0253 if v in ("R2-0.25", "R3") else None,
+                    "effect_size_r": 1.0 if v in ("R2-0.25", "R3") else None,
+                    "interpretation": "…", f"{v}_wins": 5 if v in ("R2-0.25", "R3") else 0, "r0_wins": 0,
+                }
+                for v in variants if v != "R0"
+            },
+            "zero_variance_diagnostic": {
+                "constant": {"+5%": {"R0": 1.0, "R1": 0.3333}, "+10%": {"R0": 1.0, "R1": 0.6667},
+                             "-5%": {"R0": 1.0, "R1": 0.3333}},
+                "low_variance": {"+5%": {"R0": 1.0, "R1": 0.2667}, "+10%": {"R0": 1.0, "R1": 0.6},
+                                 "-5%": {"R0": 1.0, "R1": 0.2667}},
+                "normal_variance": {"+5%": {"R0": 0.0, "R1": 0.0}, "+10%": {"R0": 0.5, "R1": 0.3333},
+                                    "-5%": {"R0": 0.0, "R1": 0.0}},
+            },
+            "pre_specified_criteria": ["improves goal achievement over D0", "..."],
+            "criteria_evaluation": {
+                v: {"checks": {"improves_goal_achievement": v in ("R2-0.25", "R3")},
+                    "criteria_passed": 7 if v in ("R2-0.25", "R3") else 6,
+                    "criteria_total": 7,
+                    "verdict": "PROMISING" if v in ("R2-0.25", "R3") else "NO SATISFACTORY CALIBRATION"}
+                for v in ("R1", "R2-0.25", "R2-0.50", "R2-0.75", "R3")
+            },
+            "verdict": "PROMISING",
+            "verdict_by_variant": {"R1": "NO SATISFACTORY CALIBRATION", "R2-0.25": "PROMISING",
+                                   "R2-0.50": "NO SATISFACTORY CALIBRATION",
+                                   "R2-0.75": "NO SATISFACTORY CALIBRATION", "R3": "PROMISING"},
+            "best_calibration_variant": "R2-0.25",
+        },
+    )
+    db_session.add(run)
+    db_session.commit()
+
+    body = client.get("/api/v1/research/agent-evaluation", headers=_h()).json()
+    rc = body["risk_manager_calibration"]
+    assert rc is not None
+    assert rc["experiment_name"] == "risk_manager_calibration v1"
+    assert rc["verdict"] == "PROMISING"
+    assert rc["variants"] == variants
+    assert rc["r3_selection"]["lambda"] == 0.25
+    assert rc["aggregates"]["R3"]["goal_achievement"]["mean"] == 0.1678
+    assert rc["aggregates"]["R3"]["risk_adjusted_score"]["mean"] == 40.5
+    assert rc["aggregates"]["R1"]["goal_achievement"]["mean"] == 0.0844  # R1 alone doesn't help
+    assert rc["criteria_evaluation"]["R3"]["verdict"] == "PROMISING"
+    assert rc["zero_variance_diagnostic"]["constant"]["+5%"]["R0"] == 1.0
+    assert rc["zero_variance_diagnostic"]["constant"]["+5%"]["R1"] < 1.0
+
+
 # --- paper results ------------------------------------------------
 
 

@@ -83,6 +83,13 @@ class PipelineOptions:
     # feeds confidence, but its penalty term is given zero weight in the ranking
     # score. NOT an ablation config; never set by any production caller.
     risk_penalty_in_ranking: bool = True
+    # Research-only calibration knobs (docs/RISK_MANAGER_CALIBRATION_REPORT.md).
+    # risk_model: None/"R0" = production extrapolation-risk formula; "R1" = the
+    #   robust-scale variant (changes only SimulationOutput.risk_score).
+    # risk_penalty_lambda: multiplies the ranking risk penalty λ·(1−RM); 1.0 in
+    #   production. Only applied when risk_penalty_in_ranking is True.
+    risk_model: str | None = None
+    risk_penalty_lambda: float = 1.0
 
     def label(self) -> str:
         off = [
@@ -96,7 +103,13 @@ class PipelineOptions:
             )
             if not on
         ]
-        return "full" if not off else "without_" + "+".join(off)
+        label = "full" if not off else "without_" + "+".join(off)
+        extras = []
+        if self.risk_model not in (None, "R0"):
+            extras.append(f"risk_model={self.risk_model}")
+        if self.risk_penalty_lambda != 1.0:
+            extras.append(f"risk_lambda={self.risk_penalty_lambda:g}")
+        return label + ("" if not extras else " [" + ", ".join(extras) + "]")
 
 
 @dataclass
@@ -261,7 +274,7 @@ def _score_candidate(
     resolved = strategy_optimizer.resolve(
         round1, reviews, output,
         causal_evidence_factor=causal_factor,
-        risk_penalty_weight=1.0 if options.risk_penalty_in_ranking else 0.0,
+        risk_penalty_weight=(options.risk_penalty_lambda if options.risk_penalty_in_ranking else 0.0),
     )
     return round1, reviews, resolved
 
@@ -323,6 +336,7 @@ def analyze_goal(
                 goal_id=goal_id,
                 strategy_id=strategy_row.id,
                 causal_context=(ctx if options.use_causal_graph else None),
+                risk_model=options.risk_model,
             )
         except AppError as exc:
             skipped.append(f"{cand.name}: {exc.message}")
@@ -459,6 +473,13 @@ def analyze_goal(
         "use_memory": options.use_memory,
         "use_explainability": options.use_explainability,
         "risk_penalty_in_ranking": options.risk_penalty_in_ranking,
+        "risk_model": options.risk_model or "R0",
+        "risk_penalty_lambda": options.risk_penalty_lambda,
+        "risk_formula_version": (
+            digital_twin_service.RISK_FORMULA_VERSION_ROBUST
+            if options.risk_model not in (None, "R0")
+            else digital_twin_service.RISK_FORMULA_VERSION
+        ),
         "label": options.label(),
     }
 

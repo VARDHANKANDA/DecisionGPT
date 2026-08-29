@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-08-29T00:00:00Z",
-  "experiment_count": 14,
+  "experiment_count": 15,
   "multi_scenario": {
     "architecture": {
       "experiment_id": "0e1bd8dc-bc51-44ea-8e58-08a054201b85",
@@ -39,6 +39,64 @@
     }
   },
   "experiments": [
+    {
+      "experiment_id": "b8516eef-f467-4e3d-91ed-1c51b2d0c8b3",
+      "experiment_name": "risk_manager_calibration v1",
+      "experiment_type": "risk_manager_calibration",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_scenario_suite",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "name": "risk_manager_calibration v1"
+      },
+      "created_at": "2026-08-29T13:48:43.485660",
+      "started_at": "2026-08-29T13:48:43.486658",
+      "completed_at": "2026-08-29T14:11:19.989138",
+      "error_message": null,
+      "metric_summary": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "digital_twin_mean": 0.4856,
+        "mean_goal_achievement": {
+          "R0": 0.0844,
+          "D1": 0.5834,
+          "R1": 0.0844,
+          "R2-0.25": 0.1678,
+          "R2-0.50": 0.0844,
+          "R2-0.75": 0.0844,
+          "R3": 0.1678
+        },
+        "r3_selection": {
+          "lambda": 0.25,
+          "rule": "smallest \u03bb in [0.25, 0.5, 0.75] whose R2 run keeps risk-adjusted score \u2265 D0 and confidence \u2265 0.6\u00d7D0 \u2192 \u03bb=0.25"
+        },
+        "verdict": "PROMISING",
+        "verdict_by_variant": {
+          "R1": "NO SATISFACTORY CALIBRATION",
+          "R2-0.25": "PROMISING",
+          "R2-0.50": "NO SATISFACTORY CALIBRATION",
+          "R2-0.75": "NO SATISFACTORY CALIBRATION",
+          "R3": "PROMISING"
+        }
+      }
+    },
     {
       "experiment_id": "ba56e42b-98b1-481e-a42d-34a52b6941e6",
       "experiment_name": "risk_manager_diagnostic v1",
