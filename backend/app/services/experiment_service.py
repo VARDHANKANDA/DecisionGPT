@@ -36,6 +36,7 @@ SUPPORTED_EXPERIMENT_TYPES = {
     "ablation",
     "multi_scenario_architecture",
     "multi_scenario_ablation",
+    "multi_agent_diagnostic",
 }
 
 
@@ -112,6 +113,13 @@ def _dispatch(db: Session, experiment_type: str, configuration: dict) -> tuple[d
             else multi_scenario_service.run_multi_scenario_ablation
         )
         metrics = runner(db, seeds=[int(s) for s in seeds])
+        return metrics, "synthetic_scenario_suite", _active_forecasting_versions(db)
+
+    if experiment_type == "multi_agent_diagnostic":
+        from app.services import multi_agent_diagnostic_service, multi_scenario_service
+
+        seeds = configuration.get("seeds") or multi_scenario_service.SEEDS
+        metrics = multi_agent_diagnostic_service.run_diagnostic(db, seeds=[int(s) for s in seeds])
         return metrics, "synthetic_scenario_suite", _active_forecasting_versions(db)
 
     # ablation

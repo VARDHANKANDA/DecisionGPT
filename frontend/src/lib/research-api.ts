@@ -210,7 +210,8 @@ export type ExperimentType =
   | "multi_agent"
   | "ablation"
   | "multi_scenario_architecture"
-  | "multi_scenario_ablation";
+  | "multi_scenario_ablation"
+  | "multi_agent_diagnostic";
 
 export interface ExperimentRun {
   id: string;
@@ -537,7 +538,42 @@ export interface AgentEvaluation {
       confidence: number | null;
     };
   };
+  multi_agent_diagnostic: MultiAgentDiagnostic | null;
   empty_state: string | null;
+}
+
+export interface MultiAgentDiagnostic {
+  experiment_id: string;
+  created_at: string | null;
+  seeds: number[] | null;
+  total_scenario_seed_pairs: number;
+  digital_twin_to_final: { unchanged: number; overridden: number; override_rate: number };
+  override_outcomes: {
+    improved: number; degraded: number; neutral: number;
+    override_improvement_rate: number; override_degradation_rate: number; override_neutral_rate: number;
+  };
+  failure_modes: Record<string, { count: number; percent: number; mean_dt_revenue: number | null; mean_final_goal_achievement: number | null; note?: string }>;
+  central_hypothesis: {
+    statement: string;
+    agent_layer_overrides_dt_best_in_its_own_set: number;
+    of_those_improved: number; of_those_degraded: number; of_those_neutral: number;
+    verdict: string;
+  };
+  risk_manager_effect: { disagreement_rate_vs_dt_best: number; disagreements: number; of_those_degraded: number; of_those_improved: number };
+  optimizer_effect: { dt_best_to_final_change_rate: number; mean_goal_achievement_when_unchanged: number | null; mean_goal_achievement_when_changed: number | null; note: string };
+  causal_evidence_effect: { by_level: Record<string, { count: number; mean_final_goal_achievement: number; mean_confidence: number | null }>; note: string };
+  digital_twin_mean_goal_achievement: number;
+  full_decisiongpt_mean_goal_achievement: number;
+  failure_analysis_figure: {
+    digital_twin_best: number; unchanged: number; overridden: number;
+    overridden_improved: number; overridden_degraded: number; overridden_neutral: number;
+  };
+  scenario_drilldown: {
+    scenario_id: string; seed: number; goal_objective: string;
+    digital_twin_best: string | null; final_strategy: string | null; disagreement: boolean;
+    failure_mode: string; improvement: number; final_goal_achievement: number;
+    risk_manager_top_pick: string | null; mechanism_evidence: string;
+  }[];
 }
 
 export interface PaperResults {

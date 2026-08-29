@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { researchApi, type AgentEvaluation } from "@/lib/research-api";
+import { researchApi, type AgentEvaluation, type MultiAgentDiagnostic } from "@/lib/research-api";
 import { DataTable, EvalEmptyState, Metric, Panel, PageIntro, StatGrid, fmt, fmtInt } from "@/components/research-ui";
 
 export default function AgentEvaluationPage() {
@@ -124,6 +124,8 @@ export default function AgentEvaluationPage() {
             )}
           </Panel>
 
+          {data.multi_agent_diagnostic ? <MultiAgentDiagnosticPanel d={data.multi_agent_diagnostic} /> : null}
+
           {data.ablation.experiment_id ? (
             <Panel title="Single vs multi-agent (ablation)">
               <DataTable
@@ -143,5 +145,148 @@ export default function AgentEvaluationPage() {
         </div>
       )}
     </div>
+  );
+}
+
+function MultiAgentDiagnosticPanel({ d }: { d: MultiAgentDiagnostic }) {
+  const [fScenario, setFScenario] = useState("all");
+  const [fMode, setFMode] = useState("all");
+  const scenarios = useMemo(
+    () => Array.from(new Set(d.scenario_drilldown.map((r) => r.scenario_id))).sort(),
+    [d],
+  );
+  const modes = useMemo(
+    () => Array.from(new Set(d.scenario_drilldown.map((r) => r.failure_mode))).sort(),
+    [d],
+  );
+  const rows = d.scenario_drilldown.filter(
+    (r) => (fScenario === "all" || r.scenario_id === fScenario) && (fMode === "all" || r.failure_mode === fMode),
+  );
+  const fig = d.failure_analysis_figure;
+  const pct = (x: number) => `${(x * 100).toFixed(0)}%`;
+
+  return (
+    <Panel
+      title="Multi-Agent degradation diagnostic (research-only)"
+      right={
+        <span className="text-xs text-muted">
+          experiment {d.experiment_id.slice(0, 8)} · {d.total_scenario_seed_pairs} scenario-seed pairs
+        </span>
+      }
+    >
+      <p className="mb-3 text-xs text-muted">
+        Digital Twin mean goal achievement {d.digital_twin_mean_goal_achievement.toFixed(3)} vs Full
+        DecisionGPT {d.full_decisiongpt_mean_goal_achievement.toFixed(3)}. Every number is read from the
+        stored `multi_agent_diagnostic` experiment.
+      </p>
+
+      <StatGrid>
+        <Metric label="DT best → Final override rate" value={pct(d.digital_twin_to_final.override_rate)}
+          hint={`${d.digital_twin_to_final.overridden} overridden / ${d.digital_twin_to_final.unchanged} unchanged`} />
+        <Metric label="Override improved" value={fmtInt(d.override_outcomes.improved)}
+          hint={pct(d.override_outcomes.override_improvement_rate)} />
+        <Metric label="Override degraded" value={fmtInt(d.override_outcomes.degraded)}
+          hint={pct(d.override_outcomes.override_degradation_rate)} />
+        <Metric label="Override neutral" value={fmtInt(d.override_outcomes.neutral)}
+          hint={pct(d.override_outcomes.override_neutral_rate)} />
+      </StatGrid>
+
+      {/* failure-analysis figure (text tree from actual counts) */}
+      <div className="mt-4 rounded-xl border border-border bg-muted-surface p-3 text-xs">
+        <p className="font-medium text-foreground">Failure-analysis figure (aggregate counts)</p>
+        <pre className="mt-1 whitespace-pre text-muted">{
+`Digital Twin best strategy  (n=${fig.digital_twin_best})
+ ├─ unchanged → final strategy   ${fig.unchanged}
+ └─ overridden                   ${fig.overridden}
+      ├─ improved                ${fig.overridden_improved}
+      ├─ degraded                ${fig.overridden_degraded}
+      └─ neutral                 ${fig.overridden_neutral}`
+        }</pre>
+      </div>
+
+      {/* failure modes */}
+      <div className="mt-4">
+        <DataTable
+          headers={["Failure mode", "Count", "%", "Mean DT revenue", "Mean final goal ach."]}
+          rows={Object.entries(d.failure_modes)
+            .filter(([, v]) => v.count > 0 || v.note)
+            .map(([k, v]) => [
+              k, fmtInt(v.count), `${v.percent}%`,
+              v.mean_dt_revenue != null ? fmtInt(v.mean_dt_revenue) : v.note ? "—" : "—",
+              v.mean_final_goal_achievement != null ? v.mean_final_goal_achievement.toFixed(3) : "—",
+            ])}
+        />
+      </div>
+
+      <div className="mt-3 rounded-xl border border-border p-3 text-xs">
+        <p className="font-medium text-foreground">Central hypothesis</p>
+        <p className="mt-1 text-muted">{d.central_hypothesis.statement}</p>
+        <p className="mt-2 text-muted">
+          Agent layer changed the selection where the DT-best was in its own candidate set:{" "}
+          {d.central_hypothesis.agent_layer_overrides_dt_best_in_its_own_set} (degraded{" "}
+          {d.central_hypothesis.of_those_degraded} · improved {d.central_hypothesis.of_those_improved} · neutral{" "}
+          {d.central_hypothesis.of_those_neutral}).
+        </p>
+        <p className="mt-2 font-medium text-foreground">{d.central_hypothesis.verdict}</p>
+      </div>
+
+      <div className="mt-3 grid gap-3 md:grid-cols-3 text-xs">
+        <div className="rounded-lg border border-border p-2">
+          <p className="font-medium text-foreground">Risk Manager effect</p>
+          <p className="text-muted">disagrees with DT-best {pct(d.risk_manager_effect.disagreement_rate_vs_dt_best)}
+            {" "}({d.risk_manager_effect.disagreements}) · degraded {d.risk_manager_effect.of_those_degraded} · improved {d.risk_manager_effect.of_those_improved}</p>
+        </div>
+        <div className="rounded-lg border border-border p-2">
+          <p className="font-medium text-foreground">Optimizer effect</p>
+          <p className="text-muted">DT-best → final change rate {pct(d.optimizer_effect.dt_best_to_final_change_rate)};
+            {" "}goal ach. unchanged {d.optimizer_effect.mean_goal_achievement_when_unchanged ?? "—"} vs changed {d.optimizer_effect.mean_goal_achievement_when_changed ?? "—"}</p>
+        </div>
+        <div className="rounded-lg border border-border p-2">
+          <p className="font-medium text-foreground">Causal-evidence effect</p>
+          <p className="text-muted">{d.causal_evidence_effect.note}</p>
+        </div>
+      </div>
+
+      {/* scenario / seed drill-down */}
+      <div className="mt-4">
+        <div className="mb-2 flex flex-wrap gap-2 text-xs">
+          <select value={fScenario} onChange={(e) => setFScenario(e.target.value)} className="rounded border border-border bg-surface px-2 py-1">
+            <option value="all">All scenarios</option>
+            {scenarios.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <select value={fMode} onChange={(e) => setFMode(e.target.value)} className="rounded border border-border bg-surface px-2 py-1">
+            <option value="all">All failure modes</option>
+            {modes.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <span className="self-center text-muted">{rows.length} of {d.scenario_drilldown.length}</span>
+        </div>
+        <div className="max-h-80 overflow-auto rounded-lg border border-border">
+          <table className="w-full text-xs">
+            <thead className="sticky top-0 bg-muted-surface text-muted">
+              <tr>
+                <th className="px-2 py-1 text-left">Scenario/seed</th>
+                <th className="px-2 py-1 text-left">Goal</th>
+                <th className="px-2 py-1 text-left">DT best</th>
+                <th className="px-2 py-1 text-left">Final</th>
+                <th className="px-2 py-1 text-left">Failure mode</th>
+                <th className="px-2 py-1 text-right">Δ goal ach.</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r, i) => (
+                <tr key={i} className="border-t border-border align-top" title={r.mechanism_evidence}>
+                  <td className="px-2 py-1 text-foreground">{r.scenario_id}/{r.seed}</td>
+                  <td className="px-2 py-1">{r.goal_objective}</td>
+                  <td className="px-2 py-1">{r.digital_twin_best ?? "—"}</td>
+                  <td className="px-2 py-1">{r.final_strategy ?? "—"}</td>
+                  <td className="px-2 py-1">{r.failure_mode}</td>
+                  <td className="px-2 py-1 text-right">{r.improvement.toFixed(3)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </Panel>
   );
 }

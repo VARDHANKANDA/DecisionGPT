@@ -96,10 +96,54 @@ def _debate_analysis(db: Session) -> dict:
     }
 
 
+def _diagnostic_summary(run: ExperimentRun | None) -> dict | None:
+    """The multi-agent degradation diagnostic (research-only). Every number
+    comes straight from the stored multi_agent_diagnostic experiment — no
+    recomputation, no hard-coded metric."""
+    if run is None:
+        return None
+    m = run.metrics_json or {}
+    traces = m.get("traces", [])
+    # a compact scenario/seed drill-down (the full traces stay in the export)
+    drill = [
+        {
+            "scenario_id": t.get("scenario_id"), "seed": t.get("seed"),
+            "goal_objective": t.get("goal_objective"),
+            "digital_twin_best": t.get("dt_best_strategy"),
+            "final_strategy": t.get("final_strategy"),
+            "disagreement": t.get("disagreement"),
+            "failure_mode": t.get("failure_mode"),
+            "improvement": t.get("improvement"),
+            "final_goal_achievement": t.get("final_goal_achievement"),
+            "risk_manager_top_pick": t.get("risk_manager_top_pick"),
+            "mechanism_evidence": t.get("mechanism_evidence"),
+        }
+        for t in traces
+    ]
+    return {
+        "experiment_id": run.id,
+        "created_at": run.created_at.isoformat() if run.created_at else None,
+        "seeds": m.get("seeds"),
+        "total_scenario_seed_pairs": m.get("total_scenario_seed_pairs"),
+        "digital_twin_to_final": m.get("digital_twin_to_final"),
+        "override_outcomes": m.get("override_outcomes"),
+        "failure_modes": m.get("failure_modes"),
+        "central_hypothesis": m.get("central_hypothesis"),
+        "risk_manager_effect": m.get("risk_manager_effect"),
+        "optimizer_effect": m.get("optimizer_effect"),
+        "causal_evidence_effect": m.get("causal_evidence_effect"),
+        "digital_twin_mean_goal_achievement": m.get("digital_twin_mean_goal_achievement"),
+        "full_decisiongpt_mean_goal_achievement": m.get("full_decisiongpt_mean_goal_achievement"),
+        "failure_analysis_figure": m.get("failure_analysis_figure"),
+        "scenario_drilldown": drill,
+    }
+
+
 def get_agent_evaluation(db: Session) -> dict:
     arch_run = _latest(db, "decision_architecture")
     ablation_run = _latest(db, "ablation")
     multi_agent_run = _latest(db, "multi_agent")
+    diagnostic_run = _latest(db, "multi_agent_diagnostic")
 
     architecture_rows = _architecture_rows(arch_run)
 
@@ -134,5 +178,6 @@ def get_agent_evaluation(db: Session) -> dict:
             "comparisons": (ablation_run.metrics_json or {}).get("comparisons", []) if ablation_run else [],
         },
         "debate_analysis": _debate_analysis(db),
+        "multi_agent_diagnostic": _diagnostic_summary(diagnostic_run),
         "empty_state": empty_state,
     }

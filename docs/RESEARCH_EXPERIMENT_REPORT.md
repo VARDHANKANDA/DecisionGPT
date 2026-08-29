@@ -444,12 +444,16 @@ reason). No hard-coded research metric; every number resolves to a stored row
 
 ## Recommended next step
 
-1. **Investigate the agent-layer regression** measured in Experiment 5: the
-   agents systematically prefer a marketing lever the Digital Twin scores at
-   ≤ 0. Either the agent scoring or the candidate-grid / twin interaction has a
-   defect, or the agents are optimising something other than the stated KPI.
-   This is now a *measured* problem with 60 traceable observations, not a
-   hunch — it should be triaged before any "DecisionGPT is better" claim.
+1. **The agent-layer regression from Experiment 5 has now been diagnosed** —
+   see `docs/MULTI_AGENT_DIAGNOSTIC_REPORT.md` (experiment `multi_agent_diagnostic`,
+   60 traceable pairs). Full DecisionGPT overrides the Digital-Twin-best
+   strategy on **100 %** of pairs; **0 overrides improved** the objective,
+   45 degraded it. Mechanisms: `CANDIDATE_SET_MISMATCH` 50 % (the revenue/sales
+   strategy templates omit a price-increase lever, so the agents never see the
+   DT-preferred strategy), `RISK_OVERRULE` 25 % (the Risk Manager scores price
+   increases as maximally unsafe), `UNSUPPORTED_KPI` 17 %, `AGENT_OVERRULE` 8 %.
+   The Causal Graph, optimizer re-ranking, Explainability and Memory are ruled
+   out. Two narrowly-scoped corrections are proposed there (not applied).
 2. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
    Table 2 / Figure 3 become real.
 3. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
