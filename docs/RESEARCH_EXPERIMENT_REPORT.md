@@ -565,7 +565,17 @@ reason). No hard-coded research metric; every number resolves to a stored row
    promote, do not retune; revisit only with a dataset where R0's pathology
    actually bites, a real-LLM run, and ≥ 5 real decision outcomes.
 5. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
-   Table 2 / Figure 3 become real.
+   Table 2 / Figure 3 become real. **The capture workflow is now in place** —
+   `docs/REAL_INDIAN_SME_OUTCOME_VALIDATION.md`: an anonymised aggregate
+   template (`docs/templates/real_indian_sme_outcome_template.{csv,json}`),
+   validation + PII rejection + horizon-consistency checks
+   (`app/services/real_sme_outcome_service.py`), a script-only importer
+   (`scripts/import_real_sme_outcomes.py`), provenance columns (migration 0007,
+   additive), and a separated **Real Indian SME Outcomes** panel on the Digital
+   Twin Evaluation page. **No real records exist yet** →
+   `REAL SME OUTCOME COLLECTION = PENDING`, **Table 2 = NOT READY**. No
+   synthetic `DecisionOutcome` was fabricated. See
+   `docs/REAL_INDIAN_SME_OUTCOME_VALIDATION_REPORT.md`.
 6. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
    second `INDIA_*` forecasting row; add repeated seeds to the forecasting /
    customer experiments for CIs.

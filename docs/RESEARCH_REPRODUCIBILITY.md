@@ -13,7 +13,7 @@ modules return.
 | Dependencies | `backend/requirements.txt` (22 pinned packages incl. `pandas==2.2.3`, `numpy==1.26.4`, `scikit-learn==1.5.2`, `xgboost==3.4.0`, `shap==0.52.0`, `holidays==0.103`) |
 | Node / frontend | `frontend/package.json` (Next.js 16 / React 19); `npm ci` |
 | DB (research) | SQLite via `DATABASE_URL=sqlite:///./backend/dev.db` — migrations verified identical on Postgres |
-| Alembic head | `0006` (30 tables) |
+| Alembic head | `0007` (30 tables; 0007 adds nullable real-SME-outcome provenance columns) |
 | Seed | **42** for every deterministic experiment |
 | Frozen at commit | `eb7d392` (2026-08-29) + this doc's commit |
 
@@ -159,6 +159,7 @@ curl -s localhost:8000/api/v1/research/paper-results     -H "X-Research-Token: $
 | **Risk Manager diagnostic (`ba56e42b`)** | Optimizer formula verified on 390/390 strategy rows. RM-decisive 45/60 (75 %) — 35 improved / 0 degraded / 10 neutral. `RISK_SCORE_MISMATCH` = 0/390 (RM faithfully transmits the DT extrapolation-risk score: mean DT risk `Price +5%` 0.68, `Price +10%` 0.98). Sensitivity variant **D1** (risk penalty un-weighted): mean goal achievement **0.084 → 0.583**, paired Wilcoxon D1−D0 p<0.0001, r=0.89, 35 wins / 25 ties / 0 losses; D1 confidence 0.139 → 0.018. Outcome **A** (with caveats). See `docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md`. |
 | **Risk Manager calibration (`b8516eef`)** | R0 formula confirmed miscalibrated on low-variance histories (zero-variance diagnostic). **R3** (robust scale + λ=0.25): mean goal achievement 0.084 → 0.168 (paired Wilcoxon p=0.025, 5/60 non-zero), risk-adjusted −2 614.8 → +40.5, Spearman ρ 0.969, 0 monotonicity violations, confidence 0.109. Verdict **PROMISING** (R2-0.25 & R3 pass all 7 criteria). No variant promoted. See `docs/RISK_MANAGER_CALIBRATION_REPORT.md`. |
 | **R3 generalization / real-data validation (`70617412`)** | Benroshan real Indian e-commerce. 23 real price sub-series (3 LOW / 11 MOD / 9 HIGH variance): **R0 == R1 on all 184 test rows** — R0's pathology does not occur on real implied-price data; Spearman ρ 0.989 (identical), 0 monotonicity violations, 82 % of out-of-range extreme probes ≥ 0.15. SIMULATED decision comparison: R0/R1/R2-0.25/R3 all select `Price +10%`, identical GA/RA/confidence (risk penalty already ≈ 0). Real-LLM **BLOCKED**; `DecisionOutcome` count 0 → Table 2 NOT READY. Verdict **PROMISING BUT NOT VALIDATED**. Production stays R0. See `docs/RISK_MANAGER_GENERALIZATION_REPORT.md`. |
+| **Real Indian SME outcome capture (no experiment)** | Additive workflow only: migration `0007` (nullable provenance/horizon columns on `decision_outcomes`), `real_sme_outcome_service` (validate + PII reject + horizon-consistency + import), `scripts/import_real_sme_outcomes.py`, anonymised template `docs/templates/real_indian_sme_outcome_template.{csv,json}`, separated **Real Indian SME Outcomes** dashboard panel. **0 real records** → `REAL SME OUTCOME COLLECTION = PENDING`, Table 2 NOT READY. No synthetic outcome fabricated. See `docs/REAL_INDIAN_SME_OUTCOME_VALIDATION.md`. |
 | 7 · End-to-end (demo business) | selected "Marketing +20%", confidence 0.1468 = 0.9788 × 0.5 × 0.6 × (1−0.5) |
 
 `churn` platform: logreg F1 0.669 / AUC 0.798, RF F1 0.661 / AUC 0.793, xgb F1 0.658 / AUC 0.792.

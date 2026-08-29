@@ -100,6 +100,52 @@ def test_digital_twin_eval_empty_state_without_outcomes(client, db_session):
     assert body["summary"]["decisions_awaiting_outcome"] >= 1
 
 
+def test_digital_twin_eval_exposes_separated_real_indian_sme_block_empty(client, db_session):
+    """Real Indian SME outcomes are a strictly separate block with an honest
+    empty state — synthetic decisions never populate it. Table 2 = NOT READY."""
+    _decision(client, db_session)  # a synthetic decision exists but no real SME outcome
+    body = client.get("/api/v1/research/digital-twin-evaluation", headers=_h()).json()
+    r = body["real_indian_sme"]
+    assert r["data_category"] == "REAL_INDIAN_SME_OUTCOME"
+    assert r["collection_status"] == "PENDING"
+    assert r["table_2"] == "NOT READY"
+    assert r["n_outcomes"] == 0
+    assert "No real Indian SME outcomes available" in r["empty_state"]
+    assert r["r0_vs_r3"].startswith("NOT APPLICABLE")
+
+
+def test_real_sme_import_then_report_is_separated_and_descriptive(client, db_session):
+    from app.services import real_sme_outcome_service as svc
+
+    rec = {
+        "business_id": "SME-TEST-1", "industry": "Grocery Retail", "state": "Karnataka",
+        "district": "Bengaluru", "decision_date": "2026-01-10", "decision_type": "price_increase",
+        "goal": "increase_profit", "strategy": "Price +5%", "prediction_horizon_days": 30,
+        "baseline_revenue": 500000, "predicted_revenue": 520000, "actual_revenue": 511000,
+        "baseline_profit": 60000, "predicted_profit": 66000, "actual_profit": 62000,
+        "baseline_units": 8000, "predicted_units": 7950, "actual_units": 7900,
+        "predicted_risk": 0.2, "predicted_confidence": 0.55,
+        "outcome_recorded_date": "2026-02-09", "outcome_status": "partially_achieved",
+        "source_type": "real_indian_sme", "business_country": "IN",
+        "data_consent_status": "consented", "anonymization_status": "anonymized",
+        "collection_method": "sme_self_report_form",
+    }
+    svc.import_outcome_record(db_session, rec)
+
+    body = client.get("/api/v1/research/digital-twin-evaluation", headers=_h()).json()
+    r = body["real_indian_sme"]
+    assert r["n_outcomes"] == 1 and r["n_businesses"] == 1
+    assert r["table_2"] == "NOT READY"          # < 5
+    assert r["statistical_inference"] == "DESCRIPTIVE ONLY"
+    assert r["digital_twin"]["revenue"]["n"] == 1
+    assert r["provenance"]["all_real_source"] is True
+    # the imported record IS a real matched predicted/actual outcome, so the
+    # top-level count reflects it; the real_indian_sme block is the CATEGORISED
+    # (Table 2) view that must never contain a synthetic outcome.
+    assert body["summary"]["evaluated_predictions"] == 1
+    assert all(row["source_type"] == "real_indian_sme" for row in r["rows"])
+
+
 def test_recording_outcome_creates_a_matched_prediction_evaluation(client, db_session):
     bid, _gid, d = _decision(client, db_session)
     exp = d["expected_outcome"]

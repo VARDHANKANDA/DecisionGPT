@@ -1,0 +1,40 @@
+{
+  "_comment": "Anonymised aggregate Indian SME decision-outcome record. One object per decision. The single row below is an EXAMPLE / SYNTHETIC illustration and must be removed before importing real data. See docs/REAL_INDIAN_SME_OUTCOME_VALIDATION.md. Never include personal or transaction-level data (no names, phone, email, Aadhaar, PAN, GSTIN, bank/account numbers, customer ids).",
+  "records": [
+    {
+      "_label": "EXAMPLE / SYNTHETIC — do not import",
+      "business_id": "EXAMPLE-SME-01",
+      "industry": "Clothing Retail",
+      "state": "Maharashtra",
+      "district": "Pune",
+      "decision_date": "2026-01-06",
+      "decision_type": "price_increase",
+      "goal": "increase_profit",
+      "strategy": "Price +5%",
+      "prediction_horizon_days": 30,
+      "baseline_revenue": 850000,
+      "predicted_revenue": 905000,
+      "actual_revenue": 872000,
+      "baseline_profit": 170000,
+      "predicted_profit": 196000,
+      "actual_profit": 181000,
+      "baseline_units": 4200,
+      "predicted_units": 4150,
+      "actual_units": 4090,
+      "historical_price_min": 190.0,
+      "historical_price_max": 240.0,
+      "historical_price_median": 210.0,
+      "predicted_risk": 0.18,
+      "predicted_confidence": 0.62,
+      "outcome_recorded_date": "2026-02-05",
+      "outcome_status": "partially_achieved",
+      "notes": "Optional short free text. No PII.",
+      "source_type": "real_indian_sme",
+      "business_country": "IN",
+      "data_consent_status": "consented",
+      "anonymization_status": "anonymized",
+      "collection_method": "sme_self_report_form",
+      "collection_date": "2026-02-06"
+    }
+  ]
+}

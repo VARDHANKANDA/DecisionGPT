@@ -313,6 +313,8 @@ def get_evaluation_report(db: Session) -> dict:
             "predictions can be evaluated."
         )
 
+    from app.services import real_sme_outcome_service
+
     return {
         "summary": {
             "evaluated_predictions": len(matched),
@@ -329,6 +331,9 @@ def get_evaluation_report(db: Session) -> dict:
             "error_distribution": error_distribution,
         },
         "method": PREDICTION_EVAL_METHOD,
+        # Real Indian SME outcomes — kept strictly separate from every synthetic
+        # category; honest empty state when none have been contributed.
+        "real_indian_sme": real_sme_outcome_service.get_real_sme_outcome_report(db),
         "empty_state": empty_state,
     }
 

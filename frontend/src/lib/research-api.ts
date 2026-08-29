@@ -444,7 +444,42 @@ export interface DigitalTwinEvaluation {
     error_distribution: { range: string; count: number }[];
   };
   method: string;
+  real_indian_sme: RealSmeOutcomeReport;
   empty_state: string | null;
+}
+
+export interface RealSmeOutcomeReport {
+  data_category: string;
+  collection_status: string;
+  table_2: string;
+  table_2_reason?: string | null;
+  n_businesses: number;
+  n_decisions: number;
+  n_outcomes: number;
+  empty_state?: string;
+  message?: string;
+  r0_vs_r3: string;
+  causal_evidence: string;
+  statistical_inference: string;
+  decision_types?: Record<string, number>;
+  outcome_horizons?: number[];
+  digital_twin?: {
+    revenue: { n: number; mae: number | null; rmse: number | null; mape: number | null };
+    profit: { n: number; mae: number | null; rmse: number | null; mape: number | null };
+    units: { n: number; mae: number | null; rmse: number | null; mape: number | null };
+  };
+  goal_achievement?: { achieved: number; n: number; rate: number | null };
+  confidence_calibration?: string;
+  provenance?: {
+    all_anonymized: boolean; all_real_source: boolean; all_india: boolean; consent_recorded: boolean;
+  };
+  clustering_note?: string;
+  rows?: {
+    outcome_id: string; decision_id: string; business_industry: string | null;
+    horizon_days: number | null; outcome_status: string | null;
+    metrics: Record<string, { error?: number | null; abs_pct_error?: number | null }>;
+    source_type: string | null; anonymization_status: string | null;
+  }[];
 }
 
 export interface CausalGraphSummary {

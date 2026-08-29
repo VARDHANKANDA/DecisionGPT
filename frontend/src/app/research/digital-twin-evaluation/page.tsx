@@ -15,7 +15,7 @@ import {
   YAxis,
   ZAxis,
 } from "recharts";
-import { researchApi, type DigitalTwinEvaluation } from "@/lib/research-api";
+import { researchApi, type DigitalTwinEvaluation, type RealSmeOutcomeReport } from "@/lib/research-api";
 import { DataTable, EvalEmptyState, Metric, Panel, PageIntro, StatGrid, fmt, fmtInt } from "@/components/research-ui";
 
 export default function DigitalTwinEvaluationPage() {
@@ -60,6 +60,8 @@ export default function DigitalTwinEvaluationPage() {
               hint={data.summary.revenue_mape != null ? `MAPE ${fmt(data.summary.revenue_mape, 1)}%` : undefined}
             />
           </StatGrid>
+
+          <RealSmeOutcomesPanel r={data.real_indian_sme} />
 
           {data.empty_state ? (
             <EvalEmptyState message={data.empty_state} />
@@ -168,6 +170,79 @@ export default function DigitalTwinEvaluationPage() {
         </div>
       )}
     </div>
+  );
+}
+
+function RealSmeOutcomesPanel({ r }: { r: RealSmeOutcomeReport }) {
+  const dt = r.digital_twin;
+  const has = r.n_outcomes > 0;
+  const tone = r.table_2 === "READY" ? "text-success" : "text-muted";
+  const num = (x: number | null | undefined) => (x == null ? "—" : fmtInt(x));
+
+  return (
+    <Panel
+      title="Real Indian SME Outcomes"
+      right={<span className={`text-xs ${tone}`}>{r.data_category} · Table 2 {r.table_2}</span>}
+    >
+      <p className="mb-3 text-xs text-muted">
+        Genuine anonymised aggregate Indian SME decision outcomes only. Synthetic scenarios are never
+        shown here. Collection status: <span className="font-medium text-foreground">{r.collection_status}</span>.
+      </p>
+
+      {!has ? (
+        <EvalEmptyState message={`${r.empty_state ?? ""} ${r.message ?? ""}`.trim()} />
+      ) : (
+        <>
+          <StatGrid>
+            <Metric label="Businesses" value={fmtInt(r.n_businesses)} />
+            <Metric label="Decisions" value={fmtInt(r.n_decisions)} />
+            <Metric label="Outcomes" value={fmtInt(r.n_outcomes)}
+              hint={r.outcome_horizons?.length ? `horizons: ${r.outcome_horizons.join(", ")}d` : undefined} />
+            <Metric label="Goal achievement"
+              value={r.goal_achievement?.rate != null ? `${(r.goal_achievement.rate * 100).toFixed(0)}%` : "—"}
+              hint={`${r.goal_achievement?.achieved ?? 0}/${r.goal_achievement?.n ?? 0}`} />
+          </StatGrid>
+
+          {dt ? (
+            <div className="mt-3 overflow-x-auto rounded-lg border border-border">
+              <table className="w-full text-xs">
+                <thead className="bg-muted-surface text-muted">
+                  <tr><th className="px-2 py-1 text-left">Target</th><th className="px-2 py-1 text-right">n</th>
+                    <th className="px-2 py-1 text-right">MAE</th><th className="px-2 py-1 text-right">RMSE</th>
+                    <th className="px-2 py-1 text-right">MAPE</th></tr>
+                </thead>
+                <tbody>
+                  {(["revenue", "profit", "units"] as const).map((t) => (
+                    <tr key={t} className="border-t border-border">
+                      <td className="px-2 py-1 text-foreground">{t}</td>
+                      <td className="px-2 py-1 text-right">{dt[t].n}</td>
+                      <td className="px-2 py-1 text-right">{num(dt[t].mae)}</td>
+                      <td className="px-2 py-1 text-right">{num(dt[t].rmse)}</td>
+                      <td className="px-2 py-1 text-right">{dt[t].mape != null ? `${dt[t].mape}%` : "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+
+          <div className="mt-3 grid gap-2 text-xs text-muted md:grid-cols-2">
+            <p><span className="font-medium text-foreground">R0 vs R3:</span> {r.r0_vs_r3}</p>
+            <p><span className="font-medium text-foreground">Confidence calibration:</span> {r.confidence_calibration ?? "—"}</p>
+            <p><span className="font-medium text-foreground">Causal evidence:</span> {r.causal_evidence}</p>
+            <p><span className="font-medium text-foreground">Statistical inference:</span> {r.statistical_inference}</p>
+          </div>
+          {r.clustering_note ? <p className="mt-2 text-xs text-muted">{r.clustering_note}</p> : null}
+          {r.provenance ? (
+            <p className="mt-1 text-xs text-muted">
+              Provenance: anonymized {String(r.provenance.all_anonymized)} · real source{" "}
+              {String(r.provenance.all_real_source)} · India {String(r.provenance.all_india)} · consent{" "}
+              {String(r.provenance.consent_recorded)}
+            </p>
+          ) : null}
+        </>
+      )}
+    </Panel>
   );
 }
 
