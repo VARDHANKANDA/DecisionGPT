@@ -202,7 +202,7 @@ tests/api/test_research_evaluations.py
 
 ## 13. Git commit hash
 
-`<filled on commit>`
+`8bf075b` — *Real evidence readiness: Table 2 gate fix + frozen real-LLM protocol*
 
 ---
 
