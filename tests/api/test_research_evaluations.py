@@ -257,6 +257,106 @@ def test_agent_eval_exposes_pre_and_post_correction_diagnostic(client, db_sessio
     assert prev["candidate_coverage"]["invariant_dt_best_present_when_supported"] is False
 
 
+def test_agent_eval_exposes_risk_manager_diagnostic(client, db_session):
+    """The risk-penalty sensitivity study is surfaced on /agent-evaluation with
+    D0 (Full DecisionGPT) and D1 (labelled sensitivity variant) side by side —
+    read straight from the stored risk_manager_diagnostic experiment."""
+    from app.models.experiment import ExperimentRun
+
+    run = ExperimentRun(
+        experiment_name="risk_manager_diagnostic v1",
+        experiment_type="risk_manager_diagnostic",
+        status="completed",
+        configuration_json={"seeds": [42, 43, 44, 45, 46]},
+        metrics_json={
+            "seeds": [42, 43, 44, 45, 46],
+            "total_scenario_seed_pairs": 60,
+            "baseline": {
+                "full_decisiongpt_mean_goal_achievement": 0.0844,
+                "digital_twin_mean_goal_achievement": 0.4856,
+                "d1_risk_penalty_sensitivity_mean_goal_achievement": 0.5834,
+            },
+            "formula_verification": {
+                "checked": "final_score == (BA+FA)/2 - (1-RM) for every strategy row",
+                "max_deviation_observed": 0.0, "holds_for_all_rows": True, "rows_checked": 390,
+            },
+            "risk_manager_disagreement": {"disagreements_vs_dt_best": 60, "disagreement_rate": 1.0},
+            "rm_decisive": {
+                "count": 45, "percentage": 75.0, "improved": 35, "degraded": 0, "neutral": 10,
+                "definition": "removing ONLY the risk-penalty term changes the selected strategy",
+                "pairs": [],
+            },
+            "risk_score_mismatch": {
+                "count": 0, "strategy_rows_inspected": 390, "percentage": 0.0,
+                "definition": "DT risk < 0.15 (LOW band) but RM score == 0.0",
+                "rm_distinguishes_low_vs_high_risk_price_strategies": {"assessable": True, "verdict": "YES"},
+                "calibration_table": [
+                    {"strategy": "Price +5%", "observations": 50, "mean_digital_twin_risk": 0.68,
+                     "mean_risk_manager_score": 0.015, "rm_score_zero_rate": 0.8, "dt_risk_low_rate": 0.0},
+                ],
+            },
+            "d0_vs_d1": {
+                "goal_achievement": {
+                    "D0": {"n": 60, "mean": 0.0844, "median": 0.0, "std": 0.28, "min": 0.0, "max": 1.0,
+                           "ci95": [0.0125, 0.1564]},
+                    "D1": {"n": 60, "mean": 0.5834, "median": 0.758, "std": 0.44, "min": 0.0, "max": 1.0,
+                           "ci95": [0.4692, 0.6976]},
+                },
+                "risk_adjusted_score": {"D0": None, "D1": None},
+                "confidence": {
+                    "D0": {"n": 60, "mean": 0.139, "median": 0.15, "std": 0.05, "min": 0.0, "max": 0.22,
+                           "ci95": [0.1255, 0.1524]},
+                    "D1": {"n": 60, "mean": 0.0184, "median": 0.0, "std": 0.04, "min": 0.0, "max": 0.15,
+                           "ci95": [0.0069, 0.0299]},
+                },
+                "dt_best_agreement_rate": {"D0": 0.0, "D1": 0.0},
+                "override_rate_vs_dt_best": {"D0": 1.0, "D1": 1.0},
+            },
+            "paired_d1_minus_d0": {
+                "comparison": "D1 (Risk-Penalty Sensitivity) vs D0 (Full DecisionGPT)",
+                "metric": "goal_achievement", "n_pairs": 60,
+                "mean_difference": 0.4989, "median_difference": 0.5689, "std_difference": 0.45,
+                "d1_wins": 35, "ties": 25, "d0_wins": 0,
+                "mean_difference_ci95": [0.3827, 0.6152],
+                "test": "Wilcoxon signed-rank", "statistic": 0.0, "p_value": 0.0, "effect_size_r": 0.8926,
+                "interpretation": "D1 goal achievement is higher than D0 by +0.4989 (p=0.0000).",
+                "difference_is": "D1 - D0",
+            },
+            "interpretation": {
+                "outcome": "A", "removing_rm_penalty_improves_full": "YES",
+                "rm_penalty_explains_the_gap": "YES", "paired_significant": True,
+                "delta_d1_minus_d0": 0.499, "fraction_of_gap_closed": 1.24,
+                "text": "D1 reaches 0.583 vs D0 0.084 and approaches the Digital Twin's 0.486.",
+            },
+            "traces": [
+                {"scenario_id": "S01", "seed": 42, "goal_objective": "increase_revenue",
+                 "d0_selected_strategy": "Marketing +10%", "d1_selected_strategy": "Price +10%",
+                 "d0_goal_achievement": 0.0, "d1_goal_achievement": 0.83,
+                 "d0_confidence": 0.15, "d1_confidence": 0.0,
+                 "rm_decisive": True, "rm_decisive_outcome": "improved",
+                 "rm_top_pick": "Marketing +10%", "dt_sweep_best_strategy": "Price +5%",
+                 "risk_score_mismatch_count": 0},
+            ],
+        },
+    )
+    db_session.add(run)
+    db_session.commit()
+
+    body = client.get("/api/v1/research/agent-evaluation", headers=_h()).json()
+    rm = body["risk_manager_diagnostic"]
+    assert rm is not None
+    assert rm["experiment_name"] == "risk_manager_diagnostic v1"
+    assert rm["baseline"]["full_decisiongpt_mean_goal_achievement"] == 0.0844
+    assert rm["baseline"]["d1_risk_penalty_sensitivity_mean_goal_achievement"] == 0.5834
+    assert rm["rm_decisive"]["percentage"] == 75.0
+    assert rm["risk_score_mismatch"]["count"] == 0
+    assert rm["formula_verification"]["holds_for_all_rows"] is True
+    assert rm["paired_d1_minus_d0"]["difference_is"] == "D1 - D0"
+    assert rm["interpretation"]["outcome"] == "A"
+    assert len(rm["scenario_drilldown"]) == 1
+    assert rm["scenario_drilldown"][0]["d1_selected_strategy"] == "Price +10%"
+
+
 # --- paper results ------------------------------------------------
 
 

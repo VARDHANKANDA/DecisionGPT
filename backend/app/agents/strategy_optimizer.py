@@ -28,10 +28,18 @@ FORMULA_VERSION = "v2"
 
 
 def compute_strategy_score(
-    business_analyst_score: float, financial_advisor_score: float, risk_manager_score: float
+    business_analyst_score: float,
+    financial_advisor_score: float,
+    risk_manager_score: float,
+    risk_penalty_weight: float = 1.0,
 ) -> float:
+    """`risk_penalty_weight` is 1.0 for the production formula (the fixed §7
+    scoring rule). A research-only sensitivity variant may pass 0.0 to remove
+    the risk penalty's contribution to the *ranking* score — the Risk Manager
+    still runs and still produces `risk_manager_score`; only its weight in this
+    one term changes. Nothing in production ever passes a non-default value."""
     goal_benefit = (business_analyst_score + financial_advisor_score) / 2
-    risk_penalty = 1.0 - risk_manager_score
+    risk_penalty = risk_penalty_weight * (1.0 - risk_manager_score)
     return round(goal_benefit - risk_penalty, 4)
 
 
@@ -91,9 +99,16 @@ def resolve(
     reviews: list[PeerReview],
     output,
     causal_evidence_factor: float = 1.0,
+    risk_penalty_weight: float = 1.0,
 ) -> ResolvedDecision:
     """Aggregate round-1 evaluations + round-2 reviews into a single
-    resolved decision for one strategy."""
+    resolved decision for one strategy.
+
+    `risk_penalty_weight` defaults to 1.0 (the production §7 formula). The
+    research-only "Risk-Penalty Sensitivity" variant passes 0.0 to isolate
+    whether the risk-penalty term is what drives strategy selection — the Risk
+    Manager still evaluates, still challenges peers in round 2, and still feeds
+    the confidence `risk_factor`; only its weight in the ranking score moves."""
     ba = round1["business_analyst"]
     fa = round1["financial_advisor"]
     rm = round1["risk_manager"]
@@ -111,6 +126,7 @@ def resolve(
         round2_scores["business_analyst"],
         round2_scores["financial_advisor"],
         round2_scores["risk_manager"],
+        risk_penalty_weight=risk_penalty_weight,
     )
 
     conflicts: list[dict] = []
@@ -142,6 +158,9 @@ def resolve(
         "uncertainty_penalty": round(uncertainty_penalty, 4),
         "formula": "agreement * risk * causal_evidence * (1 - uncertainty_penalty)",
     }
+    if risk_penalty_weight != 1.0:
+        confidence_basis["risk_penalty_weight"] = round(risk_penalty_weight, 4)
+        confidence_basis["variant"] = "risk_penalty_sensitivity (research-only; production weight = 1.0)"
 
     if conflicts:
         raisers = sorted({c["raised_by"].replace("_", " ").title() for c in conflicts})

@@ -2,7 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { researchApi, type AgentEvaluation, type MultiAgentDiagnostic } from "@/lib/research-api";
+import {
+  researchApi,
+  type AgentEvaluation,
+  type MultiAgentDiagnostic,
+  type RiskManagerDiagnostic,
+} from "@/lib/research-api";
 import { DataTable, EvalEmptyState, Metric, Panel, PageIntro, StatGrid, fmt, fmtInt } from "@/components/research-ui";
 
 export default function AgentEvaluationPage() {
@@ -126,6 +131,10 @@ export default function AgentEvaluationPage() {
 
           {data.multi_agent_diagnostic ? (
             <MultiAgentDiagnosticPanel d={data.multi_agent_diagnostic} prev={data.multi_agent_diagnostic_previous} />
+          ) : null}
+
+          {data.risk_manager_diagnostic ? (
+            <RiskManagerDiagnosticPanel d={data.risk_manager_diagnostic} />
           ) : null}
 
           {data.ablation.experiment_id ? (
@@ -334,6 +343,201 @@ function MultiAgentDiagnosticPanel({ d, prev }: { d: MultiAgentDiagnostic; prev:
                   <td className="px-2 py-1">{r.final_strategy ?? "—"}</td>
                   <td className="px-2 py-1">{r.failure_mode}</td>
                   <td className="px-2 py-1 text-right">{r.improvement.toFixed(3)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
+function RiskManagerDiagnosticPanel({ d }: { d: RiskManagerDiagnostic }) {
+  const [fScenario, setFScenario] = useState("all");
+  const pct = (x: number | null | undefined) => (x == null ? "—" : `${(x * 100).toFixed(0)}%`);
+  const f3 = (x: number | null | undefined) => (x == null ? "—" : x.toFixed(3));
+  const s = (v: { mean: number; ci95: [number, number] | null } | null | undefined) =>
+    v == null ? "—" : `${v.mean.toFixed(3)}${v.ci95 ? ` [${v.ci95[0].toFixed(3)}, ${v.ci95[1].toFixed(3)}]` : ""}`;
+
+  const base = d.baseline;
+  const rd = d.rm_decisive;
+  const mm = d.risk_score_mismatch;
+  const cmp = d.d0_vs_d1;
+  const paired = d.paired_d1_minus_d0;
+  const interp = d.interpretation;
+
+  const scenarios = useMemo(
+    () => Array.from(new Set(d.scenario_drilldown.map((r) => r.scenario_id))).sort(),
+    [d],
+  );
+  const rows = d.scenario_drilldown.filter((r) => fScenario === "all" || r.scenario_id === fScenario);
+
+  return (
+    <Panel
+      title="Risk Manager diagnostic — risk-penalty sensitivity (research-only)"
+      right={
+        <span className="text-xs text-muted">
+          {d.experiment_name ?? "experiment"} {d.experiment_id.slice(0, 8)} · {d.total_scenario_seed_pairs} scenario-seed pairs
+        </span>
+      }
+    >
+      <p className="mb-3 text-xs text-muted">
+        <span className="font-medium text-foreground">D0</span> = Full DecisionGPT (production).{" "}
+        <span className="font-medium text-foreground">D1</span> = Risk-Penalty Sensitivity Variant — the
+        Risk Manager still runs and still feeds confidence; only its penalty weight in the ranking score
+        is set to zero. D1 is a sensitivity analysis, <span className="font-medium text-foreground">not</span>{" "}
+        the architecture. Every number is read from the stored `risk_manager_diagnostic` experiment.
+      </p>
+
+      <StatGrid>
+        <Metric label="D0 Full DecisionGPT mean" value={f3(base?.full_decisiongpt_mean_goal_achievement)}
+          hint="goal achievement" />
+        <Metric label="D1 Risk-Penalty Sensitivity mean" value={f3(base?.d1_risk_penalty_sensitivity_mean_goal_achievement)}
+          hint="goal achievement" />
+        <Metric label="Digital Twin mean" value={f3(base?.digital_twin_mean_goal_achievement)}
+          hint="architecture B rule" />
+        <Metric label="RM disagreement rate" value={pct(d.risk_manager_disagreement?.disagreement_rate)}
+          hint={`${d.risk_manager_disagreement?.disagreements_vs_dt_best ?? 0} vs DT-best`} />
+      </StatGrid>
+
+      <div className="mt-4 grid gap-3 md:grid-cols-2 text-xs">
+        <div className="rounded-lg border border-border p-3">
+          <p className="font-medium text-foreground">RM decisive</p>
+          <p className="mt-1 text-muted">{rd?.definition}</p>
+          <p className="mt-1 text-foreground">
+            {rd?.count} / {d.total_scenario_seed_pairs} pairs ({rd?.percentage}%) — improved {rd?.improved} ·
+            degraded {rd?.degraded} · neutral {rd?.neutral}
+          </p>
+        </div>
+        <div className="rounded-lg border border-border p-3">
+          <p className="font-medium text-foreground">Risk-score mismatch</p>
+          <p className="mt-1 text-muted">{mm?.definition}</p>
+          <p className="mt-1 text-foreground">
+            {mm?.count} / {mm?.strategy_rows_inspected} strategy rows ({mm?.percentage}%).{" "}
+            RM distinguishes low vs high-risk price strategies:{" "}
+            <span className="font-medium">{mm?.rm_distinguishes_low_vs_high_risk_price_strategies?.verdict ?? "—"}</span>
+          </p>
+        </div>
+      </div>
+
+      {/* DT risk vs RM score, per lever family */}
+      {mm?.calibration_table?.length ? (
+        <div className="mt-4">
+          <p className="mb-1 text-xs font-medium text-foreground">DT simulated risk vs Risk Manager score</p>
+          <DataTable
+            headers={["Strategy", "Obs", "Mean DT risk", "Mean RM score", "RM=0 rate", "DT-risk LOW rate"]}
+            rows={mm.calibration_table.map((r) => [
+              r.strategy, fmtInt(r.observations),
+              r.mean_digital_twin_risk != null ? r.mean_digital_twin_risk.toFixed(3) : "—",
+              r.mean_risk_manager_score != null ? r.mean_risk_manager_score.toFixed(3) : "—",
+              r.rm_score_zero_rate != null ? pct(r.rm_score_zero_rate) : "—",
+              r.dt_risk_low_rate != null ? pct(r.dt_risk_low_rate) : "—",
+            ])}
+          />
+        </div>
+      ) : null}
+
+      {/* D0 vs D1 comparison table */}
+      {cmp ? (
+        <div className="mt-4 overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-xs">
+            <thead className="bg-muted-surface text-muted">
+              <tr>
+                <th className="px-2 py-1 text-left">Metric</th>
+                <th className="px-2 py-1 text-right">D0 Full</th>
+                <th className="px-2 py-1 text-right">D1 No Risk Penalty</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Goal achievement (mean [95% CI])", s(cmp.goal_achievement.D0), s(cmp.goal_achievement.D1)],
+                ["Risk-adjusted score (mean)", s(cmp.risk_adjusted_score.D0), s(cmp.risk_adjusted_score.D1)],
+                ["Confidence (mean)", s(cmp.confidence.D0), s(cmp.confidence.D1)],
+                ["DT-best agreement", pct(cmp.dt_best_agreement_rate.D0), pct(cmp.dt_best_agreement_rate.D1)],
+                ["Override rate vs DT-best", pct(cmp.override_rate_vs_dt_best.D0), pct(cmp.override_rate_vs_dt_best.D1)],
+              ].map((r, i) => (
+                <tr key={i} className="border-t border-border">
+                  <td className="px-2 py-1 text-foreground">{r[0]}</td>
+                  <td className="px-2 py-1 text-right">{r[1]}</td>
+                  <td className="px-2 py-1 text-right">{r[2]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+
+      {paired ? (
+        <div className="mt-3 rounded-xl border border-border p-3 text-xs">
+          <p className="font-medium text-foreground">Paired difference (D1 − D0), goal achievement</p>
+          <p className="mt-1 text-muted">
+            mean {paired.mean_difference.toFixed(4)}
+            {paired.mean_difference_ci95 ? ` (95% CI [${paired.mean_difference_ci95[0]}, ${paired.mean_difference_ci95[1]}])` : ""} ·
+            median {paired.median_difference.toFixed(4)} · D1 wins {paired.d1_wins} · ties {paired.ties} · D0 wins {paired.d0_wins}
+          </p>
+          <p className="mt-1 text-muted">
+            {paired.test ?? "Wilcoxon signed-rank"}: N={paired.n_pairs}
+            {paired.p_value != null ? ` · p=${paired.p_value}` : ""}
+            {paired.effect_size_r != null ? ` · r=${paired.effect_size_r}` : ""}
+          </p>
+          <p className="mt-1 text-foreground">{paired.interpretation}</p>
+        </div>
+      ) : null}
+
+      {d.formula_verification ? (
+        <p className="mt-2 text-xs text-muted">
+          Formula check ({d.formula_verification.checked}): max deviation{" "}
+          {d.formula_verification.max_deviation_observed} over {d.formula_verification.rows_checked} rows —{" "}
+          <span className={d.formula_verification.holds_for_all_rows ? "text-success" : "text-danger"}>
+            {d.formula_verification.holds_for_all_rows ? "holds for all rows" : "DOES NOT hold"}
+          </span>
+          .
+        </p>
+      ) : null}
+
+      {interp ? (
+        <div className="mt-3 rounded-xl border border-border bg-muted-surface p-3 text-xs">
+          <p className="font-medium text-foreground">Interpretation — outcome {interp.outcome}</p>
+          <p className="mt-1 text-muted">{interp.text}</p>
+          <p className="mt-2 text-foreground">
+            Removing only the RM penalty improves Full DecisionGPT:{" "}
+            <span className="font-medium">{interp.removing_rm_penalty_improves_full}</span> · RM explains the
+            Full-vs-Digital-Twin gap: <span className="font-medium">{interp.rm_penalty_explains_the_gap}</span>
+          </p>
+        </div>
+      ) : null}
+
+      {/* scenario / seed drill-down */}
+      <div className="mt-4">
+        <div className="mb-2 flex flex-wrap gap-2 text-xs">
+          <select value={fScenario} onChange={(e) => setFScenario(e.target.value)} className="rounded border border-border bg-surface px-2 py-1">
+            <option value="all">All scenarios</option>
+            {scenarios.map((sc) => <option key={sc} value={sc}>{sc}</option>)}
+          </select>
+          <span className="self-center text-muted">{rows.length} of {d.scenario_drilldown.length}</span>
+        </div>
+        <div className="max-h-80 overflow-auto rounded-lg border border-border">
+          <table className="w-full text-xs">
+            <thead className="sticky top-0 bg-muted-surface text-muted">
+              <tr>
+                <th className="px-2 py-1 text-left">Scenario/seed</th>
+                <th className="px-2 py-1 text-left">D0 pick</th>
+                <th className="px-2 py-1 text-left">D1 pick</th>
+                <th className="px-2 py-1 text-right">D0 goal ach.</th>
+                <th className="px-2 py-1 text-right">D1 goal ach.</th>
+                <th className="px-2 py-1 text-left">RM decisive</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r, i) => (
+                <tr key={i} className="border-t border-border align-top">
+                  <td className="px-2 py-1 text-foreground">{r.scenario_id}/{r.seed}</td>
+                  <td className="px-2 py-1">{r.d0_selected_strategy ?? "—"}</td>
+                  <td className="px-2 py-1">{r.d1_selected_strategy ?? "—"}</td>
+                  <td className="px-2 py-1 text-right">{r.d0_goal_achievement.toFixed(3)}</td>
+                  <td className="px-2 py-1 text-right">{r.d1_goal_achievement.toFixed(3)}</td>
+                  <td className="px-2 py-1">{r.rm_decisive ? (r.rm_decisive_outcome ?? "yes") : "no"}</td>
                 </tr>
               ))}
             </tbody>

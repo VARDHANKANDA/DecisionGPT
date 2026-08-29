@@ -78,6 +78,11 @@ class PipelineOptions:
     use_multi_agent: bool = True  # False -> single blended agent, no debate
     use_memory: bool = True
     use_explainability: bool = True  # informational only; doesn't change the selected strategy
+    # Research-only sensitivity switch (docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md).
+    # True = production §7 formula. False = the Risk Manager still runs and still
+    # feeds confidence, but its penalty term is given zero weight in the ranking
+    # score. NOT an ablation config; never set by any production caller.
+    risk_penalty_in_ranking: bool = True
 
     def label(self) -> str:
         off = [
@@ -87,6 +92,7 @@ class PipelineOptions:
                 ("multi_agent", self.use_multi_agent),
                 ("memory", self.use_memory),
                 ("explainability", self.use_explainability),
+                ("risk_penalty", self.risk_penalty_in_ranking),
             )
             if not on
         ]
@@ -252,7 +258,11 @@ def _score_candidate(
         financial_advisor.review(fa, {"business_analyst": ba, "risk_manager": rm}, output),
         business_analyst.review(ba, {"financial_advisor": fa, "risk_manager": rm}, output),
     ]
-    resolved = strategy_optimizer.resolve(round1, reviews, output, causal_evidence_factor=causal_factor)
+    resolved = strategy_optimizer.resolve(
+        round1, reviews, output,
+        causal_evidence_factor=causal_factor,
+        risk_penalty_weight=1.0 if options.risk_penalty_in_ranking else 0.0,
+    )
     return round1, reviews, resolved
 
 
@@ -448,6 +458,7 @@ def analyze_goal(
         "use_multi_agent": options.use_multi_agent,
         "use_memory": options.use_memory,
         "use_explainability": options.use_explainability,
+        "risk_penalty_in_ranking": options.risk_penalty_in_ranking,
         "label": options.label(),
     }
 

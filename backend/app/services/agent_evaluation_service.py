@@ -151,11 +151,57 @@ def _diagnostic_summary(run: ExperimentRun | None) -> dict | None:
     }
 
 
+def _risk_manager_diagnostic_summary(run: ExperimentRun | None) -> dict | None:
+    """The Risk Manager diagnostic + risk-penalty sensitivity study
+    (research-only). Every number is read from the stored
+    risk_manager_diagnostic experiment — nothing recomputed, nothing
+    hard-coded. D1 is a labelled sensitivity variant, NOT the architecture."""
+    if run is None:
+        return None
+    m = run.metrics_json or {}
+    traces = m.get("traces", [])
+    drill = [
+        {
+            "scenario_id": t.get("scenario_id"), "seed": t.get("seed"),
+            "goal_objective": t.get("goal_objective"),
+            "d0_selected_strategy": t.get("d0_selected_strategy"),
+            "d1_selected_strategy": t.get("d1_selected_strategy"),
+            "d0_goal_achievement": t.get("d0_goal_achievement"),
+            "d1_goal_achievement": t.get("d1_goal_achievement"),
+            "d0_confidence": t.get("d0_confidence"),
+            "d1_confidence": t.get("d1_confidence"),
+            "rm_decisive": t.get("rm_decisive"),
+            "rm_decisive_outcome": t.get("rm_decisive_outcome"),
+            "rm_top_pick": t.get("rm_top_pick"),
+            "dt_sweep_best_strategy": t.get("dt_sweep_best_strategy"),
+            "risk_score_mismatch_count": t.get("risk_score_mismatch_count"),
+        }
+        for t in traces
+    ]
+    return {
+        "experiment_id": run.id,
+        "experiment_name": run.experiment_name,
+        "created_at": run.created_at.isoformat() if run.created_at else None,
+        "seeds": m.get("seeds"),
+        "total_scenario_seed_pairs": m.get("total_scenario_seed_pairs"),
+        "baseline": m.get("baseline"),
+        "formula_verification": m.get("formula_verification"),
+        "risk_manager_disagreement": m.get("risk_manager_disagreement"),
+        "rm_decisive": m.get("rm_decisive"),
+        "risk_score_mismatch": m.get("risk_score_mismatch"),
+        "d0_vs_d1": m.get("d0_vs_d1"),
+        "paired_d1_minus_d0": m.get("paired_d1_minus_d0"),
+        "interpretation": m.get("interpretation"),
+        "scenario_drilldown": drill,
+    }
+
+
 def get_agent_evaluation(db: Session) -> dict:
     arch_run = _latest(db, "decision_architecture")
     ablation_run = _latest(db, "ablation")
     multi_agent_run = _latest(db, "multi_agent")
     diagnostic_runs = _latest_n(db, "multi_agent_diagnostic", 2)
+    rm_diagnostic_run = _latest(db, "risk_manager_diagnostic")
 
     architecture_rows = _architecture_rows(arch_run)
 
@@ -194,5 +240,6 @@ def get_agent_evaluation(db: Session) -> dict:
         "multi_agent_diagnostic_previous": (
             _diagnostic_summary(diagnostic_runs[1]) if len(diagnostic_runs) > 1 else None
         ),
+        "risk_manager_diagnostic": _risk_manager_diagnostic_summary(rm_diagnostic_run),
         "empty_state": empty_state,
     }

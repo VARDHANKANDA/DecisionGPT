@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-29T12:18:58.682678+00:00",
-  "experiment_count": 13,
+  "generated_at": "2026-08-29T00:00:00Z",
+  "experiment_count": 14,
   "multi_scenario": {
     "architecture": {
       "experiment_id": "0e1bd8dc-bc51-44ea-8e58-08a054201b85",
@@ -40,6 +40,48 @@
   },
   "experiments": [
     {
+      "experiment_id": "ba56e42b-98b1-481e-a42d-34a52b6941e6",
+      "experiment_name": "risk_manager_diagnostic v1",
+      "experiment_type": "risk_manager_diagnostic",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_scenario_suite",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "name": "risk_manager_diagnostic v1"
+      },
+      "created_at": "2026-08-29T13:07:36.571972",
+      "started_at": "2026-08-29T13:07:36.577977",
+      "completed_at": "2026-08-29T13:13:19.677211",
+      "error_message": null,
+      "metric_summary": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "d0_full_mean_goal_achievement": 0.0844,
+        "d1_risk_penalty_sensitivity_mean": 0.5834,
+        "digital_twin_mean": 0.4856,
+        "rm_decisive_percentage": 75.0,
+        "paired_interpretation": "D1 (risk penalty un-weighted) goal achievement is higher than D0 by +0.4989 (Wilcoxon p=0.0000, statistically significant, r=0.8926).",
+        "outcome": "A"
+      }
+    },
+    {
       "experiment_id": "f24abc1b-9cf8-434e-a7ce-8a67e20fdf9e",
       "experiment_name": "POST_CORRECTION multi_agent_diagnostic",
       "experiment_type": "multi_agent_diagnostic",
@@ -65,7 +107,19 @@
       "started_at": "2026-08-29T12:16:05.457240",
       "completed_at": "2026-08-29T12:18:58.636138",
       "error_message": null,
-      "metric_summary": {}
+      "metric_summary": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "candidate_coverage_rate": 0.8333,
+        "override_rate": 1.0,
+        "override_degraded": 45,
+        "full_mean_goal_achievement": 0.0844
+      }
     },
     {
       "experiment_id": "db58455b-138b-4054-b1ac-e4b315d2edfc",
@@ -172,7 +226,19 @@
       "started_at": "2026-08-29T10:44:06.309002",
       "completed_at": "2026-08-29T10:49:06.515672",
       "error_message": null,
-      "metric_summary": {}
+      "metric_summary": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "candidate_coverage_rate": null,
+        "override_rate": 1.0,
+        "override_degraded": 45,
+        "full_mean_goal_achievement": 0.0844
+      }
     },
     {
       "experiment_id": "2f7da989-40e2-4d11-abb4-88a54a5f10b8",

@@ -211,7 +211,8 @@ export type ExperimentType =
   | "ablation"
   | "multi_scenario_architecture"
   | "multi_scenario_ablation"
-  | "multi_agent_diagnostic";
+  | "multi_agent_diagnostic"
+  | "risk_manager_diagnostic";
 
 export interface ExperimentRun {
   id: string;
@@ -540,7 +541,80 @@ export interface AgentEvaluation {
   };
   multi_agent_diagnostic: MultiAgentDiagnostic | null;
   multi_agent_diagnostic_previous: MultiAgentDiagnostic | null;
+  risk_manager_diagnostic: RiskManagerDiagnostic | null;
   empty_state: string | null;
+}
+
+export interface StatSummary {
+  n: number; mean: number; median: number; std: number; min: number; max: number;
+  ci95: [number, number] | null;
+}
+
+export interface RiskManagerDiagnostic {
+  experiment_id: string;
+  experiment_name?: string;
+  created_at: string | null;
+  seeds: number[] | null;
+  total_scenario_seed_pairs: number;
+  baseline: {
+    full_decisiongpt_mean_goal_achievement: number | null;
+    digital_twin_mean_goal_achievement: number | null;
+    d1_risk_penalty_sensitivity_mean_goal_achievement: number | null;
+  } | null;
+  formula_verification: {
+    checked: string; max_deviation_observed: number; holds_for_all_rows: boolean; rows_checked: number;
+  } | null;
+  risk_manager_disagreement: { disagreements_vs_dt_best: number; disagreement_rate: number | null } | null;
+  rm_decisive: {
+    count: number; percentage: number | null; improved: number; degraded: number; neutral: number;
+    definition: string;
+    pairs: { scenario_id: string; seed: number; d0_pick: string | null; penalty_free_pick: string | null; outcome: string | null }[];
+  } | null;
+  risk_score_mismatch: {
+    count: number; strategy_rows_inspected: number; percentage: number | null; definition: string;
+    rm_distinguishes_low_vs_high_risk_price_strategies: {
+      assessable: boolean; note?: string; price_strategy_observations?: number;
+      rm_score_spread?: number; dt_risk_spread?: number; rm_score_all_zero_for_price?: boolean; verdict?: string;
+    };
+    calibration_table: {
+      strategy: string; observations: number;
+      mean_digital_twin_risk?: number; mean_risk_manager_score?: number;
+      rm_score_zero_rate?: number; dt_risk_low_rate?: number;
+    }[];
+  } | null;
+  d0_vs_d1: {
+    goal_achievement: { D0: StatSummary | null; D1: StatSummary | null };
+    risk_adjusted_score: { D0: StatSummary | null; D1: StatSummary | null };
+    confidence: { D0: StatSummary | null; D1: StatSummary | null };
+    dt_best_agreement_rate: { D0: number | null; D1: number | null };
+    override_rate_vs_dt_best: { D0: number | null; D1: number | null };
+  } | null;
+  paired_d1_minus_d0: {
+    comparison: string; metric: string; n_pairs: number;
+    mean_difference: number; median_difference: number; std_difference: number;
+    d1_wins: number; ties: number; d0_wins: number;
+    mean_difference_ci95: [number, number] | null;
+    test?: string; statistic?: number | null; p_value?: number | null; effect_size_r?: number | null;
+    interpretation: string; difference_is: string;
+  } | null;
+  interpretation: {
+    outcome: string;
+    removing_rm_penalty_improves_full: string;
+    rm_penalty_explains_the_gap: string;
+    paired_significant: boolean;
+    delta_d1_minus_d0: number;
+    fraction_of_gap_closed: number | null;
+    text: string;
+  } | null;
+  scenario_drilldown: {
+    scenario_id: string; seed: number; goal_objective: string;
+    d0_selected_strategy: string | null; d1_selected_strategy: string | null;
+    d0_goal_achievement: number; d1_goal_achievement: number;
+    d0_confidence: number | null; d1_confidence: number | null;
+    rm_decisive: boolean; rm_decisive_outcome: string | null;
+    rm_top_pick: string | null; dt_sweep_best_strategy: string | null;
+    risk_score_mismatch_count: number;
+  }[];
 }
 
 export interface CandidateCoverage {

@@ -396,6 +396,15 @@ Every table row traces to an `experiment_id` / `model_version` /
 `experiments/experiment_manifest.json` (which now carries a `multi_scenario`
 aggregate block) and `experiments/paper_results_snapshot.json`.
 
+**Appendix — Risk Manager Sensitivity Analysis.** Not a paper table. The
+`risk_manager_diagnostic` experiment (`ba56e42b`) records a controlled
+sensitivity variant **D1** (Full DecisionGPT, Risk Manager running but its
+penalty un-weighted in the ranking). D1 raises mean goal achievement 0.084 →
+0.583 (paired Wilcoxon p < 0.0001, r = 0.89). This is **supporting diagnostic
+evidence for the failure-analysis section only** — the main Table 4 conclusion
+continues to use **D0** (production Full DecisionGPT). See
+`docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md`.
+
 ## Paper figures
 
 | Figure | Status | Data source |
@@ -418,7 +427,10 @@ Verified pages: Overview, Dataset Registry (`{platform, external, uploaded}`,
 paired Wilcoxon interpretation, robustness table, failure-mode list and a
 scenario / seed / architecture-filterable per-observation table**), Model
 Performance, Digital Twin Evaluation (explicit empty state), Causal
-Evaluation, Multi-Agent Evaluation, Ablation, Paper Results (4/5 ready — Table
+Evaluation, Multi-Agent Evaluation (now also renders the **Risk Manager
+diagnostic** panel: RM disagreement / RM-decisive rates, DT-risk vs RM-score
+calibration table, D0 vs D1 comparison, paired D1−D0 test, formula
+verification, scenario drill-down), Ablation, Paper Results (4/5 ready — Table
 4/5 now show the multi-scenario aggregates; Table 2 shows its missing-data
 reason). No hard-coded research metric; every number resolves to a stored row
 (`experiment_id`, `scenario_id`, `seed`).
@@ -480,8 +492,26 @@ reason). No hard-coded research metric; every number resolves to a stored row
    candidate-space artefact; it persists after alignment**, and the remaining
    mechanism is Risk-Manager conservatism on price moves (diagnosed, not yet
    corrected).
-2. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
+2. **The risk-penalty term has now been isolated as the proximate mechanism**
+   — `docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md` (`risk_manager_diagnostic` id
+   `ba56e42b`, 60 pairs). A controlled sensitivity variant **D1** (Full
+   DecisionGPT with the Risk Manager still running but its penalty given zero
+   weight in the ranking — a labelled variant, **not** the architecture) lifts
+   mean goal achievement **0.084 → 0.583** (paired Wilcoxon p < 0.0001,
+   r = 0.89, D1 wins 35/60, 0 losses), slightly exceeding the Digital Twin's
+   0.486. Removing only the risk penalty changes the selection in **75 %** of
+   pairs (35 improved / 0 degraded / 10 neutral). The optimizer formula
+   `final_score = (BA+FA)/2 − (1−RM)` was verified on all 390 strategy rows.
+   **Caveats:** there were **0** `RISK_SCORE_MISMATCH` cases — the RM is
+   faithfully transmitting the Digital Twin's own extrapolation-risk score
+   (0.68 for `Price +5%`, 0.98 for `Price +10%`, driven by the synthetic
+   businesses' near-constant price history); and D1's mean confidence collapses
+   0.139 → 0.018 and its risk-adjusted score stays negative. So the next task
+   is a **principled calibration experiment** on `_risk_from_extrapolation`'s
+   zero-variance-history handling and the optimizer's unbounded risk term —
+   not applied here.
+4. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
    Table 2 / Figure 3 become real.
-3. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
+5. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
    second `INDIA_*` forecasting row; add repeated seeds to the forecasting /
    customer experiments for CIs.

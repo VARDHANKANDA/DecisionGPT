@@ -186,10 +186,22 @@ candidate-space mismatch; it persists after the strategy spaces are aligned.**
   Causal Graph / Multi-Agent / Explainability / Memory costs 0.000).
 
 **Outcome (per the task's framing): B — Full DecisionGPT remains worse.** The
-next question, now cleanly isolated, is **Risk-Manager conservatism**: it
-scores price increases as maximally unsafe regardless of the simulated risk
-band, and that single term dominates strategy selection. This is a
-diagnosis, not a licence to retune — no penalty was modified.
+next question, now cleanly isolated, is the **risk-penalty term**: it scores
+price increases as maximally unsafe and that single term dominates strategy
+selection. This is a diagnosis, not a licence to retune — no penalty was
+modified.
+
+**Follow-up (`docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md`, `risk_manager_diagnostic`
+`ba56e42b`).** A controlled sensitivity variant **D1** (Full DecisionGPT, Risk
+Manager still running but its penalty un-weighted in the ranking — a labelled
+variant, not the architecture) raises mean goal achievement **0.084 → 0.583**
+(paired Wilcoxon p < 0.0001, r = 0.89). Removing only the penalty changes the
+selection in 75 % of pairs (35 improved / 0 degraded / 10 neutral). So the
+risk-penalty term **is** the proximate mechanism. Caveat: 0 `RISK_SCORE_MISMATCH`
+cases — the Risk Manager is faithfully transmitting the Digital Twin's own
+extrapolation-risk score (high for price moves because the synthetic businesses
+hold price nearly constant), and D1's confidence collapses 0.139 → 0.018. The
+next task is a principled calibration experiment, not a retune.
 
 ## Preserved
 

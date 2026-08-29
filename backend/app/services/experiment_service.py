@@ -37,6 +37,7 @@ SUPPORTED_EXPERIMENT_TYPES = {
     "multi_scenario_architecture",
     "multi_scenario_ablation",
     "multi_agent_diagnostic",
+    "risk_manager_diagnostic",
 }
 
 
@@ -120,6 +121,15 @@ def _dispatch(db: Session, experiment_type: str, configuration: dict) -> tuple[d
 
         seeds = configuration.get("seeds") or multi_scenario_service.SEEDS
         metrics = multi_agent_diagnostic_service.run_diagnostic(db, seeds=[int(s) for s in seeds])
+        return metrics, "synthetic_scenario_suite", _active_forecasting_versions(db)
+
+    if experiment_type == "risk_manager_diagnostic":
+        from app.services import multi_scenario_service, risk_manager_diagnostic_service
+
+        seeds = configuration.get("seeds") or multi_scenario_service.SEEDS
+        metrics = risk_manager_diagnostic_service.run_risk_manager_diagnostic(
+            db, seeds=[int(s) for s in seeds]
+        )
         return metrics, "synthetic_scenario_suite", _active_forecasting_versions(db)
 
     # ablation
@@ -222,6 +232,26 @@ def _metric_summary(run: ExperimentRun) -> dict:
                 c: ((agg.get(c, {}).get("delta_goal_achievement_vs_full") or {}) or {}).get("mean")
                 for c in ("B", "C", "D", "E", "F")
             },
+        }
+    if t == "multi_agent_diagnostic":
+        return {
+            "seeds": m.get("seeds"),
+            "candidate_coverage_rate": (m.get("candidate_coverage") or {}).get("candidate_coverage_rate"),
+            "override_rate": (m.get("digital_twin_to_final") or {}).get("override_rate"),
+            "override_degraded": (m.get("override_outcomes") or {}).get("degraded"),
+            "full_mean_goal_achievement": m.get("full_decisiongpt_mean_goal_achievement"),
+        }
+    if t == "risk_manager_diagnostic":
+        b = m.get("baseline", {})
+        rd = m.get("rm_decisive", {})
+        return {
+            "seeds": m.get("seeds"),
+            "d0_full_mean_goal_achievement": b.get("full_decisiongpt_mean_goal_achievement"),
+            "d1_risk_penalty_sensitivity_mean": b.get("d1_risk_penalty_sensitivity_mean_goal_achievement"),
+            "digital_twin_mean": b.get("digital_twin_mean_goal_achievement"),
+            "rm_decisive_percentage": rd.get("percentage"),
+            "paired_interpretation": (m.get("paired_d1_minus_d0") or {}).get("interpretation"),
+            "outcome": (m.get("interpretation") or {}).get("outcome"),
         }
     return {}
 

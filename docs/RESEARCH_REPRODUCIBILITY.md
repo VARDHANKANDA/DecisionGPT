@@ -94,6 +94,16 @@ from app.services import experiment_service as e;d=SessionLocal();\
 ['multi_scenario_architecture','multi_scenario_ablation','multi_agent_diagnostic']];d.close()"
 #   pre-correction runs are relabelled 'PRE_CORRECTION ...' and kept in the manifest.
 
+# --- Risk Manager diagnostic + risk-penalty sensitivity (docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md) ---
+# D0 = production Full DecisionGPT; D1 = Full DecisionGPT with
+# PipelineOptions(risk_penalty_in_ranking=False) (Risk Manager still runs; its
+# penalty weight in strategy_optimizer.resolve is 0). D1 is a labelled
+# sensitivity variant, NOT the architecture. Same 12 scenarios x 5 seeds.
+python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
+from app.services import experiment_service as e;d=SessionLocal();\
+print(e.run_experiment(d,'risk_manager_diagnostic',{'seeds':[42,43,44,45,46],'name':'risk_manager_diagnostic v1'}).status);d.close()"
+#   ~= 8-12 min (2 analyze_goal runs per scenario/seed; CPU-bound; deterministic).
+
 # a controlled decision (Digital Twin simulations + confidence basis) on the demo synthetic business
 python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
 from app.services import demo_business_service as db_,goal_service as g,decision_service as ds;\
@@ -121,6 +131,7 @@ curl -s localhost:8000/api/v1/research/paper-results     -H "X-Research-Token: $
 | 6 · Ablation A–F (legacy, 1×1) | every `delta_goal_achievement = 0.0`; confidence 0.150→0.272 when Causal Graph removed |
 | **6 · Ablation A–F (multi, 12×5=60/config)** | most `Δ vs Full ≈ 0`; large effect only for removing the Digital Twin (config B → 0.00). See the completed `multi_scenario_ablation` run. Identical PRE (`be392694`) / POST (`db58455b`). |
 | **Candidate-space correction re-test** | `candidate_coverage_rate` 0.333 → **0.833**, `missing_supported_strategy_rate` 0.500 → **0.000** (invariant now holds). Architecture / ablation / pairwise aggregates **byte-identical** to pre-correction: D still 0.084, D<B p<0.0001, override rate 1.00 (0 improved / 45 degraded). Failure mode shifted `CANDIDATE_SET_MISMATCH` 30 → 0, `RISK_OVERRULE` 15 → 45. POST diagnostic `f24abc1b`. See `docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`. |
+| **Risk Manager diagnostic (`ba56e42b`)** | Optimizer formula verified on 390/390 strategy rows. RM-decisive 45/60 (75 %) — 35 improved / 0 degraded / 10 neutral. `RISK_SCORE_MISMATCH` = 0/390 (RM faithfully transmits the DT extrapolation-risk score: mean DT risk `Price +5%` 0.68, `Price +10%` 0.98). Sensitivity variant **D1** (risk penalty un-weighted): mean goal achievement **0.084 → 0.583**, paired Wilcoxon D1−D0 p<0.0001, r=0.89, 35 wins / 25 ties / 0 losses; D1 confidence 0.139 → 0.018. Outcome **A** (with caveats). See `docs/RISK_MANAGER_DIAGNOSTIC_REPORT.md`. |
 | 7 · End-to-end (demo business) | selected "Marketing +20%", confidence 0.1468 = 0.9788 × 0.5 × 0.6 × (1−0.5) |
 
 `churn` platform: logreg F1 0.669 / AUC 0.798, RF F1 0.661 / AUC 0.793, xgb F1 0.658 / AUC 0.792.
