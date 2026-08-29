@@ -4,7 +4,7 @@ Execution task. **Track A (real SME outcomes) and Track B (real-LLM) both hit
 their STOP conditions:** no genuine Indian SME data was supplied, and no
 legitimate LLM provider is configured. No experiment was run, no
 `DecisionOutcome` fabricated, no production behaviour changed. All values below
-are read live from the database / configuration on commit `<filled on commit>`.
+are read live from the database / configuration on commit `aebe938`.
 
 ```
 REAL INDIAN SME EVIDENCE
@@ -155,7 +155,7 @@ Alembic:   0001 -> head -> base -> head — clean (head = 0007)
 
 ## Commit
 
-`<filled on commit>`
+`aebe938` — *Real evidence status: Track A + B STOP conditions met*
 
 ---
 
