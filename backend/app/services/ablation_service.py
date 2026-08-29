@@ -30,8 +30,10 @@ from app.services.decision_architecture_service import (
     GOAL_TARGET_PERCENT,
     _cleanup_synthetic_business,
     _goal_achievement,
+    _kpi_goal_achievement,
     _run_architecture_a,
     _seed_synthetic_business,
+    kpi_for_metric,
 )
 
 
@@ -75,17 +77,21 @@ class AblationStudyResult:
 
 
 def _run_full_pipeline(db: Session, options: PipelineOptions, config: str, label: str,
-                       components_removed: list[str], seed: int, note: str = "") -> tuple[AblationConfigResult, dict]:
-    business_id, goal_id = _seed_synthetic_business(db, seed=seed)
+                       components_removed: list[str], seed: int, note: str = "",
+                       scenario=None, kpi: str = "revenue", target_percent: float = GOAL_TARGET_PERCENT
+                       ) -> tuple[AblationConfigResult, dict]:
+    business_id, goal_id = _seed_synthetic_business(db, seed=seed, scenario=scenario)
     model_versions: dict = {}
     try:
         result = decision_service.analyze_goal(db, business_id, goal_id, options=options)
         outcome = result.expected_outcome
         benefit = outcome["expected_revenue"] - outcome["baseline_revenue"]
         risk_adjusted = benefit * (1 - outcome["risk_score"])
-        achievement = _goal_achievement(
-            outcome["expected_revenue"], outcome["baseline_revenue"], GOAL_TARGET_PERCENT
-        )
+        class _O:
+            expected_revenue = outcome["expected_revenue"]; baseline_revenue = outcome["baseline_revenue"]
+            expected_profit = outcome.get("expected_profit"); baseline_profit = outcome.get("baseline_profit")
+            expected_units_sold = outcome.get("expected_units_sold"); baseline_units_sold = outcome.get("baseline_units_sold")
+        achievement = _kpi_goal_achievement(_O, target_percent, kpi)
         model_versions = result.trace.get("model_versions", {})
         cfg = AblationConfigResult(
             config=config,
@@ -109,16 +115,19 @@ def _run_full_pipeline(db: Session, options: PipelineOptions, config: str, label
     return cfg, model_versions
 
 
-def run_ablation_study(db: Session, seed: int = 42) -> AblationStudyResult:
+def run_ablation_study(db: Session, seed: int = 42, scenario=None) -> AblationStudyResult:
     configs: list[AblationConfigResult] = []
     model_versions: dict = {}
+    kpi = kpi_for_metric(scenario.goal_primary_kpi) if scenario is not None else "revenue"
+    target_pct = scenario.goal_target_percent if scenario is not None else GOAL_TARGET_PERCENT
 
-    full, mv = _run_full_pipeline(db, PipelineOptions(), "A", "Full DecisionGPT", [], seed)
+    full, mv = _run_full_pipeline(db, PipelineOptions(), "A", "Full DecisionGPT", [], seed,
+                                  scenario=scenario, kpi=kpi, target_percent=target_pct)
     model_versions.update(mv)
     configs.append(full)
 
     # B — without Digital Twin: architecture A (forecast only).
-    b_business_id, _ = _seed_synthetic_business(db, seed=seed)
+    b_business_id, _ = _seed_synthetic_business(db, seed=seed, scenario=scenario)
     try:
         arch_a = _run_architecture_a(db, b_business_id)
         configs.append(
@@ -145,7 +154,8 @@ def run_ablation_study(db: Session, seed: int = 42) -> AblationStudyResult:
         ("F", "Without Memory", PipelineOptions(use_memory=False), ["memory"],
          "No recorded outcomes exist on this synthetic scenario, so there are no memory insights to remove."),
     ]:
-        cfg, mv = _run_full_pipeline(db, opts, config, label, removed, seed, note)
+        cfg, mv = _run_full_pipeline(db, opts, config, label, removed, seed, note,
+                                    scenario=scenario, kpi=kpi, target_percent=target_pct)
         model_versions.update(mv)
         configs.append(cfg)
 
@@ -176,7 +186,7 @@ def run_ablation_study(db: Session, seed: int = 42) -> AblationStudyResult:
 
     return AblationStudyResult(
         seed=seed,
-        goal_target_percent=GOAL_TARGET_PERCENT,
+        goal_target_percent=target_pct,
         configs=configs,
         comparisons=comparisons,
         model_versions=model_versions,

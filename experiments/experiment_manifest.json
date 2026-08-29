@@ -1,9 +1,46 @@
 {
-  "generated_at": "2026-08-29T07:31:15.015732+00:00",
-  "experiment_count": 7,
+  "generated_at": "2026-08-29T10:11:49.954998+00:00",
+  "experiment_count": 9,
+  "multi_scenario": {
+    "architecture": {
+      "experiment_id": "675cf17e-0cf7-43e3-8efc-e9654eeef4c7",
+      "random_seed": 42,
+      "seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "scenario_count": 12,
+      "seed_count": 5,
+      "evaluation_count": 240,
+      "aggregation_method": "sample mean / median / std; 95% CI = Student-t on the mean (n per architecture = scenario_count x seed_count)",
+      "statistical_method": "paired Wilcoxon signed-rank on scenario x seed (scipy.stats.wilcoxon, two-sided, zero_method='wilcox')"
+    },
+    "ablation": {
+      "experiment_id": "be392694-f001-4972-83ec-840fb9dac459",
+      "random_seed": 42,
+      "seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "scenario_count": 12,
+      "seed_count": 5,
+      "evaluation_count": 360,
+      "aggregation_method": "sample mean / median / std; 95% CI = Student-t on the mean",
+      "statistical_method": "paired Wilcoxon signed-rank on scenario x seed (Full vs each ablation)"
+    },
+    "legacy_single_scenario_result": {
+      "note": "The original 1-scenario x 1-seed decision_architecture / ablation runs are preserved unchanged for comparison \u2014 see experiment_type 'decision_architecture' / 'ablation'."
+    }
+  },
   "experiments": [
     {
-      "experiment_id": "28c72418-6cd1-4c4f-8309-e3669d8e3684",
+      "experiment_id": "2f7da989-40e2-4d11-abb4-88a54a5f10b8",
       "experiment_name": "paper_digital_twin",
       "experiment_type": "digital_twin",
       "status": "completed",
@@ -14,9 +51,9 @@
         "seed": 42,
         "name": "paper_digital_twin"
       },
-      "created_at": "2026-08-29T07:29:46.680805",
-      "started_at": "2026-08-29T07:29:46.681804",
-      "completed_at": "2026-08-29T07:29:46.694801",
+      "created_at": "2026-08-29T10:11:46.575865",
+      "started_at": "2026-08-29T10:11:46.576866",
+      "completed_at": "2026-08-29T10:11:46.596615",
       "error_message": null,
       "metric_summary": {
         "sample_size": 0,
@@ -26,8 +63,213 @@
       }
     },
     {
-      "experiment_id": "35ff9e02-80ff-44ab-b52f-61008b1e8095",
-      "experiment_name": "paper_ablation",
+      "experiment_id": "7616425f-4f85-400e-bb32-6b76bccc21db",
+      "experiment_name": "paper_multi_agent",
+      "experiment_type": "multi_agent",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_scenario",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seed": 42,
+        "name": "paper_multi_agent"
+      },
+      "created_at": "2026-08-29T10:11:40.900570",
+      "started_at": "2026-08-29T10:11:40.902574",
+      "completed_at": "2026-08-29T10:11:46.568728",
+      "error_message": null,
+      "metric_summary": {
+        "single_agent": {
+          "goal_achievement": 0.0
+        },
+        "multi_agent": {
+          "goal_achievement": 0.0
+        }
+      }
+    },
+    {
+      "experiment_id": "36d0d404-dc0b-4f24-9a33-3ce938ffe36b",
+      "experiment_name": "paper_causal",
+      "experiment_type": "causal",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_causal_validation",
+      "model_versions": {
+        "method": "granger_causality"
+      },
+      "configuration": {
+        "seed": 42,
+        "name": "paper_causal"
+      },
+      "created_at": "2026-08-29T10:11:40.851255",
+      "started_at": "2026-08-29T10:11:40.853251",
+      "completed_at": "2026-08-29T10:11:40.891605",
+      "error_message": null,
+      "metric_summary": {
+        "precision": 0.4,
+        "recall": 1.0,
+        "shd": 3
+      }
+    },
+    {
+      "experiment_id": "21e8e800-d155-4ffc-a601-f433f16190da",
+      "experiment_name": "paper_churn",
+      "experiment_type": "churn",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "platform-churn-v1",
+      "model_versions": {
+        "churn_logistic_regression": "v1",
+        "churn_random_forest": "v1",
+        "churn_xgboost": "v1"
+      },
+      "configuration": {
+        "seed": 42,
+        "name": "paper_churn"
+      },
+      "created_at": "2026-08-29T10:11:38.076090",
+      "started_at": "2026-08-29T10:11:38.077987",
+      "completed_at": "2026-08-29T10:11:40.843304",
+      "error_message": null,
+      "metric_summary": {
+        "logistic_regression": {
+          "f1": 0.6685990338164252,
+          "roc_auc": 0.7977982771560754
+        },
+        "random_forest": {
+          "f1": 0.661432777232581,
+          "roc_auc": 0.792751845504139
+        },
+        "xgboost": {
+          "f1": 0.6576139670223085,
+          "roc_auc": 0.7921763506625892
+        }
+      }
+    },
+    {
+      "experiment_id": "c2b3a2fa-260c-47f5-bb97-86776a51eb78",
+      "experiment_name": "paper_forecasting",
+      "experiment_type": "forecasting",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "platform-forecasting-v1",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seed": 42,
+        "name": "paper_forecasting"
+      },
+      "created_at": "2026-08-29T10:11:36.911564",
+      "started_at": "2026-08-29T10:11:36.915082",
+      "completed_at": "2026-08-29T10:11:38.062571",
+      "error_message": null,
+      "metric_summary": {
+        "naive": {
+          "mae": 24.659669811320754,
+          "rmse": 38.27514896511687,
+          "mape": 15.464740828127482
+        },
+        "linear": {
+          "mae": 17.29126388372856,
+          "rmse": 25.51122770712597,
+          "mape": 12.489406914138296
+        },
+        "xgboost": {
+          "mae": 15.13885516603038,
+          "rmse": 21.863057200107395,
+          "mape": 10.296922032515052
+        }
+      }
+    },
+    {
+      "experiment_id": "be392694-f001-4972-83ec-840fb9dac459",
+      "experiment_name": "paper_multi_ablation",
+      "experiment_type": "multi_scenario_ablation",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_scenario_suite",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "name": "paper_multi_ablation"
+      },
+      "created_at": "2026-08-29T09:59:54.472459",
+      "started_at": "2026-08-29T09:59:54.474543",
+      "completed_at": "2026-08-29T10:10:20.704949",
+      "error_message": null,
+      "metric_summary": {
+        "scenario_count": 12,
+        "seed_count": 5,
+        "evaluation_count": 360,
+        "mean_delta_goal_achievement_vs_full": {
+          "B": 0.0844,
+          "C": 0.0,
+          "D": 0.0,
+          "E": 0.0,
+          "F": 0.0
+        }
+      }
+    },
+    {
+      "experiment_id": "675cf17e-0cf7-43e3-8efc-e9654eeef4c7",
+      "experiment_name": "paper_multi_arch",
+      "experiment_type": "multi_scenario_architecture",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_scenario_suite",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "name": "paper_multi_arch"
+      },
+      "created_at": "2026-08-29T09:52:57.899022",
+      "started_at": "2026-08-29T09:52:57.901023",
+      "completed_at": "2026-08-29T09:58:52.331030",
+      "error_message": null,
+      "metric_summary": {
+        "scenario_count": 12,
+        "seed_count": 5,
+        "evaluation_count": 240,
+        "mean_goal_achievement": {
+          "A": 0.0,
+          "B": 0.4856,
+          "C": 0.0025,
+          "D": 0.0844
+        },
+        "paired_D_vs_A": "Full DecisionGPT showed statistically significantly higher goal_achievement than Prediction only across the 60 paired scenario/seed evaluations (p=0.0045).",
+        "paired_D_vs_B": "Full DecisionGPT showed statistically significantly lower goal_achievement than Prediction + Digital Twin across the 60 paired scenario/seed evaluations (p=0.0000)."
+      }
+    },
+    {
+      "experiment_id": "1fcca452-35df-450f-a0d3-a28535e340d1",
+      "experiment_name": "legacy_single_scenario_result",
       "experiment_type": "ablation",
       "status": "completed",
       "random_seed": 42,
@@ -40,11 +282,11 @@
       },
       "configuration": {
         "seed": 42,
-        "name": "paper_ablation"
+        "name": "legacy_single_scenario_result"
       },
-      "created_at": "2026-08-29T07:29:38.258369",
-      "started_at": "2026-08-29T07:29:38.260705",
-      "completed_at": "2026-08-29T07:29:46.673805",
+      "created_at": "2026-08-29T09:52:48.472776",
+      "started_at": "2026-08-29T09:52:48.473774",
+      "completed_at": "2026-08-29T09:52:57.891872",
       "error_message": null,
       "metric_summary": {
         "Without Digital Twin": {
@@ -65,37 +307,8 @@
       }
     },
     {
-      "experiment_id": "7b880911-5a37-4204-a2c4-8de201472011",
-      "experiment_name": "paper_multi_agent",
-      "experiment_type": "multi_agent",
-      "status": "completed",
-      "random_seed": 42,
-      "dataset_version": "synthetic_scenario",
-      "model_versions": {
-        "sales_forecast_naive": "v1",
-        "sales_forecast_linear": "v1",
-        "sales_forecast_xgboost": "v1"
-      },
-      "configuration": {
-        "seed": 42,
-        "name": "paper_multi_agent"
-      },
-      "created_at": "2026-08-29T07:29:33.616264",
-      "started_at": "2026-08-29T07:29:33.618265",
-      "completed_at": "2026-08-29T07:29:38.250367",
-      "error_message": null,
-      "metric_summary": {
-        "single_agent": {
-          "goal_achievement": 0.0
-        },
-        "multi_agent": {
-          "goal_achievement": 0.0
-        }
-      }
-    },
-    {
-      "experiment_id": "b5a69442-50fe-4c0b-862d-b11e76fbcf59",
-      "experiment_name": "paper_decision_architecture",
+      "experiment_id": "a32933ca-974f-4df1-b4f5-174baaaeda1c",
+      "experiment_name": "legacy_single_scenario_result",
       "experiment_type": "decision_architecture",
       "status": "completed",
       "random_seed": 42,
@@ -107,11 +320,11 @@
       },
       "configuration": {
         "seed": 42,
-        "name": "paper_decision_architecture"
+        "name": "legacy_single_scenario_result"
       },
-      "created_at": "2026-08-29T07:29:28.731553",
-      "started_at": "2026-08-29T07:29:28.733552",
-      "completed_at": "2026-08-29T07:29:33.609261",
+      "created_at": "2026-08-29T09:52:41.795405",
+      "started_at": "2026-08-29T09:52:41.797410",
+      "completed_at": "2026-08-29T09:52:48.460624",
       "error_message": null,
       "metric_summary": {
         "A": {
@@ -129,103 +342,6 @@
         "D": {
           "goal_achievement": 0.0,
           "risk_adjusted": 0.0
-        }
-      }
-    },
-    {
-      "experiment_id": "cd7945a4-53ca-4d82-89da-21d4c2491c64",
-      "experiment_name": "paper_causal",
-      "experiment_type": "causal",
-      "status": "completed",
-      "random_seed": 42,
-      "dataset_version": "synthetic_causal_validation",
-      "model_versions": {
-        "method": "granger_causality"
-      },
-      "configuration": {
-        "seed": 42,
-        "name": "paper_causal"
-      },
-      "created_at": "2026-08-29T07:29:28.692794",
-      "started_at": "2026-08-29T07:29:28.693792",
-      "completed_at": "2026-08-29T07:29:28.724037",
-      "error_message": null,
-      "metric_summary": {
-        "precision": 0.4,
-        "recall": 1.0,
-        "shd": 3
-      }
-    },
-    {
-      "experiment_id": "53d089d1-c5bc-41a3-ba84-ce9135a24fd1",
-      "experiment_name": "paper_churn",
-      "experiment_type": "churn",
-      "status": "completed",
-      "random_seed": 42,
-      "dataset_version": "platform-churn-v1",
-      "model_versions": {
-        "churn_logistic_regression": "v1",
-        "churn_random_forest": "v1",
-        "churn_xgboost": "v1"
-      },
-      "configuration": {
-        "seed": 42,
-        "name": "paper_churn"
-      },
-      "created_at": "2026-08-29T07:29:27.279754",
-      "started_at": "2026-08-29T07:29:27.281755",
-      "completed_at": "2026-08-29T07:29:28.683796",
-      "error_message": null,
-      "metric_summary": {
-        "logistic_regression": {
-          "f1": 0.6685990338164252,
-          "roc_auc": 0.7977982771560754
-        },
-        "random_forest": {
-          "f1": 0.661432777232581,
-          "roc_auc": 0.792751845504139
-        },
-        "xgboost": {
-          "f1": 0.6576139670223085,
-          "roc_auc": 0.7921763506625892
-        }
-      }
-    },
-    {
-      "experiment_id": "dbc1b754-c2eb-4edf-8ea4-9bc6f196b9ba",
-      "experiment_name": "paper_forecasting",
-      "experiment_type": "forecasting",
-      "status": "completed",
-      "random_seed": 42,
-      "dataset_version": "platform-forecasting-v1",
-      "model_versions": {
-        "sales_forecast_naive": "v1",
-        "sales_forecast_linear": "v1",
-        "sales_forecast_xgboost": "v1"
-      },
-      "configuration": {
-        "seed": 42,
-        "name": "paper_forecasting"
-      },
-      "created_at": "2026-08-29T07:29:26.644361",
-      "started_at": "2026-08-29T07:29:26.646421",
-      "completed_at": "2026-08-29T07:29:27.267754",
-      "error_message": null,
-      "metric_summary": {
-        "naive": {
-          "mae": 24.659669811320754,
-          "rmse": 38.27514896511687,
-          "mape": 15.464740828127482
-        },
-        "linear": {
-          "mae": 17.29126388372856,
-          "rmse": 25.51122770712597,
-          "mape": 12.489406914138296
-        },
-        "xgboost": {
-          "mae": 15.13885516603038,
-          "rmse": 21.863057200107395,
-          "mape": 10.296922032515052
         }
       }
     }

@@ -208,7 +208,9 @@ export type ExperimentType =
   | "causal"
   | "decision_architecture"
   | "multi_agent"
-  | "ablation";
+  | "ablation"
+  | "multi_scenario_architecture"
+  | "multi_scenario_ablation";
 
 export interface ExperimentRun {
   id: string;
@@ -267,7 +269,9 @@ export type ExportTable =
   | "forecasting_performance"
   | "churn_performance"
   | "decision_architecture"
+  | "decision_architecture_detail"
   | "ablation"
+  | "ablation_detail"
   | "causal_evaluation"
   | "digital_twin_evaluation";
 

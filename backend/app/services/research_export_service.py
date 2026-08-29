@@ -20,23 +20,40 @@ SUPPORTED_FORMATS = {"csv", "json", "markdown", "latex"}
 # Which experiment_type backs each experiment-derived table.
 TABLE_EXPERIMENT_TYPE = {
     "decision_architecture": "decision_architecture",
+    "decision_architecture_detail": "multi_scenario_architecture",
     "ablation": "ablation",
+    "ablation_detail": "multi_scenario_ablation",
     "causal_evaluation": "causal",
     "digital_twin_evaluation": "digital_twin",
 }
 
 
+# tables that should prefer an aggregated multi-scenario run when one exists
+_MULTI_PREFERENCE = {
+    "decision_architecture": ["multi_scenario_architecture", "decision_architecture"],
+    "ablation": ["multi_scenario_ablation", "ablation"],
+    "decision_architecture_detail": ["multi_scenario_architecture"],
+    "ablation_detail": ["multi_scenario_ablation"],
+}
+
+
 def latest_experiment_id(db: Session, table: str) -> str | None:
-    exp_type = TABLE_EXPERIMENT_TYPE.get(table)
-    if exp_type is None:
-        return None
-    run = (
-        db.query(ExperimentRun)
-        .filter(ExperimentRun.experiment_type == exp_type, ExperimentRun.status == "completed")
-        .order_by(ExperimentRun.created_at.desc())
-        .first()
-    )
-    return run.id if run else None
+    types = _MULTI_PREFERENCE.get(table)
+    if types is None:
+        exp_type = TABLE_EXPERIMENT_TYPE.get(table)
+        if exp_type is None:
+            return None
+        types = [exp_type]
+    for exp_type in types:
+        run = (
+            db.query(ExperimentRun)
+            .filter(ExperimentRun.experiment_type == exp_type, ExperimentRun.status == "completed")
+            .order_by(ExperimentRun.created_at.desc())
+            .first()
+        )
+        if run is not None:
+            return run.id
+    return None
 
 
 def _rows_to_csv(headers: list[str], rows: list[list]) -> str:
@@ -124,38 +141,134 @@ def churn_performance_table(db: Session, experiment_id: str | None = None) -> tu
     return headers, rows
 
 
+def _latest_completed(db: Session, *types: str) -> ExperimentRun | None:
+    return (
+        db.query(ExperimentRun)
+        .filter(ExperimentRun.experiment_type.in_(types), ExperimentRun.status == "completed")
+        .order_by(ExperimentRun.created_at.desc())
+        .first()
+    )
+
+
+def _fmt(cell: dict | None, k: str = "mean") -> object:
+    return None if not cell else cell.get(k)
+
+
 def decision_architecture_table(db: Session, experiment_id: str | None) -> tuple[list[str], list[list]]:
-    run = db.get(ExperimentRun, experiment_id) if experiment_id else None
-    if run is None or run.experiment_type != "decision_architecture":
+    """Paper Table 4. Prefers a completed multi-scenario run (aggregated across
+    scenarios x seeds); falls back to the legacy single-scenario run."""
+    run = db.get(ExperimentRun, experiment_id) if experiment_id else _latest_completed(
+        db, "multi_scenario_architecture", "decision_architecture"
+    )
+    if run is None:
         return [], []
-    headers = ["Architecture", "Selected strategy", "Expected benefit", "Risk-adjusted score", "Goal achievement", "Latency (s)"]
+
+    if run.experiment_type == "multi_scenario_architecture":
+        m = run.metrics_json or {}
+        agg = m.get("aggregates", {})
+        headers = ["Architecture", "Mean goal achievement", "Std", "95% CI",
+                   "Mean risk-adjusted score", "Std", "Mean confidence", "Mean latency (s)", "N"]
+        rows = []
+        for a in "ABCD":
+            ga = agg.get(a, {}).get("goal_achievement") or {}
+            ra = agg.get(a, {}).get("risk_adjusted_score") or {}
+            cf = agg.get(a, {}).get("confidence") or {}
+            la = agg.get(a, {}).get("latency_seconds") or {}
+            rows.append([
+                f"{a} — {da_LABEL.get(a, a)}", _fmt(ga), _fmt(ga, 'std'),
+                str(ga.get('ci95')) if ga.get('ci95') else "n/a",
+                _fmt(ra), _fmt(ra, 'std'), _fmt(cf) if cf else "n/a", _fmt(la),
+                ga.get('n', 0),
+            ])
+        return headers, rows
+
+    headers = ["Architecture", "Selected strategy", "Expected benefit", "Risk-adjusted score",
+               "Goal achievement", "Latency (s)"]
     rows = [
-        [
-            r["label"], r["selected_strategy_name"], r["expected_benefit"], r["risk_adjusted_score"],
-            r["goal_achievement"], r["latency_seconds"],
-        ]
-        for r in run.metrics_json.get("results", [])
+        [r["label"], r["selected_strategy_name"], r["expected_benefit"], r["risk_adjusted_score"],
+         r["goal_achievement"], r["latency_seconds"]]
+        for r in (run.metrics_json or {}).get("results", [])
+    ]
+    return headers, rows
+
+
+def decision_architecture_detail_table(db: Session, experiment_id: str | None) -> tuple[list[str], list[list]]:
+    """Traceable per-(architecture x scenario x seed) observations behind Table 4."""
+    run = db.get(ExperimentRun, experiment_id) if experiment_id else _latest_completed(
+        db, "multi_scenario_architecture"
+    )
+    if run is None:
+        return [], []
+    headers = ["Architecture", "Scenario", "Goal objective", "Seed", "Selected strategy",
+               "Goal achievement", "Risk-adjusted score", "Confidence", "Latency (s)"]
+    rows = [
+        [o["architecture"], o["scenario_id"], o["goal_objective"], o["seed"], o["selected_strategy"],
+         o["goal_achievement"], o["risk_adjusted_score"], o["confidence"], o["latency_seconds"]]
+        for o in (run.metrics_json or {}).get("observations", [])
     ]
     return headers, rows
 
 
 def ablation_table(db: Session, experiment_id: str | None) -> tuple[list[str], list[list]]:
-    run = db.get(ExperimentRun, experiment_id) if experiment_id else None
-    if run is None or run.experiment_type != "ablation":
+    """Paper Table 5. Prefers a completed multi-scenario run; else legacy."""
+    run = db.get(ExperimentRun, experiment_id) if experiment_id else _latest_completed(
+        db, "multi_scenario_ablation", "ablation"
+    )
+    if run is None:
         return [], []
+
+    if run.experiment_type == "multi_scenario_ablation":
+        agg = (run.metrics_json or {}).get("aggregates", {})
+        headers = ["Configuration", "Component removed", "Mean goal achievement", "Δ vs Full (mean)",
+                   "95% CI of Δ", "Mean risk-adjusted score", "Δ vs Full (mean)", "Mean confidence", "N"]
+        rows = []
+        for c in ("A", "B", "C", "D", "E", "F"):
+            e = agg.get(c, {})
+            ga = e.get("goal_achievement") or {}
+            dg = e.get("delta_goal_achievement_vs_full") or {}
+            ra = e.get("risk_adjusted_score") or {}
+            dr = e.get("delta_risk_adjusted_vs_full") or {}
+            cf = e.get("confidence") or {}
+            rows.append([
+                f"{c} — {e.get('config_label', c)}", e.get("component_removed", ""),
+                _fmt(ga), _fmt(dg), str(dg.get("ci95")) if dg.get("ci95") else "n/a",
+                _fmt(ra), _fmt(dr), _fmt(cf) if cf else "n/a", ga.get("n", 0),
+            ])
+        return headers, rows
+
     headers = [
         "Component removed", "Full goal achievement", "Ablated goal achievement", "Delta goal achievement",
         "Full risk-adj. score", "Ablated risk-adj. score", "Delta risk-adj. score",
     ]
     rows = [
-        [
-            c["component_removed"], c["full_goal_achievement"], c["ablated_goal_achievement"],
-            c["delta_goal_achievement"], c["full_risk_adjusted_score"], c["ablated_risk_adjusted_score"],
-            c["delta_risk_adjusted_score"],
-        ]
-        for c in run.metrics_json.get("comparisons", [])
+        [c["component_removed"], c["full_goal_achievement"], c["ablated_goal_achievement"],
+         c["delta_goal_achievement"], c["full_risk_adjusted_score"], c["ablated_risk_adjusted_score"],
+         c["delta_risk_adjusted_score"]]
+        for c in (run.metrics_json or {}).get("comparisons", [])
     ]
     return headers, rows
+
+
+def ablation_detail_table(db: Session, experiment_id: str | None) -> tuple[list[str], list[list]]:
+    run = db.get(ExperimentRun, experiment_id) if experiment_id else _latest_completed(
+        db, "multi_scenario_ablation"
+    )
+    if run is None:
+        return [], []
+    headers = ["Configuration", "Scenario", "Seed", "Selected strategy", "Goal achievement",
+               "Δ goal achievement vs Full", "Risk-adjusted score", "Confidence"]
+    rows = [
+        [o["config"], o["scenario_id"], o["seed"], o["selected_strategy"], o["goal_achievement"],
+         o["delta_goal_achievement_vs_full"], o["risk_adjusted_score"], o["confidence"]]
+        for o in (run.metrics_json or {}).get("observations", [])
+    ]
+    return headers, rows
+
+
+da_LABEL = {
+    "A": "Prediction only", "B": "Prediction + Digital Twin",
+    "C": "Prediction + Digital Twin + Single Agent", "D": "Full DecisionGPT",
+}
 
 
 def causal_evaluation_table(db: Session, experiment_id: str | None) -> tuple[list[str], list[list]]:
@@ -210,7 +323,9 @@ TABLE_BUILDERS = {
     "forecasting_performance": forecasting_performance_table,
     "churn_performance": churn_performance_table,
     "decision_architecture": decision_architecture_table,
+    "decision_architecture_detail": decision_architecture_detail_table,
     "ablation": ablation_table,
+    "ablation_detail": ablation_detail_table,
     "causal_evaluation": causal_evaluation_table,
     "digital_twin_evaluation": digital_twin_evaluation_table,
 }

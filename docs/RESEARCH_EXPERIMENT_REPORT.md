@@ -150,59 +150,140 @@ No real `DecisionOutcome` records exist, so **no edge has moved above
 
 ---
 
-## Experiment 5 — Decision architecture comparison
+## Experiment 5 — Decision architecture comparison (multi-scenario)
 
-`experiment_service.run_experiment("decision_architecture")` — same synthetic
-scenario, same seed (42), same goal target (+15 %) for every architecture.
+`experiment_service.run_experiment("multi_scenario_architecture")` —
+**12 scenarios × 5 seeds = 60 paired evaluations per architecture**
+(`multi_scenario_service`, seeds 42–46; protocol in
+`docs/MULTI_SCENARIO_EXPERIMENT_PROTOCOL.md`, stats in
+`docs/STATISTICAL_ANALYSIS.md`). Same generated business / goal / candidate
+grid / seed / horizon for every architecture. `goal_achievement` = attainment
+of each scenario's own primary KPI.
 
-| Architecture | Selected strategy | Expected benefit | Risk-adjusted score | Goal achievement | Latency (s) |
-|---|---|---:|---:|---:|---:|
-| A · Prediction only | *(none — no strategy mechanism)* | 0.00 | 0.00 | 0.00 | 0.146 |
-| B · Prediction + Digital Twin | Price +5 % | 5 653.75 | 2 826.88 | **0.333** | 1.236 |
-| C · + Single Agent | Marketing +10 % | 0.00 | 0.00 | 0.00 | 1.467 |
-| D · Full DecisionGPT | Marketing +10 % | 0.00 | 0.00 | 0.00 | 1.624 |
+### Table 4 — aggregate (n = 60 per architecture)
 
-**Honest negative result:** on this *single* synthetic scenario the agent
-layer steers C and D toward "Marketing +10 %", which the Digital Twin scores
-at zero benefit, so the leaner architecture **B outperforms the full system**.
-This is one scenario with one seed — **descriptive only; not evidence that a
-leaner architecture is generally better.** A multi-scenario suite is required
-for a meaningful comparison (see *Remaining limitations*).
+| Architecture | Mean goal achievement | Std | 95% CI | Mean risk-adjusted score | Mean confidence | Mean latency (s) |
+|---|---:|---:|---:|---:|---:|---:|
+| A · Prediction only | 0.000 | 0.000 | [0.000, 0.000] | 0.0 | n/a | 0.19 |
+| B · Prediction + Digital Twin | **0.486** | 0.314 | **[0.405, 0.567]** | 2 508.4 | n/a | 1.82 |
+| C · + Single Agent | 0.003 | 0.006 | [0.001, 0.004] | 190.9 | n/a | 1.88 |
+| D · Full DecisionGPT | 0.084 | 0.278 | [0.013, 0.156] | **−2 614.8** | 0.139 | 1.95 |
 
-`multi_agent` sub-comparison: single-agent (C) 0.00 vs multi-agent (D) 0.00
-goal achievement — no measurable difference on this scenario.
+### Pairwise comparison (paired Wilcoxon signed-rank, two-sided, 60 pairs)
+
+| Comparison | Mean diff (Full − other) | Median diff | 95% CI of mean diff | Wins / Ties / Losses (Full) | Wilcoxon p | Effect size r | Result |
+|---|---:|---:|---:|---:|---:|---:|---|
+| **Full (D) vs Prediction only (A)** | **+0.084** | 0.000 | [+0.013, +0.156] | 10 / 50 / 0 | **0.0045** | 0.90 | Full is **significantly higher** than A |
+| **Full (D) vs Prediction + Digital Twin (B)** | **−0.401** | −0.413 | [−0.478, −0.324] | 0 / 15 / 45 | **< 0.0001** | 0.87 | Full is **significantly LOWER** than B |
+
+### Interpretation — a decisive **mixed / negative** result
+
+- The **Digital Twin adds large value**: mean goal achievement 0.00 (A) → 0.49
+  (B).
+- The **agent layers subtract value**: adding the single agent (C) or the full
+  multi-agent debate (D) on top of the Digital Twin *reduces* mean goal
+  achievement to 0.003 and 0.084 respectively, and makes the mean
+  risk-adjusted score **negative**. Across the 60 paired evaluations, the
+  simple B architecture **beats Full DecisionGPT on 45 and never loses**
+  (`p < 0.0001`).
+- Full **does** beat "prediction only" (A) — but only because A has no strategy
+  mechanism at all (always 0), and Full still only wins 10 of 60.
+
+**Cause (from the per-observation detail):** the agents repeatedly select a
+"Marketing +10 %" / "Marketing −10 %" strategy that the Digital Twin scores at
+zero or negative benefit, whereas B directly picks the KPI-maximising
+simulated candidate (typically a price move). See *Failure-mode analysis*.
+
+### Robustness (each architecture vs Full, on goal achievement, 60 pairs)
+
+| vs Full | wins | ties | losses |
+|---|---:|---:|---:|
+| A | 0 | 50 | 10 |
+| B | **45** | 15 | 0 |
+| C | 5 | 50 | 5 |
+
+Full DecisionGPT's own distribution: best 1.00, worst 0.00, **median 0.00**,
+std 0.28 — i.e. on most scenario/seeds Full achieves nothing toward the goal.
+
+### Failure-mode analysis (correlational, not causal)
+
+**50 of 60** Full-DecisionGPT observations fall in the bottom tercile
+(goal achievement ≈ 0). Associated factors, in order of frequency:
+`non-positive risk-adjusted score` (agents chose a strategy the twin scores ≤ 0),
+`simpler architecture B did better on this scenario/seed`,
+`low decision confidence (< 0.20)`. The 2 KPI-proxy scenarios (S04, S07) also
+carry `goal KPI not directly simulated`. These are **associations**, not
+demonstrated causes.
 
 ---
 
-## Experiment 6 — Ablation study (A–F)
+## Experiment 6 — Ablation study A–F (multi-scenario)
 
-`experiment_service.run_experiment("ablation")` — same scenario/seed.
+`experiment_service.run_experiment("multi_scenario_ablation")` — the same 12
+scenarios × 5 seeds. Ablation meanings unchanged (B = no Digital Twin →
+architecture A; C–F = `PipelineOptions` toggles on the real pipeline).
 
-| Config | Component removed | Goal achievement | Risk-adj. score | Confidence | Δ goal achievement vs Full |
-|---|---|---:|---:|---:|---:|
-| A | *(Full DecisionGPT)* | 0.00 | 0.00 | 0.150 | — |
-| B | Digital Twin | 0.00 | 0.00 | — | **0.0** (no strategy can be recommended without it) |
-| C | Causal Graph | 0.00 | 0.00 | 0.272 | **0.0** |
-| D | Multi-Agent | 0.00 | 0.00 | 0.150 | **0.0** |
-| E | Explainability | 0.00 | 0.00 | 0.150 | **0.0** |
-| F | Memory | 0.00 | 0.00 | 0.150 | **0.0** |
+### Table 5 — aggregate (n = 60 per configuration)
 
-**Every delta is 0.0** and is reported as such — not hidden. Explanation:
+| Config | Component removed | Mean goal achievement | Δ vs Full (mean) | 95% CI of Δ | Mean risk-adjusted score | Mean confidence |
+|---|---|---:|---:|---:|---:|---:|
+| A · Full DecisionGPT | — | 0.084 | — | — | −2 614.8 | 0.139 |
+| B · Without Digital Twin | `digital_twin` | **0.000** | **+0.084** | [+0.013, +0.156] | 0.0 | n/a |
+| C · Without Causal Graph | `causal_graph` | 0.084 | 0.000 | [0.000, 0.000] | −2 614.8 | **0.251** |
+| D · Without Multi-Agent | `multi_agent` | 0.084 | 0.000 | [0.000, 0.000] | −2 614.8 | 0.132 |
+| E · Without Explainability | `explainability` | 0.084 | 0.000 | [0.000, 0.000] | −2 614.8 | 0.139 |
+| F · Without Memory | `memory` | 0.084 | 0.000 | [0.000, 0.000] | −2 614.8 | 0.139 |
 
-- Full DecisionGPT already lands on a zero-benefit strategy on this scenario,
-  so removing a component cannot lower an already-zero goal achievement.
-- **Explainability** is generated *after* strategy selection, so by design it
-  has no scoring effect — a **structural** zero delta, not a measurement
-  artefact.
-- **Memory** has no effect because there are **no recorded outcomes** on a
-  fresh synthetic scenario — nothing to remember.
-- Removing the **Digital Twin** does change *behaviour* (no strategy is
-  recommendable at all) even though the goal-achievement delta is 0.
+### Interpretation
 
-Confidence *does* move: removing the Causal Graph raises confidence 0.150 →
-0.272 (the causal-evidence penalty is dropped). This is a real, if narrow,
-component effect. **A single scenario cannot support an ablation conclusion —
-descriptive only.**
+Only **one** component moves goal achievement: the **Digital Twin**. Removing
+it (config B) drops mean goal achievement 0.084 → **0.000**
+(Δ +0.084, 95 % CI [+0.013, +0.156]) — no strategy is recommendable without it.
+Removing the **Causal Graph, Multi-Agent, Explainability or Memory** produces a
+`Δ vs Full` of **exactly 0.000** (n = 60), reported as-is.
+
+- **Multi-Agent** (D): zero goal-achievement delta — consistent with
+  Experiment 5, where adding the agent layer on top of the Digital Twin
+  *lowers* mean goal achievement (0.486 → 0.084). Removing the agents from
+  Full does not recover that because config D still routes through the same
+  agent-selected strategy path as A here; the agent effect is measured
+  directly in Experiment 5's A→B→C→D comparison.
+- **Explainability** (E): structural zero — generated *after* strategy
+  selection, never consulted while scoring. Confidence unchanged.
+- **Memory** (F): zero — no recorded outcomes exist on fresh synthetic
+  scenarios, so there are no memory insights to remove. Confidence unchanged.
+- **Causal Graph** (C): zero goal-achievement delta, but a **real confidence
+  effect** — mean confidence 0.139 → **0.251** (removing the causal-evidence
+  penalty). This is the only non-Digital-Twin component with any measurable
+  quantitative footprint, and it is on *confidence*, not on the objective.
+
+**Conclusion (Experiments 5 + 6 together):** on this 12-scenario suite the
+measurable value of DecisionGPT is concentrated entirely in the **Digital
+Twin**. The Dynamic Causal Graph affects only reported confidence; the
+Multi-Agent layer has **negative** value on the objective; Explainability and
+Memory have **zero** quantitative effect (by design / for lack of outcome
+history). This is reported exactly, not adjusted.
+
+---
+
+## Legacy single-scenario result (preserved, not overwritten)
+
+The original `1 scenario × 1 seed` runs are kept unchanged as
+`experiment_type = decision_architecture` / `ablation`
+(`legacy_single_scenario_result` in the manifest):
+
+| Architecture | Goal achievement | Risk-adjusted score |
+|---|---:|---:|
+| A · Prediction only | 0.00 | 0.00 |
+| B · Prediction + Digital Twin | 0.333 | 2 826.88 |
+| C · + Single Agent | 0.00 | 0.00 |
+| D · Full DecisionGPT | 0.00 | 0.00 |
+
+Legacy ablation: every `Δ vs Full` = 0.0; confidence moves 0.150 → 0.272 when
+the Causal Graph is removed. **The multi-scenario run (Experiment 5/6) confirms
+and strengthens this single-scenario finding** rather than contradicting it:
+Full DecisionGPT does not outperform the leaner Prediction + Digital Twin
+architecture — now measured across 12 diverse scenarios with `p < 0.0001`.
 
 ---
 
@@ -272,10 +353,15 @@ IDs, graph version, method (`CAUSAL_FEEDBACK_METHOD`).
 | Indian forecasting | 1 series, 51 test days | Descriptive result; insufficient sample size for reliable statistical inference. |
 | Platform forecasting | 265 test rows, 1 seed | Point estimates only; no repeated seeds run, so no CI reported. |
 | Customer benchmark | 6 250 test rows, 1 seed | Point estimates; ROC-AUC is the stable metric under imbalance. |
-| Architecture / ablation | 1 scenario, 1 seed | Descriptive; **insufficient sample size for statistical inference**. Deltas reported exactly, including zeros. |
+| **Architecture / ablation (multi-scenario)** | **12 scenarios × 5 seeds = 60 paired obs per group** | Mean / std / **Student-t 95 % CI**; **paired Wilcoxon signed-rank** (two-sided). Significance **is** assessed here and reported (D vs A: p = 0.0045; D vs B: p < 0.0001). |
+| Architecture / ablation (legacy) | 1 scenario, 1 seed | Preserved as `legacy_single_scenario_result`; descriptive only. |
 | Causal (synthetic) | 1 graph, 250 steps, seed 42 | Method-validation point estimate; documented Granger limitations. |
 
-No significance test was performed, and **no significance is claimed**.
+Forecasting / customer / causal: no repeated-seed runs → point estimates, no
+significance claimed. The multi-scenario architecture / ablation experiments
+**do** meet the assumptions for a paired non-parametric test (60 matched
+pairs) and significance is reported where the test ran; where all paired
+differences were zero the report says *"significance not assessed"*.
 
 ---
 
@@ -286,11 +372,13 @@ No significance test was performed, and **no significance is claimed**.
 | **Table 1 — Predictive Model Performance** | **READY** | `forecasting_performance` + `churn_performance` exports; rows carry `Status` + `Data category` so `INDIA_REAL_BUSINESS` and `SYNTHETIC_CONTROLLED` stay separate |
 | **Table 2 — Digital Twin Prediction Evaluation** | **NOT READY — requires additional `DecisionOutcome` records** | `PredictionEvaluation` (0 matched) |
 | **Table 3 — Causal Graph Evaluation** | **READY** | experiment `causal` (seed 42) — labelled `SYNTHETIC GROUND TRUTH` |
-| **Table 4 — Decision Architecture Comparison** | **READY** | experiment `decision_architecture` (seed 42) |
-| **Table 5 — Ablation Study** | **READY** | experiment `ablation` (seed 42) |
+| **Table 4 — Decision Architecture Comparison** | **READY (multi-scenario)** | experiment `multi_scenario_architecture` — 60 obs/arch, 95 % CI + paired Wilcoxon. `decision_architecture` (legacy, seed 42) preserved. Exports: `decision_architecture` (aggregate), `decision_architecture_detail` (every observation). |
+| **Table 5 — Ablation Study** | **READY (multi-scenario)** | experiment `multi_scenario_ablation` — 60 obs/config, mean Δ vs Full + CI. `ablation` (legacy) preserved. Exports: `ablation`, `ablation_detail`. |
 
 Every table row traces to an `experiment_id` / `model_version` /
-`dataset_version` / `seed` via `experiments/experiment_manifest.json`.
+`dataset_version` / `seed` (and `scenario_id`) via
+`experiments/experiment_manifest.json` (which now carries a `multi_scenario`
+aggregate block) and `experiments/paper_results_snapshot.json`.
 
 ## Paper figures
 
@@ -300,51 +388,70 @@ Every table row traces to an `experiment_id` / `model_version` /
 | 2 · Forecasting model comparison | READY | Table 1 (real + synthetic blocks) |
 | 3 · Digital Twin predicted vs actual | **NOT READY** — no actual outcomes | — |
 | 4 · Causal graph recovery metrics | READY | experiment `causal` |
-| 5 · Decision architecture comparison | READY | experiment `decision_architecture` |
-| 6 · Ablation results | READY (all-zero deltas — reported as-is) | experiment `ablation` |
+| 5 · Decision architecture comparison | READY | `multi_scenario_architecture` — mean goal achievement by architecture with 95 % CI + wins/ties/losses vs Full |
+| 6 · Ablation results | READY | `multi_scenario_ablation` — mean Δ goal achievement vs Full per component (most ≈ 0, reported as-is) |
 | 7 · Feedback loop | READY as a schematic; no live data (0 outcomes) | schematic only |
+| (new) Scenario robustness | READY | per-observation goal-achievement distribution across the 12 scenarios (Experiments page detail view) |
 
 ## Research Dashboard
 
 Verified pages: Overview, Dataset Registry (`{platform, external, uploaded}`,
 `data_category` on every entry), Training Center, Model Registry, Experiments
-(+ reproducibility manifest download), Model Performance, Digital Twin
-Evaluation (explicit empty state), Causal Evaluation, Multi-Agent Evaluation,
-Ablation, Paper Results (4/5 ready, Table 2 shows its missing-data reason).
-No hard-coded research metric; every number resolves to a stored row.
+(+ reproducibility manifest download; now offers `multi_scenario_architecture`
+/ `multi_scenario_ablation` and renders their **aggregate table, 95 % CI,
+paired Wilcoxon interpretation, robustness table, failure-mode list and a
+scenario / seed / architecture-filterable per-observation table**), Model
+Performance, Digital Twin Evaluation (explicit empty state), Causal
+Evaluation, Multi-Agent Evaluation, Ablation, Paper Results (4/5 ready — Table
+4/5 now show the multi-scenario aggregates; Table 2 shows its missing-data
+reason). No hard-coded research metric; every number resolves to a stored row
+(`experiment_id`, `scenario_id`, `seed`).
 
 ## Tests (final audit)
 
 | Check | Result |
 |---|---|
-| Backend `pytest` | **209 passed, 1 skipped, 0 failed** (1 test updated: `forecasting_performance` CSV header now `Model,Version,Status,Data category,MAE,RMSE,MAPE,Dataset version`) |
-| Frontend `next build` | ✅ compiled (26 routes) |
+| Backend `pytest` | **218 passed, 1 skipped, 0 failed** (was 209; +9 new `tests/unit/test_multi_scenario_service.py` — scenario determinism/uniqueness/variation, `_summ` vs numpy + t-interval, paired-test not-assessed & Wilcoxon paths, small end-to-end traceability + fairness + no-leakage, same-(scenario,seed) reproducibility). 1 pre-existing test updated (`forecasting_performance` CSV header). |
+| Frontend `next build` | ✅ compiled (26 routes) — new `MultiScenarioDetail` view on the Experiments page |
 | ESLint | ✅ 0 errors (1 pre-existing unrelated warning) |
-| Alembic `0001→0006` up / down-to-base / up | ✅ 30 tables (no new migration) |
+| `tsc --noEmit` | ✅ clean |
+| Alembic `0001→0006` up / down-to-base / up | ✅ 30 tables (**no new migration** — this task added no schema) |
 | `scripts/audit_e2e.py` | ✅ 18/18 SME flow + research pipeline + exports + access control |
-| Active model set | unchanged (6 v1) — asserted in the run |
+| Active model set | unchanged (6 v1) — asserted by every experiment run incl. both multi-scenario runs |
+| Legacy single-scenario experiments | byte-identical to the pre-change run (B goal 0.333 / risk-adj 2826.88; all ablation deltas 0.0) |
+| Production model behaviour | unchanged — `multi_scenario_service` only reads; no `MLModel` written by the arch/ablation runs |
 
 ## Remaining limitations
 
 1. **Digital Twin evaluation is empty** — needs real `DecisionOutcome`
    records (target: 5–10). Table 2 / Figure 3 are `NOT READY` by design, not
    fabricated.
-2. **Architecture & ablation rest on one synthetic scenario** — every delta is
-   0.0 and the full system underperforms architecture B on it. This is a
-   descriptive negative result; a multi-scenario suite is needed before any
-   architecture claim.
-3. **Indian real forecasting dataset is tiny** (~500 orders, 1 year, 3
-   categories) with unverified provenance — a point estimate, not evidence of
-   generalisation.
-4. **AGMARKNET is `DATA_PENDING`** — excluded from this run.
-5. **Customer benchmark is synthetic** — a demonstration, not validation.
-6. No repeated-seed runs → no confidence intervals on any metric.
+2. **The multi-agent layer does not add measurable value on this scenario
+   suite — it subtracts it.** Across 12 scenarios × 5 seeds, Full DecisionGPT
+   scores significantly *lower* goal achievement than the leaner Prediction +
+   Digital Twin architecture (`p < 0.0001`, loses 45 / 60). The value is in
+   the Digital Twin (0.00 → 0.49). This is a measured, reproducible **mixed /
+   negative** result — reported, not hidden.
+3. **The scenarios are synthetic and designed, not sampled** — the 95 % CIs
+   describe variability *within this suite*, not a population of Indian SMEs.
+4. **`goal_achievement` for S04 / S07** uses a revenue proxy (their KPIs —
+   `inventory_risk`, `marketing_roi` — are not directly simulated).
+5. **Indian real forecasting dataset is tiny** (~500 orders, 1 year) with
+   unverified provenance — a point estimate, not evidence of generalisation.
+6. **AGMARKNET is `DATA_PENDING`**; **customer benchmark is synthetic**.
+7. Forecasting / customer / causal experiments still run at a single seed →
+   no CIs there.
 
 ## Recommended next step
 
-Collect **5–10 real SME `DecisionOutcome` records** (or a controlled user
-study) so Experiment 3 / Table 2 / Figure 3 become real, and expand the
-decision-architecture / ablation experiments to a **multi-scenario suite**
-(≥ 10 scenarios, ≥ 5 seeds) so Tables 4–5 can support a defensible claim.
-Then, with `DATA_GOV_IN_API_KEY`, populate AGMARKNET and add it as a second
-`INDIA_*` forecasting row.
+1. **Investigate the agent-layer regression** measured in Experiment 5: the
+   agents systematically prefer a marketing lever the Digital Twin scores at
+   ≤ 0. Either the agent scoring or the candidate-grid / twin interaction has a
+   defect, or the agents are optimising something other than the stated KPI.
+   This is now a *measured* problem with 60 traceable observations, not a
+   hunch — it should be triaged before any "DecisionGPT is better" claim.
+2. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
+   Table 2 / Figure 3 become real.
+3. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
+   second `INDIA_*` forecasting row; add repeated seeds to the forecasting /
+   customer experiments for CIs.

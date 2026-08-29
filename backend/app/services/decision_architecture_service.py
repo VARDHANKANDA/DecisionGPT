@@ -44,6 +44,7 @@ from app.models.causal import CausalEdge, CausalGraph
 from app.models.decision import Decision
 from app.models.digital_twin import DigitalTwinSimulation, DigitalTwinState
 from app.models.goal import Goal
+from app.models.inventory import InventoryRecord
 from app.models.marketing import MarketingCampaign
 from app.models.memory import BusinessMemory
 from app.models.product import Product
@@ -65,6 +66,7 @@ class ArchitectureResult:
     goal_achievement: float
     latency_seconds: float
     note: str = ""
+    confidence: float | None = None  # only architecture D produces a confidence
 
 
 @dataclass
@@ -75,16 +77,41 @@ class DecisionArchitectureRun:
     label: str = "SYNTHETIC_SCENARIO"
 
 
-def _seed_synthetic_business(db: Session, seed: int) -> tuple[str, str]:
-    rng = random.Random(seed)
+def _seed_synthetic_business(db: Session, seed: int, scenario=None) -> tuple[str, str]:
+    """Create an ephemeral synthetic research business.
+
+    ``scenario`` is optional: when ``None`` this reproduces the original
+    single hard-coded scenario **exactly** (legacy experiments are
+    byte-identical). When given a ``ScenarioSpec`` (see
+    ``multi_scenario_service``) its economics + goal are used instead — this
+    is *scenario generation*, not an architecture change.
+    """
+    rng = random.Random(seed if scenario is None else f"{scenario.scenario_id}:{seed}")
+
+    if scenario is None:
+        name = f"{SYNTHETIC_BUSINESS_NAME_PREFIX} ({seed})"
+        industry = "Research"
+        unit_cost, selling_price = 200, 500
+        demand_low, demand_high, promo_uplift, promo_price = 8, 14, 4, 450
+        mkt_every, mkt_spend, mkt_attr = 3, 1000, 6000
+        objective, primary_kpi, target_pct, horizon = "increase_revenue", "revenue", GOAL_TARGET_PERCENT, 2
+        with_inventory = False
+    else:
+        name = f"{SYNTHETIC_BUSINESS_NAME_PREFIX} {scenario.scenario_id} (seed {seed})"
+        industry = scenario.industry
+        unit_cost, selling_price = scenario.unit_cost, scenario.selling_price
+        demand_low, demand_high = scenario.demand_low, scenario.demand_high
+        promo_uplift, promo_price = scenario.promo_uplift, scenario.promo_price
+        mkt_every, mkt_spend, mkt_attr = (
+            scenario.marketing_every_days, scenario.marketing_spend, scenario.marketing_attributed_revenue,
+        )
+        objective, primary_kpi = scenario.goal_objective, scenario.goal_primary_kpi
+        target_pct, horizon = scenario.goal_target_percent, scenario.time_horizon
+        with_inventory = scenario.with_inventory
 
     business = Business(
-        name=f"{SYNTHETIC_BUSINESS_NAME_PREFIX} ({seed})",
-        industry="Research",
-        business_type="Synthetic",
-        business_size="N/A",
-        country="IN",
-        currency="INR",
+        name=name, industry=industry, business_type="Synthetic", business_size="N/A",
+        country="IN", currency="INR",
         description="Ephemeral business created for a Decision Architecture / Ablation research run.",
     )
     db.add(business)
@@ -92,7 +119,7 @@ def _seed_synthetic_business(db: Session, seed: int) -> tuple[str, str]:
 
     product = Product(
         business_id=business.id, external_product_id="R000", name="Research Product",
-        unit_cost=200, selling_price=500,
+        unit_cost=unit_cost, selling_price=selling_price,
     )
     db.add(product)
     db.flush()
@@ -102,26 +129,34 @@ def _seed_synthetic_business(db: Session, seed: int) -> tuple[str, str]:
     for day_offset in range(90):
         sale_date = start + timedelta(days=day_offset)
         promo = day_offset % 10 == 0
-        price = 450 if promo else 500
-        quantity = rng.randint(8, 14) + (4 if promo else 0)
+        price = promo_price if promo else selling_price
+        quantity = rng.randint(demand_low, demand_high) + (promo_uplift if promo else 0)
         db.add(
             Sale(
                 business_id=business.id, product_id=product.id, sale_date=sale_date,
                 quantity=quantity, unit_price=price, discount=0, revenue=price * quantity,
             )
         )
-        if day_offset % 3 == 0:
+        if mkt_every and day_offset % mkt_every == 0:
             db.add(
                 MarketingCampaign(
                     business_id=business.id, campaign_date=sale_date, channel="Research",
-                    spend=1000 + rng.randint(-200, 200), impressions=5000, clicks=200, conversions=15,
-                    attributed_revenue=6000,
+                    spend=mkt_spend + rng.randint(-200, 200), impressions=5000, clicks=200, conversions=15,
+                    attributed_revenue=mkt_attr,
+                )
+            )
+        if with_inventory and day_offset % 3 == 0:
+            db.add(
+                InventoryRecord(
+                    business_id=business.id, product_id=product.id, date=sale_date,
+                    stock_level=max(0, 400 - day_offset * 4 + rng.randint(-20, 20)),
+                    reorder_level=120,
                 )
             )
 
     goal = Goal(
-        business_id=business.id, objective="increase_revenue", target_value=GOAL_TARGET_PERCENT,
-        target_unit="percent", primary_kpi="revenue", time_horizon=2, status="active",
+        business_id=business.id, objective=objective, target_value=target_pct,
+        target_unit="percent", primary_kpi=primary_kpi, time_horizon=horizon, status="active",
     )
     db.add(goal)
     db.commit()
@@ -143,7 +178,7 @@ def _cleanup_synthetic_business(db: Session, business_id: str) -> None:
         )
     for model in (
         AgentRun, Decision, Strategy, DigitalTwinSimulation, DigitalTwinState,
-        CausalGraph, BusinessMemory, MarketingCampaign, Sale, Product, Goal,
+        CausalGraph, BusinessMemory, MarketingCampaign, InventoryRecord, Sale, Product, Goal,
     ):
         db.query(model).filter(model.business_id == business_id).delete(synchronize_session=False)
     db.query(Business).filter(Business.id == business_id).delete()
@@ -155,6 +190,26 @@ def _goal_achievement(expected_revenue: float, baseline_revenue: float, target_p
         return 0.0
     actual_percent = (expected_revenue - baseline_revenue) / baseline_revenue * 100
     return round(min(1.0, max(0.0, actual_percent / target_percent)), 4)
+
+
+def kpi_for_metric(primary_kpi: str) -> str:
+    """The scenario KPI collapses to the pair the Digital Twin actually
+    simulates. marketing_roi / inventory_risk have no simulated pair ->
+    revenue attainment is used as a documented proxy."""
+    return primary_kpi if primary_kpi in ("revenue", "profit", "orders") else "revenue"
+
+
+def _kpi_goal_achievement(output, target_percent: float, kpi: str = "revenue") -> float:
+    """Goal achievement measured against the *scenario's own* primary KPI
+    (revenue / profit / orders). ``kpi='revenue'`` is the legacy default so
+    existing callers are unchanged. marketing_roi / inventory_risk have no
+    direct simulated pair -> fall back to revenue attainment (documented in
+    docs/STATISTICAL_ANALYSIS.md)."""
+    if kpi == "profit" and output.expected_profit is not None and output.baseline_profit is not None:
+        return _goal_achievement(output.expected_profit, output.baseline_profit, target_percent)
+    if kpi == "orders":
+        return _goal_achievement(output.expected_units_sold, output.baseline_units_sold, target_percent)
+    return _goal_achievement(output.expected_revenue, output.baseline_revenue, target_percent)
 
 
 def _simulate_all_candidates(db: Session, business_id: str) -> list[tuple[str, "digital_twin_service.SimulationResult"]]:
@@ -181,7 +236,7 @@ def _run_architecture_a(db: Session, business_id: str) -> ArchitectureResult:
     )
 
 
-def _run_architecture_b(db: Session, business_id: str, target_percent: float) -> ArchitectureResult:
+def _run_architecture_b(db: Session, business_id: str, target_percent: float, kpi: str = "revenue") -> ArchitectureResult:
     start = time.perf_counter()
     candidates = _simulate_all_candidates(db, business_id)
     if not candidates:
@@ -189,14 +244,14 @@ def _run_architecture_b(db: Session, business_id: str, target_percent: float) ->
     name, best = max(candidates, key=lambda item: item[1].output.expected_revenue)
     benefit = best.output.expected_revenue - best.output.baseline_revenue
     risk_adjusted = benefit * (1 - best.output.risk_score)
-    achievement = _goal_achievement(best.output.expected_revenue, best.output.baseline_revenue, target_percent)
+    achievement = _kpi_goal_achievement(best.output, target_percent, kpi)
     return ArchitectureResult(
         "B", "Prediction + Digital Twin", name, round(benefit, 2), round(risk_adjusted, 2), achievement,
         round(time.perf_counter() - start, 4),
     )
 
 
-def _run_architecture_c(db: Session, business_id: str, target_percent: float) -> ArchitectureResult:
+def _run_architecture_c(db: Session, business_id: str, target_percent: float, kpi: str = "revenue") -> ArchitectureResult:
     start = time.perf_counter()
     candidates = _simulate_all_candidates(db, business_id)
     if not candidates:
@@ -205,14 +260,14 @@ def _run_architecture_c(db: Session, business_id: str, target_percent: float) ->
     name, best_sim, _ = max(scored, key=lambda item: item[2].score)
     benefit = best_sim.output.expected_revenue - best_sim.output.baseline_revenue
     risk_adjusted = benefit * (1 - best_sim.output.risk_score)
-    achievement = _goal_achievement(best_sim.output.expected_revenue, best_sim.output.baseline_revenue, target_percent)
+    achievement = _kpi_goal_achievement(best_sim.output, target_percent, kpi)
     return ArchitectureResult(
         "C", "Prediction + Digital Twin + Single Agent", name, round(benefit, 2), round(risk_adjusted, 2),
         achievement, round(time.perf_counter() - start, 4),
     )
 
 
-def _run_architecture_d(db: Session, business_id: str, goal_id: str, target_percent: float) -> ArchitectureResult:
+def _run_architecture_d(db: Session, business_id: str, goal_id: str, target_percent: float, kpi: str = "revenue") -> ArchitectureResult:
     from app.services import decision_service
 
     start = time.perf_counter()
@@ -225,10 +280,15 @@ def _run_architecture_d(db: Session, business_id: str, goal_id: str, target_perc
     outcome = result.expected_outcome
     benefit = outcome["expected_revenue"] - outcome["baseline_revenue"]
     risk_adjusted = benefit * (1 - outcome["risk_score"])
-    achievement = _goal_achievement(outcome["expected_revenue"], outcome["baseline_revenue"], target_percent)
+
+    class _O:  # adapt the dict outcome to the attribute shape _kpi_goal_achievement expects
+        expected_revenue = outcome["expected_revenue"]; baseline_revenue = outcome["baseline_revenue"]
+        expected_profit = outcome.get("expected_profit"); baseline_profit = outcome.get("baseline_profit")
+        expected_units_sold = outcome.get("expected_units_sold"); baseline_units_sold = outcome.get("baseline_units_sold")
+    achievement = _kpi_goal_achievement(_O, target_percent, kpi)
     return ArchitectureResult(
         "D", "Full DecisionGPT", result.selected_strategy_name, round(benefit, 2), round(risk_adjusted, 2),
-        achievement, round(time.perf_counter() - start, 4),
+        achievement, round(time.perf_counter() - start, 4), confidence=result.confidence,
     )
 
 

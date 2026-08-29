@@ -46,7 +46,7 @@
               18.469340305777237,
               28.512180591223785,
               110.46791416047415,
-              "upload:13bfdbde-26b5-4707-ac73-f60e645590ae:v1"
+              "upload:6fe4489e-a056-4bab-86be-c951c23504e8:v1"
             ],
             [
               "sales_forecast_naive",
@@ -66,7 +66,7 @@
               19.92156862745098,
               31.249784312981156,
               276.2717905127891,
-              "upload:13bfdbde-26b5-4707-ac73-f60e645590ae:v1"
+              "upload:6fe4489e-a056-4bab-86be-c951c23504e8:v1"
             ],
             [
               "sales_forecast_xgboost",
@@ -86,7 +86,7 @@
               15.268979480161386,
               23.892719229281997,
               152.6225390298733,
-              "upload:13bfdbde-26b5-4707-ac73-f60e645590ae:v1"
+              "upload:6fe4489e-a056-4bab-86be-c951c23504e8:v1"
             ]
           ],
           "row_count": 6
@@ -228,9 +228,9 @@
         }
       ],
       "source_refs": {
-        "experiment_id": "cd7945a4-53ca-4d82-89da-21d4c2491c64",
+        "experiment_id": "36d0d404-dc0b-4f24-9a33-3ce938ffe36b",
         "seed": 42,
-        "created_at": "2026-08-29T07:29:28.692794"
+        "created_at": "2026-08-29T10:11:40.851255"
       }
     },
     {
@@ -246,53 +246,68 @@
           "name": "Table 4 \u2014 Decision Architecture Comparison",
           "headers": [
             "Architecture",
-            "Selected strategy",
-            "Expected benefit",
-            "Risk-adjusted score",
-            "Goal achievement",
-            "Latency (s)"
+            "Mean goal achievement",
+            "Std",
+            "95% CI",
+            "Mean risk-adjusted score",
+            "Std",
+            "Mean confidence",
+            "Mean latency (s)",
+            "N"
           ],
           "rows": [
             [
-              "Prediction only",
-              null,
+              "A \u2014 Prediction only",
               0.0,
               0.0,
+              "[0.0, 0.0]",
               0.0,
-              0.1551
+              0.0,
+              "n/a",
+              0.1936,
+              60
             ],
             [
-              "Prediction + Digital Twin",
-              "Price +5%",
-              5653.75,
-              2826.88,
-              0.3333,
-              1.5555
+              "B \u2014 Prediction + Digital Twin",
+              0.4856,
+              0.3138,
+              "[0.4045, 0.5666]",
+              2508.4022,
+              2249.8338,
+              "n/a",
+              1.8248,
+              60
             ],
             [
-              "Prediction + Digital Twin + Single Agent",
-              "Marketing +10%",
-              0.0,
-              0.0,
-              0.0,
-              1.4679
+              "C \u2014 Prediction + Digital Twin + Single Agent",
+              0.0025,
+              0.0057,
+              "[0.001, 0.004]",
+              190.94,
+              536.2041,
+              "n/a",
+              1.88,
+              60
             ],
             [
-              "Full DecisionGPT",
-              "Marketing +10%",
-              0.0,
-              0.0,
-              0.0,
-              1.6269
+              "D \u2014 Full DecisionGPT",
+              0.0844,
+              0.2784,
+              "[0.0125, 0.1564]",
+              -2614.833,
+              8847.4577,
+              0.139,
+              1.9533,
+              60
             ]
           ],
           "row_count": 4
         }
       ],
       "source_refs": {
-        "experiment_id": "b5a69442-50fe-4c0b-862d-b11e76fbcf59",
+        "experiment_id": "675cf17e-0cf7-43e3-8efc-e9654eeef4c7",
         "seed": 42,
-        "created_at": "2026-08-29T07:29:28.731553"
+        "created_at": "2026-08-29T09:52:57.899022"
       }
     },
     {
@@ -307,68 +322,91 @@
         {
           "name": "Table 5 \u2014 Ablation Study",
           "headers": [
+            "Configuration",
             "Component removed",
-            "Full goal achievement",
-            "Ablated goal achievement",
-            "Delta goal achievement",
-            "Full risk-adj. score",
-            "Ablated risk-adj. score",
-            "Delta risk-adj. score"
+            "Mean goal achievement",
+            "\u0394 vs Full (mean)",
+            "95% CI of \u0394",
+            "Mean risk-adjusted score",
+            "\u0394 vs Full (mean)",
+            "Mean confidence",
+            "N"
           ],
           "rows": [
             [
-              "Without Digital Twin",
+              "A \u2014 Full DecisionGPT",
+              "(none)",
+              0.0844,
               0.0,
+              "[0.0, 0.0]",
+              -2614.833,
               0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
+              0.139,
+              60
             ],
             [
-              "Without Causal Graph",
+              "B \u2014 Without Digital Twin",
+              "digital_twin",
               0.0,
+              0.0844,
+              "[0.0125, 0.1564]",
               0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
+              -2614.833,
+              "n/a",
+              60
             ],
             [
-              "Without Multi-Agent",
+              "C \u2014 Without Causal Graph",
+              "causal_graph",
+              0.0844,
               0.0,
+              "[0.0, 0.0]",
+              -2614.833,
               0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
+              0.2512,
+              60
             ],
             [
-              "Without Explainability",
+              "D \u2014 Without Multi-Agent",
+              "multi_agent",
+              0.0844,
               0.0,
+              "[0.0, 0.0]",
+              -2614.833,
               0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
+              0.1321,
+              60
             ],
             [
-              "Without Memory",
+              "E \u2014 Without Explainability",
+              "explainability",
+              0.0844,
               0.0,
+              "[0.0, 0.0]",
+              -2614.833,
               0.0,
+              0.139,
+              60
+            ],
+            [
+              "F \u2014 Without Memory",
+              "memory",
+              0.0844,
               0.0,
+              "[0.0, 0.0]",
+              -2614.833,
               0.0,
-              0.0,
-              0.0
+              0.139,
+              60
             ]
           ],
-          "row_count": 5
+          "row_count": 6
         }
       ],
       "source_refs": {
-        "experiment_id": "35ff9e02-80ff-44ab-b52f-61008b1e8095",
+        "experiment_id": "be392694-f001-4972-83ec-840fb9dac459",
         "seed": 42,
-        "created_at": "2026-08-29T07:29:38.258369"
+        "created_at": "2026-08-29T09:59:54.472459"
       }
     }
   ],

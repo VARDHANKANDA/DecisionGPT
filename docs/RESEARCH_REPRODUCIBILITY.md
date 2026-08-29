@@ -70,11 +70,19 @@ python scripts/build_external_datasets.py --only kundan
 python scripts/run_india_customer_benchmark.py --seed 42
 #   -> data/external/india_customer_synthetic/benchmark_results.json
 
-# --- Experiments 3-7: existing Experiment Runner ---
+# --- Experiments 3-7: existing Experiment Runner (single-seed) ---
 python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
 from app.services import experiment_service as e;d=SessionLocal();\
 [print(t, e.run_experiment(d,t,{'seed':42,'name':'paper_'+t}).status) for t in \
 ['forecasting','churn','causal','decision_architecture','multi_agent','ablation','digital_twin']];d.close()"
+
+# --- Experiments 5-6 STRENGTHENED: 12 scenarios x 5 seeds (Tables 4/5) ---
+# see docs/MULTI_SCENARIO_EXPERIMENT_PROTOCOL.md + docs/STATISTICAL_ANALYSIS.md
+python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
+from app.services import experiment_service as e;d=SessionLocal();\
+[print(t, e.run_experiment(d,t,{'seeds':[42,43,44,45,46],'name':'paper_'+t}).status) for t in \
+['multi_scenario_architecture','multi_scenario_ablation']];d.close()"
+#   multi_scenario_architecture ~= 6 min, multi_scenario_ablation ~= 35-45 min (CPU-bound, deterministic; 300 pipeline runs)
 
 # a controlled decision (Digital Twin simulations + confidence basis) on the demo synthetic business
 python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
@@ -98,8 +106,10 @@ curl -s localhost:8000/api/v1/research/paper-results     -H "X-Research-Token: $
 | 2 · Synthetic Indian customer (`SYNTHETIC_INDIAN_CONTEXT`, 6 250 test rows) | ROC-AUC 0.760 / 0.744 / 0.757; P/R/F1 ≈ 0 at 0.5 threshold (22.5 % positives) |
 | 3 · Digital Twin evaluation | `sample_size = 0` → **NOT READY**, needs `DecisionOutcome` records |
 | 4 · Causal graph (synthetic ground truth) | precision 0.40, recall 1.00, SHD 3, TP 2 / FP 3 / FN 0 |
-| 5 · Decision architecture | A 0.00 · B 0.333 (risk-adj 2826.88) · C 0.00 · D 0.00 goal achievement |
-| 6 · Ablation A–F | every `delta_goal_achievement = 0.0` on the single synthetic scenario |
+| 5 · Decision architecture (legacy, 1×1) | A 0.00 · B 0.333 · C 0.00 · D 0.00 goal achievement (`legacy_single_scenario_result`) |
+| **5 · Decision architecture (multi, 12×5=60/arch)** | **mean goal achievement A 0.000 · B 0.486 [CI 0.405, 0.567] · C 0.003 · D 0.084**. Paired Wilcoxon: D>A p=0.0045; **D<B p<0.0001** (B beats Full on 45/60). |
+| 6 · Ablation A–F (legacy, 1×1) | every `delta_goal_achievement = 0.0`; confidence 0.150→0.272 when Causal Graph removed |
+| **6 · Ablation A–F (multi, 12×5=60/config)** | most `Δ vs Full ≈ 0`; large effect only for removing the Digital Twin (config B → 0.00). See the completed `multi_scenario_ablation` run. |
 | 7 · End-to-end (demo business) | selected "Marketing +20%", confidence 0.1468 = 0.9788 × 0.5 × 0.6 × (1−0.5) |
 
 `churn` platform: logreg F1 0.669 / AUC 0.798, RF F1 0.661 / AUC 0.793, xgb F1 0.658 / AUC 0.792.

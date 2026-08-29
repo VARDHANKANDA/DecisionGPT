@@ -17,7 +17,6 @@ from app.models.experiment import (
     STATUS_COMPLETED,
     STATUS_FAILED,
     STATUS_PENDING,
-    STATUS_RUNNING,
     ExperimentRun,
 )
 from app.services import (
@@ -35,6 +34,8 @@ SUPPORTED_EXPERIMENT_TYPES = {
     "decision_architecture",
     "multi_agent",
     "ablation",
+    "multi_scenario_architecture",
+    "multi_scenario_ablation",
 }
 
 
@@ -100,6 +101,18 @@ def _dispatch(db: Session, experiment_type: str, configuration: dict) -> tuple[d
             "synthetic_scenario",
             _active_forecasting_versions(db),
         )
+
+    if experiment_type in ("multi_scenario_architecture", "multi_scenario_ablation"):
+        from app.services import multi_scenario_service
+
+        seeds = configuration.get("seeds") or multi_scenario_service.SEEDS
+        runner = (
+            multi_scenario_service.run_multi_scenario_architecture
+            if experiment_type == "multi_scenario_architecture"
+            else multi_scenario_service.run_multi_scenario_ablation
+        )
+        metrics = runner(db, seeds=[int(s) for s in seeds])
+        return metrics, "synthetic_scenario_suite", _active_forecasting_versions(db)
 
     # ablation
     ablation_result = ablation_service.run_ablation_study(db, seed=seed)
@@ -183,6 +196,25 @@ def _metric_summary(run: ExperimentRun) -> dict:
         return {c.get("component_removed"): {"delta_goal_achievement": c.get("delta_goal_achievement")} for c in m.get("comparisons", [])}
     if t == "multi_agent":
         return {k: {"goal_achievement": (v or {}).get("goal_achievement")} for k, v in m.items() if isinstance(v, dict)}
+    if t == "multi_scenario_architecture":
+        agg = m.get("aggregates", {})
+        return {
+            "scenario_count": m.get("scenario_count"), "seed_count": m.get("seed_count"),
+            "evaluation_count": m.get("evaluation_count"),
+            "mean_goal_achievement": {a: (agg.get(a, {}).get("goal_achievement") or {}).get("mean") for a in "ABCD"},
+            "paired_D_vs_A": (m.get("paired", {}).get("D_vs_A", {})).get("interpretation"),
+            "paired_D_vs_B": (m.get("paired", {}).get("D_vs_B", {})).get("interpretation"),
+        }
+    if t == "multi_scenario_ablation":
+        agg = m.get("aggregates", {})
+        return {
+            "scenario_count": m.get("scenario_count"), "seed_count": m.get("seed_count"),
+            "evaluation_count": m.get("evaluation_count"),
+            "mean_delta_goal_achievement_vs_full": {
+                c: ((agg.get(c, {}).get("delta_goal_achievement_vs_full") or {}) or {}).get("mean")
+                for c in ("B", "C", "D", "E", "F")
+            },
+        }
     return {}
 
 
@@ -193,9 +225,35 @@ def build_manifest(db: Session) -> dict:
     version, model versions, configuration, timings, status, headline
     metrics. Recomputes nothing."""
     runs = db.query(ExperimentRun).order_by(ExperimentRun.created_at.desc()).all()
+
+    def _multi(kind: str) -> dict | None:
+        r = next(
+            (x for x in runs if x.experiment_type == kind and x.status == STATUS_COMPLETED), None
+        )
+        if r is None:
+            return None
+        m = r.metrics_json or {}
+        return {
+            "experiment_id": r.id, "random_seed": r.random_seed,
+            "seeds": (r.configuration_json or {}).get("seeds") or m.get("seeds"),
+            "scenario_count": m.get("scenario_count"), "seed_count": m.get("seed_count"),
+            "evaluation_count": m.get("evaluation_count"),
+            "aggregation_method": m.get("aggregation_method"),
+            "statistical_method": m.get("statistical_method"),
+        }
+
     return {
         "generated_at": None,  # filled by the endpoint (kept pure here)
         "experiment_count": len(runs),
+        "multi_scenario": {
+            "architecture": _multi("multi_scenario_architecture"),
+            "ablation": _multi("multi_scenario_ablation"),
+            "legacy_single_scenario_result": {
+                "note": "The original 1-scenario x 1-seed decision_architecture / ablation runs are "
+                        "preserved unchanged for comparison — see experiment_type "
+                        "'decision_architecture' / 'ablation'.",
+            },
+        },
         "experiments": [
             {
                 "experiment_id": r.id,
