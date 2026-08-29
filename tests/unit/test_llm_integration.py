@@ -24,6 +24,40 @@ def test_constraint_extraction_rules():
     assert extract_constraints("increase sales") == []
 
 
+def test_llm_enabled_requires_both_provider_and_key(monkeypatch):
+    """The 'real-LLM validation BLOCKED' state is exactly `not llm_enabled`.
+    Both LLM_PROVIDER and LLM_API_KEY must be set; either alone is still
+    template mode (docs/REAL_LLM_VALIDATION_PROTOCOL.md)."""
+    from app.core.config import Settings
+
+    assert Settings(llm_provider=None, llm_api_key=None).llm_enabled is False
+    assert Settings(llm_provider="anthropic", llm_api_key=None).llm_enabled is False
+    assert Settings(llm_provider=None, llm_api_key="sk-x").llm_enabled is False
+    assert Settings(llm_provider="", llm_api_key="").llm_enabled is False
+    assert Settings(llm_provider="anthropic", llm_api_key="sk-x").llm_enabled is True
+
+
+def test_agents_never_call_an_llm_scores_are_llm_independent():
+    """The BA / FA / RM SCORES that drive strategy selection are rule-based and
+    do not change with a real LLM (app/agents/base.py: 'No agent calls an
+    LLM'). A real-LLM run affects goal parsing + narration only."""
+    import importlib
+    import inspect
+
+    for mod_name in ("app.agents.base", "app.agents.business_analyst",
+                     "app.agents.financial_advisor", "app.agents.risk_manager",
+                     "app.agents.single_agent", "app.agents.strategy_optimizer"):
+        mod = importlib.import_module(mod_name)
+        # no agent module imports the LLM layer or a vendor client
+        for name in vars(mod):
+            assert "llm" not in name.lower(), f"{mod_name}.{name}"
+        code = "\n".join(
+            ln for ln in inspect.getsource(mod).splitlines()
+            if not ln.lstrip().startswith(("#", '"', "'"))
+        ).lower()
+        assert "llm_service" not in code and "llmclient" not in code and ".complete(" not in code, mod_name
+
+
 class _FakeClient:
     def __init__(self):
         self.calls = []

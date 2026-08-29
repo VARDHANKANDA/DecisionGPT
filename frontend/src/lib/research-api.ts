@@ -814,6 +814,7 @@ export interface PaperResults {
     title: string;
     available: boolean;
     missing_reason: string | null;
+    data_category?: string;
     export_tables: string[];
     sections: { name: string; headers: string[]; rows: (string | number | null)[][]; row_count: number }[];
     source_refs: Record<string, unknown>;

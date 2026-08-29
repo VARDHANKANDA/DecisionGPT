@@ -316,10 +316,57 @@ def import_outcome_record(db: Session, record: dict) -> dict:
 
 # --- reporting (Table 2 material; honest empty state) -------------------
 
+# Table 2 (Digital Twin prediction vs actual) becomes valid ONLY when this many
+# genuine REAL_INDIAN_SME_OUTCOME records have a matched predicted/actual pair.
+TABLE_2_MIN_REAL_OUTCOMES = 5
+
+
 def _real_sme_outcomes(db: Session):
     return (db.query(DecisionOutcome)
             .filter(DecisionOutcome.source_type == OUTCOME_SOURCE_REAL_INDIAN_SME)
             .order_by(DecisionOutcome.recorded_at).all())
+
+
+def matched_real_sme_eval_count(db: Session) -> int:
+    """Number of REAL_INDIAN_SME_OUTCOME records that have a PredictionEvaluation
+    with a computed revenue error — the only thing that can populate Table 2."""
+    return (db.query(PredictionEvaluation)
+            .join(DecisionOutcome, DecisionOutcome.id == PredictionEvaluation.outcome_id)
+            .filter(DecisionOutcome.source_type == OUTCOME_SOURCE_REAL_INDIAN_SME,
+                    PredictionEvaluation.revenue_error.isnot(None))
+            .count())
+
+
+def real_sme_eval_rows(db: Session) -> list[list]:
+    """Table-2 preview rows restricted to real Indian SME outcomes — never a
+    synthetic or demo-recorded outcome."""
+    evals = (db.query(PredictionEvaluation)
+             .join(DecisionOutcome, DecisionOutcome.id == PredictionEvaluation.outcome_id)
+             .filter(DecisionOutcome.source_type == OUTCOME_SOURCE_REAL_INDIAN_SME,
+                     PredictionEvaluation.revenue_error.isnot(None))
+             .order_by(PredictionEvaluation.recorded_at).all())
+    return [
+        [e.decision_id, e.strategy_name or "unknown",
+         float(e.predicted_revenue_change) if e.predicted_revenue_change is not None else None,
+         float(e.actual_revenue_change) if e.actual_revenue_change is not None else None,
+         float(e.revenue_error) if e.revenue_error is not None else None,
+         float(e.revenue_abs_pct_error) if e.revenue_abs_pct_error is not None else None]
+        for e in evals
+    ]
+
+
+def table_2_status(db: Session) -> dict:
+    n = matched_real_sme_eval_count(db)
+    ready = n >= TABLE_2_MIN_REAL_OUTCOMES
+    return {
+        "n_real_matched": n,
+        "min_required": TABLE_2_MIN_REAL_OUTCOMES,
+        "available": ready,
+        "missing_reason": None if ready else (
+            f"{n}/{TABLE_2_MIN_REAL_OUTCOMES} genuine REAL_INDIAN_SME_OUTCOME records with a "
+            "matched predicted/actual outcome — Table 2 stays NOT READY until >= "
+            f"{TABLE_2_MIN_REAL_OUTCOMES}. Synthetic / demo-recorded outcomes never count."),
+    }
 
 
 def _target_errors(evals: list[PredictionEvaluation], target: str) -> dict:

@@ -163,10 +163,11 @@
         "digital_twin_evaluation"
       ],
       "available": false,
-      "missing_reason": "No matched predicted/actual outcomes. An SME must record an actual decision outcome.",
+      "missing_reason": "0/5 genuine REAL_INDIAN_SME_OUTCOME records with a matched predicted/actual outcome \u2014 Table 2 stays NOT READY until >= 5. Synthetic / demo-recorded outcomes never count.",
+      "data_category": "REAL_INDIAN_SME_OUTCOME",
       "sections": [
         {
-          "name": "Prediction vs actual",
+          "name": "Prediction vs actual (real Indian SME only)",
           "headers": [
             "Decision ID",
             "Strategy",
@@ -180,7 +181,9 @@
         }
       ],
       "source_refs": {
-        "decision_ids": []
+        "decision_ids": [],
+        "real_matched": 0,
+        "min_required": 5
       }
     },
     {

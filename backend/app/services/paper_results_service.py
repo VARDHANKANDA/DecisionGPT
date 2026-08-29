@@ -8,7 +8,6 @@ experiment id / model version / decision id.
 """
 from sqlalchemy.orm import Session
 
-from app.models.evaluation import PredictionEvaluation
 from app.models.experiment import ExperimentRun
 from app.models.ml_model import MLModel
 from app.services import digital_twin_evaluation_service, research_export_service
@@ -75,19 +74,20 @@ def get_paper_results(db: Session) -> dict:
             )
 
         elif spec["key"] == "digital_twin_evaluation":
-            headers, rows = research_export_service.digital_twin_evaluation_table(db, None)
-            n_matched = (
-                db.query(PredictionEvaluation)
-                .filter(PredictionEvaluation.revenue_error.isnot(None))
-                .count()
-            )
+            # Table 2 is REAL_INDIAN_SME_OUTCOME only, and needs >= 5 matched
+            # genuine records. Synthetic / demo-recorded outcomes never count
+            # and are never previewed here (docs/REAL_EVIDENCE_READINESS_REPORT.md).
+            from app.services import real_sme_outcome_service
+            headers = ["Decision ID", "Strategy", "Predicted change", "Actual change", "Error", "% error"]
+            rows = real_sme_outcome_service.real_sme_eval_rows(db)
+            t2 = real_sme_outcome_service.table_2_status(db)
             entry.update(
-                available=n_matched > 0,
-                missing_reason=None
-                if n_matched > 0
-                else "No matched predicted/actual outcomes. An SME must record an actual decision outcome.",
-                sections=[{"name": "Prediction vs actual", **_preview(headers, rows)}],
-                source_refs={"decision_ids": [r[0] for r in rows]},
+                available=t2["available"],
+                missing_reason=t2["missing_reason"],
+                data_category="REAL_INDIAN_SME_OUTCOME",
+                sections=[{"name": "Prediction vs actual (real Indian SME only)", **_preview(headers, rows)}],
+                source_refs={"decision_ids": [r[0] for r in rows],
+                             "real_matched": t2["n_real_matched"], "min_required": t2["min_required"]},
             )
 
         else:  # experiment-backed

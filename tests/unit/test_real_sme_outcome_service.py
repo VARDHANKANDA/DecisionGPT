@@ -293,3 +293,62 @@ def test_natural_key_is_anonymised_and_ignored_by_evaluator(db_session):
     ev = db_session.query(PredictionEvaluation).filter(
         PredictionEvaluation.outcome_id == res["outcome_id"]).first()
     assert ev.metrics_json["revenue"]["error"] is not None
+
+
+# --- Table 2 gate: >= 5 genuine real-SME records only (task Part G) ------
+
+
+def test_table_2_status_requires_five_genuine_real_sme_records(db_session):
+    st = svc.table_2_status(db_session)
+    assert st == {"n_real_matched": 0, "min_required": 5, "available": False,
+                  "missing_reason": st["missing_reason"]}
+    assert "0/5" in st["missing_reason"] and "NOT READY" in st["missing_reason"]
+
+    for i in range(4):
+        svc.import_outcome_record(db_session, _good_record(
+            business_id=f"SME-T2-{i}", decision_date="2026-01-06",
+            outcome_recorded_date="2026-02-05"))
+    st4 = svc.table_2_status(db_session)
+    assert st4["n_real_matched"] == 4 and st4["available"] is False
+    assert "4/5" in st4["missing_reason"]
+
+    svc.import_outcome_record(db_session, _good_record(
+        business_id="SME-T2-4", decision_date="2026-01-06", outcome_recorded_date="2026-02-05"))
+    st5 = svc.table_2_status(db_session)
+    assert st5["n_real_matched"] == 5 and st5["available"] is True
+    assert st5["missing_reason"] is None
+    assert len(svc.real_sme_eval_rows(db_session)) == 5
+
+
+def test_synthetic_recorded_outcome_never_counts_toward_table_2(db_session):
+    """An outcome recorded through the normal SME UI path (memory_service,
+    source_type = None) is NOT a real Indian SME outcome and must not count."""
+    from datetime import datetime, timezone
+
+    from app.models.business import Business
+    from app.models.goal import Goal
+    from app.models.strategy import Strategy
+    from app.services import memory_service
+
+    biz = Business(name="Synthetic test co", industry="x", business_type="Synthetic",
+                   business_size="N/A", country="IN", currency="INR")
+    db_session.add(biz); db_session.flush()
+    goal = Goal(business_id=biz.id, objective="increase_revenue", target_value=10,
+                target_unit="percent", primary_kpi="revenue", status="active")
+    db_session.add(goal); db_session.flush()
+    strat = Strategy(business_id=biz.id, goal_id=goal.id, strategy_name="Price +5%",
+                     description="x", actions_json=[])
+    db_session.add(strat); db_session.flush()
+    dec = Decision(business_id=biz.id, goal_id=goal.id, selected_strategy_id=strat.id,
+                   expected_outcome_json={"baseline_revenue": 100000, "expected_revenue": 110000},
+                   risk_level="low", confidence=0.5, reasoning="x")
+    db_session.add(dec); db_session.flush()
+
+    memory_service.record_outcome(db_session, biz.id, dec.id, {"revenue": 105000},
+                                  recorded_at=datetime.now(timezone.utc))
+
+    out = db_session.get(DecisionOutcome, db_session.query(DecisionOutcome).first().id)
+    assert out.source_type is None                     # not a real Indian SME outcome
+    assert svc.matched_real_sme_eval_count(db_session) == 0
+    assert svc.table_2_status(db_session)["available"] is False
+    assert svc.real_sme_eval_rows(db_session) == []

@@ -624,3 +624,41 @@ def test_paper_results_reports_readiness_not_fabrication(client, db_session):
     t2 = next(t for t in body["tables"] if t["key"] == "digital_twin_evaluation")
     assert t2["available"] is False  # no outcomes yet
     assert t2["missing_reason"]
+    assert t2.get("data_category") == "REAL_INDIAN_SME_OUTCOME"
+
+
+def test_paper_table_2_needs_five_genuine_real_sme_outcomes(client, db_session):
+    """Table 2 stays NOT READY below 5 real Indian SME outcomes, and never
+    counts a synthetic / demo-recorded outcome."""
+    from app.services import real_sme_outcome_service as rso
+
+    model_registry_service.sync_from_file_registry(db_session)
+
+    def _rec(i):
+        return {
+            "business_id": f"SME-P{i}", "industry": "Grocery Retail", "state": "KA",
+            "district": "Bengaluru", "decision_date": "2026-01-10",
+            "decision_type": "price_increase", "goal": "increase_profit",
+            "strategy": "Price +5%", "prediction_horizon_days": 30,
+            "baseline_revenue": 500000, "predicted_revenue": 520000, "actual_revenue": 511000,
+            "predicted_risk": 0.2, "predicted_confidence": 0.55,
+            "outcome_recorded_date": "2026-02-09", "outcome_status": "partially_achieved",
+            "source_type": "real_indian_sme", "business_country": "IN",
+            "data_consent_status": "consented", "anonymization_status": "anonymized",
+            "collection_method": "sme_self_report_form",
+        }
+
+    for i in range(3):
+        rso.import_outcome_record(db_session, _rec(i))
+    t2 = next(t for t in client.get("/api/v1/research/paper-results", headers=_h()).json()["tables"]
+              if t["key"] == "digital_twin_evaluation")
+    assert t2["available"] is False
+    assert "3/5" in t2["missing_reason"]
+    assert t2["source_refs"]["real_matched"] == 3 and t2["source_refs"]["min_required"] == 5
+
+    for i in range(3, 5):
+        rso.import_outcome_record(db_session, _rec(i))
+    t2b = next(t for t in client.get("/api/v1/research/paper-results", headers=_h()).json()["tables"]
+               if t["key"] == "digital_twin_evaluation")
+    assert t2b["available"] is True
+    assert t2b["source_refs"]["real_matched"] == 5

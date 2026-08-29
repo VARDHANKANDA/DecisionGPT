@@ -547,7 +547,7 @@ reason). No hard-coded research metric; every number resolves to a stored row
    only ~21 % of the Full-vs-Digital-Twin gap; the rest is the near-flat
    template-mode agent growth scores. **No variant promoted** — production stays
    R0 / D0.
-4. **R3 was then externally validated on real Indian data** —
+4. **R3 was then probed against real Indian data (not validated)** —
    `docs/RISK_MANAGER_GENERALIZATION_REPORT.md` (`risk_manager_real_data_validation`
    id `70617412`, Benroshan `INDIA_REAL_BUSINESS`, provenance unverified).
    Across **23 real price sub-series / 184 test rows** (3 LOW / 11 MODERATE /
