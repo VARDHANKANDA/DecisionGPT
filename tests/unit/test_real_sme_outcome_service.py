@@ -204,3 +204,92 @@ def test_traceability_import_result_carries_ids(db_session):
     d = db_session.get(Decision, res["decision_id"])
     assert d.prompt_version == "real_sme_import_v1"
     assert d.business_id == res["business_id"]
+
+
+# --- no leakage (task §6) ------------------------------------------
+
+
+def test_no_leakage_outcome_recorded_date_must_be_after_decision_date():
+    # reversed dates -> rejected (the actual outcome cannot pre-date the decision)
+    assert any("before decision_date" in e
+               for e in svc.validate_record(_good_record(
+                   decision_date="2026-03-01", outcome_recorded_date="2026-02-01")))
+
+
+def test_no_leakage_expected_outcome_json_never_contains_actuals(db_session):
+    """The stored prediction is built ONLY from the SME's predicted / baseline
+    figures — the actual outcome can never influence what the model 'predicted'."""
+    rec = _good_record(predicted_revenue=905000, actual_revenue=999999,
+                       predicted_profit=196000, actual_profit=123456,
+                       predicted_units=4150, actual_units=1)
+    res = svc.import_outcome_record(db_session, rec)
+    d = db_session.get(Decision, res["decision_id"])
+    exp = d.expected_outcome_json
+    assert exp["expected_revenue"] == 905000 and exp["baseline_revenue"] == 850000
+    assert exp["expected_profit"] == 196000
+    assert exp["expected_units_sold"] == 4150
+    # none of the ACTUAL values leaked into the prediction record
+    assert 999999 not in exp.values() and 123456 not in exp.values() and 1 not in exp.values()
+
+    outcome = db_session.get(DecisionOutcome, res["outcome_id"])
+    assert outcome.actual_outcome_json == {"revenue": 999999, "profit": 123456, "units": 1}
+
+    # PredictionEvaluation computes predicted_change and actual_change independently
+    from app.models.evaluation import PredictionEvaluation
+    ev = db_session.query(PredictionEvaluation).filter(
+        PredictionEvaluation.outcome_id == res["outcome_id"]).first()
+    rev = ev.metrics_json["revenue"]
+    assert rev["predicted_change"] == 905000 - 850000
+    assert rev["actual_change"] == 999999 - 850000
+    assert rev["error"] == rev["actual_change"] - rev["predicted_change"]
+
+
+def test_horizon_and_actual_window_must_align():
+    # 30-day prediction, ~30-day window -> OK
+    assert svc.validate_record(_good_record(prediction_horizon_days=30,
+                                            decision_date="2026-01-01",
+                                            outcome_recorded_date="2026-01-31")) == []
+    # 30-day prediction, ~180-day window -> rejected
+    assert any("does not match the stated" in e
+               for e in svc.validate_record(_good_record(prediction_horizon_days=30,
+                                                         decision_date="2026-01-01",
+                                                         outcome_recorded_date="2026-06-30")))
+
+
+# --- duplicate detection (task §10) ------------------------------
+
+
+def test_duplicate_decision_record_is_rejected(db_session):
+    rec = _good_record(business_id="SME-DUP")
+    svc.import_outcome_record(db_session, rec)
+    with pytest.raises(ValidationFailedError) as ei:
+        svc.import_outcome_record(db_session, dict(rec))
+    assert "duplicate" in ei.value.message.lower()
+    assert any("already exists" in e for e in ei.value.details["errors"])
+    # only one outcome persisted
+    assert db_session.query(DecisionOutcome).count() == 1
+
+
+def test_same_business_different_decision_is_not_a_duplicate(db_session):
+    b = "SME-MULTI"
+    svc.import_outcome_record(db_session, _good_record(
+        business_id=b, decision_date="2026-01-06", outcome_recorded_date="2026-02-05"))
+    svc.import_outcome_record(db_session, _good_record(
+        business_id=b, decision_date="2026-03-01", outcome_recorded_date="2026-03-31",
+        strategy="Price -5%", decision_type="price_decrease"))
+    rep = svc.get_real_sme_outcome_report(db_session)
+    assert rep["n_outcomes"] == 2 and rep["n_businesses"] == 1  # clustering
+
+
+def test_natural_key_is_anonymised_and_ignored_by_evaluator(db_session):
+    res = svc.import_outcome_record(db_session, _good_record(business_id="SME-NK"))
+    d = db_session.get(Decision, res["decision_id"])
+    nk = d.expected_outcome_json["_sme_natural_key"]
+    assert nk == "sme-nk|2026-01-06|price_increase|price +5%|30"
+    # no PII tokens in the key
+    assert "@" not in nk and not any(ch.isdigit() and len(nk) > 40 for ch in nk[:0])
+    # the evaluator still produced clean revenue metrics despite the extra key
+    from app.models.evaluation import PredictionEvaluation
+    ev = db_session.query(PredictionEvaluation).filter(
+        PredictionEvaluation.outcome_id == res["outcome_id"]).first()
+    assert ev.metrics_json["revenue"]["error"] is not None

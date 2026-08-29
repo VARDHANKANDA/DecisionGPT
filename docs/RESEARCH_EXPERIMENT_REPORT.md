@@ -575,7 +575,14 @@ reason). No hard-coded research metric; every number resolves to a stored row
    Twin Evaluation page. **No real records exist yet** →
    `REAL SME OUTCOME COLLECTION = PENDING`, **Table 2 = NOT READY**. No
    synthetic `DecisionOutcome` was fabricated. See
-   `docs/REAL_INDIAN_SME_OUTCOME_VALIDATION_REPORT.md`.
+   `docs/REAL_INDIAN_SME_OUTCOME_VALIDATION_REPORT.md`. **Operational
+   preparation is now complete** (`docs/REAL_SME_COLLECTION_READINESS_REPORT.md`):
+   an SME-facing collection guide, consent/provenance + checklist templates, a
+   full data dictionary, a paper methodology outline, duplicate-detection on
+   import, and no-leakage tests. **Next action is human data collection, not
+   coding** — recruit genuine Indian SMEs with actual outcomes for supported
+   (price / marketing / inventory) decisions. `REAL SME COLLECTION WORKFLOW =
+   READY`, outcomes = 0, Table 2 = NOT READY, real-LLM = NOT TESTED.
 6. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
    second `INDIA_*` forecasting row; add repeated seeds to the forecasting /
    customer experiments for CIs.

@@ -206,12 +206,33 @@ def _get_or_make_business(db: Session, record: dict) -> str:
     return biz.id
 
 
+def _natural_key(record: dict) -> str:
+    """Stable identity of one SME decision record — used only for duplicate
+    detection (task §10). Anonymised token + date + intervention; no PII."""
+    return "|".join(str(record.get(k, "")).strip().lower() for k in
+                    ("business_id", "decision_date", "decision_type", "strategy",
+                     "prediction_horizon_days"))
+
+
 def import_outcome_record(db: Session, record: dict) -> dict:
     """Validate and persist ONE anonymised real Indian SME decision outcome.
-    Raises ValidationFailedError with the full error list on any problem."""
+    Raises ValidationFailedError with the full error list on any problem, or a
+    'duplicate' error if this exact decision record was already imported."""
     errs = validate_record(record)
     if errs:
         raise ValidationFailedError("real SME outcome record failed validation", details={"errors": errs})
+
+    nkey = _natural_key(record)
+    dup = (db.query(Decision)
+           .join(DecisionOutcome, DecisionOutcome.decision_id == Decision.id)
+           .filter(DecisionOutcome.source_type == OUTCOME_SOURCE_REAL_INDIAN_SME)
+           .all())
+    for d in dup:
+        if (d.expected_outcome_json or {}).get("_sme_natural_key") == nkey:
+            raise ValidationFailedError(
+                "duplicate: this real SME decision record was already imported",
+                details={"errors": [f"a decision outcome for '{nkey}' already exists "
+                                    f"(decision {d.id})"]})
 
     business_id = _get_or_make_business(db, record)
     horizon = int(record["prediction_horizon_days"])
@@ -232,6 +253,9 @@ def import_outcome_record(db: Session, record: dict) -> dict:
     db.add(strat)
     db.flush()
 
+    # expected_outcome_json is built ONLY from the SME's reported predicted /
+    # baseline figures — never from the actual outcome. This is the no-leakage
+    # guarantee at the record level (see test_no_leakage_*).
     expected = {
         "baseline_revenue": _num(record.get("baseline_revenue")),
         "expected_revenue": _num(record.get("predicted_revenue")),
@@ -240,6 +264,7 @@ def import_outcome_record(db: Session, record: dict) -> dict:
         "baseline_units_sold": _num(record.get("baseline_units")),
         "expected_units_sold": _num(record.get("predicted_units")),
         "risk_score": _num(record.get("predicted_risk")),
+        "_sme_natural_key": _natural_key(record),   # dedup only; anonymised, ignored by evaluators
     }
     decision = Decision(
         business_id=business_id, goal_id=goal.id, selected_strategy_id=strat.id,

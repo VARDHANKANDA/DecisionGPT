@@ -1,6 +1,12 @@
 # Real Indian SME Decision-Outcome Validation — Methodology
 
 Companion workflow doc for `docs/REAL_INDIAN_SME_OUTCOME_VALIDATION_REPORT.md`.
+See also: `docs/REAL_SME_DATA_COLLECTION_GUIDE.md` (SME-facing),
+`docs/REAL_INDIAN_SME_DATA_DICTIONARY.md` (every field),
+`docs/REAL_INDIAN_SME_VALIDATION_METHODOLOGY.md` (paper outline),
+`docs/REAL_SME_COLLECTION_READINESS_REPORT.md` (readiness),
+`docs/templates/real_sme_consent_and_provenance.md`,
+`docs/templates/real_sme_collection_checklist.md`.
 This is an **evidence-collection** design, not an optimization. Production stays
 **R0 / D0** (`risk_model = None`, `risk_penalty_lambda = 1.0`).
 
