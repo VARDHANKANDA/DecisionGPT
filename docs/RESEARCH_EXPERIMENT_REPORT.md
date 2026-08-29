@@ -160,6 +160,15 @@ No real `DecisionOutcome` records exist, so **no edge has moved above
 grid / seed / horizon for every architecture. `goal_achievement` = attainment
 of each scenario's own primary KPI.
 
+> **Table 4 below is the POST-correction run** (`0e1bd8dc`), after the
+> candidate-space confound was fixed (`docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`).
+> The pre-correction run (`675cf17e`, `PRE_CORRECTION …`) is preserved in the
+> manifest. **The two runs are numerically identical for A–D** — the fix
+> changed the strategy space Full DecisionGPT could consider but not the
+> strategy it selected (the Risk Manager still rejects the price move). The
+> Full-vs-Digital-Twin gap is therefore **not** an artefact of the
+> candidate-space mismatch; it persists after alignment.
+
 ### Table 4 — aggregate (n = 60 per architecture)
 
 | Architecture | Mean goal achievement | Std | 95% CI | Mean risk-adjusted score | Mean confidence | Mean latency (s) |
@@ -222,6 +231,13 @@ demonstrated causes.
 `experiment_service.run_experiment("multi_scenario_ablation")` — the same 12
 scenarios × 5 seeds. Ablation meanings unchanged (B = no Digital Twin →
 architecture A; C–F = `PipelineOptions` toggles on the real pipeline).
+
+> **Table 5 below is the POST-correction run** (`db58455b`); it was re-run
+> because the corrected `strategy_generation_service.generate_candidates` sits
+> on the pipeline path configs C–F exercise. It is **numerically identical**
+> to the pre-correction run (`be392694`, `PRE_CORRECTION …`, preserved) — the
+> candidate-space fix changed no config's outcome.
+> See `docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`.
 
 ### Table 5 — aggregate (n = 60 per configuration)
 
@@ -372,8 +388,8 @@ differences were zero the report says *"significance not assessed"*.
 | **Table 1 — Predictive Model Performance** | **READY** | `forecasting_performance` + `churn_performance` exports; rows carry `Status` + `Data category` so `INDIA_REAL_BUSINESS` and `SYNTHETIC_CONTROLLED` stay separate |
 | **Table 2 — Digital Twin Prediction Evaluation** | **NOT READY — requires additional `DecisionOutcome` records** | `PredictionEvaluation` (0 matched) |
 | **Table 3 — Causal Graph Evaluation** | **READY** | experiment `causal` (seed 42) — labelled `SYNTHETIC GROUND TRUTH` |
-| **Table 4 — Decision Architecture Comparison** | **READY (multi-scenario)** | experiment `multi_scenario_architecture` — 60 obs/arch, 95 % CI + paired Wilcoxon. `decision_architecture` (legacy, seed 42) preserved. Exports: `decision_architecture` (aggregate), `decision_architecture_detail` (every observation). |
-| **Table 5 — Ablation Study** | **READY (multi-scenario)** | experiment `multi_scenario_ablation` — 60 obs/config, mean Δ vs Full + CI. `ablation` (legacy) preserved. Exports: `ablation`, `ablation_detail`. |
+| **Table 4 — Decision Architecture Comparison** | **READY (multi-scenario, POST-correction)** | The final table uses the **POST-correction** run `multi_scenario_architecture` `0e1bd8dc` (candidate-space confound fixed); the **PRE-correction** run `675cf17e` is preserved and its result is documented under "Failure analysis / candidate-space correction" (`docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`). The two are numerically identical, so no observations are mixed. `decision_architecture` (legacy, seed 42) also preserved. Exports: `decision_architecture` (aggregate), `decision_architecture_detail`. |
+| **Table 5 — Ablation Study** | **READY (multi-scenario, POST-correction)** | Final table uses POST-correction `multi_scenario_ablation` `db58455b`; PRE-correction `be392694` preserved. Numerically identical. `ablation` (legacy) preserved. Exports: `ablation`, `ablation_detail`. |
 
 Every table row traces to an `experiment_id` / `model_version` /
 `dataset_version` / `seed` (and `scenario_id`) via
@@ -444,16 +460,26 @@ reason). No hard-coded research metric; every number resolves to a stored row
 
 ## Recommended next step
 
-1. **The agent-layer regression from Experiment 5 has now been diagnosed** —
-   see `docs/MULTI_AGENT_DIAGNOSTIC_REPORT.md` (experiment `multi_agent_diagnostic`,
-   60 traceable pairs). Full DecisionGPT overrides the Digital-Twin-best
-   strategy on **100 %** of pairs; **0 overrides improved** the objective,
-   45 degraded it. Mechanisms: `CANDIDATE_SET_MISMATCH` 50 % (the revenue/sales
-   strategy templates omit a price-increase lever, so the agents never see the
-   DT-preferred strategy), `RISK_OVERRULE` 25 % (the Risk Manager scores price
-   increases as maximally unsafe), `UNSUPPORTED_KPI` 17 %, `AGENT_OVERRULE` 8 %.
-   The Causal Graph, optimizer re-ranking, Explainability and Memory are ruled
-   out. Two narrowly-scoped corrections are proposed there (not applied).
+1. **The agent-layer regression from Experiment 5 has been diagnosed *and* one
+   confound has been corrected.** The pre-correction diagnostic
+   (`docs/MULTI_AGENT_DIAGNOSTIC_REPORT.md`, `multi_agent_diagnostic` id
+   `c58c4537`, 60 traceable pairs) found Full DecisionGPT overriding the
+   Digital-Twin-best strategy on **100 %** of pairs (0 improved, 45 degraded),
+   with `CANDIDATE_SET_MISMATCH` 50 % as the top mechanism — the revenue/sales
+   templates omitted a supported price-increase lever, so architectures B and D
+   were **not comparing the same legitimate strategy space**. That generator
+   omission was corrected (capability-gated `Price +5%` / `Price +10%` for
+   revenue/sales goals; Risk Manager untouched) and the **identical** 12 × 5
+   experiment repeated — `docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`
+   (`POST_CORRECTION …`, diagnostic id `f24abc1b`). Result: candidate coverage
+   0.333 → **0.833** (missing-supported 0.500 → **0.000**), but every
+   architecture / ablation / pairwise aggregate is **byte-identical** — D still
+   0.084, D < B `p < 0.0001`, override rate 1.00 (0 improved / 45 degraded).
+   The 30 `CANDIDATE_SET_MISMATCH` pairs became `RISK_OVERRULE` pairs
+   (`RISK_OVERRULE` 25 % → 75 %). **The Full-vs-Digital-Twin gap is not a
+   candidate-space artefact; it persists after alignment**, and the remaining
+   mechanism is Risk-Manager conservatism on price moves (diagnosed, not yet
+   corrected).
 2. Collect **5–10 real SME `DecisionOutcome` records** so Experiment 3 /
    Table 2 / Figure 3 become real.
 3. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a

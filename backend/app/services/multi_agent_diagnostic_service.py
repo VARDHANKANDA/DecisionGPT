@@ -221,6 +221,7 @@ def run_diagnostic(db: Session, seeds: list[int] | None = None) -> dict:
 
                 rm_pick = max(d_candidates, key=lambda c: (c["rm1"] or -1)) if d_candidates else None
 
+                d_names = [c["strategy"] for c in d_candidates]
                 row.update({
                     "final_strategy": res.selected_strategy_name,
                     "final_score": res.selected_strategy_score,
@@ -229,7 +230,16 @@ def run_diagnostic(db: Session, seeds: list[int] | None = None) -> dict:
                     "confidence": res.confidence,
                     "causal_evidence_level": ev,
                     "d_candidates": d_candidates,
-                    "d_candidate_names": [c["strategy"] for c in d_candidates],
+                    "d_candidate_names": d_names,
+                    # --- candidate-coverage check (task sections 6 & 7) ---
+                    "dt_candidate_count": len(dt_cands),
+                    "full_candidate_count": len(d_names),
+                    "dt_best_strategy_present_in_full": dt_best["strategy"] in set(d_names),
+                    # A price / marketing lever is a *legitimately supported* strategy for
+                    # revenue / profit / orders goals. For inventory-risk / marketing-roi
+                    # goals the DT-best (max expected_revenue) is an artefact of arch B's
+                    # crude ranking rule, NOT a strategy Full DecisionGPT should generate.
+                    "dt_best_strategy_supported": not kpi_is_proxy,
                     "risk_manager_top_pick": rm_pick["strategy"] if rm_pick else None,
                     "disagreement": res.selected_strategy_name != dt_best["strategy"],
                     "improvement": round(final_ga - dt_best["kpi_attainment"], 4),
@@ -319,11 +329,32 @@ def _aggregate(traces: list[dict], seeds: list[int]) -> dict:
                              if t.get("dt_best_kpi_attainment") is not None]), 4)
     full_mean_ga = round(mean([t["final_goal_achievement"] for t in traces]), 4)
 
+    # candidate-coverage check (task sections 6 & 7)
+    with_cov = [t for t in traces if "dt_best_strategy_present_in_full" in t]
+    covered = [t for t in with_cov if t["dt_best_strategy_present_in_full"]]
+    missing_supported = [t for t in with_cov
+                         if not t["dt_best_strategy_present_in_full"] and t.get("dt_best_strategy_supported")]
+    candidate_coverage = {
+        "pairs_checked": len(with_cov),
+        "dt_best_present_in_full": len(covered),
+        "candidate_coverage_rate": round(len(covered) / len(with_cov), 4) if with_cov else None,
+        "missing_supported_strategy_rate": round(len(missing_supported) / len(with_cov), 4) if with_cov else None,
+        "mean_dt_candidate_count": round(mean([t["dt_candidate_count"] for t in with_cov]), 2) if with_cov else None,
+        "mean_full_candidate_count": round(mean([t["full_candidate_count"] for t in with_cov]), 2) if with_cov else None,
+        "invariant_dt_best_present_when_supported": len(missing_supported) == 0,
+        "missing_pairs": [
+            {"scenario_id": t["scenario_id"], "seed": t["seed"],
+             "dt_best_strategy": t["dt_best_strategy"], "goal_objective": t["goal_objective"]}
+            for t in missing_supported
+        ],
+    }
+
     return {
         "seeds": seeds,
         "scenario_count": len(ms.SCENARIOS),
         "seed_count": len(seeds),
         "total_scenario_seed_pairs": n,
+        "candidate_coverage": candidate_coverage,
         "digital_twin_to_final": {
             "unchanged": len(rerank_unchanged),
             "overridden": len(disagreements),

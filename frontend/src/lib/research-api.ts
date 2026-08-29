@@ -539,14 +539,28 @@ export interface AgentEvaluation {
     };
   };
   multi_agent_diagnostic: MultiAgentDiagnostic | null;
+  multi_agent_diagnostic_previous: MultiAgentDiagnostic | null;
   empty_state: string | null;
+}
+
+export interface CandidateCoverage {
+  pairs_checked: number;
+  dt_best_present_in_full: number;
+  candidate_coverage_rate: number | null;
+  missing_supported_strategy_rate: number | null;
+  mean_dt_candidate_count: number | null;
+  mean_full_candidate_count: number | null;
+  invariant_dt_best_present_when_supported: boolean;
+  missing_pairs: { scenario_id: string; seed: number; dt_best_strategy: string; goal_objective: string }[];
 }
 
 export interface MultiAgentDiagnostic {
   experiment_id: string;
+  experiment_name?: string;
   created_at: string | null;
   seeds: number[] | null;
   total_scenario_seed_pairs: number;
+  candidate_coverage: CandidateCoverage | null;
   digital_twin_to_final: { unchanged: number; overridden: number; override_rate: number };
   override_outcomes: {
     improved: number; degraded: number; neutral: number;

@@ -203,6 +203,60 @@ def test_agent_eval_debate_analysis_from_real_decisions(client, db_session):
     assert "latest_decision" in da
 
 
+def test_agent_eval_exposes_pre_and_post_correction_diagnostic(client, db_session):
+    """The candidate-space correction re-runs multi_agent_diagnostic under a new
+    experiment id; the endpoint must surface BOTH the latest (post-correction)
+    and the immediately-previous (pre-correction) run so the dashboard can show
+    the before/after, without deleting or overwriting the old one."""
+    from datetime import timedelta
+
+    from app.models.common import utcnow
+    from app.models.experiment import ExperimentRun
+
+    def _mk(name, created, coverage_rate):
+        run = ExperimentRun(
+            experiment_name=name,
+            experiment_type="multi_agent_diagnostic",
+            status="completed",
+            configuration_json={"seeds": [42]},
+            metrics_json={
+                "seeds": [42],
+                "total_scenario_seed_pairs": 12,
+                "candidate_coverage": {
+                    "pairs_checked": 12,
+                    "candidate_coverage_rate": coverage_rate,
+                    "missing_supported_strategy_rate": 0.0 if coverage_rate > 0.5 else 0.5,
+                    "invariant_dt_best_present_when_supported": coverage_rate > 0.5,
+                },
+                "digital_twin_to_final": {"override_rate": 1.0},
+                "override_outcomes": {"improved": 0, "degraded": 9, "neutral": 3},
+                "failure_modes": {},
+                "central_hypothesis": {},
+            },
+        )
+        run.created_at = created
+        db_session.add(run)
+        return run
+
+    now = utcnow()
+    _mk("PRE_CORRECTION multi_agent_diagnostic", now - timedelta(hours=2), 0.333)
+    _mk("POST_CORRECTION multi_agent_diagnostic", now, 0.833)
+    db_session.commit()
+
+    body = client.get("/api/v1/research/agent-evaluation", headers=_h()).json()
+
+    cur = body["multi_agent_diagnostic"]
+    prev = body["multi_agent_diagnostic_previous"]
+    assert cur is not None and prev is not None
+    assert cur["experiment_name"] == "POST_CORRECTION multi_agent_diagnostic"
+    assert prev["experiment_name"] == "PRE_CORRECTION multi_agent_diagnostic"
+    assert cur["experiment_id"] != prev["experiment_id"]
+    assert cur["candidate_coverage"]["candidate_coverage_rate"] == 0.833
+    assert prev["candidate_coverage"]["candidate_coverage_rate"] == 0.333
+    assert cur["candidate_coverage"]["invariant_dt_best_present_when_supported"] is True
+    assert prev["candidate_coverage"]["invariant_dt_best_present_when_supported"] is False
+
+
 # --- paper results ------------------------------------------------
 
 

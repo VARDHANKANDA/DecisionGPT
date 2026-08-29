@@ -83,6 +83,39 @@ def test_classify_tie_break():
 # --- aggregation -----------------------------------------------------
 
 
+def test_aggregate_candidate_coverage_block():
+    traces = [
+        {"disagreement": True, "improvement": -0.4, "failure_mode": diag.CANDIDATE_SET_MISMATCH,
+         "dt_best_revenue": 100.0, "dt_best_kpi_attainment": 0.4, "final_goal_achievement": 0.0,
+         "causal_evidence_level": "assumed", "confidence": 0.13, "risk_manager_top_pick": "M",
+         "dt_best_strategy": "Price +5%", "dt_candidate_count": 6, "full_candidate_count": 6,
+         "dt_best_strategy_present_in_full": False, "dt_best_strategy_supported": True,
+         "scenario_id": "S01", "seed": 42, "goal_objective": "increase_revenue"},
+        {"disagreement": True, "improvement": -0.1, "failure_mode": diag.RISK_OVERRULE,
+         "dt_best_revenue": 200.0, "dt_best_kpi_attainment": 0.6, "final_goal_achievement": 0.0,
+         "causal_evidence_level": "assumed", "confidence": 0.13, "risk_manager_top_pick": "M",
+         "dt_best_strategy": "Price +5%", "dt_candidate_count": 6, "full_candidate_count": 8,
+         "dt_best_strategy_present_in_full": True, "dt_best_strategy_supported": True,
+         "scenario_id": "S02", "seed": 42, "goal_objective": "increase_profit"},
+        {"disagreement": True, "improvement": -0.5, "failure_mode": diag.UNSUPPORTED_KPI,
+         "dt_best_revenue": 50.0, "dt_best_kpi_attainment": 0.5, "final_goal_achievement": 0.0,
+         "causal_evidence_level": "assumed", "confidence": 0.1, "risk_manager_top_pick": "M",
+         "dt_best_strategy": "Price +5%", "dt_candidate_count": 6, "full_candidate_count": 5,
+         "dt_best_strategy_present_in_full": False, "dt_best_strategy_supported": False,  # proxy KPI
+         "scenario_id": "S04", "seed": 42, "goal_objective": "reduce_inventory_risk"},
+    ]
+    cov = diag._aggregate(traces, [42])["candidate_coverage"]
+    assert cov["pairs_checked"] == 3
+    assert cov["dt_best_present_in_full"] == 1
+    assert cov["candidate_coverage_rate"] == pytest.approx(1 / 3, abs=1e-3)
+    # only S01 is a MISSING *supported* strategy — S04's is not supported for its goal
+    assert cov["missing_supported_strategy_rate"] == pytest.approx(1 / 3, abs=1e-3)
+    assert cov["invariant_dt_best_present_when_supported"] is False
+    assert cov["missing_pairs"] == [
+        {"scenario_id": "S01", "seed": 42, "dt_best_strategy": "Price +5%", "goal_objective": "increase_revenue"}
+    ]
+
+
 def test_aggregate_counts_and_rates():
     traces = [
         {"disagreement": True, "improvement": -0.4, "failure_mode": diag.CANDIDATE_SET_MISMATCH,

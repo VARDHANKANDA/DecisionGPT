@@ -41,7 +41,7 @@
             [
               "sales_forecast_linear",
               "v2",
-              "experimental",
+              "archived",
               "INDIA_REAL_BUSINESS",
               18.469340305777237,
               28.512180591223785,
@@ -61,7 +61,7 @@
             [
               "sales_forecast_naive",
               "v2",
-              "experimental",
+              "archived",
               "INDIA_REAL_BUSINESS",
               19.92156862745098,
               31.249784312981156,
@@ -81,7 +81,7 @@
             [
               "sales_forecast_xgboost",
               "v2",
-              "experimental",
+              "archived",
               "INDIA_REAL_BUSINESS",
               15.268979480161386,
               23.892719229281997,
@@ -264,7 +264,7 @@
               0.0,
               0.0,
               "n/a",
-              0.1936,
+              0.1508,
               60
             ],
             [
@@ -275,7 +275,7 @@
               2508.4022,
               2249.8338,
               "n/a",
-              1.8248,
+              1.4078,
               60
             ],
             [
@@ -286,7 +286,7 @@
               190.94,
               536.2041,
               "n/a",
-              1.88,
+              1.392,
               60
             ],
             [
@@ -297,7 +297,7 @@
               -2614.833,
               8847.4577,
               0.139,
-              1.9533,
+              1.68,
               60
             ]
           ],
@@ -305,9 +305,9 @@
         }
       ],
       "source_refs": {
-        "experiment_id": "675cf17e-0cf7-43e3-8efc-e9654eeef4c7",
+        "experiment_id": "0e1bd8dc-bc51-44ea-8e58-08a054201b85",
         "seed": 42,
-        "created_at": "2026-08-29T09:52:57.899022"
+        "created_at": "2026-08-29T11:52:52.802434"
       }
     },
     {
@@ -404,9 +404,9 @@
         }
       ],
       "source_refs": {
-        "experiment_id": "be392694-f001-4972-83ec-840fb9dac459",
+        "experiment_id": "db58455b-138b-4054-b1ac-e4b315d2edfc",
         "seed": 42,
-        "created_at": "2026-08-29T09:59:54.472459"
+        "created_at": "2026-08-29T12:07:59.631625"
       }
     }
   ],

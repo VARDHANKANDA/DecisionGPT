@@ -124,7 +124,9 @@ export default function AgentEvaluationPage() {
             )}
           </Panel>
 
-          {data.multi_agent_diagnostic ? <MultiAgentDiagnosticPanel d={data.multi_agent_diagnostic} /> : null}
+          {data.multi_agent_diagnostic ? (
+            <MultiAgentDiagnosticPanel d={data.multi_agent_diagnostic} prev={data.multi_agent_diagnostic_previous} />
+          ) : null}
 
           {data.ablation.experiment_id ? (
             <Panel title="Single vs multi-agent (ablation)">
@@ -148,9 +150,11 @@ export default function AgentEvaluationPage() {
   );
 }
 
-function MultiAgentDiagnosticPanel({ d }: { d: MultiAgentDiagnostic }) {
+function MultiAgentDiagnosticPanel({ d, prev }: { d: MultiAgentDiagnostic; prev: MultiAgentDiagnostic | null }) {
   const [fScenario, setFScenario] = useState("all");
   const [fMode, setFMode] = useState("all");
+  const pct = (x: number | null | undefined) => (x == null ? "—" : `${(x * 100).toFixed(0)}%`);
+  const isPost = (d.experiment_name ?? "").startsWith("POST_CORRECTION");
   const scenarios = useMemo(
     () => Array.from(new Set(d.scenario_drilldown.map((r) => r.scenario_id))).sort(),
     [d],
@@ -163,14 +167,14 @@ function MultiAgentDiagnosticPanel({ d }: { d: MultiAgentDiagnostic }) {
     (r) => (fScenario === "all" || r.scenario_id === fScenario) && (fMode === "all" || r.failure_mode === fMode),
   );
   const fig = d.failure_analysis_figure;
-  const pct = (x: number) => `${(x * 100).toFixed(0)}%`;
+  const cov = d.candidate_coverage;
 
   return (
     <Panel
-      title="Multi-Agent degradation diagnostic (research-only)"
+      title={`Multi-Agent degradation diagnostic${isPost ? " — POST-correction" : ""} (research-only)`}
       right={
         <span className="text-xs text-muted">
-          experiment {d.experiment_id.slice(0, 8)} · {d.total_scenario_seed_pairs} scenario-seed pairs
+          {d.experiment_name ?? "experiment"} {d.experiment_id.slice(0, 8)} · {d.total_scenario_seed_pairs} scenario-seed pairs
         </span>
       }
     >
@@ -179,6 +183,55 @@ function MultiAgentDiagnosticPanel({ d }: { d: MultiAgentDiagnostic }) {
         DecisionGPT {d.full_decisiongpt_mean_goal_achievement.toFixed(3)}. Every number is read from the
         stored `multi_agent_diagnostic` experiment.
       </p>
+
+      {/* pre vs post correction */}
+      {prev && (
+        <div className="mb-4 overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-xs">
+            <thead className="bg-muted-surface text-muted">
+              <tr>
+                <th className="px-2 py-1 text-left">Metric</th>
+                <th className="px-2 py-1 text-right">{(prev.experiment_name ?? "previous").replace("multi_agent_diagnostic", "").trim() || "PRE"}</th>
+                <th className="px-2 py-1 text-right">{(d.experiment_name ?? "current").replace("multi_agent_diagnostic", "").trim() || "CURRENT"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Candidate coverage rate", pct(prev.candidate_coverage?.candidate_coverage_rate), pct(cov?.candidate_coverage_rate)],
+                ["Missing supported-strategy rate", pct(prev.candidate_coverage?.missing_supported_strategy_rate), pct(cov?.missing_supported_strategy_rate)],
+                ["DT best → Final override rate", pct(prev.digital_twin_to_final.override_rate), pct(d.digital_twin_to_final.override_rate)],
+                ["Override improved", `${prev.override_outcomes.improved}`, `${d.override_outcomes.improved}`],
+                ["Override degraded", `${prev.override_outcomes.degraded}`, `${d.override_outcomes.degraded}`],
+                ["Full mean goal achievement", prev.full_decisiongpt_mean_goal_achievement.toFixed(3), d.full_decisiongpt_mean_goal_achievement.toFixed(3)],
+                ["Digital Twin mean goal achievement", prev.digital_twin_mean_goal_achievement.toFixed(3), d.digital_twin_mean_goal_achievement.toFixed(3)],
+              ].map((r, i) => (
+                <tr key={i} className="border-t border-border">
+                  <td className="px-2 py-1 text-foreground">{r[0]}</td>
+                  <td className="px-2 py-1 text-right">{r[1]}</td>
+                  <td className="px-2 py-1 text-right">{r[2]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* candidate-coverage check */}
+      {cov && (
+        <div className="mb-4 rounded-lg border border-border bg-muted-surface p-3 text-xs text-muted">
+          <span className="font-medium text-foreground">Candidate coverage:</span>{" "}
+          {cov.dt_best_present_in_full}/{cov.pairs_checked} pairs have the Digital-Twin-best strategy in
+          Full DecisionGPT&apos;s generated set ({pct(cov.candidate_coverage_rate)}). Missing supported:{" "}
+          {pct(cov.missing_supported_strategy_rate)}. Mean candidates: DT {cov.mean_dt_candidate_count} ·
+          Full {cov.mean_full_candidate_count}. Invariant (DT-best present when supported):{" "}
+          <span className={cov.invariant_dt_best_present_when_supported ? "text-success" : "text-danger"}>
+            {cov.invariant_dt_best_present_when_supported ? "holds" : "does NOT hold"}
+          </span>
+          {cov.missing_pairs.length > 0 && (
+            <> — missing: {cov.missing_pairs.map((p) => `${p.scenario_id}/${p.seed}`).join(", ")}</>
+          )}
+        </div>
+      )}
 
       <StatGrid>
         <Metric label="DT best → Final override rate" value={pct(d.digital_twin_to_final.override_rate)}

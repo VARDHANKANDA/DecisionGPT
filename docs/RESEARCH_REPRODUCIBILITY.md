@@ -81,8 +81,18 @@ from app.services import experiment_service as e;d=SessionLocal();\
 python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
 from app.services import experiment_service as e;d=SessionLocal();\
 [print(t, e.run_experiment(d,t,{'seeds':[42,43,44,45,46],'name':'paper_'+t}).status) for t in \
-['multi_scenario_architecture','multi_scenario_ablation']];d.close()"
-#   multi_scenario_architecture ~= 6 min, multi_scenario_ablation ~= 35-45 min (CPU-bound, deterministic; 300 pipeline runs)
+['multi_scenario_architecture','multi_scenario_ablation','multi_agent_diagnostic']];d.close()"
+#   multi_scenario_architecture ~= 5 min, multi_scenario_ablation ~= 10-25 min,
+#   multi_agent_diagnostic ~= 5 min (all CPU-bound, deterministic, LLM template mode)
+
+# --- Candidate-space correction + controlled re-test (docs/CANDIDATE_SPACE_CORRECTION_REPORT.md) ---
+# The diagnostic found a candidate-space confound; strategy_generation_service._revenue_templates()
+# was given the supported Price +5% / +10% levers, then the SAME experiments were repeated:
+python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
+from app.services import experiment_service as e;d=SessionLocal();\
+[print(t, e.run_experiment(d,t,{'seeds':[42,43,44,45,46],'name':'POST_CORRECTION '+t}).status) for t in \
+['multi_scenario_architecture','multi_scenario_ablation','multi_agent_diagnostic']];d.close()"
+#   pre-correction runs are relabelled 'PRE_CORRECTION ...' and kept in the manifest.
 
 # a controlled decision (Digital Twin simulations + confidence basis) on the demo synthetic business
 python -c "import sys;sys.path.insert(0,'backend');from app.db.session import SessionLocal;\
@@ -107,9 +117,10 @@ curl -s localhost:8000/api/v1/research/paper-results     -H "X-Research-Token: $
 | 3 · Digital Twin evaluation | `sample_size = 0` → **NOT READY**, needs `DecisionOutcome` records |
 | 4 · Causal graph (synthetic ground truth) | precision 0.40, recall 1.00, SHD 3, TP 2 / FP 3 / FN 0 |
 | 5 · Decision architecture (legacy, 1×1) | A 0.00 · B 0.333 · C 0.00 · D 0.00 goal achievement (`legacy_single_scenario_result`) |
-| **5 · Decision architecture (multi, 12×5=60/arch)** | **mean goal achievement A 0.000 · B 0.486 [CI 0.405, 0.567] · C 0.003 · D 0.084**. Paired Wilcoxon: D>A p=0.0045; **D<B p<0.0001** (B beats Full on 45/60). |
+| **5 · Decision architecture (multi, 12×5=60/arch)** | **mean goal achievement A 0.000 · B 0.486 [CI 0.405, 0.567] · C 0.003 · D 0.084**. Paired Wilcoxon: D>A p=0.0045; **D<B p<0.0001** (B beats Full on 45/60). Identical PRE (`675cf17e`) and POST-correction (`0e1bd8dc`) — see below. |
 | 6 · Ablation A–F (legacy, 1×1) | every `delta_goal_achievement = 0.0`; confidence 0.150→0.272 when Causal Graph removed |
-| **6 · Ablation A–F (multi, 12×5=60/config)** | most `Δ vs Full ≈ 0`; large effect only for removing the Digital Twin (config B → 0.00). See the completed `multi_scenario_ablation` run. |
+| **6 · Ablation A–F (multi, 12×5=60/config)** | most `Δ vs Full ≈ 0`; large effect only for removing the Digital Twin (config B → 0.00). See the completed `multi_scenario_ablation` run. Identical PRE (`be392694`) / POST (`db58455b`). |
+| **Candidate-space correction re-test** | `candidate_coverage_rate` 0.333 → **0.833**, `missing_supported_strategy_rate` 0.500 → **0.000** (invariant now holds). Architecture / ablation / pairwise aggregates **byte-identical** to pre-correction: D still 0.084, D<B p<0.0001, override rate 1.00 (0 improved / 45 degraded). Failure mode shifted `CANDIDATE_SET_MISMATCH` 30 → 0, `RISK_OVERRULE` 15 → 45. POST diagnostic `f24abc1b`. See `docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`. |
 | 7 · End-to-end (demo business) | selected "Marketing +20%", confidence 0.1468 = 0.9788 × 0.5 × 0.6 × (1−0.5) |
 
 `churn` platform: logreg F1 0.669 / AUC 0.798, RF F1 0.661 / AUC 0.793, xgb F1 0.658 / AUC 0.792.

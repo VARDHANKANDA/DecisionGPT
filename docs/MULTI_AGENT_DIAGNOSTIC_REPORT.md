@@ -1,4 +1,13 @@
-# Multi-Agent Degradation Diagnostic
+# Multi-Agent Degradation Diagnostic (PRE-correction)
+
+> This is the **pre-correction** diagnostic. Its dominant finding
+> (`CANDIDATE_SET_MISMATCH`, 50 %) was a genuine experimental confound: the
+> goal-aware candidate generator omitted a supported price-increase lever, so
+> architectures B and D were not comparing the same legitimate strategy space.
+> The generator was corrected and the controlled experiment repeated — see
+> **`docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`** for the post-correction
+> result. This document is preserved unchanged as the record of the audit that
+> found the confound.
 
 **Analysis only — architecture frozen.** The multi-scenario experiment
 (`docs/RESEARCH_EXPERIMENT_REPORT.md` §5) measured that Full DecisionGPT (D)

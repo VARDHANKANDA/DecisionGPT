@@ -24,6 +24,16 @@ def _latest(db: Session, experiment_type: str) -> ExperimentRun | None:
     )
 
 
+def _latest_n(db: Session, experiment_type: str, n: int) -> list[ExperimentRun]:
+    return (
+        db.query(ExperimentRun)
+        .filter(ExperimentRun.experiment_type == experiment_type, ExperimentRun.status == "completed")
+        .order_by(ExperimentRun.created_at.desc())
+        .limit(n)
+        .all()
+    )
+
+
 def _architecture_rows(run: ExperimentRun | None) -> list[dict]:
     if run is None:
         return []
@@ -122,9 +132,11 @@ def _diagnostic_summary(run: ExperimentRun | None) -> dict | None:
     ]
     return {
         "experiment_id": run.id,
+        "experiment_name": run.experiment_name,
         "created_at": run.created_at.isoformat() if run.created_at else None,
         "seeds": m.get("seeds"),
         "total_scenario_seed_pairs": m.get("total_scenario_seed_pairs"),
+        "candidate_coverage": m.get("candidate_coverage"),
         "digital_twin_to_final": m.get("digital_twin_to_final"),
         "override_outcomes": m.get("override_outcomes"),
         "failure_modes": m.get("failure_modes"),
@@ -143,7 +155,7 @@ def get_agent_evaluation(db: Session) -> dict:
     arch_run = _latest(db, "decision_architecture")
     ablation_run = _latest(db, "ablation")
     multi_agent_run = _latest(db, "multi_agent")
-    diagnostic_run = _latest(db, "multi_agent_diagnostic")
+    diagnostic_runs = _latest_n(db, "multi_agent_diagnostic", 2)
 
     architecture_rows = _architecture_rows(arch_run)
 
@@ -178,6 +190,9 @@ def get_agent_evaluation(db: Session) -> dict:
             "comparisons": (ablation_run.metrics_json or {}).get("comparisons", []) if ablation_run else [],
         },
         "debate_analysis": _debate_analysis(db),
-        "multi_agent_diagnostic": _diagnostic_summary(diagnostic_run),
+        "multi_agent_diagnostic": _diagnostic_summary(diagnostic_runs[0] if diagnostic_runs else None),
+        "multi_agent_diagnostic_previous": (
+            _diagnostic_summary(diagnostic_runs[1]) if len(diagnostic_runs) > 1 else None
+        ),
         "empty_state": empty_state,
     }

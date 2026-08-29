@@ -105,3 +105,66 @@ def test_every_candidate_action_is_within_digital_twin_bounds(db):
         result = sg.generate_candidates(db, "b1", _Goal(objective))
         for c in result.candidates:
             assert sg._within_bounds(c.actions), (objective, c.name)
+
+
+# --- candidate-space correction (task: fix candidate-set mismatch) ------
+
+
+@pytest.mark.parametrize("objective", ["increase_revenue", "increase_sales"])
+def test_revenue_and_sales_goals_now_generate_price_increase_candidates(db, objective):
+    """The diagnostic found the DT-best 'Price +5%' was absent from the
+    revenue/sales generator, so architectures B/D compared different strategy
+    spaces. It must now be produced (it is a supported price lever the
+    Digital Twin simulates and the fixed CANDIDATE_GRID already includes)."""
+    names = [c.name for c in sg.generate_candidates(db, "b1", _Goal(objective)).candidates]
+    price_up = [n for n in names if n.startswith("Price +")]
+    assert "Price +5%" in names, names
+    assert price_up, names
+
+
+def test_price_increase_present_for_revenue_and_profit_alike(db):
+    rev = {c.name for c in sg.generate_candidates(db, "b1", _Goal("increase_revenue")).candidates}
+    prof = {c.name for c in sg.generate_candidates(db, "b1", _Goal("increase_profit")).candidates}
+    assert "Price +5%" in rev and "Price +5%" in prof         # comparable price-lever coverage
+    assert rev != prof                                        # still goal-aware, not identical
+
+
+def test_unsupported_capabilities_still_excluded_after_the_fix(db):
+    # no marketing / inventory data on the fake DB
+    rev = sg.generate_candidates(db, "b1", _Goal("increase_revenue"))
+    assert all("Marketing" not in c.name for c in rev.candidates)
+    assert all("Inventory" not in c.name for c in rev.candidates)
+    assert any("marketing" in e.lower() for e in rev.excluded)
+    # goals that need data still return an explicit insufficient-evidence result
+    assert sg.generate_candidates(db, "b1", _Goal("improve_marketing_roi")).candidates == []
+    assert sg.generate_candidates(db, "b1", _Goal("reduce_inventory_risk")).candidates == []
+
+
+def test_no_price_increase_constraint_still_removes_the_new_candidates(db):
+    result = sg.generate_candidates(
+        db, "b1", _Goal("increase_revenue", constraints=["no_price_increase"])
+    )
+    assert all(not (a["type"] == "price_change" and a["value"] > 0)
+               for c in result.candidates for a in c.actions)
+
+
+def test_candidate_generation_is_deterministic(db):
+    a = [c.name for c in sg.generate_candidates(db, "b1", _Goal("increase_revenue")).candidates]
+    b = [c.name for c in sg.generate_candidates(db, "b1", _Goal("increase_revenue")).candidates]
+    assert a == b
+
+
+def test_generated_revenue_set_covers_the_fixed_candidate_grid_price_levers(db):
+    """DT (architecture B/C) sweeps decision_service.CANDIDATE_GRID; the
+    goal-aware generator must cover its *price* levers so the strategy spaces
+    are comparable. (Marketing-decrease stays excluded for a revenue goal by
+    design — it is counterproductive, not unsupported.)"""
+    from app.services.decision_service import CANDIDATE_GRID, strategy_name_for_actions
+
+    grid_price = {
+        strategy_name_for_actions(a)
+        for actions in CANDIDATE_GRID for a in [actions]
+        if all(x["type"] == "price_change" for x in actions)
+    }
+    gen = {c.name for c in sg.generate_candidates(db, "b1", _Goal("increase_revenue")).candidates}
+    assert grid_price <= gen, (grid_price, gen)

@@ -4,6 +4,16 @@ Strengthens **Table 4 (Decision Architecture Comparison)** and **Table 5
 (Ablation Study)** from `1 scenario × 1 seed` to
 `12 scenarios × 5 seeds = 60 paired evaluations` per architecture / config.
 
+> **Pre / post correction.** The first multi-scenario run
+> (`PRE_CORRECTION …`) revealed a candidate-space confound — the goal-aware
+> generator omitted a supported price-increase lever, so architectures B and D
+> did not compare the same legitimate strategy space
+> (`docs/MULTI_AGENT_DIAGNOSTIC_REPORT.md`). The generator was corrected and
+> the **identical** experiment (same scenarios, seeds, metrics, statistics)
+> was repeated (`POST_CORRECTION …`, fresh experiment IDs). Both runs are kept
+> in the manifest; Paper Results / the dashboard use the post-correction run.
+> See `docs/CANDIDATE_SPACE_CORRECTION_REPORT.md`.
+
 **No architecture change.** `multi_scenario_service` only adds *scenario
 generation* + *statistical aggregation*; it calls the existing
 `decision_architecture_service` / `ablation_service` code unchanged (same

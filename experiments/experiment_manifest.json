@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-29T10:49:06.577985+00:00",
-  "experiment_count": 10,
+  "generated_at": "2026-08-29T12:18:58.682678+00:00",
+  "experiment_count": 13,
   "multi_scenario": {
     "architecture": {
-      "experiment_id": "675cf17e-0cf7-43e3-8efc-e9654eeef4c7",
+      "experiment_id": "0e1bd8dc-bc51-44ea-8e58-08a054201b85",
       "random_seed": 42,
       "seeds": [
         42,
@@ -19,7 +19,7 @@
       "statistical_method": "paired Wilcoxon signed-rank on scenario x seed (scipy.stats.wilcoxon, two-sided, zero_method='wilcox')"
     },
     "ablation": {
-      "experiment_id": "be392694-f001-4972-83ec-840fb9dac459",
+      "experiment_id": "db58455b-138b-4054-b1ac-e4b315d2edfc",
       "random_seed": 42,
       "seeds": [
         42,
@@ -40,8 +40,115 @@
   },
   "experiments": [
     {
+      "experiment_id": "f24abc1b-9cf8-434e-a7ce-8a67e20fdf9e",
+      "experiment_name": "POST_CORRECTION multi_agent_diagnostic",
+      "experiment_type": "multi_agent_diagnostic",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_scenario_suite",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "name": "POST_CORRECTION multi_agent_diagnostic"
+      },
+      "created_at": "2026-08-29T12:16:05.454994",
+      "started_at": "2026-08-29T12:16:05.457240",
+      "completed_at": "2026-08-29T12:18:58.636138",
+      "error_message": null,
+      "metric_summary": {}
+    },
+    {
+      "experiment_id": "db58455b-138b-4054-b1ac-e4b315d2edfc",
+      "experiment_name": "POST_CORRECTION multi_scenario_ablation",
+      "experiment_type": "multi_scenario_ablation",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_scenario_suite",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "name": "POST_CORRECTION multi_scenario_ablation"
+      },
+      "created_at": "2026-08-29T12:07:59.631625",
+      "started_at": "2026-08-29T12:07:59.632623",
+      "completed_at": "2026-08-29T12:16:05.435905",
+      "error_message": null,
+      "metric_summary": {
+        "scenario_count": 12,
+        "seed_count": 5,
+        "evaluation_count": 360,
+        "mean_delta_goal_achievement_vs_full": {
+          "B": 0.0844,
+          "C": 0.0,
+          "D": 0.0,
+          "E": 0.0,
+          "F": 0.0
+        }
+      }
+    },
+    {
+      "experiment_id": "0e1bd8dc-bc51-44ea-8e58-08a054201b85",
+      "experiment_name": "POST_CORRECTION multi_scenario_architecture",
+      "experiment_type": "multi_scenario_architecture",
+      "status": "completed",
+      "random_seed": 42,
+      "dataset_version": "synthetic_scenario_suite",
+      "model_versions": {
+        "sales_forecast_naive": "v1",
+        "sales_forecast_linear": "v1",
+        "sales_forecast_xgboost": "v1"
+      },
+      "configuration": {
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "name": "POST_CORRECTION multi_scenario_architecture"
+      },
+      "created_at": "2026-08-29T11:52:52.802434",
+      "started_at": "2026-08-29T11:52:52.803433",
+      "completed_at": "2026-08-29T11:57:33.864114",
+      "error_message": null,
+      "metric_summary": {
+        "scenario_count": 12,
+        "seed_count": 5,
+        "evaluation_count": 240,
+        "mean_goal_achievement": {
+          "A": 0.0,
+          "B": 0.4856,
+          "C": 0.0025,
+          "D": 0.0844
+        },
+        "paired_D_vs_A": "Full DecisionGPT showed statistically significantly higher goal_achievement than Prediction only across the 60 paired scenario/seed evaluations (p=0.0045).",
+        "paired_D_vs_B": "Full DecisionGPT showed statistically significantly lower goal_achievement than Prediction + Digital Twin across the 60 paired scenario/seed evaluations (p=0.0000)."
+      }
+    },
+    {
       "experiment_id": "c58c4537-56f1-4366-a551-5d7c4da99293",
-      "experiment_name": "paper_multi_agent_diagnostic",
+      "experiment_name": "PRE_CORRECTION multi_agent_diagnostic",
       "experiment_type": "multi_agent_diagnostic",
       "status": "completed",
       "random_seed": 42,
@@ -218,7 +325,7 @@
     },
     {
       "experiment_id": "be392694-f001-4972-83ec-840fb9dac459",
-      "experiment_name": "paper_multi_ablation",
+      "experiment_name": "PRE_CORRECTION multi_scenario_ablation",
       "experiment_type": "multi_scenario_ablation",
       "status": "completed",
       "random_seed": 42,
@@ -257,7 +364,7 @@
     },
     {
       "experiment_id": "675cf17e-0cf7-43e3-8efc-e9654eeef4c7",
-      "experiment_name": "paper_multi_arch",
+      "experiment_name": "PRE_CORRECTION multi_scenario_architecture",
       "experiment_type": "multi_scenario_architecture",
       "status": "completed",
       "random_seed": 42,

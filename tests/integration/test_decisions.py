@@ -57,8 +57,14 @@ def test_analyze_produces_a_reasoned_decision(client, db_session):
     for narrative in body["agent_reviews"].values():
         assert len(narrative) > 0
 
-    # Up to 5 alternatives (6 candidates - 1 selected), each independently scored.
-    assert 0 < len(body["alternatives"]) <= 5
+    # Alternatives = every generated candidate except the selected one, each
+    # independently scored. The revenue goal-template set is 8 candidates after
+    # the candidate-space correction (adds the supported Price +5% / +10% levers
+    # so Full DecisionGPT sees the same strategy space the Digital Twin sweeps —
+    # docs/CANDIDATE_SPACE_CORRECTION_REPORT.md), so up to 7 alternatives.
+    assert 0 < len(body["alternatives"]) <= 7
+    alt_names = {a["strategy_name"] for a in body["alternatives"]} | {body["selected_strategy_name"]}
+    assert "Price +5%" in alt_names  # supported price-increase lever is now generated
     scores = [body["alternatives"][i]["strategy_score"] for i in range(len(body["alternatives"]))]
     assert scores == sorted(scores, reverse=True)  # ranked, best alternative first
 
