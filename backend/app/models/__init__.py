@@ -9,6 +9,7 @@ from app.models.decision import Decision, DecisionOutcome
 from app.models.digital_twin import DigitalTwinSimulation, DigitalTwinState
 from app.models.evaluation import CausalEvidenceUpdate, PredictionEvaluation
 from app.models.experiment import ExperimentRun
+from app.models.finance import FinanceRecord
 from app.models.forecast import Forecast
 from app.models.goal import Goal
 from app.models.ingestion_job import DataIngestionJob
@@ -41,6 +42,7 @@ __all__ = [
     "DigitalTwinSimulation",
     "DigitalTwinState",
     "ExperimentRun",
+    "FinanceRecord",
     "Forecast",
     "Goal",
     "DataIngestionJob",

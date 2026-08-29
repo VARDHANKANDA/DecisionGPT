@@ -36,7 +36,7 @@ from app.services import training_service  # noqa: E402
 # dataset registry slug -> (task, [model_types])
 ACTIVE_PLAN = {
     "india": [
-        ("external-india-mandi-prices-forecasting", "forecasting",
+        ("external-india-agmarknet-forecasting", "forecasting",
          ["naive", "linear", "xgboost"]),
     ],
 }

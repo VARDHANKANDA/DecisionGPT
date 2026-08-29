@@ -1,6 +1,9 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict, Field
+
+# Indian business-profile context (docs/INDIAN_SME_DATA_ARCHITECTURE.md).
+# All optional — used only to condition recommendations, never to invent data.
 
 
 class BusinessCreate(BaseModel):
@@ -12,6 +15,15 @@ class BusinessCreate(BaseModel):
     currency: str = "INR"
     description: str | None = None
 
+    state: str | None = None
+    district: str | None = None
+    city: str | None = None
+    enterprise_type: str | None = None
+    organisation_type: str | None = None
+    major_activity: str | None = None
+    nic_code: str | None = None
+    registration_date: date | None = None
+
 
 class BusinessUpdate(BaseModel):
     name: str | None = None
@@ -19,6 +31,15 @@ class BusinessUpdate(BaseModel):
     business_type: str | None = None
     business_size: str | None = None
     description: str | None = None
+
+    state: str | None = None
+    district: str | None = None
+    city: str | None = None
+    enterprise_type: str | None = None
+    organisation_type: str | None = None
+    major_activity: str | None = None
+    nic_code: str | None = None
+    registration_date: date | None = None
 
 
 class BusinessOut(BaseModel):
@@ -34,3 +55,13 @@ class BusinessOut(BaseModel):
     description: str | None
     created_at: datetime
     updated_at: datetime
+
+    state: str | None = None
+    district: str | None = None
+    city: str | None = None
+    enterprise_type: str | None = None
+    organisation_type: str | None = None
+    major_activity: str | None = None
+    nic_code: str | None = None
+    registration_date: date | None = None
+    business_age_years: int | None = None

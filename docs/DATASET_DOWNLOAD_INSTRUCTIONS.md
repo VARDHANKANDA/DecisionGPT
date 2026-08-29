@@ -20,7 +20,7 @@ regenerate the processed CSVs.
 Genuine Indian benchmark. Public JSON REST API on data.gov.in — no login.
 
 ```bash
-python scripts/download_india_datasets.py            # writes raw/india_mandi_prices_raw.csv
+python scripts/download_india_datasets.py            # writes raw/india_agmarknet_raw.csv
 python scripts/build_external_datasets.py            # -> processed/*.csv (seed 42)
 ```
 
@@ -51,7 +51,7 @@ python scripts/build_external_datasets.py            # -> processed/*.csv (seed 
   benchmark: the canonical `units_sold` column carries the daily **modal
   price (INR/quintal)**; `price` is a 28-day backward rolling median (no
   leakage); `marketing_spend` / `promotion_flag` are `0` (absent in source —
-  not invented). See `data/external/india_mandi_prices/metadata.md`.
+  not invented). See `data/external/india_agmarknet/metadata.md`.
 
 ## 2. A genuine Indian *transaction-level* / *churn* dataset — PENDING (manual)
 
@@ -73,7 +73,7 @@ To add one yourself:
    Do not scrape.
 3. Put raw file(s) in `data/external/indian_business/raw/` (create the folder).
 4. Write `data/external/indian_business/{metadata.json, metadata.md}` following
-   `data/external/india_mandi_prices/` (source, source_url, **verified
+   `data/external/india_agmarknet/` (source, source_url, **verified
    licence**, citation, download_date, `geography: "India"`, `data_type`).
 5. Add `ml/preprocessing/indian_business_adapter.py` mapping columns to a
    canonical schema (`series_id, date, units_sold, price, marketing_spend=0,

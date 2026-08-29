@@ -2,8 +2,13 @@ from fastapi import APIRouter, Depends, File, UploadFile
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas.ingestion import DataSummaryOut, IngestionJobOut, MappingConfirmRequest
-from app.services import data_ingestion_service
+from app.schemas.ingestion import (
+    CapabilitiesOut,
+    DataSummaryOut,
+    IngestionJobOut,
+    MappingConfirmRequest,
+)
+from app.services import capability_service, data_ingestion_service
 
 router = APIRouter()
 
@@ -37,3 +42,10 @@ def confirm_mapping(
 @router.get("/businesses/{business_id}/data/summary", response_model=DataSummaryOut)
 def get_data_summary(business_id: str, db: Session = Depends(get_db)):
     return data_ingestion_service.get_data_summary(db, business_id)
+
+
+@router.get("/businesses/{business_id}/data/capabilities", response_model=CapabilitiesOut)
+def get_capabilities(business_id: str, db: Session = Depends(get_db)):
+    """Which DecisionGPT features the SME's uploaded data currently unlocks,
+    and exactly what to upload for the rest (docs/INDIAN_SME_DATA_ARCHITECTURE.md)."""
+    return capability_service.get_capabilities(db, business_id)

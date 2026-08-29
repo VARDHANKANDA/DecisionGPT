@@ -4,7 +4,7 @@ M5 / UCI Online Retail / Myanmar Supermarket were retired from the active
 India-focused evaluation (see docs/INDIAN_DATASET_INTEGRATION_REPORT.md), but
 their adapters remain in the tree and are still reproducible via the
 ``--retired`` flag on the benchmark scripts - so this contract coverage is
-kept. The active Indian adapter is covered by test_india_mandi_adapter.py.
+kept. The active Indian adapter is covered by test_india_agmarknet_adapter.py.
 
 These build tiny synthetic RAW fixtures (the real raw files are gitignored),
 so they run fast and on a fresh clone.

@@ -26,7 +26,9 @@ import pandas as pd  # noqa: E402
 
 from ml.preprocessing import (  # noqa: E402
     FORECASTING_CANONICAL_COLUMNS,
-    india_mandi_adapter,
+    india_agmarknet_adapter,
+    india_festival_adapter,
+    india_macro_adapter,
 )
 
 EXT = ROOT / "data" / "external"
@@ -65,19 +67,40 @@ def _check_churn(df: pd.DataFrame, name: str) -> None:
 
 
 def build_india() -> None:
-    raw = EXT / "india_mandi_prices" / "raw"
+    raw = EXT / "india_agmarknet" / "raw"
     print("India Agri-Commodity Daily Market Prices (AGMARKNET / data.gov.in):")
-    fc = india_mandi_adapter.build_forecasting(raw)
-    _check_forecasting(fc, "india_mandi_forecasting")
-    _write(fc, EXT / "india_mandi_prices/processed/india_mandi_forecasting.csv",
-           "india_mandi_prices/processed/india_mandi_forecasting.csv")
+    fc = india_agmarknet_adapter.build_forecasting(raw)
+    _check_forecasting(fc, "india_agmarknet_forecasting")
+    _write(fc, EXT / "india_agmarknet/processed/india_agmarknet_forecasting.csv",
+           "india_agmarknet/processed/india_agmarknet_forecasting.csv")
 
-    an = india_mandi_adapter.build_regional_analytics(raw)
-    _write(an, EXT / "india_mandi_prices/processed/india_mandi_regional_analytics.csv",
-           "india_mandi_prices/processed/india_mandi_regional_analytics.csv")
+    an = india_agmarknet_adapter.build_regional_analytics(raw)
+    _write(an, EXT / "india_agmarknet/processed/india_agmarknet_regional_analytics.csv",
+           "india_agmarknet/processed/india_agmarknet_regional_analytics.csv")
 
 
-ACTIVE_BUILDERS = {"india": build_india}
+def build_festivals() -> None:
+    print("India festival / holiday calendar (holidays lib -> INDIA_PUBLIC_CONTEXT):")
+    ev = india_festival_adapter.build_events()
+    daily = india_festival_adapter.build_daily()
+    _write(ev, EXT / "india_context/festivals/processed/india_festivals.csv",
+           "india_context/festivals/processed/india_festivals.csv")
+    _write(daily, EXT / "india_context/festivals/processed/india_festival_daily.csv",
+           "india_context/festivals/processed/india_festival_daily.csv")
+
+
+def build_macro() -> None:
+    print("India macro context (RBI repo rate -> INDIA_PUBLIC_CONTEXT):")
+    df = india_macro_adapter.build_context()
+    _write(df, EXT / "india_context/macro/processed/india_macro_context.csv",
+           "india_context/macro/processed/india_macro_context.csv")
+
+
+ACTIVE_BUILDERS = {
+    "india": build_india,
+    "festivals": build_festivals,
+    "macro": build_macro,
+}
 
 
 # --- retired: non-Indian benchmarks (reproducibility only) -----------

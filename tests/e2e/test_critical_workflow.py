@@ -130,4 +130,5 @@ def test_business_a_cannot_access_business_b(client, db_session):
     assert client.get(f"/api/v1/businesses/{business_b}/memory").json() == []
     assert client.get(f"/api/v1/businesses/{business_b}/data/summary").json() == {
         "products": 0, "customers": 0, "sales": 0, "marketing_campaigns": 0, "inventory_records": 0,
+        "finance_records": 0, "business_profile_set": False,
     }

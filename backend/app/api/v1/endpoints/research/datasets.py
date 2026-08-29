@@ -18,6 +18,7 @@ def list_datasets(db: Session = Depends(get_db)):
     """
     return {
         "platform": dataset_registry_service.list_datasets(),
+        "external": dataset_registry_service.list_external_datasets(),
         "uploaded": research_dataset_service.list_datasets(db),
     }
 

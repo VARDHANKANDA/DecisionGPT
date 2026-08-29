@@ -5,6 +5,7 @@ import {
   researchApi,
   ResearchApiError,
   type DatasetsResponse,
+  type ExternalDatasetEntry,
   type UploadedDataset,
 } from "@/lib/research-api";
 
@@ -45,15 +46,33 @@ export default function DatasetRegistryPage() {
             </div>
           )}
 
-          <h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-muted">Bundled platform datasets</h2>
+          <h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-muted">
+            Indian public &amp; benchmark datasets
+          </h2>
+          {data.external.length === 0 ? (
+            <p className="mt-2 text-sm text-muted">None registered.</p>
+          ) : (
+            <div className="mt-3 flex flex-col gap-4">
+              {data.external.map((d) => (
+                <ExternalCard key={d.dataset_id} d={d} />
+              ))}
+            </div>
+          )}
+
+          <h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-muted">
+            Bundled platform datasets (synthetic, controlled)
+          </h2>
           <div className="mt-3 flex flex-col gap-4">
             {data.platform.map((d) => (
               <div key={d.dataset_id} className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <h3 className="font-medium text-foreground">{d.name}</h3>
-                  <span className="rounded-full bg-warning-soft px-3 py-1 text-xs font-medium text-warning">
-                    {d.evidence_level}
-                  </span>
+                  <div className="flex gap-2">
+                    <CategoryBadge value={d.data_category} />
+                    <span className="rounded-full bg-warning-soft px-3 py-1 text-xs font-medium text-warning">
+                      {d.evidence_level}
+                    </span>
+                  </div>
                 </div>
                 <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
                   <Field label="Dataset ID" value={d.dataset_id} />
@@ -150,11 +169,14 @@ function UploadedCard({ d }: { d: UploadedDataset }) {
   const latest = d.versions[0];
   return (
     <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="font-medium text-foreground">{d.name}</h3>
-        <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">
-          {d.version_count} version{d.version_count === 1 ? "" : "s"}
-        </span>
+        <div className="flex gap-2">
+          <CategoryBadge value={d.data_category} />
+          <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">
+            {d.version_count} version{d.version_count === 1 ? "" : "s"}
+          </span>
+        </div>
       </div>
       <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
         <Field label="Dataset ID" value={d.dataset_id} />
@@ -194,6 +216,50 @@ function Field({ label, value }: { label: string; value: string }) {
     <div>
       <dt className="text-xs text-muted">{label}</dt>
       <dd className="break-words text-foreground">{value}</dd>
+    </div>
+  );
+}
+
+const CATEGORY_STYLES: Record<string, string> = {
+  INDIA_REAL_BUSINESS: "bg-success-soft text-success",
+  INDIA_PUBLIC_CONTEXT: "bg-accent-soft text-accent",
+  INDIA_AGRICULTURAL_PRICE: "bg-accent-soft text-accent",
+  SYNTHETIC_CONTROLLED: "bg-warning-soft text-warning",
+  RETIRED_NON_INDIAN: "bg-muted-surface text-muted",
+  EXTERNAL_BENCHMARK: "bg-muted-surface text-muted",
+  UNCLASSIFIED: "bg-muted-surface text-muted",
+};
+
+function CategoryBadge({ value }: { value: string }) {
+  return (
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-medium ${CATEGORY_STYLES[value] ?? CATEGORY_STYLES.UNCLASSIFIED}`}
+    >
+      {value}
+    </span>
+  );
+}
+
+function ExternalCard({ d }: { d: ExternalDatasetEntry }) {
+  return (
+    <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h3 className="font-medium text-foreground">{d.display_label}</h3>
+        <div className="flex gap-2">
+          <CategoryBadge value={d.data_category} />
+          <span className="rounded-full bg-muted-surface px-3 py-1 text-xs font-medium text-muted">{d.status}</span>
+        </div>
+      </div>
+      <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+        <Field label="Dataset ID" value={d.dataset_id} />
+        <Field label="Geography" value={d.geography} />
+        <Field label="Date range" value={d.date_range ?? "—"} />
+        <Field label="License" value={d.license} />
+      </dl>
+      <p className="mt-3 text-xs text-muted">{d.business_domain}</p>
+      {d.supported_tasks.length > 0 ? (
+        <p className="mt-2 text-xs text-muted">Supports: {d.supported_tasks.join(", ")}</p>
+      ) : null}
     </div>
   );
 }

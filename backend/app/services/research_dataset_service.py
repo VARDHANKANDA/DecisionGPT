@@ -19,6 +19,7 @@ from sqlalchemy.orm import Session
 from app.core.config import get_settings
 from app.core.errors import NotFoundError, ValidationFailedError
 from app.models.research import ResearchDataset, ResearchDatasetVersion
+from app.services import dataset_category
 from ml.pipeline.validation import validate_dataframe
 
 SUPPORTED_EXTENSIONS = {"csv", "xlsx", "parquet"}
@@ -181,6 +182,9 @@ def list_datasets(db: Session) -> list[dict]:
                 "domain": ds.domain,
                 "source": ds.source,
                 "license": ds.license,
+                "data_category": dataset_category.classify(
+                    source=ds.source, dataset_id=ds.dataset_id
+                ),
                 "created_at": ds.created_at,
                 "created_by": ds.created_by,
                 "version_count": len(versions),

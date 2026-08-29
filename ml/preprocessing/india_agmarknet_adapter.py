@@ -5,9 +5,13 @@ Source : Open Government Data (OGD) Platform India - data.gov.in, resource
          Prices Data of Commodity". Directorate of Marketing & Inspection
          (DMI), Ministry of Agriculture & Farmers Welfare, Government of India.
 Licence: Government Open Data License - India (GODL-India).
-Raw    : data/external/india_mandi_prices/raw/india_mandi_prices_raw.csv
+Raw    : data/external/india_agmarknet/raw/india_agmarknet_raw.csv
          (fixed columns: Arrival_Date, State, District, Market, Commodity,
           Variety, Grade, Min_Price, Max_Price, Modal_Price). Never modified.
+
+Registry category: INDIA_AGRICULTURAL_PRICE. This is Indian agricultural
+commodity WHOLESALE price data - a supplementary Indian price-series
+benchmark. It is NOT Indian SME retail transaction data.
 
 IMPORTANT - this source has NO transaction-quantity field. This is therefore
 a PRICE-forecasting benchmark: the canonical ``units_sold`` column is reused
@@ -26,7 +30,7 @@ from pathlib import Path
 import pandas as pd
 
 SEED = 42
-RAW_FILENAME = "india_mandi_prices_raw.csv"
+RAW_FILENAME = "india_agmarknet_raw.csv"
 PRICE_LEVEL_WINDOW = 28          # days; backward rolling median for the 'price' feature
 MIN_SERIES_ROWS = 60            # drop thin (commodity x market) series
 

@@ -28,3 +28,18 @@ class DataSummaryOut(BaseModel):
     sales: int
     marketing_campaigns: int
     inventory_records: int
+    finance_records: int = 0
+    business_profile_set: bool = False
+
+
+class CapabilityOut(BaseModel):
+    feature: str
+    enabled: bool
+    reason: str
+    requires: list[str]
+
+
+class CapabilitiesOut(BaseModel):
+    business_id: str
+    data_summary: DataSummaryOut
+    capabilities: list[CapabilityOut]

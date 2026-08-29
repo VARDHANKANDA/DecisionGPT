@@ -13,8 +13,15 @@ model, or synthetic dataset was modified. The Indian dataset flows through the
 
 Companion docs: `docs/INDIAN_DATASET_MIGRATION_PLAN.md` (the pre-change plan),
 `docs/FINAL_DATASET_INVENTORY.md`, `docs/DATASET_DOWNLOAD_INSTRUCTIONS.md`,
-`data/external/india_mandi_prices/metadata.md`,
+`data/external/india_agmarknet/metadata.md`,
 `data/external/_retired_non_indian/README.md`.
+
+> **Follow-up (2026-08-29):** a later task added the full Indian SME data
+> *layer* around this benchmark work — SME upload layers (finance, business
+> profile), capability detection, and Indian public-context datasets (festival
+> calendar, RBI macro). AGMARKNET was renamed `india_agmarknet` and labelled
+> `INDIA_AGRICULTURAL_PRICE`. See **`docs/INDIAN_SME_DATA_ARCHITECTURE.md`** and
+> **`docs/INDIAN_DATASET_CATALOG.md`**.
 
 ---
 
@@ -72,7 +79,7 @@ level + spread + market/commodity) ⚠️ (no quantity/marketing), reproducible 
 | Field | Value |
 |---|---|
 | Dataset | **India Agri-Commodity Daily Market Prices (AGMARKNET)** |
-| `dataset_id` | `external-india-mandi-prices-v1` |
+| `dataset_id` | `external-india-agmarknet-v1` |
 | Source | Open Government Data (OGD) Platform India — `data.gov.in`, resource `35985678-0d79-46b4-9ed6-6f13308a1d24` ("Variety-wise Daily Market Prices Data of Commodity") |
 | Publisher | Directorate of Marketing & Inspection (DMI), Dept. of Agriculture & Farmers Welfare, Government of India — system **AGMARKNET** |
 | Source URL | https://www.data.gov.in/catalog/variety-wise-daily-market-prices-data-commodity |
@@ -97,7 +104,7 @@ pull could not be completed in-session. Registering a **free** data.gov.in key
 removes the limit (1000 records/call → full pull in < 1 min); an account is
 required, which the automated agent is not permitted to create.
 
-Populate with one command (see `data/external/india_mandi_prices/metadata.md`):
+Populate with one command (see `data/external/india_agmarknet/metadata.md`):
 
 ```bash
 DATA_GOV_IN_API_KEY=<free key>  python scripts/download_india_datasets.py   # or omit for the slow demo-key path
@@ -117,12 +124,12 @@ committed-file tests `skip`); nothing else is affected.
 | Component | File | Notes |
 |---|---|---|
 | Legitimate downloader | `scripts/download_india_datasets.py` | public data.gov.in JSON API; demo key or `DATA_GOV_IN_API_KEY`; `sort[Arrival_Date]=asc` pagination; per-series checkpoints under `raw/_parts/`; fixed deterministic `SERIES` list |
-| Adapter | `ml/preprocessing/india_mandi_adapter.py` | `build_forecasting()` → canonical schema (price-forecasting); `build_regional_analytics()` → state×commodity×month table; seed 42; reuses the leakage-safe `build_forecasting_features` + `chronological_split` |
+| Adapter | `ml/preprocessing/india_agmarknet_adapter.py` | `build_forecasting()` → canonical schema (price-forecasting); `build_regional_analytics()` → state×commodity×month table; seed 42; reuses the leakage-safe `build_forecasting_features` + `chronological_split` |
 | Build wiring | `scripts/build_external_datasets.py` | default `--only india`; `_check_forecasting` validation; `--retired` for the archived set |
 | Registry wiring | `scripts/register_external_datasets.py` | `research_dataset_service.upload_dataset(...)`; source `External Benchmark - India … (data_type=real)`, licence GODL-India; idempotent |
 | Benchmark wiring | `scripts/run_external_benchmarks.py` | `training_service.start_training(...)`, seed 42, forecasting × {naive, linear, xgboost}; asserts every new model is `experimental` and the active set is unchanged |
-| Metadata | `data/external/india_mandi_prices/metadata.{json,md}` | full provenance + `status: DATA_PENDING` + canonical-mapping table |
-| Tests | `tests/unit/test_india_mandi_adapter.py` (6) | tiny synthetic RAW fixture: canonical schema, `units_sold == modal_price`, **price feature is backward-only (no leakage)**, determinism, zero marketing/promotion, analytics table; committed-file training test `skip`s until data lands |
+| Metadata | `data/external/india_agmarknet/metadata.{json,md}` | full provenance + `status: DATA_PENDING` + canonical-mapping table |
+| Tests | `tests/unit/test_india_agmarknet_adapter.py` (6) | tiny synthetic RAW fixture: canonical schema, `units_sold == modal_price`, **price feature is backward-only (no leakage)**, determinism, zero marketing/promotion, analytics table; committed-file training test `skip`s until data lands |
 | Integration test | `tests/integration/test_external_dataset_integration.py` | repointed to an India-shaped dataset: register → train → **experimental only** + active set unchanged + `select_best_model` still returns the active model; a retired dataset stays labelled `RETIRED_NON_INDIAN_BENCHMARK`; registry still `{platform, uploaded}` |
 
 ### Preprocessing (no leakage)
@@ -173,7 +180,7 @@ of the other.
 
 **None yet** — blocked on `DATA_PENDING`. When the data lands,
 `run_external_benchmarks.py` trains forecasting × {naive, linear, xgboost}
-(seed 42) on `external-india-mandi-prices-forecasting`, recording for each run:
+(seed 42) on `external-india-agmarknet-forecasting`, recording for each run:
 dataset, dataset_version, seed, model_name, model_version, parameters, start/end
 timestamps, metrics (MAE / RMSE / MAPE), status — via the existing `TrainingRun`
 + `MLModel` lifecycle. All resulting models enter as `experimental`.
@@ -189,7 +196,7 @@ baseline to beat.
 
 **Permitted**
 - Report Indian **price-forecasting** MAE / RMSE (naive vs linear vs xgboost)
-  on `external-india-mandi-prices-forecasting` as evidence the predictive
+  on `external-india-agmarknet-forecasting` as evidence the predictive
   pipeline runs on real Indian government data, in a separate table row labelled
   `Geography: India · Type: Real`.
 - Keep synthetic results in their own rows (`Type: Synthetic`); **never average
@@ -224,7 +231,7 @@ baseline to beat.
 | Check | Result |
 |---|---|
 | Backend test suite (`backend/.venv`, `pytest`) | **191 passed, 1 skipped, 0 failed** (was 187 passed) |
-| New unit tests (`test_india_mandi_adapter.py`) | 6 — schema, price semantics, **no-leakage**, determinism, analytics; committed-file training test `skip`s until `DATA_PENDING` clears |
+| New unit tests (`test_india_agmarknet_adapter.py`) | 6 — schema, price semantics, **no-leakage**, determinism, analytics; committed-file training test `skip`s until `DATA_PENDING` clears |
 | Integration tests (`test_external_dataset_integration.py`) | 3 — experimental-only + active unchanged, retired-labelling, registry separation |
 | Retired reproducibility | `build_external_datasets.py --retired` → byte-identical processed CSVs (git renames only) |
 | Synthetic datasets | untouched |

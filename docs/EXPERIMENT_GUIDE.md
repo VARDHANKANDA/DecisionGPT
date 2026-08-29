@@ -325,8 +325,8 @@ Strategy: `REAL INDIAN DATA  +  CONTROLLED SYNTHETIC DATA`.
 
 | Registry dataset | Geography | Task | Notes |
 |---|---|---|---|
-| `external-india-mandi-prices-forecasting` | **India** (multi-state) | **price** forecasting | AGMARKNET daily mandi modal prices, data.gov.in, GODL-India. `units_sold` slot carries the daily modal price (INR/quintal) — the source has **no quantity field**. |
-| `external-india-mandi-prices-regional-analytics` | India | (analytics) | state × commodity × month price level / volatility / spread. Not trained. |
+| `external-india-agmarknet-forecasting` | **India** (multi-state) | **price** forecasting | AGMARKNET daily mandi modal prices, data.gov.in, GODL-India. `units_sold` slot carries the daily modal price (INR/quintal) — the source has **no quantity field**. |
+| `external-india-agmarknet-regional-analytics` | India | (analytics) | state × commodity × month price level / volatility / spread. Not trained. |
 
 **Retired** (non-Indian, reproducibility only, `--retired` flag):
 `external-uci-online-retail-*` (UK), `external-m5-forecasting-benchmark` (USA),

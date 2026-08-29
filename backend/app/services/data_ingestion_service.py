@@ -14,7 +14,9 @@ import pandas as pd
 from sqlalchemy.orm import Session
 
 from app.core.errors import NotFoundError, ValidationFailedError
+from app.models.business import Business
 from app.models.customer import Customer
+from app.models.finance import FinanceRecord
 from app.models.ingestion_job import DataIngestionJob
 from app.models.inventory import InventoryRecord
 from app.models.marketing import MarketingCampaign
@@ -157,12 +159,59 @@ def _ingest_inventory(db: Session, business_id: str, df: pd.DataFrame) -> int:
     return count
 
 
+_FINANCE_NUMERIC_FIELDS = [
+    "revenue", "cogs", "gross_profit", "operating_expenses", "net_profit",
+    "cash_balance", "accounts_receivable", "accounts_payable", "inventory_value",
+    "loan_amount", "interest_rate", "emi",
+]
+
+
+def _ingest_finance(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    count = 0
+    for _, row in df.iterrows():
+        record = FinanceRecord(
+            business_id=business_id,
+            period_date=pd.to_datetime(row["period_date"]).date(),
+        )
+        for field_name in _FINANCE_NUMERIC_FIELDS:
+            if field_name in df.columns and pd.notna(row.get(field_name)):
+                setattr(record, field_name, float(row[field_name]))
+        db.add(record)
+        count += 1
+    return count
+
+
+_BUSINESS_PROFILE_FIELDS = [
+    "state", "district", "city", "enterprise_type", "organisation_type",
+    "major_activity", "nic_code",
+]
+
+
+def _ingest_business_profile(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    """Business profile is one row describing the SME itself — it updates the
+    Business record rather than creating child rows."""
+    business = db.get(Business, business_id)
+    if business is None:
+        raise NotFoundError(f"Business {business_id} not found.")
+    row = df.iloc[0]
+    for field_name in _BUSINESS_PROFILE_FIELDS:
+        if field_name in df.columns and pd.notna(row.get(field_name)):
+            setattr(business, field_name, str(row[field_name]))
+    if "registration_date" in df.columns and pd.notna(row.get("registration_date")):
+        reg = pd.to_datetime(row["registration_date"])
+        business.registration_date = reg.date()
+        business.business_age_years = max(0, int((pd.Timestamp.utcnow().tz_localize(None) - reg).days // 365))
+    return 1
+
+
 _INGESTORS = {
     "products": _ingest_products,
     "customers": _ingest_customers,
     "sales": _ingest_sales,
     "marketing_campaigns": _ingest_marketing,
     "inventory": _ingest_inventory,
+    "finance": _ingest_finance,
+    "business_profile": _ingest_business_profile,
 }
 
 
@@ -286,10 +335,17 @@ def get_job(db: Session, business_id: str, job_id: str) -> DataIngestionJob:
 
 
 def get_data_summary(db: Session, business_id: str) -> dict:
+    business = db.get(Business, business_id)
+    profile_set = bool(
+        business is not None
+        and any(getattr(business, f, None) for f in ("state", "district", "city", "enterprise_type", "nic_code"))
+    )
     return {
         "products": db.query(Product).filter(Product.business_id == business_id).count(),
         "customers": db.query(Customer).filter(Customer.business_id == business_id).count(),
         "sales": db.query(Sale).filter(Sale.business_id == business_id).count(),
         "marketing_campaigns": db.query(MarketingCampaign).filter(MarketingCampaign.business_id == business_id).count(),
         "inventory_records": db.query(InventoryRecord).filter(InventoryRecord.business_id == business_id).count(),
+        "finance_records": db.query(FinanceRecord).filter(FinanceRecord.business_id == business_id).count(),
+        "business_profile_set": profile_set,
     }

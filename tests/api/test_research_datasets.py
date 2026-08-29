@@ -14,7 +14,7 @@ def test_datasets_lists_real_platform_metadata(client):
     response = client.get("/api/v1/research/datasets", headers=_headers())
     assert response.status_code == 200
     body = response.json()
-    assert set(body.keys()) == {"platform", "uploaded"}
+    assert set(body.keys()) == {"platform", "external", "uploaded"}
     datasets = body["platform"]
     domains = {d["domain"] for d in datasets}
     assert "forecasting" in domains

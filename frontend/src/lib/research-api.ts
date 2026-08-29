@@ -101,6 +101,22 @@ export interface PlatformDatasetEntry {
   preprocessing: string[];
   limitations: string[];
   evidence_level: string;
+  data_category: string;
+}
+
+export interface ExternalDatasetEntry {
+  dataset_id: string;
+  name: string;
+  display_label: string;
+  data_category: string;
+  status: string;
+  source: string;
+  license: string;
+  geography: string;
+  business_domain: string;
+  date_range: string | null;
+  supported_tasks: string[];
+  limitations: string[];
 }
 
 export interface DatasetVersion {
@@ -131,6 +147,7 @@ export interface UploadedDataset {
   domain: string;
   source: string | null;
   license: string | null;
+  data_category: string;
   created_at: string;
   created_by: string | null;
   version_count: number;
@@ -140,6 +157,7 @@ export interface UploadedDataset {
 
 export interface DatasetsResponse {
   platform: PlatformDatasetEntry[];
+  external: ExternalDatasetEntry[];
   uploaded: UploadedDataset[];
 }
 

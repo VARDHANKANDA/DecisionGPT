@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ml.preprocessing import FORECASTING_CANONICAL_COLUMNS, india_mandi_adapter
+from ml.preprocessing import FORECASTING_CANONICAL_COLUMNS, india_agmarknet_adapter
 
 
 def _raw(tmp_path, n_days=400):
@@ -50,13 +50,13 @@ def _raw(tmp_path, n_days=400):
     rows.append(dict(Arrival_Date="bad-date", State="Maharashtra", District="X",
                      Market="Lasalgaon", Commodity="Onion", Variety="L", Grade="F",
                      Min_Price=1, Max_Price=1, Modal_Price=0))
-    pd.DataFrame(rows).to_csv(raw / "india_mandi_prices_raw.csv", index=False)
+    pd.DataFrame(rows).to_csv(raw / "india_agmarknet_raw.csv", index=False)
     return raw
 
 
 def test_forecasting_schema_and_price_semantics(tmp_path):
     raw = _raw(tmp_path)
-    fc = india_mandi_adapter.build_forecasting(raw)
+    fc = india_agmarknet_adapter.build_forecasting(raw)
 
     assert list(fc.columns)[:6] == FORECASTING_CANONICAL_COLUMNS
     assert (fc["marketing_spend"] == 0).all()
@@ -73,7 +73,7 @@ def test_forecasting_schema_and_price_semantics(tmp_path):
 
 def test_price_feature_is_backward_only_no_leakage(tmp_path):
     raw = _raw(tmp_path)
-    fc = india_mandi_adapter.build_forecasting(raw).sort_values(["series_id", "date"])
+    fc = india_agmarknet_adapter.build_forecasting(raw).sort_values(["series_id", "date"])
 
     for _, g in fc.groupby("series_id"):
         modal = g["modal_price"].to_numpy()
@@ -91,14 +91,14 @@ def test_price_feature_is_backward_only_no_leakage(tmp_path):
 
 def test_adapter_is_deterministic(tmp_path):
     raw = _raw(tmp_path)
-    a = india_mandi_adapter.build_forecasting(raw)
-    b = india_mandi_adapter.build_forecasting(raw)
+    a = india_agmarknet_adapter.build_forecasting(raw)
+    b = india_agmarknet_adapter.build_forecasting(raw)
     pd.testing.assert_frame_equal(a, b)
 
 
 def test_regional_analytics_table(tmp_path):
     raw = _raw(tmp_path)
-    an = india_mandi_adapter.build_regional_analytics(raw)
+    an = india_agmarknet_adapter.build_regional_analytics(raw)
     for col in ("State", "Commodity", "month", "avg_modal_price",
                 "price_volatility_std", "avg_spread_pct", "active_markets",
                 "mom_pct_change"):
@@ -112,9 +112,9 @@ def test_committed_india_processed_file_trains(tmp_path):
     from pathlib import Path
 
     p = (Path(__file__).resolve().parents[2]
-         / "data/external/india_mandi_prices/processed/india_mandi_forecasting.csv")
+         / "data/external/india_agmarknet/processed/india_agmarknet_forecasting.csv")
     if not p.exists():
-        pytest.skip("india_mandi_forecasting.csv not built "
+        pytest.skip("india_agmarknet_forecasting.csv not built "
                     "(run scripts/download_india_datasets.py + build_external_datasets.py)")
     from ml.training.train_forecasting import REQUIRED_COLUMNS, train_one
 

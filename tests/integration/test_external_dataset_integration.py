@@ -17,7 +17,7 @@ from app.services import model_registry_service, research_dataset_service, train
 
 
 def _india_style_forecasting_csv(days: int = 240) -> bytes:
-    """Mimics ml/preprocessing/india_mandi_adapter.build_forecasting output:
+    """Mimics ml/preprocessing/india_agmarknet_adapter.build_forecasting output:
     units_sold = daily modal price, price = trailing median (backward only)."""
     rng = np.random.default_rng(0)
     dates = pd.date_range("2018-01-01", periods=days, freq="D")
@@ -55,9 +55,9 @@ def test_external_benchmark_registers_and_trains_experimental_only(client, db_se
     # 1. register the real Indian benchmark through the existing service
     version = research_dataset_service.upload_dataset(
         db_session,
-        name="External India Mandi Prices - Forecasting (test)",
+        name="External India AGMARKNET - Forecasting (test)",
         domain="forecasting",
-        filename="india_mandi_forecasting.csv",
+        filename="india_agmarknet_forecasting.csv",
         content=_india_style_forecasting_csv(),
         description=(
             "INDIAN PRICE-FORECASTING BENCHMARK (AGMARKNET daily mandi modal prices, "
@@ -133,6 +133,6 @@ def test_registry_still_separates_platform_from_external(client, db_session, iso
         "/api/v1/research/datasets",
         headers={"X-Research-Token": get_settings().research_console_token},
     ).json()
-    assert set(body.keys()) == {"platform", "uploaded"}
+    assert set(body.keys()) == {"platform", "external", "uploaded"}
     assert any(d["evidence_level"] == "SYNTHETIC" for d in body["platform"])
     assert any("External Benchmark" in (d["source"] or "") for d in body["uploaded"])

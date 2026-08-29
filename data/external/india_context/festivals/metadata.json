@@ -1,0 +1,33 @@
+{
+  "dataset_name": "India Festival & Holiday Calendar",
+  "dataset_id": "external-india-festivals-v1",
+  "registry_category": "INDIA_PUBLIC_CONTEXT",
+  "display_label": "India - Festival / Holiday Context",
+  "status": "ACTIVE",
+  "source_name": "holidays (Python library, MIT)",
+  "source": "The `holidays` library's India calendar (national + state gazetted holidays). Dates are produced by the library - not hand-entered.",
+  "source_url": "https://pypi.org/project/holidays/",
+  "library_version": "holidays==0.103",
+  "geography": "India",
+  "country_context": "India - national civic holidays + a sample of state calendars (TN, KL, KA, MH, WB, GJ, DL, UP) covering the major regional festivals (Pongal, Onam, Ugadi, Ganesh Chaturthi, Durga Puja, Navratri).",
+  "business_domain": "Retail / consumer demand seasonality context",
+  "data_type": "real",
+  "license": "MIT (library). Underlying holiday facts are public government notifications.",
+  "citation": "Vacanza et al. holidays: generate and work with holidays in Python. https://github.com/vacanza/holidays (India calendar).",
+  "download_date": "2026-08-29 (generated offline from holidays==0.103)",
+  "date_range": "2019-01-01 .. 2027-12-31",
+  "processed_files": [
+    {"file": "processed/india_festivals.csv", "rows": 351, "columns": ["date", "festival", "festival_type", "is_national_holiday", "observed_in"], "grain": "one row per (date, festival)"},
+    {"file": "processed/india_festival_daily.csv", "rows": 3287, "columns": ["date", "is_festival", "days_to_next_festival", "days_since_last_festival"], "grain": "one row per calendar day"}
+  ],
+  "target_tasks": ["demand_seasonality_context", "forecasting_exogenous_feature"],
+  "unsupported_tasks": ["standalone forecasting target", "causal_graph_evaluation", "any SME-private analysis"],
+  "preprocessing": ["ml/preprocessing/india_festival_adapter.py: national + 8-state union; festival_type classification by name; offline distance-to-festival features"],
+  "known_limitations": [
+    "Lunar-calendar festival dates for future years follow the library's projection; verify against the official gazette before relying on far-future dates.",
+    "State coverage is a curated sample of 8 states, not all 28+8.",
+    "Context only - must never be joined into SME-private datasets in a way that blurs provenance."
+  ],
+  "paper_usage": "Optional exogenous seasonality feature for the Indian forecasting evaluation; label as INDIA_PUBLIC_CONTEXT. Not a target; not evidence of causality.",
+  "evidence_level": "INDIA_PUBLIC_CONTEXT"
+}

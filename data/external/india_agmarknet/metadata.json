@@ -1,6 +1,8 @@
 {
   "dataset_name": "India Agri-Commodity Daily Market Prices (AGMARKNET)",
-  "dataset_id": "external-india-mandi-prices-v1",
+  "dataset_id": "external-india-agmarknet-v1",
+  "registry_category": "INDIA_AGRICULTURAL_PRICE",
+  "display_label": "India - Agricultural Commodity Price Data",
   "status": "DATA_PENDING",
   "status_note": "Integration is complete (adapter, scripts, registry wiring, tests). The raw pull is not committed: the data.gov.in public demo API key is rate-limited to ~10 records/call and its quota was exhausted during integration. Populate with `python scripts/download_india_datasets.py` (slow on the demo key; <1 min with a free DATA_GOV_IN_API_KEY from https://data.gov.in/user/register).",
   "source_name": "Open Government Data (OGD) Platform India - data.gov.in",
@@ -47,7 +49,7 @@
     "modal_price/min_price/max_price": "extra self-documenting columns; the trainer selects only the canonical columns"
   },
   "preprocessing_required": true,
-  "preprocessing_adapter": "ml/preprocessing/india_mandi_adapter.py (seed 42)",
+  "preprocessing_adapter": "ml/preprocessing/india_agmarknet_adapter.py (seed 42)",
   "known_limitations": [
     "Wholesale agri-commodity prices, not SME retail transactions - do not present as representative of Indian SME retail.",
     "No transaction quantity; this is a price-forecasting benchmark (units_sold slot reused for price).",

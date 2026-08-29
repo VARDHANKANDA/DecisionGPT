@@ -38,15 +38,15 @@ RETIRED = EXT / "_retired_non_indian"
 # key -> list of (base_dir, metadata_dir, processed_csv, registry_name, domain, extra_description)
 ACTIVE_SPECS = {
     "india": [
-        (EXT, "india_mandi_prices", "processed/india_mandi_forecasting.csv",
-         "External India Mandi Prices - Forecasting", "forecasting",
+        (EXT, "india_agmarknet", "processed/india_agmarknet_forecasting.csv",
+         "External India AGMARKNET - Forecasting", "forecasting",
          "INDIAN PRICE-FORECASTING BENCHMARK (AGMARKNET daily mandi modal prices, "
          "data.gov.in, GODL-India). NOTE: this source has NO transaction-quantity "
          "field, so the canonical 'units_sold' column carries the daily MODAL PRICE "
          "(INR/quintal) being forecast; 'price' is a 28-day backward rolling median "
          "(no leakage); marketing_spend/promotion_flag are 0 (absent in source)."),
-        (EXT, "india_mandi_prices", "processed/india_mandi_regional_analytics.csv",
-         "External India Mandi Prices - Regional Analytics", "other",
+        (EXT, "india_agmarknet", "processed/india_agmarknet_regional_analytics.csv",
+         "External India AGMARKNET - Regional Analytics", "other",
          "State x commodity x month price level / volatility / spread table. "
          "Descriptive only; not consumed by any training task."),
     ],

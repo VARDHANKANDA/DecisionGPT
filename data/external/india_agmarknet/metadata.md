@@ -8,7 +8,7 @@ integration. See "How to populate" below.
 | Field | Value |
 |---|---|
 | Dataset | India Agri-Commodity Daily Market Prices (AGMARKNET) |
-| `dataset_id` | `external-india-mandi-prices-v1` |
+| `dataset_id` | `external-india-agmarknet-v1` |
 | Source | Open Government Data (OGD) Platform India — `data.gov.in`, resource `35985678-0d79-46b4-9ed6-6f13308a1d24` ("Variety-wise Daily Market Prices Data of Commodity") |
 | Publisher | Directorate of Marketing & Inspection (DMI), Dept. of Agriculture & Farmers Welfare, Government of India — system: **AGMARKNET** |
 | Source URL | https://www.data.gov.in/catalog/variety-wise-daily-market-prices-data-commodity |
@@ -23,7 +23,7 @@ integration. See "How to populate" below.
 `Arrival_Date, State, District, Market, Commodity, Variety, Grade, Min_Price,
 Max_Price, Modal_Price`. **There is no transaction-quantity field.**
 
-## Canonical mapping (`ml/preprocessing/india_mandi_adapter.py`, seed 42)
+## Canonical mapping (`ml/preprocessing/india_agmarknet_adapter.py`, seed 42)
 
 Because the source has no quantity, this is a **price-forecasting** benchmark.
 
@@ -78,5 +78,5 @@ DATABASE_URL=sqlite:///./backend/dev.db python scripts/register_external_dataset
 DATABASE_URL=sqlite:///./backend/dev.db python scripts/run_external_benchmarks.py --seed 42
 ```
 
-The raw file `raw/india_mandi_prices_raw.csv` is written once and then **never
+The raw file `raw/india_agmarknet_raw.csv` is written once and then **never
 modified**; it is gitignored.

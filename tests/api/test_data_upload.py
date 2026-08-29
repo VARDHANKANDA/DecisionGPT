@@ -85,6 +85,8 @@ def test_full_workbook_upload_ingests_all_sheets(client):
         "sales": 2,
         "marketing_campaigns": 1,
         "inventory_records": 2,
+        "finance_records": 0,
+        "business_profile_set": False,
     }
 
 

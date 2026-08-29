@@ -18,6 +18,7 @@ class DatasetEntryOut(BaseModel):
     preprocessing: list[str]
     limitations: list[str]
     evidence_level: str
+    data_category: str = "UNCLASSIFIED"
 
 
 class RunExperimentRequest(BaseModel):
@@ -79,6 +80,7 @@ class UploadedDatasetOut(BaseModel):
     domain: str
     source: str | None
     license: str | None
+    data_category: str = "UNCLASSIFIED"
     created_at: datetime
     created_by: str | None
     version_count: int
@@ -86,8 +88,26 @@ class UploadedDatasetOut(BaseModel):
     versions: list[DatasetVersionOut]
 
 
+class ExternalDatasetOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    dataset_id: str
+    name: str
+    display_label: str
+    data_category: str
+    status: str
+    source: str
+    license: str
+    geography: str
+    business_domain: str
+    date_range: str | None
+    supported_tasks: list[str]
+    limitations: list[str]
+
+
 class DatasetsResponse(BaseModel):
     platform: list[DatasetEntryOut]
+    external: list[ExternalDatasetOut]
     uploaded: list[UploadedDatasetOut]
 
 

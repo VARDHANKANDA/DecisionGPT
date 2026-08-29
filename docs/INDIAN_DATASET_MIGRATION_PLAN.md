@@ -47,8 +47,8 @@ Rewrite the three scripts with an `--retired` opt-in; default target becomes Ind
   Min_Price, Max_Price, Modal_Price`. **No transaction-quantity field.**
 - Acquisition: `scripts/download_india_datasets.py` — paginated API pull for a
   curated, deterministic list of `(state, commodity, market)` series →
-  `raw/india_mandi_prices_raw.csv` (raw, never modified, gitignored).
-- Adapter: `ml/preprocessing/india_mandi_adapter.py`
+  `raw/india_agmarknet_raw.csv` (raw, never modified, gitignored).
+- Adapter: `ml/preprocessing/india_agmarknet_adapter.py`
   - `build_forecasting(raw)` → canonical `series_id,date,units_sold,price,marketing_spend,promotion_flag`.
     Because the source has **no quantity**, this is a **price-forecasting**
     benchmark: the canonical `units_sold` slot carries the **daily modal price

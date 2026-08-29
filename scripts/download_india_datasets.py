@@ -13,7 +13,7 @@ Dataset A - India Agri-Commodity Daily Market Prices (AGMARKNET)
              var if you have registered your own free key.
 
 The raw pull is written verbatim to
-``data/external/india_mandi_prices/raw/india_mandi_prices_raw.csv`` and is
+``data/external/india_agmarknet/raw/india_agmarknet_raw.csv`` and is
 never modified afterwards (``scripts/build_external_datasets.py`` reads it
 read-only and writes ``processed/``).
 
@@ -39,7 +39,7 @@ import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_DIR = ROOT / "data" / "external" / "india_mandi_prices" / "raw"
+RAW_DIR = ROOT / "data" / "external" / "india_agmarknet" / "raw"
 PARTS_DIR = RAW_DIR / "_parts"
 
 RESOURCE_ID = "35985678-0d79-46b4-9ed6-6f13308a1d24"
@@ -182,7 +182,7 @@ def main() -> None:
 
     all_rows.sort(key=lambda r: (r["State"], r["Commodity"], r["Market"],
                                  r["Arrival_Date"], r["Variety"], r["Grade"]))
-    out_path = RAW_DIR / "india_mandi_prices_raw.csv"
+    out_path = RAW_DIR / "india_agmarknet_raw.csv"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     buf = io.StringIO()
     w = csv.DictWriter(buf, fieldnames=COLUMNS)
