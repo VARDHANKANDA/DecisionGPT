@@ -1,6 +1,7 @@
 # DecisionGPT — Final Paper Evidence Audit & Paper Blueprint
 
 **Status:** implementation + reproducibility FROZEN (`ef9ade8`).
+**This audit committed as:** `97a7bc8`.
 **This document does not write the paper.** It audits what the frozen
 implementation and the 16 frozen experiments actually support, and specifies a
 reviewer-resistant blueprint to write from.
