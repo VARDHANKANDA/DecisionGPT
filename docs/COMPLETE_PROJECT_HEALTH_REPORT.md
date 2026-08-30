@@ -194,4 +194,4 @@ Preparing the research paper is a **separate** task and was not started here.
 
 ## Git commit
 
-`<filled on commit>`
+`6455bf1` (`6455bf104f0c6af457ac6c19ee1a054285737704`)
