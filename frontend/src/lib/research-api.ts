@@ -461,6 +461,13 @@ export interface RealSmeOutcomeReport {
   r0_vs_r3: string;
   causal_evidence: string;
   statistical_inference: string;
+  research_status?: {
+    real_llm: string;
+    real_llm_blocked: boolean;
+    r3_status: string;
+    production: string;
+    production_is_r0: boolean;
+  };
   decision_types?: Record<string, number>;
   outcome_horizons?: number[];
   digital_twin?: {

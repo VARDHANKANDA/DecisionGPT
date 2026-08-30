@@ -582,7 +582,15 @@ reason). No hard-coded research metric; every number resolves to a stored row
    import, and no-leakage tests. **Next action is human data collection, not
    coding** — recruit genuine Indian SMEs with actual outcomes for supported
    (price / marketing / inventory) decisions. `REAL SME COLLECTION WORKFLOW =
-   READY`, outcomes = 0, Table 2 = NOT READY, real-LLM = NOT TESTED.
+   READY`, outcomes = 0, Table 2 = NOT READY, real-LLM = NOT TESTED. The
+   **recruitment & collection package** is now assembled:
+   `docs/REAL_INDIAN_SME_RECRUITMENT_GUIDE.md` (research-team guide),
+   `docs/REAL_INDIAN_SME_DATA_QUALITY_PROTOCOL.md` (VALID / REQUIRES_REVIEW /
+   REJECTED scorecard), `docs/REAL_WORLD_VALIDATION_ROADMAP.md` (8 sequential
+   phases; Phase 2 = current), and `docs/templates/REAL_INDIAN_SME_{PARTICIPANT_CHECKLIST,
+   RESEARCHER_FORM,PARTICIPANT_INSTRUCTIONS,COLLECTION_SCHEDULE}`. The dashboard
+   real-SME panel now also surfaces Real-LLM / R3 / Production status derived
+   live from settings + the production `PipelineOptions` defaults.
 6. Populate **AGMARKNET** with a free `DATA_GOV_IN_API_KEY` and add it as a
    second `INDIA_*` forecasting row; add repeated seeds to the forecasting /
    customer experiments for CIs.

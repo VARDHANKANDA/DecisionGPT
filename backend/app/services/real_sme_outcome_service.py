@@ -355,6 +355,26 @@ def real_sme_eval_rows(db: Session) -> list[list]:
     ]
 
 
+def research_status() -> dict:
+    """Real-LLM / R3 / production status for the dashboard — derived live from
+    settings + the production PipelineOptions defaults, never hard-coded."""
+    from app.core.config import get_settings
+    from app.services.decision_service import PipelineOptions
+
+    s = get_settings()
+    prod = PipelineOptions()  # the production defaults
+    r3_promoted = prod.risk_model is not None or prod.risk_penalty_lambda != 1.0
+    return {
+        "real_llm": ("BLOCKED — no LLM provider configured"
+                     if not s.llm_enabled else "configured (provider set)"),
+        "real_llm_blocked": not s.llm_enabled,
+        "r3_status": "PROMOTED (!)" if r3_promoted else "EXPERIMENTAL / NOT PROMOTED",
+        "production": (f"R0 / D0 (risk_model={prod.risk_model!r}, "
+                      f"risk_penalty_lambda={prod.risk_penalty_lambda})"),
+        "production_is_r0": not r3_promoted,
+    }
+
+
 def table_2_status(db: Session) -> dict:
     n = matched_real_sme_eval_count(db)
     ready = n >= TABLE_2_MIN_REAL_OUTCOMES
@@ -406,6 +426,7 @@ def get_real_sme_outcome_report(db: Session) -> dict:
         "causal_evidence": "NOT READY — 0 real outcomes "
                            f"(needs >= {_min_outcomes()} consistent per-edge interventions)",
         "statistical_inference": "DESCRIPTIVE ONLY (planned n = 5-10)",
+        "research_status": research_status(),
     }
     if n == 0:
         return empty
@@ -468,6 +489,7 @@ def get_real_sme_outcome_report(db: Session) -> dict:
         "rows": rows,
         "clustering_note": ("Repeated decisions from one business are clustered — do not treat every "
                             "row as an independent business."),
+        "research_status": research_status(),
     }
 
 

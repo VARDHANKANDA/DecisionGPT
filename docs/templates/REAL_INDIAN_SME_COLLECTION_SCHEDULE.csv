@@ -1,0 +1,2 @@
+anonymised_business_id,decision_id,decision_date,decision_type,implementation_date,horizon_days,expected_outcome_date,actual_outcome_date,collection_status,validation_status,import_status,notes
+EXAMPLE-SME-01,EXAMPLE-D1,2026-01-06,price_increase,2026-01-08,30,2026-02-07,,OUTCOME_PENDING,PENDING,PENDING,EXAMPLE / SYNTHETIC ROW — tracking template only; remove before real use. Never imported as evidence.

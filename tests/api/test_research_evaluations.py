@@ -112,6 +112,11 @@ def test_digital_twin_eval_exposes_separated_real_indian_sme_block_empty(client,
     assert r["n_outcomes"] == 0
     assert "No real Indian SME outcomes available" in r["empty_state"]
     assert r["r0_vs_r3"].startswith("NOT APPLICABLE")
+    # dashboard status block — derived live, not hard-coded
+    rs = r["research_status"]
+    assert rs["real_llm_blocked"] is True
+    assert rs["r3_status"] == "EXPERIMENTAL / NOT PROMOTED"
+    assert rs["production_is_r0"] is True
 
 
 def test_real_sme_import_then_report_is_separated_and_descriptive(client, db_session):

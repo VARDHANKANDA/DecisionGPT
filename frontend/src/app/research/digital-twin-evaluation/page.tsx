@@ -189,6 +189,25 @@ function RealSmeOutcomesPanel({ r }: { r: RealSmeOutcomeReport }) {
         shown here. Collection status: <span className="font-medium text-foreground">{r.collection_status}</span>.
       </p>
 
+      <div className="mb-3 grid gap-1 rounded-lg border border-border bg-muted-surface p-2 text-xs md:grid-cols-2">
+        <p><span className="font-medium text-foreground">Real Indian SME outcomes:</span> {fmtInt(r.n_outcomes)}</p>
+        <p><span className="font-medium text-foreground">Table 2:</span> {r.table_2}</p>
+        {r.research_status ? (
+          <>
+            <p>
+              <span className="font-medium text-foreground">Real LLM:</span>{" "}
+              <span className={r.research_status.real_llm_blocked ? "text-danger" : "text-success"}>
+                {r.research_status.real_llm_blocked ? "BLOCKED" : "configured"}
+              </span>
+            </p>
+            <p><span className="font-medium text-foreground">R3:</span> {r.research_status.r3_status}</p>
+            <p className="md:col-span-2">
+              <span className="font-medium text-foreground">Production:</span> {r.research_status.production}
+            </p>
+          </>
+        ) : null}
+      </div>
+
       {!has ? (
         <EvalEmptyState message={`${r.empty_state ?? ""} ${r.message ?? ""}`.trim()} />
       ) : (

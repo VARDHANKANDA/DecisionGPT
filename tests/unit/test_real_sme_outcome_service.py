@@ -113,6 +113,35 @@ def test_empty_state_when_no_real_outcomes(db_session):
     assert rep["r0_vs_r3"].startswith("NOT APPLICABLE")
 
 
+def test_research_status_block_is_derived_live_not_hard_coded(db_session):
+    """Dashboard status (Real LLM / R3 / Production) comes from settings +
+    the production PipelineOptions defaults, never a hard-coded string."""
+    rs = svc.research_status()
+    assert set(rs) == {"real_llm", "real_llm_blocked", "r3_status", "production", "production_is_r0"}
+    assert rs["real_llm_blocked"] is True          # no provider configured in tests
+    assert "BLOCKED" in rs["real_llm"]
+    assert rs["r3_status"] == "EXPERIMENTAL / NOT PROMOTED"
+    assert rs["production_is_r0"] is True
+    assert "risk_model=None" in rs["production"] and "risk_penalty_lambda=1.0" in rs["production"]
+
+    # if production were ever pointed at R3, the status would flip (proves it is derived)
+    import app.services.decision_service as ds
+
+    class _R3Opts(ds.PipelineOptions):
+        def __init__(self):
+            super().__init__()
+            self.risk_model = "R1"
+            self.risk_penalty_lambda = 0.25
+
+    orig = ds.PipelineOptions
+    ds.PipelineOptions = _R3Opts
+    try:
+        flipped = svc.research_status()
+    finally:
+        ds.PipelineOptions = orig
+    assert flipped["production_is_r0"] is False and flipped["r3_status"].startswith("PROMOTED")
+
+
 def test_import_creates_anonymised_business_decision_outcome_and_evaluation(db_session):
     from app.models.business import Business
     from app.models.evaluation import PredictionEvaluation
