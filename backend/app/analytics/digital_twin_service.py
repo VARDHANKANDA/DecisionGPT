@@ -374,7 +374,7 @@ def simulate_strategy(
     units_upper = sum(p.upper_bound for p in scenario_points)
 
     assumptions = [
-        f"Uses your registered forecasting model ({model_row.model_name} v{model_row.version}), "
+        f"Uses your registered forecasting model ({model_row.model_name} {model_row.version}), "
         "re-run with the requested price/marketing inputs — the projected effect is that model's own "
         "learned response to those inputs, not a fixed multiplier.",
         "Aggregates across all products using a single business-wide average daily price; it does not "

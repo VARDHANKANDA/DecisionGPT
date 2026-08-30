@@ -106,6 +106,20 @@ def test_csv_upload_with_explicit_data_type(client):
     assert response.json()["summary_json"]["rows_ingested"]["sales"] == 1
 
 
+def test_unknown_data_type_fails_gracefully_not_500(client):
+    """An unrecognised ?data_type=... must not crash (was a KeyError → HTTP 500);
+    it now yields a failed job with a clear message."""
+    business_id = _create_business(client)
+    r = client.post(
+        f"/api/v1/businesses/{business_id}/data/upload?data_type=aliens",
+        files={"file": ("x.csv", b"a,b\n1,2\n", "text/csv")},
+    )
+    assert r.status_code == 200, r.text
+    assert r.json()["status"] == "failed"
+    assert "Unknown data type 'aliens'" in r.json()["error_message"]
+    assert "sales" in r.json()["error_message"]  # lists the supported types
+
+
 def test_ambiguous_mapping_requires_confirmation_then_ingests(client):
     business_id = _create_business(client)
     # None of these headers match any alias for the three required product

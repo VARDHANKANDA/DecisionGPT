@@ -25,5 +25,5 @@ def evaluate(output: SimulationOutput) -> AgentEvaluationResult:
         score,
         key_points=[f"Projected revenue change: {growth * 100:+.1f}%, risk-adjusted score {score:.3f}."],
         risks=[] if output.risk_level == "LOW" else [f"{output.risk_level.title()} extrapolation risk."],
-        assumptions=[f"Based on {output.model_name} v{output.model_version}."],
+        assumptions=[f"Based on {output.model_name} {output.model_version}."],
     )

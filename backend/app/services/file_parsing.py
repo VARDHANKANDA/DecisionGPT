@@ -9,7 +9,7 @@ import io
 import pandas as pd
 
 from app.core.errors import ValidationFailedError
-from app.services.canonical_schema import detect_canonical_type
+from app.services.canonical_schema import CANONICAL_TYPES, detect_canonical_type
 
 
 def parse_upload(filename: str, content: bytes, data_type_hint: str | None = None) -> dict[str, pd.DataFrame]:
@@ -47,6 +47,11 @@ def parse_upload(filename: str, content: bytes, data_type_hint: str | None = Non
             raise ValidationFailedError(
                 "Could not determine the data type for this CSV from its filename. "
                 "Pass data_type explicitly (products|customers|sales|marketing_campaigns|inventory)."
+            )
+        if canonical_type not in CANONICAL_TYPES:
+            raise ValidationFailedError(
+                f"Unknown data type '{canonical_type}'. Supported: "
+                + "|".join(sorted(CANONICAL_TYPES))
             )
         return {canonical_type: df}
 

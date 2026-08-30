@@ -20,7 +20,7 @@ from app.models.goal import Goal
 
 def evaluate(output: SimulationOutput, goal: Goal, causal_context=None) -> AgentEvaluationResult:
     key_points = []
-    assumptions = [f"Based on the Digital Twin simulation using {output.model_name} v{output.model_version}."]
+    assumptions = [f"Based on the Digital Twin simulation using {output.model_name} {output.model_version}."]
     basis = "revenue"
 
     if output.expected_profit is not None and output.baseline_profit is not None and abs(output.baseline_profit) > 1e-9:

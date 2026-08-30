@@ -65,7 +65,7 @@ def evaluate(output: SimulationOutput, goal: Goal, causal_context=None) -> Agent
             "hypothesis in your data — the projected effect is not causally validated."
         )
 
-    assumptions = [f"Based on the Digital Twin simulation using {output.model_name} v{output.model_version}."]
+    assumptions = [f"Based on the Digital Twin simulation using {output.model_name} {output.model_version}."]
 
     result = AgentEvaluationResult("risk_manager", round(score, 4), key_points, risks, assumptions)
     result.meta["uncertainty_ratio"] = round(uncertainty_ratio, 4)

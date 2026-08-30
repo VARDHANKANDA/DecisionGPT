@@ -33,7 +33,7 @@ def evaluate(output: SimulationOutput, goal: Goal, causal_context=None) -> Agent
     if growth < -0.05:
         risks.append("This strategy is projected to reduce sales volume.")
 
-    assumptions = [f"Based on the Digital Twin simulation using {output.model_name} v{output.model_version}."]
+    assumptions = [f"Based on the Digital Twin simulation using {output.model_name} {output.model_version}."]
     if causal_context is not None:
         assumptions.append(
             f"Causal pathway to demand/revenue: {causal_context.strongest_pathway_evidence.replace('_', ' ')} "
