@@ -5,6 +5,7 @@ rebuild + full re-validation). No research paper is written in this task.
 
 **Date:** 2026-08-30
 **Baseline commit (pre-task HEAD):** `7fa543b` ("Record commit hash in project health report")
+**This validation committed as:** `5477b29` ("Final reproducible-environment validation: fix dependency spec, clean rebuild verified")
 **Validation Python:** 3.12.0 · **Validation venv:** `backend/.venv_b1` (fresh, throwaway — deleted at end of task)
 
 ---
