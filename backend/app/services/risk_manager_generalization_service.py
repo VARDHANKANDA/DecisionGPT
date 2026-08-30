@@ -536,6 +536,25 @@ def _verdict(hyp: dict, part_a: dict, part_b: dict, part_c: dict) -> dict:
     }
 
 
+def _calibration_reference(db: Session) -> dict:
+    """Resolve the synthetic Risk-Manager calibration cross-reference from the
+    stored experiment rather than hard-coding an id / verdict (reproducibility:
+    a fresh reproduction gets a different experiment UUID)."""
+    from app.models.experiment import ExperimentRun
+
+    run = (db.query(ExperimentRun)
+           .filter(ExperimentRun.experiment_type == "risk_manager_calibration",
+                   ExperimentRun.status == "completed")
+           .order_by(ExperimentRun.created_at.desc()).first())
+    if run is None:
+        return {"experiment": "risk_manager_calibration (not found in this DB)", "r3_verdict": None}
+    return {
+        "experiment": f"risk_manager_calibration {run.id[:8]}",
+        "experiment_id": run.id,
+        "r3_verdict": (run.metrics_json or {}).get("verdict"),
+    }
+
+
 def run_generalization_validation(db: Session) -> dict:
     part_a = _part_a()
     part_b = _part_b(db)
@@ -550,9 +569,7 @@ def run_generalization_validation(db: Session) -> dict:
             "category": "INDIA_REAL_BUSINESS", "provenance": "UNVERIFIED",
             "license": "CC0", "geography": "India",
         },
-        "synthetic_calibration_reference": {
-            "experiment": "risk_manager_calibration b8516eef", "r3_verdict": "PROMISING",
-        },
+        "synthetic_calibration_reference": _calibration_reference(db),
         "part_a_risk_regime": part_a,
         "part_b_decision_comparison_simulated": part_b,
         "part_c_real_llm": part_c,

@@ -65,7 +65,16 @@ benchmark scripts and the test suite degrade gracefully until then.
 
 Legend: ✅ supported · ⚠️ benchmark-only · ➖ partial / feature-only · ❌ not supported.
 
-## Verification (2026-08-29)
+## Verification (2026-08-29 — dataset-integration snapshot)
+
+> **Point-in-time snapshot.** The dataset rows above are still current, but the
+> counts in this table are from the dataset-integration task. Later research
+> tasks grew the suite and added migration `0007` (real-SME-outcome
+> provenance). For the **current** verified state see
+> `docs/RESEARCH_REPRODUCIBILITY.md`, `docs/REAL_EVIDENCE_STATUS_REPORT.md` and
+> `docs/FINAL_PRE_VALIDATION_AUDIT.md` (backend suite now **318 passed,
+> 1 skipped**; Alembic head **0007**; `REAL_INDIAN_SME_OUTCOME = 0`,
+> Table 2 NOT READY).
 
 | Check | Result |
 |---|---|

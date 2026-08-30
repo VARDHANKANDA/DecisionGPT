@@ -163,6 +163,29 @@ def test_verdict_and_hypotheses_are_prespecified_values(_full):
     assert _full["part_c_real_llm"]["status"] == "BLOCKED"
 
 
+def test_calibration_cross_reference_is_resolved_not_hard_coded(_full, db_session):
+    """The synthetic-calibration reference is looked up from the stored
+    experiment, not baked in as a fixed id / verdict string."""
+    from app.models.experiment import ExperimentRun
+
+    ref = _full["synthetic_calibration_reference"]
+    # no calibration experiment in this DB -> honest 'not found', not a fixed id
+    assert "b8516eef" not in ref["experiment"]
+    assert ref["r3_verdict"] is None and ref.get("experiment_id") is None
+
+    row = ExperimentRun(
+        experiment_name="calib-xref", experiment_type="risk_manager_calibration",
+        status="completed", configuration_json={}, metrics_json={"verdict": "PROMISING"},
+    )
+    db_session.add(row)
+    db_session.commit()
+
+    ref2 = g._calibration_reference(db_session)
+    assert ref2["experiment_id"] == row.id
+    assert ref2["experiment"].endswith(row.id[:8]) and "b8516eef" not in ref2["experiment"]
+    assert ref2["r3_verdict"] == "PROMISING"
+
+
 def test_prior_experiments_and_model_registry_unchanged(_full, db_session):
     from app.models.experiment import ExperimentRun
     from app.models.ml_model import MLModel
