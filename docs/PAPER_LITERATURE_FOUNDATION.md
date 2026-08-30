@@ -12,6 +12,8 @@ component that improves goal achievement; adding a multi-agent debate layer
 significantly reduces it, through an identifiable scoring-rule mechanism rather
 than an unequal strategy space.*
 
+**Commit:** `eedd1e6`.
+
 **Verification.** Every reference in §J-1 was located this session via web search
 against the publisher / ACL Anthology / arXiv / DOI-registry page named beside
 it. DOIs are given where confirmed on the publisher page; otherwise an
