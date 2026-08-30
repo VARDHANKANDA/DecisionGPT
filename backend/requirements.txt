@@ -9,8 +9,10 @@ python-multipart==0.0.9
 openpyxl==3.1.5
 pyarrow==17.0.0  # optional: enables Parquet dataset uploads in the Research Console
 pandas==2.2.3
-numpy==1.26.4
+numpy==2.5.2  # shap 0.52.0 requires numpy>=2; pandas 2.2.3 / scikit-learn 1.5.2 support numpy 2.x
 scikit-learn==1.5.2
+scipy==1.18.1  # direct import (multi_scenario_service / risk_calibration / granger); was transitive via scikit-learn
+joblib==1.5.3  # direct import (forecast_service / churn_service model load, ml/pipeline/registry); was transitive via scikit-learn
 xgboost==3.4.0
 shap==0.52.0
 python-dateutil==2.9.0.post0

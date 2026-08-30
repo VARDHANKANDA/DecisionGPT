@@ -10,7 +10,7 @@ modules return.
 | | |
 |---|---|
 | Python | 3.12.0 |
-| Dependencies | `backend/requirements.txt` (22 pinned packages incl. `pandas==2.2.3`, `numpy==1.26.4`, `scikit-learn==1.5.2`, `xgboost==3.4.0`, `shap==0.52.0`, `holidays==0.103`) |
+| Dependencies | `backend/requirements.txt` (24 pinned packages incl. `pandas==2.2.3`, `numpy==2.5.2`, `scikit-learn==1.5.2`, `scipy==1.18.1`, `joblib==1.5.3`, `xgboost==3.4.0`, `shap==0.52.0`, `holidays==0.103`). `numpy` is 2.x because `shap==0.52.0` requires `numpy>=2` (`pandas==2.2.3` / `scikit-learn==1.5.2` both support numpy 2.x); `scipy` and `joblib` are direct imports, pinned explicitly rather than left transitive. See `docs/FINAL_REPRODUCIBILITY_VALIDATION_REPORT.md` for the full clean-environment audit. |
 | Node / frontend | `frontend/package.json` (Next.js 16 / React 19); `npm ci` |
 | DB (research) | SQLite via `DATABASE_URL=sqlite:///./backend/dev.db` — migrations verified identical on Postgres |
 | Alembic head | `0007` (30 tables; 0007 adds nullable real-SME-outcome provenance columns) |
@@ -23,6 +23,12 @@ DATABASE_URL=sqlite:///./backend/dev.db python -m alembic upgrade head
 # or, faster, the create_all bootstrap:
 DATABASE_URL=sqlite:///./backend/dev.db python backend/scripts/dev_bootstrap_sqlite.py
 ```
+
+`models/` is a gitignored build product. In a fresh environment the pytest
+session fixture (`_ensure_baseline_models`) retrains the forecasting + churn
+baselines at seed 42 on first run; metrics are byte-reproducible with the
+pinned stack (forecasting xgb MAE 15.139 / RMSE 21.863; churn logreg F1 0.669
+/ AUC 0.798). Do not commit `.pkl` files trained on a different scikit-learn.
 
 ## 2. Datasets (frozen)
 

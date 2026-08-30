@@ -119,8 +119,11 @@ def build_daily() -> pd.DataFrame:
     for i, d in enumerate(day_ts):
         ni = next_idx[i]
         pi = prev_idx[i]
-        days_to.append(int((fest_ts[ni] - d) / pd.Timedelta(days=1)) if ni < len(fest_ts) else -1)
-        days_since.append(int((d - fest_ts[pi]) / pd.Timedelta(days=1)) if pi >= 0 else -1)
+        # fest_ts / d are datetime64[D]; the difference is timedelta64[D], so
+        # .astype(int) is the exact day count (no pd.Timedelta division — that
+        # path is deprecated under numpy 2.x).
+        days_to.append(int((fest_ts[ni] - d).astype("int64")) if ni < len(fest_ts) else -1)
+        days_since.append(int((d - fest_ts[pi]).astype("int64")) if pi >= 0 else -1)
     out["is_festival"] = out["date"].isin(events["date"]).astype(int)
     out["days_to_next_festival"] = days_to
     out["days_since_last_festival"] = days_since

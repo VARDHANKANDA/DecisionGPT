@@ -35,6 +35,18 @@ def test_festival_daily_distance_features_are_consistent():
     # distances never negative except the -1 sentinel at the very ends
     assert daily["days_to_next_festival"].min() >= -1
     assert daily["days_since_last_festival"].min() >= -1
+    # integer day counts (regression: the datetime64[D] -> int cast must not
+    # go through the numpy-2-deprecated pd.Timedelta division path)
+    assert daily["days_to_next_festival"].dtype.kind == "i"
+    assert daily["days_since_last_festival"].dtype.kind == "i"
+    # the day before a festival is exactly 1 day away
+    d2n = daily.set_index("date")["days_to_next_festival"]
+    fest_dates = set(daily.loc[daily["is_festival"] == 1, "date"])
+    import datetime as _dt
+    for fd in list(fest_dates)[:20]:
+        prev = (_dt.date.fromisoformat(fd) - _dt.timedelta(days=1)).isoformat()
+        if prev in d2n.index and prev not in fest_dates:
+            assert d2n[prev] == 1
 
 
 def test_festival_adapter_deterministic():
