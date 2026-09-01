@@ -1,3 +1,5 @@
+import { TOKEN_STORAGE_KEY as BEARER_TOKEN_KEY } from "@/lib/api";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 const TOKEN_STORAGE_KEY = "decisiongpt.research_token";
 
@@ -44,8 +46,17 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 function authHeaders(): HeadersInit {
-  const token = getResearchToken();
-  return token ? { "X-Research-Token": token } : {};
+  const headers: Record<string, string> = {};
+  // Preferred: the signed-in session. The backend grants research access to a
+  // user whose role is "admin"; a non-admin bearer token is rejected (403), so
+  // this never widens access.
+  const bearer =
+    typeof window !== "undefined" ? window.localStorage.getItem(BEARER_TOKEN_KEY) : null;
+  if (bearer) headers["Authorization"] = `Bearer ${bearer}`;
+  // Fallback for CI / scripts / a researcher without an account.
+  const consoleToken = getResearchToken();
+  if (consoleToken) headers["X-Research-Token"] = consoleToken;
+  return headers;
 }
 
 async function researchGet<T>(path: string): Promise<T> {

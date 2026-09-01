@@ -14,8 +14,19 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 import app.models  # noqa: F401 - populate Base.metadata
+from app.core.config import get_settings
 from app.db.session import Base, get_db
 from app.main import app as fastapi_app
+
+
+@pytest.fixture(autouse=True)
+def _auth_disabled_by_default(monkeypatch):
+    """The suite is written against the open API (auth_enabled=False), which is
+    also the code default. `backend/.env` may set AUTH_ENABLED=true for local
+    SaaS use, so pin it back to False here. Tests that exercise auth override
+    this themselves (they set it True in their own fixtures, which run after
+    this autouse one)."""
+    monkeypatch.setattr(get_settings(), "auth_enabled", False)
 
 _REGISTRY_INDEX = Path(__file__).resolve().parents[1] / "models" / "registry_index.jsonl"
 

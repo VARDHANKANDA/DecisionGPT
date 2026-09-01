@@ -161,36 +161,53 @@ function DecisionResult({
       ? ((outcome.expected_units_sold - outcome.baseline_units_sold) / outcome.baseline_units_sold) * 100
       : 0;
 
+  const revenueDelta =
+    outcome.baseline_revenue > 0
+      ? ((outcome.expected_revenue - outcome.baseline_revenue) / outcome.baseline_revenue) * 100
+      : 0;
+  const confidencePct = Math.round(decision.confidence * 100);
+  const confidenceWord = confidencePct >= 60 ? "High" : confidencePct >= 35 ? "Moderate" : "Low";
+
   return (
     <div className="mt-8 space-y-6">
-      <Card>
-        <div className="flex items-center justify-between">
+      {/* Primary recommendation — visually dominant */}
+      <div className="rounded-2xl border border-accent/30 bg-accent-soft/40 p-6 sm:p-8">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-sm text-muted">
-              Recommended strategy
-              {goal ? ` for ${OBJECTIVE_LABELS[goal.objective] ?? goal.objective}` : ""}
+            <p className="text-sm font-medium text-accent">
+              Our recommendation{goal ? ` for “${OBJECTIVE_LABELS[goal.objective] ?? goal.objective}”` : ""}
             </p>
-            <h2 className="mt-1 text-xl font-semibold text-foreground">{decision.selected_strategy_name}</h2>
+            <h2 className="mt-1 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              {decision.selected_strategy_name}
+            </h2>
           </div>
           <RiskBadge level={decision.risk_level} />
         </div>
-        <p className="mt-3 text-sm text-foreground">{decision.reasoning}</p>
+        <p className="mt-4 max-w-2xl text-base text-foreground">{decision.reasoning}</p>
 
         <VoiceOutput
-          className="mt-3"
-          label="the recommended strategy"
-          text={`Recommended strategy: ${decision.selected_strategy_name}. ${decision.reasoning} Risk level: ${decision.risk_level}. Confidence ${Math.round(
-            decision.confidence * 100,
-          )} percent.`}
+          className="mt-4"
+          label="the recommendation"
+          text={`Our recommendation: ${decision.selected_strategy_name}. ${decision.reasoning} This has ${confidenceWord.toLowerCase()} confidence and ${decision.risk_level.toLowerCase()} risk.`}
         />
 
-        <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <MiniStat label="Expected revenue" value={formatINR(outcome.expected_revenue)} />
-          <MiniStat label="Baseline revenue" value={formatINR(outcome.baseline_revenue)} />
-          <MiniStat label="Units sold change" value={`${unitsGrowth >= 0 ? "+" : ""}${unitsGrowth.toFixed(1)}%`} />
-          <MiniStat label="Confidence" value={`${Math.round(decision.confidence * 100)}%`} />
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <MiniStat
+            label="Expected business impact"
+            value={`${revenueDelta >= 0 ? "+" : ""}${revenueDelta.toFixed(1)}% revenue`}
+            hint={`${formatINR(outcome.baseline_revenue)} → ${formatINR(outcome.expected_revenue)} over the goal period`}
+          />
+          <MiniStat
+            label="Change in units sold"
+            value={`${unitsGrowth >= 0 ? "+" : ""}${unitsGrowth.toFixed(1)}%`}
+          />
+          <MiniStat
+            label="Confidence in this recommendation"
+            value={confidenceWord}
+            hint={`${confidencePct}% — based on how much your data supports it and how far it goes beyond what we've seen before`}
+          />
         </div>
-      </Card>
+      </div>
 
       {decision.memory_insights.length > 0 ? (
         <Card>
@@ -204,7 +221,10 @@ function DecisionResult({
       ) : null}
 
       <Card>
-        <h3 className="text-sm font-medium text-foreground">AI Business Review</h3>
+        <h3 className="text-sm font-medium text-foreground">What our advisors think</h3>
+        <p className="mt-1 text-xs text-muted">
+          Three viewpoints on this recommendation — growth, finances and risk.
+        </p>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {Object.entries(decision.agent_reviews).map(([agent, narrative]) => (
             <div key={agent} className="rounded-xl bg-muted-surface p-4">
@@ -215,7 +235,7 @@ function DecisionResult({
         </div>
         <VoiceOutput
           className="mt-4"
-          label="the AI business review"
+          label="the advisor summary"
           text={Object.entries(decision.agent_reviews)
             .map(([agent, narrative]) => `${AGENT_LABELS[agent] ?? agent}: ${narrative}`)
             .join(" ")}
@@ -223,28 +243,25 @@ function DecisionResult({
       </Card>
 
       <Card>
-        <h3 className="text-sm font-medium text-foreground">Alternative strategies considered</h3>
+        <h3 className="text-sm font-medium text-foreground">Other options we compared</h3>
         <div className="overflow-x-auto">
           <table className="mt-4 w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-muted">
-                <th className="py-2 font-medium">Strategy</th>
-                <th className="py-2 text-right font-medium">Score</th>
+                <th className="py-2 font-medium">Option</th>
                 <th className="py-2 text-right font-medium">Expected revenue</th>
                 <th className="py-2 text-right font-medium">Risk</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-border bg-accent-soft/40">
-                <td className="py-2 font-medium">{decision.selected_strategy_name} (selected)</td>
-                <td className="py-2 text-right">{decision.selected_strategy_score.toFixed(3)}</td>
+                <td className="py-2 font-medium">{decision.selected_strategy_name} (recommended)</td>
                 <td className="py-2 text-right">{formatINR(outcome.expected_revenue)}</td>
                 <td className="py-2 text-right capitalize">{decision.risk_level}</td>
               </tr>
               {decision.alternatives.map((alt) => (
                 <tr key={alt.strategy_id} className="border-b border-border last:border-0">
                   <td className="py-2">{alt.strategy_name}</td>
-                  <td className="py-2 text-right">{alt.strategy_score.toFixed(3)}</td>
                   <td className="py-2 text-right">{formatINR(alt.expected_revenue)}</td>
                   <td className="py-2 text-right capitalize">{alt.risk_level}</td>
                 </tr>
@@ -254,15 +271,26 @@ function DecisionResult({
         </div>
         {decision.skipped_strategies.length > 0 ? (
           <p className="mt-3 text-xs text-muted">
-            {decision.skipped_strategies.length} candidate strateg{decision.skipped_strategies.length === 1 ? "y" : "ies"}{" "}
-            could not be simulated: {decision.skipped_strategies.join("; ")}
+            {decision.skipped_strategies.length} option{decision.skipped_strategies.length === 1 ? "" : "s"}{" "}
+            couldn&apos;t be modelled with your current data.
           </p>
         ) : null}
       </Card>
 
-      <StrategyGenerationCard info={decision.strategy_generation} />
-      <CausalEvidenceCard ctx={decision.causal_context} />
-      <DebateCard debate={decision.debate} />
+      <details className="rounded-2xl border border-border bg-surface">
+        <summary className="cursor-pointer px-6 py-4 text-sm font-medium text-foreground">
+          Technical details (for analysts)
+        </summary>
+        <div className="space-y-6 border-t border-border p-6">
+          <StrategyGenerationCard info={decision.strategy_generation} />
+          <CausalEvidenceCard ctx={decision.causal_context} />
+          <DebateCard debate={decision.debate} />
+          <p className="text-xs text-muted">
+            Recommendation score {decision.selected_strategy_score.toFixed(3)} · risk model R0 (production
+            default). These internal figures drive ranking; they are not business metrics.
+          </p>
+        </div>
+      </details>
 
       {outcome.assumptions?.length > 0 ? (
         <Card>
@@ -410,11 +438,12 @@ function DebateCard({ debate }: { debate: Decision["debate"] }) {
   );
 }
 
-function MiniStat({ label, value }: { label: string; value: string }) {
+function MiniStat({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
     <div>
       <p className="text-xs text-muted">{label}</p>
       <p className="mt-1 text-lg font-semibold text-foreground">{value}</p>
+      {hint ? <p className="mt-1 text-xs leading-snug text-muted">{hint}</p> : null}
     </div>
   );
 }

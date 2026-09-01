@@ -1,14 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
-import { Card, PageHeader, PrimaryButton } from "@/components/ui";
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginInner />
+    </Suspense>
+  );
+}
+
+function LoginInner() {
   const router = useRouter();
+  const params = useSearchParams();
+  const next = params.get("next") || "/dashboard";
   const { login, register } = useAuth();
+
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,63 +32,120 @@ export default function LoginPage() {
     setBusy(true);
     setError(null);
     try {
-      if (mode === "login") await login(email, password);
-      else await register(email, password, fullName || undefined);
-      router.push("/dashboard");
+      if (mode === "login") await login(email.trim(), password);
+      else await register(email.trim(), password, fullName.trim() || undefined);
+      router.replace(next.startsWith("/") ? next : "/dashboard");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Something went wrong.");
-    } finally {
+      setError(
+        err instanceof ApiError
+          ? err.message
+          : mode === "login"
+            ? "Could not sign you in. Check your email and password."
+            : "Could not create your account. Please try again.",
+      );
       setBusy(false);
     }
   }
 
+  const canSubmit = /\S+@\S+\.\S+/.test(email) && password.length >= 8 && !busy;
+
   return (
-    <div className="mx-auto max-w-sm px-6 py-20">
-      <PageHeader
-        title={mode === "login" ? "Sign in" : "Create an account"}
-        subtitle="Your business data is private to your account."
-      />
-      <Card>
-        <form onSubmit={submit} className="flex flex-col gap-4">
-          {mode === "register" ? (
+    <div className="flex min-h-screen items-center justify-center bg-background px-6 py-16">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 text-center">
+          <p className="text-lg font-semibold tracking-tight text-foreground">DecisionGPT</p>
+          <p className="mt-1 text-sm text-muted">Decision support for your business</p>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+          <div className="mb-5 flex rounded-lg bg-muted-surface p-1" role="tablist" aria-label="Authentication">
+            {(["login", "register"] as const).map((m) => (
+              <button
+                key={m}
+                role="tab"
+                aria-selected={mode === m}
+                onClick={() => {
+                  setMode(m);
+                  setError(null);
+                }}
+                className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                  mode === m ? "bg-surface text-foreground shadow-sm" : "text-muted hover:text-foreground"
+                }`}
+              >
+                {m === "login" ? "Sign in" : "Create account"}
+              </button>
+            ))}
+          </div>
+
+          <form onSubmit={submit} className="flex flex-col gap-4">
+            {mode === "register" ? (
+              <label className="flex flex-col gap-1.5 text-sm">
+                <span className="font-medium text-foreground">Your name</span>
+                <input
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  autoComplete="name"
+                  className="input"
+                />
+              </label>
+            ) : null}
+
             <label className="flex flex-col gap-1.5 text-sm">
-              <span className="font-medium text-foreground">Name</span>
-              <input value={fullName} onChange={(e) => setFullName(e.target.value)} className="input" />
+              <span className="font-medium text-foreground">Work email</span>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                className="input"
+              />
             </label>
-          ) : null}
-          <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-medium text-foreground">Email</span>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input"
-            />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-medium text-foreground">Password</span>
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input"
-            />
-          </label>
-          {error ? <p className="text-sm text-danger">{error}</p> : null}
-          <PrimaryButton type="submit" disabled={busy || !email || password.length < 8}>
-            {busy ? "…" : mode === "login" ? "Sign in" : "Create account"}
-          </PrimaryButton>
-        </form>
-        <button
-          onClick={() => setMode(mode === "login" ? "register" : "login")}
-          className="mt-4 text-sm text-accent underline underline-offset-4"
-        >
-          {mode === "login" ? "Need an account? Register" : "Already have an account? Sign in"}
-        </button>
-      </Card>
+
+            <label className="flex flex-col gap-1.5 text-sm">
+              <span className="font-medium text-foreground">Password</span>
+              <input
+                type="password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete={mode === "login" ? "current-password" : "new-password"}
+                className="input"
+              />
+              {mode === "register" ? (
+                <span className="text-xs text-muted">At least 8 characters.</span>
+              ) : null}
+            </label>
+
+            {error ? (
+              <p className="rounded-lg bg-danger-soft px-3 py-2 text-sm text-danger" role="alert">
+                {error}
+              </p>
+            ) : null}
+
+            <button
+              type="submit"
+              disabled={!canSubmit}
+              className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              {busy ? "Please wait…" : mode === "login" ? "Sign in" : "Create account"}
+            </button>
+          </form>
+
+          <p className="mt-4 text-center text-xs text-muted">
+            {mode === "login"
+              ? "Forgot your password? Password reset isn’t available yet — contact your administrator."
+              : "By creating an account you get a private workspace for your business data."}
+          </p>
+        </div>
+
+        <p className="mt-6 text-center text-xs text-muted">
+          <Link href="/" className="underline underline-offset-4 hover:text-foreground">
+            ← Back to home
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

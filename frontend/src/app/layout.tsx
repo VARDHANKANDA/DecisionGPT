@@ -4,7 +4,8 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { BusinessProvider } from "@/lib/business-context";
 import { VoiceLanguageProvider } from "@/lib/voice/language-context";
-import { TopNav } from "@/components/TopNav";
+import { AuthBoundary } from "@/components/AuthBoundary";
+import { AppShell } from "@/components/AppShell";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,8 +24,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <AuthProvider>
           <BusinessProvider>
             <VoiceLanguageProvider>
-              <TopNav />
-              <main className="flex-1">{children}</main>
+              <AuthBoundary>
+                <AppShell>{children}</AppShell>
+              </AuthBoundary>
             </VoiceLanguageProvider>
           </BusinessProvider>
         </AuthProvider>
