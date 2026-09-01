@@ -7,7 +7,7 @@ created or modified. No real-SME outcome, real-LLM result, or causal evidence
 fabricated. R3 not promoted.
 
 **Baseline commit audited:** `44459a9` ("Add accessible voice interaction").
-**Audit commit:** see §Git.
+**Audit commit:** `abe9e2e`.
 
 ---
 
@@ -242,4 +242,5 @@ no model, no schema):
   pointer notes.
 - `docs/FINAL_PROJECT_HEALTH_AND_FREEZE_AUDIT.md` — this report.
 
-Final audit commit hash: recorded in the follow-up commit.
+Final audit commit hash: `abe9e2e` (this report's hash recorded by the
+follow-up commit).
