@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { BusinessProvider } from "@/lib/business-context";
+import { VoiceLanguageProvider } from "@/lib/voice/language-context";
 import { TopNav } from "@/components/TopNav";
 
 const inter = Inter({
@@ -21,8 +22,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <AuthProvider>
           <BusinessProvider>
-            <TopNav />
-            <main className="flex-1">{children}</main>
+            <VoiceLanguageProvider>
+              <TopNav />
+              <main className="flex-1">{children}</main>
+            </VoiceLanguageProvider>
           </BusinessProvider>
         </AuthProvider>
       </body>

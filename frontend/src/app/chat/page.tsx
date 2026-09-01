@@ -4,6 +4,7 @@ import { useState } from "react";
 import { api, ApiError, type ChatResponse } from "@/lib/api";
 import { useBusiness } from "@/lib/business-context";
 import { Card, PageHeader, PrimaryButton, SecondaryLink } from "@/components/ui";
+import { VoiceInput } from "@/components/voice/VoiceInput";
 
 const EXAMPLES = [
   "Why did my revenue fall?",
@@ -109,17 +110,26 @@ export default function ChatPage() {
         </div>
       )}
 
+      <div className="mt-6">
+        <VoiceInput
+          label="your question"
+          showLanguagePicker={false}
+          onTranscript={(t) => setText(t)}
+        />
+      </div>
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
           send(text);
         }}
-        className="sticky bottom-6 mt-6 flex items-center gap-3 rounded-full border border-border bg-surface p-2 shadow-sm"
+        className="sticky bottom-6 mt-3 flex items-center gap-3 rounded-full border border-border bg-surface p-2 shadow-sm"
       >
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Ask about your business…"
+          aria-label="Ask about your business"
           className="flex-1 rounded-full border-none bg-transparent px-3 py-2 text-sm outline-none"
         />
         <PrimaryButton type="submit" disabled={sending || !text.trim()} className="shrink-0">

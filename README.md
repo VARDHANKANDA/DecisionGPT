@@ -48,6 +48,7 @@ Designed primarily for Indian SMEs, startups, D2C brands, and retail/e-commerce 
 | 🛡️ **Zero-Fabrication Guarantee** | Strict architectural boundary between ML computation and text generation. | Numbers, forecasts, and confidence scores come strictly from trained models and data; the LLM only formats human-readable narratives. |
 | 🏢 **Strict Tenant Isolation** | Every data ingestion, database query, and model registry artifact is scoped by `business_id`. | Complete multi-tenant privacy. Platform research datasets are isolated from SME operational data. |
 | 🔬 **Research & Benchmark Console** | Token-gated academic environment with 7 reproducible experiment runners, dataset registry, and paper-ready LaTeX/Markdown exports. | Empirical rigor and scientific traceability for researchers and data science teams. |
+| 🎤 **Voice Accessibility** | Optional browser-native speech input (feeds the existing text pipeline after user review) and opt-in text-to-speech for recommendations, in English / Hindi / Tamil. | Lowers the typing barrier on mobile; an input modality only — not evaluated as a research treatment. See [`docs/VOICE_ACCESSIBILITY.md`](docs/VOICE_ACCESSIBILITY.md). |
 
 ---
 

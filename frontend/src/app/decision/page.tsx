@@ -12,6 +12,7 @@ import {
 import { useBusiness } from "@/lib/business-context";
 import { OutcomeForm } from "@/components/OutcomeForm";
 import { Card, EmptyState, PageHeader, PrimaryButton, RiskBadge, SecondaryLink, formatINR } from "@/components/ui";
+import { VoiceOutput } from "@/components/voice/VoiceOutput";
 
 const OBJECTIVE_LABELS: Record<string, string> = {
   increase_revenue: "Increase revenue",
@@ -175,6 +176,14 @@ function DecisionResult({
         </div>
         <p className="mt-3 text-sm text-foreground">{decision.reasoning}</p>
 
+        <VoiceOutput
+          className="mt-3"
+          label="the recommended strategy"
+          text={`Recommended strategy: ${decision.selected_strategy_name}. ${decision.reasoning} Risk level: ${decision.risk_level}. Confidence ${Math.round(
+            decision.confidence * 100,
+          )} percent.`}
+        />
+
         <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <MiniStat label="Expected revenue" value={formatINR(outcome.expected_revenue)} />
           <MiniStat label="Baseline revenue" value={formatINR(outcome.baseline_revenue)} />
@@ -204,6 +213,13 @@ function DecisionResult({
             </div>
           ))}
         </div>
+        <VoiceOutput
+          className="mt-4"
+          label="the AI business review"
+          text={Object.entries(decision.agent_reviews)
+            .map(([agent, narrative]) => `${AGENT_LABELS[agent] ?? agent}: ${narrative}`)
+            .join(" ")}
+        />
       </Card>
 
       <Card>

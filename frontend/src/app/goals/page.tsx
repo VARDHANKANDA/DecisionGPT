@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { api, ApiError, type Goal } from "@/lib/api";
 import { useBusiness } from "@/lib/business-context";
 import { Card, EmptyState, PageHeader, PrimaryButton, SecondaryLink } from "@/components/ui";
+import { VoiceInput } from "@/components/voice/VoiceInput";
 
 const EXAMPLES = [
   "Increase profit by 15% in 3 months.",
@@ -78,12 +79,17 @@ export default function GoalsPage() {
 
       <Card>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <VoiceInput
+            label="your goal"
+            onTranscript={(t) => setText(t)}
+          />
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="e.g. Increase profit by 15% in the next 3 months."
             rows={2}
             className="input resize-none"
+            aria-label="Goal, in plain language"
             required
           />
           <div className="flex flex-wrap gap-2">
