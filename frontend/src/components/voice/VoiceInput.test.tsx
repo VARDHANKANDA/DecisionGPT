@@ -77,6 +77,17 @@ describe("VoiceInput (supported browser)", () => {
     await waitFor(() => expect(screen.getByRole("button", { name: /start voice input/i })).toBeInTheDocument());
   });
 
+  it("a manual Stop with no speech is a quiet cancellation, not a 'no speech' error", async () => {
+    const user = userEvent.setup();
+    const onError = vi.fn();
+    render(<VoiceInput onTranscript={() => {}} onError={onError} locale="en-IN" />);
+    await user.click(screen.getByRole("button", { name: /start voice input/i }));
+    await user.click(screen.getByRole("button", { name: /stop voice input/i }));
+    await waitFor(() => expect(screen.getByRole("button", { name: /start voice input/i })).toBeInTheDocument());
+    expect(screen.queryByText(/didn.t catch anything/i)).not.toBeInTheDocument();
+    expect(onError).not.toHaveBeenCalled();
+  });
+
   it("shows a plain-language fallback when permission is denied", async () => {
     const user = userEvent.setup();
     const onError = vi.fn();

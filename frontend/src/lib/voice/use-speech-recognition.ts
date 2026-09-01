@@ -56,6 +56,7 @@ export function useSpeechRecognition({
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const gotResultRef = useRef(false);
   const erroredRef = useRef(false);
+  const userStoppedRef = useRef(false);
 
   // Keep the latest callbacks without re-subscribing recognition handlers.
   const onResultRef = useRef(onResult);
@@ -76,6 +77,7 @@ export function useSpeechRecognition({
     clearTimer();
     const rec = recognitionRef.current;
     if (rec) {
+      userStoppedRef.current = true; // a manual stop is not a "no speech" error
       try {
         rec.stop();
       } catch {
@@ -106,6 +108,7 @@ export function useSpeechRecognition({
     setInterim("");
     gotResultRef.current = false;
     erroredRef.current = false;
+    userStoppedRef.current = false;
 
     let rec: SpeechRecognition;
     try {
@@ -150,6 +153,11 @@ export function useSpeechRecognition({
       recognitionRef.current = null;
       setInterim("");
       if (erroredRef.current) return; // an error handler already set the state
+      if (userStoppedRef.current) {
+        // manual cancellation — quietly return to idle, no error message
+        setStatus("idle");
+        return;
+      }
       if (!gotResultRef.current) {
         emitError("no-speech");
         return;

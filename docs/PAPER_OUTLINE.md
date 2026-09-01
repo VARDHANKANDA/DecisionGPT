@@ -1,5 +1,13 @@
 # DecisionGPT — Research Paper Outline
 
+> **Superseded planning draft.** This early outline (and the working title
+> below) predate the experiments. The results include a **controlled negative
+> finding** (the multi-agent layer does not add objective value on the tested
+> suite), so the framing here is out of date. Use
+> **`docs/PAPER_EVIDENCE_AUDIT_AND_BLUEPRINT.md`** (§G structure, §H tables,
+> §N titles) and `docs/PAPER_LITERATURE_FOUNDATION.md` as the authoritative
+> blueprint. The paper has not been written.
+
 ## Title
 
 DecisionGPT: A Goal-Driven Multi-Agent AI Framework with Business Digital Twin and Causal Reasoning for Explainable Strategic Decision Support in Indian SMEs

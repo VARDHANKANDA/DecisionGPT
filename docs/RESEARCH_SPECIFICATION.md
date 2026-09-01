@@ -1,5 +1,15 @@
 # DecisionGPT — Research Specification
 
+> **Historical planning document (pre-experiment).** The research questions,
+> hypotheses (H1–H4) and baseline plan below were fixed *before* any experiment
+> ran and are kept for the record. Several were **not** confirmed — in
+> particular H2 (multi-agent > single-agent) and H3 (full system > baselines)
+> are **refuted** on the synthetic suite. For the authoritative post-experiment
+> position — what each RQ/H actually resolved to, what may and may not be
+> claimed, and the title/framing to use — see
+> **`docs/PAPER_EVIDENCE_AUDIT_AND_BLUEPRINT.md`** (§D, §E, §M, §N) and
+> `docs/RESEARCH_EXPERIMENT_REPORT.md`.
+
 ## 1. Research Title
 
 **DecisionGPT: A Goal-Driven Multi-Agent AI Framework with Business Digital Twin and Causal Reasoning for Explainable Strategic Decision Support in Indian SMEs**
