@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import { useVoiceLanguage } from "@/lib/voice/language-context";
 import { useSpeechSynthesis } from "@/lib/voice/use-speech-synthesis";
 
@@ -24,6 +24,14 @@ export function VoiceOutput({ text, locale: localeProp, label = "the recommendat
   const locale = localeProp ?? ctxLocale;
   const { status, supported, speak, pause, resume, stop } = useSpeechSynthesis();
   const statusId = useId();
+
+  // speechSynthesis is a `window` API — absent during SSR. Render nothing until
+  // mounted so the server HTML and first client render match (no hydration
+  // mismatch); this control is opt-in and off-screen-until-used anyway.
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot mount flag for SSR hydration safety (canonical isMounted pattern)
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
 
   if (!supported || status === "unsupported") {
     return (

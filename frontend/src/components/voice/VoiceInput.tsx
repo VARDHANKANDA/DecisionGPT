@@ -40,6 +40,13 @@ export function VoiceInput({
   const { locale: ctxLocale, lang } = useVoiceLanguage();
   const locale = localeProp ?? ctxLocale;
 
+  // Voice support depends on `window` APIs, which do not exist during SSR.
+  // Render a stable placeholder until mounted so the server HTML and the first
+  // client render match (no hydration mismatch); the real control appears after.
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot mount flag for SSR hydration safety (canonical isMounted pattern)
+  useEffect(() => setMounted(true), []);
+
   const [draft, setDraft] = useState("");
   const [showReview, setShowReview] = useState(false);
   const reviewRef = useRef<HTMLTextAreaElement | null>(null);
@@ -84,6 +91,18 @@ export function VoiceInput({
   function discard() {
     setShowReview(false);
     setDraft("");
+  }
+
+  // --- Pre-hydration placeholder (matches server + first client render) ---
+  if (!mounted) {
+    return (
+      <div className={`flex min-h-[44px] items-center ${className}`} aria-hidden="true">
+        <span className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-medium text-muted opacity-60">
+          <span>🎤</span>
+          <span>Speak</span>
+        </span>
+      </div>
+    );
   }
 
   // --- Unsupported / blocked: show the fallback, keep the component inert ---
