@@ -1,0 +1,575 @@
+{
+ "_provenance": "Values extracted read-only from the frozen experiment runs in the DecisionGPT research database. Source experiment IDs are given per block. experiment_manifest.json SHA-256 94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff. No experiment was run or modified. This file is a derived artifact for figure rendering only.",
+ "architecture": {
+  "experiment_id": "0e1bd8dc-bc51-44ea-8e58-08a054201b85",
+  "n_per_config": 60,
+  "aggregates": {
+   "A": {
+    "mean": 0.0,
+    "median": 0.0,
+    "std": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "B": {
+    "mean": 0.4856,
+    "median": 0.4584,
+    "std": 0.3138,
+    "ci95": [
+     0.4045,
+     0.5666
+    ]
+   },
+   "C": {
+    "mean": 0.0025,
+    "median": 0.0,
+    "std": 0.0057,
+    "ci95": [
+     0.001,
+     0.004
+    ]
+   },
+   "D": {
+    "mean": 0.0844,
+    "median": 0.0,
+    "std": 0.2784,
+    "ci95": [
+     0.0125,
+     0.1564
+    ]
+   }
+  },
+  "paired_D_vs_B": {
+   "comparison": "Full (D) vs Prediction + Digital Twin",
+   "metric": "goal_achievement",
+   "n_pairs": 60,
+   "mean_difference": -0.4011,
+   "median_difference": -0.4132,
+   "std_difference": 0.2989,
+   "full_wins": 0,
+   "ties": 15,
+   "full_losses": 45,
+   "mean_difference_ci95": [
+    -0.4783,
+    -0.3239
+   ],
+   "test": "Wilcoxon signed-rank (paired on scenario x seed)",
+   "statistic": 0.0,
+   "p_value": 0.0,
+   "effect_size_r": 0.8726,
+   "interpretation": "Full DecisionGPT showed statistically significantly lower goal_achievement than Prediction + Digital Twin across the 60 paired scenario/seed evaluations (p=0.0000)."
+  },
+  "paired_D_vs_A": {
+   "comparison": "Full (D) vs Prediction only",
+   "metric": "goal_achievement",
+   "n_pairs": 60,
+   "mean_difference": 0.0844,
+   "median_difference": 0.0,
+   "std_difference": 0.2784,
+   "full_wins": 10,
+   "ties": 50,
+   "full_losses": 0,
+   "mean_difference_ci95": [
+    0.0125,
+    0.1564
+   ],
+   "test": "Wilcoxon signed-rank (paired on scenario x seed)",
+   "statistic": 0.0,
+   "p_value": 0.004482,
+   "effect_size_r": 0.8987,
+   "interpretation": "Full DecisionGPT showed statistically significantly higher goal_achievement than Prediction only across the 60 paired scenario/seed evaluations (p=0.0045)."
+  },
+  "diffs_D_minus_B": [
+   -0.4167,
+   -0.4167,
+   -0.4167,
+   -0.4167,
+   -0.4167,
+   -0.625,
+   -0.625,
+   -0.625,
+   -0.625,
+   -0.625,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   -0.5,
+   -0.5,
+   -0.5,
+   -0.5,
+   -0.5,
+   -0.6667,
+   -0.6667,
+   -0.6667,
+   -0.6667,
+   -0.6667,
+   -0.2307,
+   -0.2383,
+   -0.2382,
+   -0.2381,
+   -0.2381,
+   -0.4097,
+   -0.4097,
+   -0.4097,
+   -0.4097,
+   -0.4097,
+   -1.0,
+   -1.0,
+   -1.0,
+   -1.0,
+   -1.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   -0.3489,
+   -0.3184,
+   -0.3436,
+   -0.3406,
+   -0.3169,
+   -0.625,
+   -0.625,
+   -0.625,
+   -0.625,
+   -0.625
+  ],
+  "diffs_D_minus_A": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0193,
+   0.0117,
+   0.0118,
+   0.0119,
+   0.0119,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "scenario_level_D_minus_B": {
+   "S01": -0.41669999999999996,
+   "S02": -0.625,
+   "S03": 0.0,
+   "S04": -0.5,
+   "S05": -0.6667,
+   "S06": -0.23668,
+   "S07": -0.40970000000000006,
+   "S08": -1.0,
+   "S09": 0.0,
+   "S10": 0.0,
+   "S11": -0.33368000000000003,
+   "S12": -0.625
+  }
+ },
+ "ablation": {
+  "experiment_id": "db58455b-138b-4054-b1ac-e4b315d2edfc",
+  "n_per_config": 60,
+  "configs": {
+   "A": {
+    "mean": 0.0844,
+    "ci95": [
+     0.0125,
+     0.1564
+    ],
+    "confidence": 0.139
+   },
+   "B": {
+    "mean": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "confidence": null
+   },
+   "C": {
+    "mean": 0.0844,
+    "ci95": [
+     0.0125,
+     0.1564
+    ],
+    "confidence": 0.2512
+   },
+   "D": {
+    "mean": 0.0844,
+    "ci95": [
+     0.0125,
+     0.1564
+    ],
+    "confidence": 0.1321
+   },
+   "E": {
+    "mean": 0.0844,
+    "ci95": [
+     0.0125,
+     0.1564
+    ],
+    "confidence": 0.139
+   },
+   "F": {
+    "mean": 0.0844,
+    "ci95": [
+     0.0125,
+     0.1564
+    ],
+    "confidence": 0.139
+   }
+  },
+  "paired": {
+   "Full_vs_B": {
+    "mean_difference": 0.0844,
+    "full_wins": 10,
+    "ties": 50,
+    "full_losses": 0,
+    "mean_difference_ci95": [
+     0.0125,
+     0.1564
+    ],
+    "p_value": 0.004482
+   },
+   "Full_vs_C": {
+    "mean_difference": 0.0,
+    "full_wins": 0,
+    "ties": 60,
+    "full_losses": 0,
+    "mean_difference_ci95": null,
+    "p_value": null
+   },
+   "Full_vs_D": {
+    "mean_difference": 0.0,
+    "full_wins": 0,
+    "ties": 60,
+    "full_losses": 0,
+    "mean_difference_ci95": null,
+    "p_value": null
+   },
+   "Full_vs_E": {
+    "mean_difference": 0.0,
+    "full_wins": 0,
+    "ties": 60,
+    "full_losses": 0,
+    "mean_difference_ci95": null,
+    "p_value": null
+   },
+   "Full_vs_F": {
+    "mean_difference": 0.0,
+    "full_wins": 0,
+    "ties": 60,
+    "full_losses": 0,
+    "mean_difference_ci95": null,
+    "p_value": null
+   }
+  }
+ },
+ "mechanism": {
+  "experiment_id": "ba56e42b-98b1-481e-a42d-34a52b6941e6",
+  "D0_goal_achievement": {
+   "n": 60,
+   "mean": 0.0844,
+   "median": 0.0,
+   "std": 0.2784,
+   "min": 0.0,
+   "max": 1.0,
+   "ci95": [
+    0.0125,
+    0.1564
+   ]
+  },
+  "D1_goal_achievement": {
+   "n": 60,
+   "mean": 0.5834,
+   "median": 0.7582,
+   "std": 0.442,
+   "min": 0.0,
+   "max": 1.0,
+   "ci95": [
+    0.4692,
+    0.6976
+   ]
+  },
+  "paired_d1_minus_d0": {
+   "comparison": "D1 (Risk-Penalty Sensitivity) vs D0 (Full DecisionGPT)",
+   "metric": "goal_achievement",
+   "n_pairs": 60,
+   "mean_difference": 0.4989,
+   "median_difference": 0.5689,
+   "std_difference": 0.45,
+   "ties": 25,
+   "mean_difference_ci95": [
+    0.3827,
+    0.6152
+   ],
+   "test": "Wilcoxon signed-rank (paired on scenario x seed)",
+   "statistic": 0.0,
+   "p_value": 0.0,
+   "effect_size_r": 0.8926,
+   "interpretation": "D1 (risk penalty un-weighted) goal achievement is higher than D0 by +0.4989 (Wilcoxon p=0.0000, statistically significant, r=0.8926).",
+   "difference_is": "D1 - D0",
+   "d1_wins": 35,
+   "d0_wins": 0
+  },
+  "rm_decisive": {
+   "count": 45,
+   "percentage": 75.0,
+   "improved": 35,
+   "degraded": 0,
+   "neutral": 10
+  },
+  "formula_rows_checked": 390,
+  "risk_score_mismatch_count": 0
+ },
+ "risk_calibration": {
+  "experiment_id": "b8516eef-f467-4e3d-91ed-1c51b2d0c8b3",
+  "n_per_variant": 60,
+  "variants": {
+   "R0": {
+    "goal_achievement_mean": 0.0844,
+    "goal_achievement_ci95": [
+     0.0125,
+     0.1564
+    ],
+    "risk_adjusted_mean": -2614.833,
+    "confidence_mean": 0.139
+   },
+   "D1": {
+    "goal_achievement_mean": 0.5834,
+    "goal_achievement_ci95": [
+     0.4692,
+     0.6976
+    ],
+    "risk_adjusted_mean": -2521.9517,
+    "confidence_mean": 0.0184
+   },
+   "R1": {
+    "goal_achievement_mean": 0.0844,
+    "goal_achievement_ci95": [
+     0.0125,
+     0.1564
+    ],
+    "risk_adjusted_mean": -2263.0263,
+    "confidence_mean": 0.1414
+   },
+   "R2-0.25": {
+    "goal_achievement_mean": 0.1678,
+    "goal_achievement_ci95": [
+     0.0708,
+     0.2647
+    ],
+    "risk_adjusted_mean": -2614.833,
+    "confidence_mean": 0.1087
+   },
+   "R2-0.50": {
+    "goal_achievement_mean": 0.0844,
+    "goal_achievement_ci95": [
+     0.0125,
+     0.1564
+    ],
+    "risk_adjusted_mean": -2614.833,
+    "confidence_mean": 0.139
+   },
+   "R2-0.75": {
+    "goal_achievement_mean": 0.0844,
+    "goal_achievement_ci95": [
+     0.0125,
+     0.1564
+    ],
+    "risk_adjusted_mean": -2614.833,
+    "confidence_mean": 0.139
+   },
+   "R3": {
+    "goal_achievement_mean": 0.1678,
+    "goal_achievement_ci95": [
+     0.0708,
+     0.2647
+    ],
+    "risk_adjusted_mean": 40.4998,
+    "confidence_mean": 0.1087
+   }
+  },
+  "paired_vs_r0": {
+   "D1": {
+    "comparison": "D1 vs R0 (D0 / production)",
+    "metric": "goal_achievement",
+    "n_pairs": 60,
+    "mean_difference": 0.4989,
+    "median_difference": 0.5689,
+    "std_difference": 0.45,
+    "ties": 25,
+    "mean_difference_ci95": [
+     0.3827,
+     0.6152
+    ],
+    "test": "Wilcoxon signed-rank (paired on scenario x seed)",
+    "statistic": 0.0,
+    "p_value": 0.0,
+    "effect_size_r": 0.8926,
+    "interpretation": "Full DecisionGPT showed statistically significantly higher goal_achievement than R0 (D0 / production) across the 60 paired scenario/seed evaluations (p=0.0000).",
+    "difference_is": "D1 - R0",
+    "D1_wins": 35,
+    "r0_wins": 0
+   },
+   "R1": {
+    "comparison": "R1 vs R0 (D0 / production)",
+    "metric": "goal_achievement",
+    "n_pairs": 60,
+    "mean_difference": 0.0,
+    "median_difference": 0.0,
+    "std_difference": 0.0,
+    "ties": 60,
+    "mean_difference_ci95": null,
+    "test": "Wilcoxon signed-rank",
+    "statistic": null,
+    "p_value": null,
+    "effect_size_r": null,
+    "interpretation": "Statistical significance not assessed (all paired differences are exactly zero); the test's assumptions are not met. Descriptive result only: mean paired difference +0.0000.",
+    "difference_is": "R1 - R0",
+    "R1_wins": 0,
+    "r0_wins": 0
+   },
+   "R2-0.25": {
+    "comparison": "R2-0.25 vs R0 (D0 / production)",
+    "metric": "goal_achievement",
+    "n_pairs": 60,
+    "mean_difference": 0.0833,
+    "median_difference": 0.0,
+    "std_difference": 0.2787,
+    "ties": 55,
+    "mean_difference_ci95": [
+     0.0113,
+     0.1553
+    ],
+    "test": "Wilcoxon signed-rank (paired on scenario x seed)",
+    "statistic": 0.0,
+    "p_value": 0.025347,
+    "effect_size_r": 1.0,
+    "interpretation": "Full DecisionGPT showed statistically significantly higher goal_achievement than R0 (D0 / production) across the 60 paired scenario/seed evaluations (p=0.0253).",
+    "difference_is": "R2-0.25 - R0",
+    "R2-0.25_wins": 5,
+    "r0_wins": 0
+   },
+   "R2-0.50": {
+    "comparison": "R2-0.50 vs R0 (D0 / production)",
+    "metric": "goal_achievement",
+    "n_pairs": 60,
+    "mean_difference": 0.0,
+    "median_difference": 0.0,
+    "std_difference": 0.0,
+    "ties": 60,
+    "mean_difference_ci95": null,
+    "test": "Wilcoxon signed-rank",
+    "statistic": null,
+    "p_value": null,
+    "effect_size_r": null,
+    "interpretation": "Statistical significance not assessed (all paired differences are exactly zero); the test's assumptions are not met. Descriptive result only: mean paired difference +0.0000.",
+    "difference_is": "R2-0.50 - R0",
+    "R2-0.50_wins": 0,
+    "r0_wins": 0
+   },
+   "R2-0.75": {
+    "comparison": "R2-0.75 vs R0 (D0 / production)",
+    "metric": "goal_achievement",
+    "n_pairs": 60,
+    "mean_difference": 0.0,
+    "median_difference": 0.0,
+    "std_difference": 0.0,
+    "ties": 60,
+    "mean_difference_ci95": null,
+    "test": "Wilcoxon signed-rank",
+    "statistic": null,
+    "p_value": null,
+    "effect_size_r": null,
+    "interpretation": "Statistical significance not assessed (all paired differences are exactly zero); the test's assumptions are not met. Descriptive result only: mean paired difference +0.0000.",
+    "difference_is": "R2-0.75 - R0",
+    "R2-0.75_wins": 0,
+    "r0_wins": 0
+   },
+   "R3": {
+    "comparison": "R3 vs R0 (D0 / production)",
+    "metric": "goal_achievement",
+    "n_pairs": 60,
+    "mean_difference": 0.0833,
+    "median_difference": 0.0,
+    "std_difference": 0.2787,
+    "ties": 55,
+    "mean_difference_ci95": [
+     0.0113,
+     0.1553
+    ],
+    "test": "Wilcoxon signed-rank (paired on scenario x seed)",
+    "statistic": 0.0,
+    "p_value": 0.025347,
+    "effect_size_r": 1.0,
+    "interpretation": "Full DecisionGPT showed statistically significantly higher goal_achievement than R0 (D0 / production) across the 60 paired scenario/seed evaluations (p=0.0253).",
+    "difference_is": "R3 - R0",
+    "R3_wins": 5,
+    "r0_wins": 0
+   }
+  },
+  "verdict_by_variant": {
+   "R1": "NO SATISFACTORY CALIBRATION",
+   "R2-0.25": "PROMISING",
+   "R2-0.50": "NO SATISFACTORY CALIBRATION",
+   "R2-0.75": "NO SATISFACTORY CALIBRATION",
+   "R3": "PROMISING"
+  },
+  "digital_twin_mean_goal_achievement": 0.4856
+ }
+}

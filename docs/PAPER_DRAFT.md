@@ -57,12 +57,15 @@ pre-registration
 
 Small and medium enterprises (SMEs) operate under acute data constraints —
 limited historical records, no analytics staff, and uncertain returns on
-analytics investment [OECD 2021]. Business-intelligence and predictive-analytics
-tools describe what happened and forecast what may happen, but stop short of
-recommending an action toward a stated goal; prescriptive analytics names this
-gap and its reviews note a persistent shortage of controlled empirical
-evaluation of end-to-end pipelines [Lepenioti et al. 2020; Arnott & Pervan 2014;
-Shmueli & Koppius 2011].
+analytics investment [OECD 2021]. In the Indian micro, small and medium
+enterprise (MSME) sector specifically, a large share of activity is informal,
+with limited financial records and little credit history, which impedes formal
+data integration and digital adoption [Buteau 2021]. Business-intelligence and
+predictive-analytics tools describe what happened and forecast what may happen,
+but stop short of recommending an action toward a stated goal; prescriptive
+analytics names this gap and its reviews note a persistent shortage of
+controlled empirical evaluation of end-to-end pipelines [Lepenioti et al. 2020;
+Arnott & Pervan 2014; Shmueli & Koppius 2011].
 
 A common response is to compose more capability into one architecture:
 forecasting, what-if simulation, risk scoring, contextual or causal information,
@@ -194,12 +197,12 @@ inputs outside the observed range is an out-of-distribution-reliability concern
 not a learned detector.
 
 **Causal discovery from observational data.** The association graph uses
-pairwise Granger tests [Granger 1969], which cannot separate direct from
-transitive effects and whose author warned that apparent causality can reflect
-omitted variables or slow sampling. Constraint-based discovery and the
-direct-versus-indirect problem are treated by Spirtes et al. [2000]; the
-distinction between observational association and interventional effect by Pearl
-[2009]; multiple-comparison inflation by Benjamini & Hochberg [1995]. We report
+pairwise Granger tests [Granger 1969], whose originator warned that apparent
+causality can reflect omitted variables or slow sampling. Constraint-based
+discovery and the difficulty of distinguishing direct from indirect (transitive)
+effects are treated by Spirtes et al. [2000]; the distinction between
+observational association and interventional effect by Pearl [2009];
+multiple-comparison inflation by Benjamini & Hochberg [1995]. We report
 the graph as *evidence-labelled association*, validate the recovery method
 against a known synthetic structure only, and record `CAUSALLY_VALIDATED = 0`.
 
@@ -240,9 +243,9 @@ explanation (an unequal strategy space) is not responsible.
 
 ## 4. System Architecture
 
-DecisionGPT is a capability-gated pipeline. Given a natural-language goal and an
-uploaded dataset, it produces a ranked recommendation with an internal
-confidence value and a post-hoc explanation. The stages are:
+DecisionGPT is a capability-gated pipeline (Figure 1). Given a natural-language
+goal and an uploaded dataset, it produces a ranked recommendation with an
+internal confidence value and a post-hoc explanation. The stages are:
 
 1. **Goal specification.** A goal sentence is parsed into an objective
    (e.g. increase revenue, increase profit, increase sales), a primary KPI, a
@@ -343,6 +346,10 @@ an objective, a primary KPI, and a target. They span pricing, marketing,
 inventory, and conservative levers across apparel, electronics, grocery,
 furniture, e-commerce, consumer-goods, regional-retail, and small-manufacturing
 labels.
+
+**Table 1 — Designed evaluation scenarios.** Primary evidence (configuration).
+Synthetic, designed not sampled. Each scenario is instantiated with seeds 42–46.
+S04 and S07 use a documented revenue proxy for their primary KPI (Section 7).
 
 | ID | Label | Lever | Objective | Primary KPI | Target |
 |---|---|---|---|---|---|
@@ -452,6 +459,8 @@ mean. This is a re-analysis of frozen observations, not a new experiment.
 
 ### 9.1 Architecture comparison (experiment `0e1bd8dc`, N = 60 per configuration)
 
+Table 3 and Figure 2 report this comparison.
+
 **Table 3 — Architecture comparison (simulated goal achievement).** Primary,
 confirmatory. Synthetic. Student-t 95% intervals describe within-suite
 variability.
@@ -471,7 +480,7 @@ variability.
 | D − B | 60 | 45 | **−0.4011** | [−0.4783, −0.3239] | 0 / 15 / 45 | < 10⁻⁴ (recomputed 4.8 × 10⁻⁹) | 0.873 | −1.00 |
 
 For D − B, a 20,000-sample paired bootstrap of the mean (seed 42) gives 95%
-interval [−0.477, −0.327], in close agreement with the Student-t interval. The
+interval [−0.4769, −0.3265], in close agreement with the Student-t interval. The
 simulation-only configuration B beats the full architecture on 45 of 60 paired
 observations and is beaten on none. The full architecture's per-(scenario, seed)
 distribution has best 1.000, worst 0.000, median 0.000, SD 0.278: it attains a
@@ -499,7 +508,7 @@ of [−0.571, −0.235].
 **Excluding the two KPI-proxy scenarios (S04, S07)** — a secondary analysis of
 the frozen observations, not a new experiment — leaves n = 50 paired
 observations, wins/ties/losses 0 / 15 / 35, mean paired difference −0.3904, and
-Wilcoxon two-sided p ≈ 2.2 × 10⁻⁷. The headline degradation is therefore not an
+Wilcoxon two-sided p ≈ 2.2 × 10⁻⁷ (Figure 4b). The headline degradation is therefore not an
 artefact of the revenue-proxy scenarios.
 
 ### 9.4 Candidate-space correction
@@ -519,6 +528,8 @@ significantly reduces the simulated goal-achievement metric.
 ---
 
 ## 10. Component Ablation (experiment `db58455b`, N = 60 per configuration)
+
+Table 4 and Figure 3a report this ablation.
 
 **Table 4 — Component ablation.** Primary, confirmatory. Synthetic.
 
@@ -564,7 +575,8 @@ the world.
 
 **Isolating the risk-penalty term.** Let D1 denote the full architecture with the
 risk-penalty term in Eq. 1 un-weighted (λ = 0) while the risk manager still runs
-and still feeds the confidence value. On the identical 60 (scenario, seed) pairs:
+and still feeds the confidence value. On the identical 60 (scenario, seed) pairs
+(Figure 3b):
 
 | Metric | D0 (Full, λ = 1) | D1 (λ = 0) |
 |---|---:|---:|
@@ -603,7 +615,7 @@ mis-scaled risk penalty.
 
 This is a **pre-registered** study (formula, seven variants, λ-selection rule,
 and seven acceptance criteria fixed before running). It is **supplementary**;
-production is unchanged.
+production is unchanged. Table 6 and Figure 4a report the variants.
 
 **Table 6 — Risk-heuristic recalibration variants.** Supplementary, pre-registered.
 Synthetic. `R0` is the production configuration.
@@ -893,10 +905,10 @@ that remains future work.
 
 ## 20. References
 
-*Verified against publisher / ACL Anthology / arXiv / DOI-registry pages during
-preparation. Authors should run a final bibliographic check (title, year, pages)
-before submission, and must add and verify at least one India MSME
-digitalization source for the motivation in Section 1 (currently a gap).*
+*All entries verified against publisher / ACL Anthology / arXiv / DOI-registry
+pages during preparation (see `docs/PAPER_REFERENCES.md` for the verification
+log). Authors should still run a final bibliographic check (exact page ranges,
+edition) under the target venue's style.*
 
 1. Lepenioti, K., Bousdekis, A., Apostolou, D., & Mentzas, G. (2020).
    Prescriptive analytics: Literature review and research challenges.
@@ -907,7 +919,7 @@ digitalization source for the motivation in Section 1 (currently a gap).*
    Information Technology*, 29(4), 269–293. doi:10.1057/jit.2014.16
 3. Shmueli, G., & Koppius, O. R. (2011). Predictive Analytics in Information
    Systems Research. *MIS Quarterly*, 35(3), 553–572. doi:10.2307/23042796
-   *(verify)*
+   (JSTOR stable 23042796; publisher: misq.umn.edu/misq/article/35/3/553)
 4. Grieves, M., & Vickers, J. (2017). Digital Twin: Mitigating Unpredictable,
    Undesirable Emergent Behavior in Complex Systems. In *Transdisciplinary
    Perspectives on Complex Systems*, Springer, 85–113.
@@ -954,7 +966,7 @@ digitalization source for the motivation in Section 1 (currently a gap).*
     5635–5662. doi:10.1007/s11263-024-02117-4
 19. Granger, C. W. J. (1969). Investigating Causal Relations by Econometric
     Models and Cross-spectral Methods. *Econometrica*, 37(3), 424–438.
-    doi:10.2307/1912791 *(verify)*
+    doi:10.2307/1912791 (JSTOR stable 1912791; Econometric Society)
 20. Spirtes, P., Glymour, C., & Scheines, R. (2000). *Causation, Prediction, and
     Search* (2nd ed.). MIT Press. ISBN 978-0-262-19440-2
 21. Pearl, J. (2009). Causal inference in statistics: An overview. *Statistics
@@ -986,8 +998,9 @@ digitalization source for the motivation in Section 1 (currently a gap).*
     doi:10.1073/pnas.1708274114
 31. Rosenthal, R. (1979). The file drawer problem and tolerance for null results.
     *Psychological Bulletin*, 86(3), 638–641. doi:10.1037/0033-2909.86.3.638
-32. Wilcoxon, F. (1945). Individual comparisons by ranking methods. *Biometrics
-    Bulletin*, 1(6), 80–83. doi:10.2307/3001968 *(verify)*
+32. Wilcoxon, F. (1945). Individual Comparisons by Ranking Methods. *Biometrics
+    Bulletin*, 1(6), 80–83. doi:10.2307/3001968 (JSTOR stable 3001968;
+    International Biometric Society; DOI resolves via CrossRef)
 33. Fritz, C. O., Morris, P. E., & Richler, J. J. (2012). Effect size estimates:
     Current use, calculations, and interpretation. *Journal of Experimental
     Psychology: General*, 141(1), 2–18. doi:10.1037/a0024338
@@ -1004,52 +1017,84 @@ digitalization source for the motivation in Section 1 (currently a gap).*
     Welfare, Government of India. *AGMARKNET — Agricultural Marketing Information
     Network.* https://agmarknet.gov.in
 38. Reserve Bank of India. *Database on Indian Economy (DBIE).* https://rbi.org.in
+39. Buteau, S. (2021). Roadmap for digital technology to foster India's MSME
+    ecosystem — opportunities and challenges. *CSI Transactions on ICT*, 9(4),
+    233–244. doi:10.1007/s40012-021-00345-4 (Springer Nature; open access via
+    PMC8662980)
 
-*Candidate additions requiring author verification before use:* Runge et al.
-(2019, time-series causal discovery); Makridakis et al. (2020, M4 forecasting
-competition); Huber & Ronchetti (2009, robust statistics); a Government of India
+*Candidate additions requiring author verification before use:* a peer-reviewed
+Indian MSME digital-adoption study (e.g. *Information Technology for Development*
+31(4), 2025, "Fostering competitiveness of Indian MSMEs through IT and
+digitalization", doi:10.1080/02681102.2025.2453211 — author list and pages to be
+confirmed) as a second India source; Runge et al. (2019, time-series causal
+discovery); Makridakis et al. (2020, M4 forecasting competition); Huber &
+Ronchetti (2009, robust statistics); a Government of India
 Ministry of MSME Annual Report and a peer-reviewed Indian MSME digital-adoption
 study (for Section 1 motivation).
 
 ---
 
-## Appendix A. Figure specifications
+## Appendix A. Figures
 
-Figures are specified here rather than rendered; each uses only frozen data and
-names its source experiment. If a figure cannot be produced faithfully from the
-frozen record it must be left as a specification, not invented.
+The four figures are rendered as vector SVG (and PNG previews) in `docs/figures/`
+by `docs/figures/make_figures.py`, which reads only `docs/figures/figure_data.json`
+— values extracted read-only from the frozen experiment runs (source experiment
+IDs recorded in that file; `experiment_manifest.json` SHA-256 `94aa419c…`). The
+script runs no experiment. The only stochastic element is the paired bootstrap in
+Figure 2, seeded `numpy.default_rng(42)`; it re-analyses the frozen paired
+differences and is not a new experiment. Full captions follow.
 
-**Figure 1 — Architecture and evaluation decomposition.** A block diagram of the
-pipeline (goal → capability detection → strategy generation → decision-simulation
-layer → association graph → rule-based multi-agent evaluation → optimizer Eq. 1 →
-explanation → memory), annotating which blocks are deterministic and where an
-LLM, when configured, would act (goal parse and final narration only). Static;
-no data.
+**Figure 1** (`figure1_architecture.svg`) — *DecisionGPT pipeline and evaluation
+decomposition (schematic).* Goal specification → capability detection → strategy
+generation → decision-simulation layer → association graph → rule-based
+multi-agent evaluation → optimizer (Eq. 1). All stages are deterministic in every
+experiment reported here; when configured, an LLM parses the goal sentence and
+narrates the final result only and does not compute agent scores or the selection
+in Eq. 1 (no LLM was configured for any result in this paper). Explanation and
+memory run after selection and are not inputs to Eq. 1. Schematic; no data.
 
-**Figure 2 — Primary paired comparison (source: `0e1bd8dc`).** Left panel: mean
-simulated goal achievement for configurations A, B, C, D with Student-t 95%
-intervals. Right panel: the distribution of per-(scenario, seed) D − B
-differences (60 points), with the 15 ties at zero and the 45 negative values
-shown; overlay the mean (−0.401) and the bootstrap 95% interval [−0.477,
-−0.327]. Caption states: designed scenarios, within-suite intervals, 0 wins / 15
-ties / 45 losses.
+**Figure 2** (`figure2_primary_comparison.svg`; source experiment `0e1bd8dc`) —
+*Primary result.* Twelve designed synthetic scenarios × 5 seeds, paired by
+(scenario, seed); the metric is simulated goal achievement on procedurally
+generated businesses and is not real-world effectiveness. (a) Mean simulated goal
+achievement for configurations A (prediction only), B (+ decision simulation), C
+(+ single agent), D (full, + multi-agent); error bars are Student-t 95%
+intervals describing within-suite variability (n = 60 per bar). The
+decision-simulation layer raises the metric from 0.000 to 0.486; adding the
+rule-based multi-agent layer reduces it to 0.084. (b) Distribution of the 60
+per-(scenario, seed) D − B differences: all 45 non-tied pairs favour B, 15 are
+ties, none favour D. The red line is the mean (−0.401); the bracket is the
+20 000-sample paired bootstrap 95% interval [−0.4769, −0.3265]. Wilcoxon two-sided
+p < 10⁻⁴ (recomputed 4.8 × 10⁻⁹); matched-pairs rank-biserial = −1.00 (a
+boundary value reflecting sign-consistency, not practical size).
 
-**Figure 3 — Component ablation and risk-penalty mechanism.** Panel (a) (source:
-`db58455b`): Δ simulated goal achievement versus Full for each removed component
-— a single non-zero bar (decision simulation, +0.084, CI [0.013, 0.156]) and
-four bars at exactly 0.000; a secondary axis shows the internal-confidence change
-(association-graph removal 0.139 → 0.251). Panel (b) (source: `ba56e42b`): mean
-simulated goal achievement for D0 (0.084) and D1 (λ = 0; 0.583) with 95%
-intervals, annotated "risk manager decisive in 75% of pairs; 0/390 transmission
-errors; D1 confidence collapses to 0.018 — not a usable configuration".
+**Figure 3** (`figure3_ablation_mechanism.svg`; sources `db58455b`, `ba56e42b`) —
+*Component ablation and risk-penalty mechanism.* (a) Change in mean simulated
+goal achievement (Full − variant, n = 60) for each removed component: only
+removing the decision-simulation layer moves the objective (+0.084, 95% CI
+[0.013, 0.156], shown); removing the association graph, multi-agent layer,
+explanation, or memory changes it by exactly 0.000 (significance not assessed —
+all paired differences are zero). (b) Mean simulated goal achievement for D0
+(the full architecture, λ = 1) and D1 (λ = 0, the risk-penalty term neutralised
+as a diagnostic); the risk manager is decisive in 75% of pairs (35 improved / 0
+degraded / 10 neutral) with 0/390 risk-score transmission errors. λ = 0 is a
+diagnostic intervention within the deterministic architecture — not a production
+recommendation and not causal evidence about real businesses; D1 also collapses
+the internal confidence value to 0.018 and is not a usable configuration.
+Synthetic scenarios throughout.
 
-**Figure 4 — Risk recalibration and robustness (sources: `b8516eef`,
-`0e1bd8dc`).** Panel (a): mean simulated goal achievement for R0, R1, R2-0.25,
-R2-0.50, R2-0.75, R3 with 95% intervals and the pre-registered verdict labels;
-annotate "R3 − R0 mean shift +0.083, 5 of 60 non-zero pairs, p = 0.025; not
-promoted". Panel (b): the D − B mean paired difference computed on all 12
-scenarios (−0.401) and excluding S04/S07 (−0.390), with bootstrap intervals, to
-show the primary result is not driven by the two proxy scenarios.
+**Figure 4** (`figure4_risk_calibration.svg`; sources `b8516eef`, `0e1bd8dc`) —
+*Pre-registered risk-heuristic recalibration and robustness.* (a) Mean simulated
+goal achievement (n = 60 per variant, Student-t 95% intervals) for R0 (production),
+R1, R2-0.25, R2-0.50, R2-0.75, R3; blue bars carry the pre-registered verdict
+"promising", grey "no satisfactory calibration"; the dotted line is the
+decision-simulation reference (B = 0.486). R3 − R0 mean shift +0.083 (95% CI
+[0.011, 0.155], p = 0.0253) on only 5 of 60 non-zero pairs; R3 is not promoted
+and production stays R0. (b) The primary D − B mean paired difference on all 12
+scenarios (−0.401) and excluding the two revenue-proxy scenarios S04 and S07
+(−0.390); bars are labelled wins / ties / losses. Excluding S04/S07 gives
+Wilcoxon two-sided p ≈ 2.2 × 10⁻⁷ — a re-analysis of the frozen observations,
+not a new experiment. Synthetic; no real-world validation.
 
 ---
 
@@ -1083,7 +1128,7 @@ approved usage is noted.
 | D − B mean paired diff / CI / W-T-L / N_nonzero / p | −0.4011 / [−0.4783, −0.3239] / 0-15-45 / 45 / <10⁻⁴ (4.8×10⁻⁹ recomputed) | `0e1bd8dc` paired `D_vs_B` |
 | D − A mean paired diff / W-T-L / N_nonzero / p | +0.0844 / 10-50-0 / 10 / 0.0045 | `0e1bd8dc` paired `D_vs_A` |
 | D − B excluding S04/S07 | n 50 / 0-15-35 / −0.3904 / p ≈ 2.2×10⁻⁷ | recomputed from `0e1bd8dc` observations |
-| D − B bootstrap 95% CI | [−0.477, −0.327]; scenario-level (n=12) [−0.571, −0.235] | recomputed from `0e1bd8dc` observations, 20k resamples, seed 42 |
+| D − B bootstrap 95% CI | [−0.4769, −0.3265]; scenario-level (n=12) [−0.571, −0.235] | recomputed from `0e1bd8dc` observations, 20k resamples, seed 42 |
 | Ablation Δ (decision simulation) / others | +0.0844 [0.0125, 0.1564] / exactly 0.000 | `db58455b` |
 | Ablation internal confidence (assoc-graph removed) | 0.139 → 0.2512 | `db58455b` aggregates |
 | D1 mean simulated goal achievement / CI | 0.5834 / [0.4692, 0.6976] | `ba56e42b` `d0_vs_d1` |
@@ -1108,14 +1153,18 @@ approved usage is noted.
 ## Appendix D. Author checklist
 
 - **Paper complete:** YES — all 21 sections drafted with content (title, abstract,
-  keywords, all sections, six tables, four figure specifications, one equation,
-  statistical methodology, discussion, limitations, future work, conclusion,
-  references).
-- **All citations verified:** NO — 36 references were verified against
-  publisher/ACL/arXiv/DOI pages during the literature phase; three carry a
-  "verify" flag (Shmueli & Koppius 2011; Granger 1969; Wilcoxon 1945 DOIs) and
-  an India MSME digitalization source for Section 1 is still required. Authors
-  must complete these before submission.
+  keywords, all sections, tables 1–6 plus 3b, four rendered figures with full
+  captions, one equation, statistical methodology, discussion, limitations,
+  future work, conclusion, references).
+- **All citations verified:** YES for the 39 references in the list — the three
+  previously flagged DOIs (Shmueli & Koppius 2011 → 10.2307/23042796; Granger
+  1969 → 10.2307/1912791; Wilcoxon 1945 → 10.2307/3001968) were re-checked
+  against publisher / JSTOR / CrossRef this pass, and the required India MSME
+  source (Buteau 2021, *CSI Transactions on ICT* 9(4), doi:10.1007/s40012-021-00345-4)
+  was added and verified. See `docs/PAPER_REFERENCES.md` for the log. Residual:
+  one optional *second* India MSME source is listed as a candidate for the
+  authors to confirm; exact page ranges should be re-checked under the venue
+  style.
 - **Frozen evidence unchanged:** YES — no experiment, seed, score, manifest,
   model, or production configuration was modified; manifest SHA-256 unchanged;
   all draft numbers reconcile with the frozen records (Appendix C).
@@ -1132,12 +1181,17 @@ approved usage is noted.
 - **No real-world / LLM claims fabricated:** YES — real-world effectiveness,
   ROI, superiority, generalisation, real causal effect, and LLM behaviour are
   all stated as absent; the real-LLM state is BLOCKED.
+- **Figures rendered:** YES — Figures 1–4 are rendered to
+  `docs/figures/*.svg` (with PNG previews) by `docs/figures/make_figures.py` from
+  `docs/figures/figure_data.json` (values extracted read-only from the frozen
+  experiment runs). Full captions are in Appendix A.
 - **Forbidden-claim scan complete:** YES — Appendix B records the approved and
-  prohibited usage of each sensitive term; a final read-through against it is
-  listed as an author task.
-- **Ready for venue formatting:** NO — the scientific content is complete and
-  self-consistent, but before submission the authors must: (i) finish the
-  citation verification and add the India MSME source; (ii) render Figures 2–4
-  from the frozen data per Appendix A; (iii) apply the target venue's template,
-  length limit, and citation style; (iv) run the Appendix B read-through on the
-  final formatted text.
+  prohibited usage of each sensitive term; a full-text scan was run this pass
+  (see `docs/PAPER_FINAL_READINESS.md`). A final read-through on the
+  venue-formatted text remains an author task.
+- **Ready for venue formatting:** NO (by design) — the scientific content,
+  figures, references, and audits are complete and self-consistent, but a
+  submission still requires a target venue: (i) apply the venue template, length
+  limit, and citation style (Markdown → LaTeX/Word); (ii) optionally confirm the
+  second India MSME source; (iii) re-check exact page ranges under the venue
+  style; (iv) run the Appendix B read-through on the final formatted text.
