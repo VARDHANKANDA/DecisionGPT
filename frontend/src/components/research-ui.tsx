@@ -132,3 +132,15 @@ export function fmt(v: unknown, digits = 3): string {
 export function fmtInt(v: unknown): string {
   return typeof v === "number" ? v.toLocaleString("en-IN") : "—";
 }
+
+export function StatusPill({ status }: { status: string }) {
+  const cls =
+    status === "completed"
+      ? "bg-success-soft text-success"
+      : status === "failed"
+        ? "bg-danger-soft text-danger"
+        : status === "running"
+          ? "bg-accent-soft text-accent"
+          : "bg-muted-surface text-muted";
+  return <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${cls}`}>{status}</span>;
+}

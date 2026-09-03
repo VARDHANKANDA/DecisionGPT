@@ -10,12 +10,12 @@ import { isPublicPath } from "@/lib/session";
  * (every protected API call still needs a valid bearer token); this only keeps
  * the UI honest:
  *   - a signed-out visitor on a protected route is sent to /login
- *   - a signed-in visitor on /login is sent to their workspace
+ *   - a signed-in visitor on /login is sent to their workspace (by role)
  *   - protected content is never rendered before the session check resolves,
  *     so refresh / back-navigation after logout never flash stale data.
  */
 export function AuthBoundary({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -29,9 +29,9 @@ export function AuthBoundary({ children }: { children: React.ReactNode }) {
     if (needsAuth && !user) {
       router.replace(`/login?next=${encodeURIComponent(pathname)}`);
     } else if (pathname === "/login" && user) {
-      router.replace("/dashboard");
+      router.replace(isAdmin ? "/research" : "/dashboard");
     }
-  }, [loading, user, needsAuth, pathname, router]);
+  }, [loading, user, isAdmin, needsAuth, pathname, router]);
 
   if (loading && !isPublic) {
     return (

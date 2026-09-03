@@ -36,43 +36,30 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   if (bare) return <>{children}</>;
 
-  const nav = (
-    <nav className="flex flex-1 flex-col gap-0.5" aria-label="Workspace">
-      {NAV.map((item) => {
-        const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            aria-current={active ? "page" : undefined}
-            className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
-              active
-                ? "bg-accent-soft text-accent"
-                : "text-muted hover:bg-muted-surface hover:text-foreground"
-            }`}
-          >
-            {item.label}
-          </Link>
-        );
-      })}
-      {isAdmin ? (
-        <Link
-          href="/research"
-          className={`mt-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
-            pathname.startsWith("/research")
-              ? "bg-accent-soft text-accent"
-              : "text-muted hover:bg-muted-surface hover:text-foreground"
-          }`}
-        >
-          Research console
-        </Link>
-      ) : null}
-    </nav>
-  );
+  const navLink = (href: string, label: string) => {
+    const active = pathname === href || pathname.startsWith(`${href}/`);
+    return (
+      <Link
+        key={href}
+        href={href}
+        aria-current={active ? "page" : undefined}
+        className={`rounded-lg px-3 py-2 text-sm transition ${
+          active
+            ? "bg-accent-soft font-medium text-accent"
+            : "text-muted hover:bg-muted-surface hover:text-foreground"
+        }`}
+      >
+        {label}
+      </Link>
+    );
+  };
 
+  // The sidebar is a fixed-height column: workspace header (fixed), nav (scrolls
+  // if long), account block (pinned to the bottom, ALWAYS visible — this is what
+  // makes "Sign out" reliably reachable on any page height).
   const sidebarBody = (
-    <div className="flex h-full flex-col gap-4 p-4">
-      <div>
+    <div className="flex h-full flex-col">
+      <div className="border-b border-border p-4">
         <Link href="/dashboard" className="text-base font-semibold tracking-tight text-foreground">
           DecisionGPT
         </Link>
@@ -101,16 +88,26 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           )}
         </div>
       </div>
-      {nav}
-      <div className="border-t border-border pt-3">
-        <p className="truncate px-3 text-xs text-muted">{user?.email}</p>
-        <div className="mt-1 flex items-center justify-between px-3">
+
+      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3" aria-label="Workspace">
+        {NAV.map((i) => navLink(i.href, i.label))}
+        {isAdmin ? (
+          <>
+            <div className="my-2 border-t border-border" />
+            {navLink("/research", "Research console")}
+          </>
+        ) : null}
+      </nav>
+
+      <div className="border-t border-border p-3">
+        <p className="truncate px-1 text-xs text-muted">{user?.email}</p>
+        <div className="mt-1.5 flex items-center justify-between gap-2">
           <span className="rounded-full bg-muted-surface px-2 py-0.5 text-xs font-medium capitalize text-muted">
             {isAdmin ? "Admin" : "Business user"}
           </span>
           <button
             onClick={logout}
-            className="rounded-md px-2 py-1 text-xs font-medium text-muted underline decoration-dotted underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-muted-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             Sign out
           </button>
@@ -120,19 +117,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Desktop sidebar */}
-      <aside className="hidden w-60 shrink-0 border-r border-border bg-muted-surface/40 lg:block">
+    <div className="min-h-screen bg-background">
+      {/* Desktop sidebar — sticky, full viewport height, own scroll */}
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 border-r border-border bg-muted-surface/30 lg:block">
         {sidebarBody}
       </aside>
 
       {/* Mobile drawer */}
       {drawer ? (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div
-            className="absolute inset-0 bg-foreground/30"
+          <button
+            className="absolute inset-0 h-full w-full bg-foreground/30"
             onClick={() => setDrawer(false)}
-            aria-hidden="true"
+            aria-label="Close navigation menu"
           />
           <div className="absolute inset-y-0 left-0 w-72 max-w-[85vw] border-r border-border bg-surface shadow-xl">
             {sidebarBody}
@@ -140,9 +137,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       ) : null}
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-h-screen flex-col lg:pl-60">
         {/* Mobile top bar */}
-        <header className="flex items-center gap-3 border-b border-border bg-surface px-4 py-3 lg:hidden">
+        <header className="sticky top-0 z-10 flex items-center gap-3 border-b border-border bg-surface px-4 py-3 lg:hidden">
           <button
             onClick={() => setDrawer(true)}
             aria-label="Open navigation menu"
@@ -153,6 +150,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span className="truncate text-sm font-semibold text-foreground">
             {business?.name ?? "DecisionGPT"}
           </span>
+          <button
+            onClick={logout}
+            className="ml-auto rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted-surface"
+          >
+            Sign out
+          </button>
         </header>
 
         <main className="flex-1">{children}</main>

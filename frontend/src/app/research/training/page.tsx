@@ -7,7 +7,7 @@ import {
   type DatasetsResponse,
   type TrainingRun,
 } from "@/lib/research-api";
-import { StatusPill } from "@/app/research/page";
+import { StatusPill } from "@/components/research-ui";
 
 export default function TrainingCenterPage() {
   const [tasks, setTasks] = useState<Record<string, { model_types: string[]; metrics: string[] }> | null>(null);

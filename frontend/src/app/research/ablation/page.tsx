@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { researchApi, ResearchApiError, type ExperimentRun } from "@/lib/research-api";
-import { StatusPill } from "@/app/research/page";
+import { StatusPill } from "@/components/research-ui";
 
 interface AblationComparison {
   component_removed: string;
