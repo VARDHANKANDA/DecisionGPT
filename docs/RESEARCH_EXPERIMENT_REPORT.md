@@ -4,14 +4,41 @@ Frozen experimental evaluation. Every result is read from a stored
 `ExperimentRun` / `MLModel` / `benchmark_results.json` — nothing here is
 recomputed or hand-typed. Reproduce with `docs/RESEARCH_REPRODUCIBILITY.md`.
 
+> **Authoritative current state (updated for paper preparation, 2026-09-03).**
+> This report was first frozen after an earlier task; §0 "Freeze record" and the
+> "Tests (final audit)" section below are **point-in-time snapshots** from that
+> task and were never back-updated as later experiments were appended. They do
+> **not** reflect any change to a research result. The authoritative current
+> state is:
+>
+> | Field | Value |
+> |---|---|
+> | Frozen experiments | **16** (`experiments/experiment_manifest.json`, `experiment_count = 16`, sha256 `94aa419c…`) |
+> | Alembic head | **0007** |
+> | Paper-results snapshot | `experiments/paper_results_snapshot.json` — **4 / 5 tables ready** (Table 2 NOT READY) |
+> | Backend test suite | **319 passed, 1 skipped** |
+> | Active / archived models | **6 active v1 / 3 archived v2** — unchanged |
+> | Production decision config | **R0 / D0** (`risk_model = None`, `risk_penalty_lambda = 1.0`) |
+> | R3 risk variant | **PROMISING — NOT PROMOTED** |
+> | Real Indian SME outcomes / PredictionEvaluation | **0 / 0** — Table 2 NOT READY |
+> | Real-LLM evaluation | **BLOCKED** (`llm_enabled = False`) |
+> | `CAUSALLY_VALIDATED` | **0** |
+>
+> The stale point-in-time values retained below are `Alembic head 0006`,
+> `7 experiments`, and `218 passed` — none of which changes a reported metric,
+> verdict, or experiment ID. See `docs/PAPER_EVIDENCE_AUDIT_AND_BLUEPRINT.md` §0
+> and `docs/FINAL_REPRODUCIBILITY_VALIDATION_REPORT.md` for the full history.
+
 ## 0. Freeze record
+
+> *Point-in-time snapshot — see the authoritative table above.*
 
 | Field | Value |
 |---|---|
 | Code commit | `eb7d392` + this commit |
 | Seed | 42 (all deterministic experiments) |
-| Alembic head | `0006` |
-| Manifest | `experiments/experiment_manifest.json` (7 experiments, all `completed`) |
+| Alembic head | `0006` &nbsp;*(point-in-time; current head is `0007`)* |
+| Manifest | `experiments/experiment_manifest.json` (7 experiments, all `completed`) &nbsp;*(point-in-time; the frozen manifest now contains **16** experiments, all `completed`)* |
 | Paper-results snapshot | `experiments/paper_results_snapshot.json` (4 / 5 tables ready) |
 | Active model set | 6 v1 models — **unchanged** before/after the run (asserted) |
 | Timestamp | 2026-08-29 |
@@ -461,9 +488,16 @@ reason). No hard-coded research metric; every number resolves to a stored row
 
 ## Tests (final audit)
 
+> *Point-in-time snapshot from when this report was frozen. The suite has grown
+> monotonically across later tasks with no regression; the authoritative current
+> result is **319 passed, 1 skipped** (see the box at the top of this file and
+> `docs/FINAL_REPRODUCIBILITY_VALIDATION_REPORT.md`). The route count, Alembic
+> round-trip target (`0001→0007`), and experiment total below are likewise
+> point-in-time.*
+
 | Check | Result |
 |---|---|
-| Backend `pytest` | **218 passed, 1 skipped, 0 failed** (was 209; +9 new `tests/unit/test_multi_scenario_service.py` — scenario determinism/uniqueness/variation, `_summ` vs numpy + t-interval, paired-test not-assessed & Wilcoxon paths, small end-to-end traceability + fairness + no-leakage, same-(scenario,seed) reproducibility). 1 pre-existing test updated (`forecasting_performance` CSV header). |
+| Backend `pytest` | **218 passed, 1 skipped, 0 failed** *(point-in-time; current: **319 passed, 1 skipped**)* (was 209; +9 new `tests/unit/test_multi_scenario_service.py` — scenario determinism/uniqueness/variation, `_summ` vs numpy + t-interval, paired-test not-assessed & Wilcoxon paths, small end-to-end traceability + fairness + no-leakage, same-(scenario,seed) reproducibility). 1 pre-existing test updated (`forecasting_performance` CSV header). |
 | Frontend `next build` | ✅ compiled (26 routes) — new `MultiScenarioDetail` view on the Experiments page |
 | ESLint | ✅ 0 errors (1 pre-existing unrelated warning) |
 | `tsc --noEmit` | ✅ clean |

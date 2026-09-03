@@ -67,6 +67,18 @@ export default function ResearchOverviewPage() {
   const r0eqr1 = rmg?.risk_regime_overall?.r0_equals_r1_all_rows ?? true;
 
   const table2 = paper?.tables.find((t) => t.key === "digital_twin_evaluation");
+
+  // The paper's frozen evidence base is exactly 16 experiments
+  // (experiments/experiment_manifest.json). The development database can hold a
+  // few extra non-frozen re-runs; show the frozen count as the headline and note
+  // any drift so the live number is never mistaken for frozen research evidence.
+  const FROZEN_EXPERIMENTS = 16;
+  const liveRuns = ov?.experiment_count ?? null;
+  const extraRuns = liveRuns != null ? liveRuns - FROZEN_EXPERIMENTS : 0;
+  const runsNote =
+    liveRuns != null && extraRuns > 0
+      ? ` The development database currently records ${liveRuns} runs — ${extraRuns} non-frozen re-run${extraRuns === 1 ? "" : "s"} beyond the frozen set, not part of the frozen evidence base.`
+      : "";
   const fc = tableSection(paper, "predictive_model_performance", "forecast");
   const ch = tableSection(paper, "predictive_model_performance", "classification");
   const abl = paper?.tables.find((t) => t.key === "ablation_study")?.sections[0] ?? null;
@@ -87,7 +99,7 @@ export default function ResearchOverviewPage() {
           <table className="w-full text-sm">
             <tbody>
               {[
-                ["Experiments", ov ? String(ov.experiment_count) : "16"],
+                ["Frozen experiments", String(FROZEN_EXPERIMENTS)],
                 ["Controlled evaluation", "Complete"],
                 ["Real SME outcomes", "0"],
                 ["Real-LLM validation", "Blocked"],
@@ -106,8 +118,9 @@ export default function ResearchOverviewPage() {
           </table>
         </div>
         <p className="mt-2 text-xs text-muted">
-          Every value on this page is read live from stored experiment rows. Nothing is hard-coded, and
-          nothing here is a real-world performance claim.
+          Metric values on this page are read live from stored experiment rows; nothing here is a
+          real-world performance claim. The frozen evidence base is exactly {FROZEN_EXPERIMENTS}{" "}
+          experiments (<code>experiments/experiment_manifest.json</code>).{runsNote}
         </p>
       </section>
 

@@ -5,6 +5,18 @@ Experiment `risk_manager_calibration` id `b8516eef`, seeds 42–46, 12 scenarios
 R3 satisfy all seven pre-specified criteria). No variant promoted; production
 stays R0 / D0.
 
+> **Authoritative current state (updated for paper preparation, 2026-09-03).**
+> The "sign-off" block near the end of this report ("all 14 prior experiment IDs
+> preserved", "271 passed", "alembic `0001<->0006`") is a **point-in-time
+> snapshot** from the task that added `b8516eef`; it was never back-updated.
+> Nothing about the `b8516eef` result changed. Current authoritative state:
+> **16 frozen experiments**, Alembic head **0007**, backend suite **319 passed,
+> 1 skipped**, `experiment_manifest.json` sha256 `94aa419c…`. Production stays
+> **R0 / D0**; R3 remains **PROMISING — NOT PROMOTED**. The paper must report the
+> R3 vs R0 comparison as **mean paired difference +0.083 [0.019, 0.148],
+> p = 0.0253, 5 / 55 / 0 (wins / ties / losses), 5 of 60 non-zero pairs** — do
+> not round to +0.084 and do not present r = 1.00 as a large practical effect.
+
 ## 1. Research question
 
 Can the Risk Manager incorporate Digital Twin extrapolation uncertainty in a
@@ -329,8 +341,9 @@ Production models changed:         NO
 Previous experiment results changed: NO   (all 14 prior experiment IDs preserved; new id b8516eef)
 New experiment IDs:                b8516eef  (risk_manager_calibration v1)
 
-Tests:
-Backend:   pytest -q — 271 passed, 1 skipped
+Tests:  [point-in-time snapshot — see the authoritative box at the top of this file]
+Backend:   pytest -q — 271 passed, 1 skipped   (current authoritative: 319 passed, 1 skipped)
 Frontend:  npm run build compiled (tsc clean) ; npm run lint 0 errors
-E2E:       scripts/audit_e2e.py — no assertion failures ; alembic 0001<->0006 round-trip clean (no schema change)
+E2E:       scripts/audit_e2e.py — no assertion failures ; alembic round-trip clean, no schema change
+           (round-trip target was 0001<->0006 at the time; current head is 0007)
 ```

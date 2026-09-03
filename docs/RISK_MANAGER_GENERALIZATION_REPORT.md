@@ -14,6 +14,20 @@ decision comparison — risk-adjusted score and confidence are all preserved).
 Real-LLM validation is **BLOCKED** (no provider configured). Production stays
 R0.
 
+> **Authoritative current state (updated for paper preparation, 2026-09-03).**
+> The sign-off block near the end ("all 15 prior experiment IDs preserved",
+> "285 passed", "alembic `0001<->0006`") is a **point-in-time snapshot** from the
+> task that added `70617412`; it was never back-updated and nothing about the
+> `70617412` result changed. Current authoritative state: **16 frozen
+> experiments**, Alembic head **0007**, backend suite **319 passed, 1 skipped**,
+> `experiment_manifest.json` sha256 `94aa419c…`. Production stays **R0 / D0**;
+> R3 remains **PROMISING — NOT PROMOTED**; real-LLM evaluation remains
+> **BLOCKED**. The internal criteria-checklist verdict value
+> `"VALIDATED FOR CONTROLLED PRODUCTION TEST"` (produced only if all 7 core
+> criteria **and** the real-LLM criterion pass) is **not reachable** in the
+> current state and must never be quoted in the paper as production, scientific,
+> or real-world validation.
+
 ## 1. Research question
 
 Does **R3** (robust extrapolation-risk scale `extrapolation_robust_v1` +
@@ -439,8 +453,9 @@ Production default:                 R0
 Previous experiments changed:       NO   (all 15 prior experiment IDs preserved)
 New experiment IDs:                 70617412  (risk_manager_real_data_validation v1)
 
-Tests:
-Backend:   pytest -q — 285 passed, 1 skipped
+Tests:  [point-in-time snapshot — see the authoritative box at the top of this file]
+Backend:   pytest -q — 285 passed, 1 skipped   (current authoritative: 319 passed, 1 skipped)
 Frontend:  npm run build compiled (tsc clean) ; npm run lint 0 errors
-E2E:       scripts/audit_e2e.py — no assertion failures ; alembic 0001<->0006 round-trip clean (no schema change)
+E2E:       scripts/audit_e2e.py — no assertion failures ; alembic round-trip clean, no schema change
+           (round-trip target was 0001<->0006 at the time; current head is 0007)
 ```

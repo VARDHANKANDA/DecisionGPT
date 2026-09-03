@@ -381,9 +381,11 @@ step 1b.
 
 ## Frozen paper run
 
-The complete frozen experimental evaluation (all 7 experiments, seed 42, with
-results, negative/zero/missing findings, and per-table READY / NOT READY) is in
+The complete frozen experimental evaluation (all **16** experiments — the "7"
+here is a point-in-time count from an earlier freeze — seed 42, with results,
+negative/zero/missing findings, and per-table READY / NOT READY) is in
 **`docs/RESEARCH_EXPERIMENT_REPORT.md`**. Reproduction environment, dataset and
 model versions, and the exact command sequence are in
 **`docs/RESEARCH_REPRODUCIBILITY.md`**. The machine-readable artifacts are
-`experiments/experiment_manifest.json` and `experiments/paper_results_snapshot.json`.
+`experiments/experiment_manifest.json` (`experiment_count = 16`) and
+`experiments/paper_results_snapshot.json`.

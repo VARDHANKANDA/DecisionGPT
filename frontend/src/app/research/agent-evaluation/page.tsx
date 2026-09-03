@@ -759,10 +759,11 @@ function RiskManagerGeneralizationPanel({ d }: { d: RiskManagerGeneralization })
   const hyp = d.hypotheses ?? {};
   const regimes = ["LOW_VARIANCE", "MODERATE_VARIANCE", "HIGH_VARIANCE"];
 
-  const tone =
-    ev?.verdict === "VALIDATED FOR CONTROLLED PRODUCTION TEST" ? "text-success"
-    : ev?.verdict === "NOT VALIDATED" ? "text-danger"
-    : "text-foreground";
+  // "VALIDATED FOR CONTROLLED PRODUCTION TEST" is an internal pre-registered
+  // criteria-checklist label (all 7 core criteria + a real-LLM criterion). It is
+  // NOT real-world, scientific, or production validation, so it is not styled as
+  // a success. Only an explicit "NOT VALIDATED" is flagged.
+  const tone = ev?.verdict === "NOT VALIDATED" ? "text-danger" : "text-foreground";
 
   return (
     <Panel
@@ -785,6 +786,12 @@ function RiskManagerGeneralizationPanel({ d }: { d: RiskManagerGeneralization })
         <span className="ml-2 text-xs font-normal text-muted">
           (central benefit confirmed on real data: {String(ev?.central_benefit_confirmed_on_real_data ?? "—")};
           anything regressed: {String(ev?.anything_regressed_on_real_data ?? "—")})
+        </span>
+        <span className="mt-1 block text-xs font-normal text-muted">
+          This verdict is an internal, pre-registered criteria-checklist label from the experiment —
+          not real-world, scientific, or production validation. A real LLM is not configured, so the
+          real-LLM criterion is unmet and the strongest reachable verdict is
+          &ldquo;PROMISING BUT NOT VALIDATED&rdquo;. Production stays R0 / D0.
         </span>
       </div>
 
