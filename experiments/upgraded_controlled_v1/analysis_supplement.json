@@ -1,0 +1,546 @@
+{
+  "agent_diagnostics": {
+    "C_minus_B": 0.030282,
+    "D_minus_B": 0.033664,
+    "finding": "agent layer changes selections and/or shows non-trivial score spread on this suite",
+    "frac_agent_changed_selection_vs_C": 0.10625,
+    "frac_agent_changed_selection_vs_greedy": 0.82125,
+    "max_score_range": {
+      "BA": 0.0799,
+      "FA": 1.0,
+      "RM": 0.9585
+    },
+    "mean_inter_agent_agreement": 0.634026,
+    "mean_score_range": {
+      "BA": 0.008695,
+      "FA": 0.572645,
+      "RM": 0.708484
+    },
+    "n_scenarios_eligible": 800
+  },
+  "failure_cases": {
+    "best_D_minus_B (D much better than B)": [
+      {
+        "D_minus_B": -0.9511,
+        "family_id": "missing_observations",
+        "regret_B": 1.0,
+        "regret_D": 0.0489,
+        "scenario_id": "missing_observations__0015"
+      },
+      {
+        "D_minus_B": -0.8667,
+        "family_id": "missing_observations",
+        "regret_B": 1.0,
+        "regret_D": 0.1333,
+        "scenario_id": "missing_observations__0014"
+      },
+      {
+        "D_minus_B": -0.8332,
+        "family_id": "missing_observations",
+        "regret_B": 1.0,
+        "regret_D": 0.1668,
+        "scenario_id": "missing_observations__0000"
+      },
+      {
+        "D_minus_B": -0.7676,
+        "family_id": "missing_observations",
+        "regret_B": 1.0,
+        "regret_D": 0.2324,
+        "scenario_id": "missing_observations__0011"
+      },
+      {
+        "D_minus_B": -0.7507,
+        "family_id": "missing_observations",
+        "regret_B": 1.0,
+        "regret_D": 0.2493,
+        "scenario_id": "missing_observations__0018"
+      }
+    ],
+    "greedy_beats_D": [
+      {
+        "regret_D": 0.8516,
+        "regret_greedy": 0.2032,
+        "scenario_id": "promotion_decision__0005"
+      },
+      {
+        "regret_D": 0.8697,
+        "regret_greedy": 0.2579,
+        "scenario_id": "promotion_decision__0009"
+      },
+      {
+        "regret_D": 0.8596,
+        "regret_greedy": 0.2541,
+        "scenario_id": "promotion_decision__0013"
+      },
+      {
+        "regret_D": 0.7828,
+        "regret_greedy": 0.2114,
+        "scenario_id": "promotion_decision__0016"
+      },
+      {
+        "regret_D": 0.7837,
+        "regret_greedy": 0.2169,
+        "scenario_id": "promotion_decision__0010"
+      },
+      {
+        "regret_D": 0.7622,
+        "regret_greedy": 0.2499,
+        "scenario_id": "promotion_decision__0007"
+      },
+      {
+        "regret_D": 0.7596,
+        "regret_greedy": 0.2598,
+        "scenario_id": "promotion_decision__0014"
+      },
+      {
+        "regret_D": 0.7034,
+        "regret_greedy": 0.2107,
+        "scenario_id": "promotion_decision__0019"
+      },
+      {
+        "regret_D": 0.747,
+        "regret_greedy": 0.2617,
+        "scenario_id": "promotion_decision__0011"
+      },
+      {
+        "regret_D": 0.7262,
+        "regret_greedy": 0.2586,
+        "scenario_id": "promotion_decision__0015"
+      }
+    ],
+    "highest_absolute_regret_D": [
+      {
+        "regret_D": 0.8697,
+        "scenario_id": "promotion_decision__0009"
+      },
+      {
+        "regret_D": 0.8596,
+        "scenario_id": "promotion_decision__0013"
+      },
+      {
+        "regret_D": 0.8516,
+        "scenario_id": "promotion_decision__0005"
+      },
+      {
+        "regret_D": 0.7837,
+        "scenario_id": "promotion_decision__0010"
+      },
+      {
+        "regret_D": 0.7828,
+        "scenario_id": "promotion_decision__0016"
+      }
+    ],
+    "naive_beats_D": [
+      {
+        "regret_D": 0.8516,
+        "regret_naive": 0.3387,
+        "scenario_id": "promotion_decision__0005"
+      },
+      {
+        "regret_D": 0.8697,
+        "regret_naive": 0.3988,
+        "scenario_id": "promotion_decision__0009"
+      },
+      {
+        "regret_D": 0.8596,
+        "regret_naive": 0.3946,
+        "scenario_id": "promotion_decision__0013"
+      },
+      {
+        "regret_D": 0.7828,
+        "regret_naive": 0.3477,
+        "scenario_id": "promotion_decision__0016"
+      },
+      {
+        "regret_D": 0.7837,
+        "regret_naive": 0.3537,
+        "scenario_id": "promotion_decision__0010"
+      },
+      {
+        "regret_D": 0.7622,
+        "regret_naive": 0.39,
+        "scenario_id": "promotion_decision__0007"
+      },
+      {
+        "regret_D": 0.7596,
+        "regret_naive": 0.4008,
+        "scenario_id": "promotion_decision__0014"
+      },
+      {
+        "regret_D": 0.7034,
+        "regret_naive": 0.3469,
+        "scenario_id": "promotion_decision__0019"
+      },
+      {
+        "regret_D": 0.747,
+        "regret_naive": 0.403,
+        "scenario_id": "promotion_decision__0011"
+      },
+      {
+        "regret_D": 0.7262,
+        "regret_naive": 0.3996,
+        "scenario_id": "promotion_decision__0015"
+      }
+    ],
+    "near_oracle_D (regret <= 0.02)": [
+      "missing_observations__0004"
+    ],
+    "worst_D_minus_B (D much worse than B)": [
+      {
+        "D_minus_B": 0.6646,
+        "family_id": "competing_objectives",
+        "regret_B": 0.0,
+        "regret_D": 0.6646,
+        "scenario_id": "competing_objectives__0012"
+      },
+      {
+        "D_minus_B": 0.5931,
+        "family_id": "competing_objectives",
+        "regret_B": 0.0,
+        "regret_D": 0.5931,
+        "scenario_id": "competing_objectives__0005"
+      },
+      {
+        "D_minus_B": 0.5745,
+        "family_id": "competing_objectives",
+        "regret_B": 0.0,
+        "regret_D": 0.5745,
+        "scenario_id": "competing_objectives__0006"
+      },
+      {
+        "D_minus_B": 0.5699,
+        "family_id": "competing_objectives",
+        "regret_B": 0.0,
+        "regret_D": 0.5699,
+        "scenario_id": "competing_objectives__0018"
+      },
+      {
+        "D_minus_B": 0.5694,
+        "family_id": "asymmetric_risk",
+        "regret_B": 0.0,
+        "regret_D": 0.5694,
+        "scenario_id": "asymmetric_risk__0003"
+      }
+    ]
+  },
+  "mechanism_associational": {
+    "B_vs_A": {
+      "contrast": "B_vs_A",
+      "n_scenarios": 80,
+      "note": "component-level effect under controlled simulation; coefficients are associational within the designed suite, not causal",
+      "ols_coefficients_on_standardised_factors": {
+        "action_space_size": {
+          "beta": 0.354384,
+          "ci95": [
+            -2.549111,
+            0.517464
+          ]
+        },
+        "agent_disagreement": {
+          "beta": -0.224885,
+          "ci95": [
+            -0.289455,
+            -0.067274
+          ]
+        },
+        "constraint_tightness": {
+          "beta": -0.0,
+          "ci95": [
+            -0.0,
+            0.0
+          ]
+        },
+        "intercept": {
+          "beta": 0.075121,
+          "ci95": [
+            0.033591,
+            0.137743
+          ]
+        },
+        "objective_conflict": {
+          "beta": -0.111013,
+          "ci95": [
+            -2.959396,
+            0.065321
+          ]
+        },
+        "prediction_error": {
+          "beta": 0.003767,
+          "ci95": [
+            -0.046169,
+            0.026453
+          ]
+        },
+        "risk_exposure": {
+          "beta": -0.28542,
+          "ci95": [
+            -0.373675,
+            -0.080587
+          ]
+        },
+        "uncertainty": {
+          "beta": -0.195792,
+          "ci95": [
+            -0.478695,
+            -0.093401
+          ]
+        }
+      },
+      "tertile_contrast_means": {
+        "action_space_size": {
+          "high": null,
+          "low": 0.075121,
+          "mid": null
+        },
+        "agent_disagreement": {
+          "high": -0.410266,
+          "low": 0.48871,
+          "mid": 0.14968
+        },
+        "objective_conflict": {
+          "high": -0.382877,
+          "low": 0.227787,
+          "mid": null
+        },
+        "prediction_error": {
+          "high": -0.461236,
+          "low": 0.169094,
+          "mid": 0.53452
+        },
+        "risk_exposure": {
+          "high": -0.595264,
+          "low": 0.634756,
+          "mid": 0.108883
+        },
+        "uncertainty": {
+          "high": -0.622905,
+          "low": 0.307796,
+          "mid": null
+        }
+      },
+      "usable_factors": [
+        "uncertainty",
+        "constraint_tightness",
+        "objective_conflict",
+        "prediction_error",
+        "risk_exposure",
+        "action_space_size",
+        "agent_disagreement"
+      ]
+    },
+    "C_vs_B": {
+      "contrast": "C_vs_B",
+      "n_scenarios": 80,
+      "note": "component-level effect under controlled simulation; coefficients are associational within the designed suite, not causal",
+      "ols_coefficients_on_standardised_factors": {
+        "action_space_size": {
+          "beta": -0.332825,
+          "ci95": [
+            -2.14154,
+            0.333772
+          ]
+        },
+        "agent_disagreement": {
+          "beta": 0.218784,
+          "ci95": [
+            0.114723,
+            0.276449
+          ]
+        },
+        "constraint_tightness": {
+          "beta": 0.0,
+          "ci95": [
+            -0.0,
+            0.0
+          ]
+        },
+        "intercept": {
+          "beta": 0.030282,
+          "ci95": [
+            -0.014936,
+            0.073115
+          ]
+        },
+        "objective_conflict": {
+          "beta": 0.038518,
+          "ci95": [
+            -1.729664,
+            0.679401
+          ]
+        },
+        "prediction_error": {
+          "beta": -0.025707,
+          "ci95": [
+            -0.052927,
+            0.030415
+          ]
+        },
+        "risk_exposure": {
+          "beta": 0.094171,
+          "ci95": [
+            -0.056991,
+            0.170159
+          ]
+        },
+        "uncertainty": {
+          "beta": 0.183792,
+          "ci95": [
+            0.097633,
+            0.373944
+          ]
+        }
+      },
+      "tertile_contrast_means": {
+        "action_space_size": {
+          "high": null,
+          "low": 0.030282,
+          "mid": null
+        },
+        "agent_disagreement": {
+          "high": 0.368509,
+          "low": -0.353673,
+          "mid": 0.077768
+        },
+        "objective_conflict": {
+          "high": 0.418087,
+          "low": -0.098987,
+          "mid": null
+        },
+        "prediction_error": {
+          "high": 0.425168,
+          "low": -0.069054,
+          "mid": -0.276636
+        },
+        "risk_exposure": {
+          "high": 0.466019,
+          "low": -0.291481,
+          "mid": -0.030756
+        },
+        "uncertainty": {
+          "high": 0.511238,
+          "low": -0.130037,
+          "mid": null
+        }
+      },
+      "usable_factors": [
+        "uncertainty",
+        "constraint_tightness",
+        "objective_conflict",
+        "prediction_error",
+        "risk_exposure",
+        "action_space_size",
+        "agent_disagreement"
+      ]
+    },
+    "D_vs_B": {
+      "contrast": "D_vs_B",
+      "n_scenarios": 80,
+      "note": "component-level effect under controlled simulation; coefficients are associational within the designed suite, not causal",
+      "ols_coefficients_on_standardised_factors": {
+        "action_space_size": {
+          "beta": -0.305259,
+          "ci95": [
+            -0.587143,
+            1.580183
+          ]
+        },
+        "agent_disagreement": {
+          "beta": 0.215276,
+          "ci95": [
+            0.112554,
+            0.272418
+          ]
+        },
+        "constraint_tightness": {
+          "beta": 0.0,
+          "ci95": [
+            -0.0,
+            0.0
+          ]
+        },
+        "intercept": {
+          "beta": 0.033664,
+          "ci95": [
+            -0.015708,
+            0.070646
+          ]
+        },
+        "objective_conflict": {
+          "beta": 0.081768,
+          "ci95": [
+            -0.201021,
+            1.904102
+          ]
+        },
+        "prediction_error": {
+          "beta": -0.021407,
+          "ci95": [
+            -0.040286,
+            0.026987
+          ]
+        },
+        "risk_exposure": {
+          "beta": 0.103364,
+          "ci95": [
+            -0.043956,
+            0.178884
+          ]
+        },
+        "uncertainty": {
+          "beta": 0.188971,
+          "ci95": [
+            0.10169,
+            0.374141
+          ]
+        }
+      },
+      "tertile_contrast_means": {
+        "action_space_size": {
+          "high": null,
+          "low": 0.033664,
+          "mid": null
+        },
+        "agent_disagreement": {
+          "high": 0.373964,
+          "low": -0.361283,
+          "mid": 0.090411
+        },
+        "objective_conflict": {
+          "high": 0.444768,
+          "low": -0.103371,
+          "mid": null
+        },
+        "prediction_error": {
+          "high": 0.438011,
+          "low": -0.066439,
+          "mid": -0.282283
+        },
+        "risk_exposure": {
+          "high": 0.475042,
+          "low": -0.300676,
+          "mid": -0.020334
+        },
+        "uncertainty": {
+          "high": 0.522066,
+          "low": -0.129137,
+          "mid": null
+        }
+      },
+      "usable_factors": [
+        "uncertainty",
+        "constraint_tightness",
+        "objective_conflict",
+        "prediction_error",
+        "risk_exposure",
+        "action_space_size",
+        "agent_disagreement"
+      ]
+    }
+  },
+  "notes": [
+    "mechanism coefficients are associational within the designed suite, NOT causal",
+    "agent analysis reports whatever the frozen agents do; no agent output was modified"
+  ],
+  "source_results": "results.json",
+  "status": "complete"
+}

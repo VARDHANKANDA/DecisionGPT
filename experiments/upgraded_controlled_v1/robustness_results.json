@@ -1,0 +1,836 @@
+{
+  "curves": {
+    "adversarial": {
+      "A": {
+        "auc_degradation": 0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": 0.011991,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          0.023982
+        ],
+        "severities": [
+          0.0,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.487951
+        ]
+      },
+      "D": {
+        "auc_degradation": 0.009035,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          0.01807
+        ],
+        "severities": [
+          0.0,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.487951
+        ]
+      }
+    },
+    "constraint_relax": {
+      "A": {
+        "auc_degradation": -0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": 0.0,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.463969,
+          0.463969
+        ]
+      },
+      "D": {
+        "auc_degradation": 0.0,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.469882,
+          0.469882
+        ]
+      }
+    },
+    "constraint_tighten": {
+      "A": {
+        "auc_degradation": -0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": 0.0,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.463969,
+          0.463969
+        ]
+      },
+      "D": {
+        "auc_degradation": 0.0,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.469882,
+          0.469882
+        ]
+      }
+    },
+    "contradictory_signals": {
+      "A": {
+        "auc_degradation": -0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "severities": [
+          0.0,
+          0.5,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.5,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": 0.028157,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          0.048267,
+          0.016092
+        ],
+        "severities": [
+          0.0,
+          0.5,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.512236,
+          0.480061
+        ]
+      },
+      "D": {
+        "auc_degradation": 0.038521,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          0.049007,
+          0.056069
+        ],
+        "severities": [
+          0.0,
+          0.5,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.518888,
+          0.525951
+        ]
+      }
+    },
+    "distribution_shift": {
+      "A": {
+        "auc_degradation": -0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "severities": [
+          0.0,
+          0.3,
+          0.6
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.3,
+          0.6
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": -0.002098,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          -0.004661,
+          -0.004661
+        ],
+        "severities": [
+          0.0,
+          0.3,
+          0.6
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.459308,
+          0.459308
+        ]
+      },
+      "D": {
+        "auc_degradation": -0.002098,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          -0.004661,
+          -0.004661
+        ],
+        "severities": [
+          0.0,
+          0.3,
+          0.6
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.46522,
+          0.46522
+        ]
+      }
+    },
+    "extreme_but_feasible": {
+      "A": {
+        "auc_degradation": 0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": -0.000101,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          -0.000202
+        ],
+        "severities": [
+          0.0,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.463767
+        ]
+      },
+      "D": {
+        "auc_degradation": -0.002045,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          -0.00409
+        ],
+        "severities": [
+          0.0,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.465791
+        ]
+      }
+    },
+    "forecast_error_bias": {
+      "A": {
+        "auc_degradation": -0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": -0.000976,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          -0.002604,
+          -0.002604
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.461365,
+          0.461365
+        ]
+      },
+      "D": {
+        "auc_degradation": -0.000976,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          -0.002604,
+          -0.002604
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.5
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.467278,
+          0.467278
+        ]
+      }
+    },
+    "input_noise": {
+      "A": {
+        "auc_degradation": -0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.75
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.75
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": -0.047608,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          -0.072375,
+          -0.081868
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.75
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.391594,
+          0.382101
+        ]
+      },
+      "D": {
+        "auc_degradation": -0.047141,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          -0.07064,
+          -0.082602
+        ],
+        "severities": [
+          0.0,
+          0.25,
+          0.75
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.399241,
+          0.38728
+        ]
+      }
+    },
+    "missing_values": {
+      "A": {
+        "auc_degradation": -0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "severities": [
+          0.0,
+          0.2,
+          0.4
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.2,
+          0.4
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": -0.010592,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          -0.029714,
+          -0.046488
+        ],
+        "severities": [
+          0.0,
+          0.2,
+          0.4
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.434255,
+          0.417481
+        ]
+      },
+      "D": {
+        "auc_degradation": -0.008633,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          -0.023185,
+          -0.039959
+        ],
+        "severities": [
+          0.0,
+          0.2,
+          0.4
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.446697,
+          0.429923
+        ]
+      }
+    },
+    "uncertainty_inflation": {
+      "A": {
+        "auc_degradation": -0.0,
+        "baseline": 0.390867,
+        "degradation": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "severities": [
+          0.0,
+          0.5,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.390867,
+          0.390867,
+          0.390867
+        ]
+      },
+      "B": {
+        "auc_degradation": 0.0,
+        "baseline": 0.382101,
+        "degradation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "severities": [
+          0.0,
+          0.5,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.382101,
+          0.382101,
+          0.382101
+        ]
+      },
+      "C": {
+        "auc_degradation": -0.057409,
+        "baseline": 0.463969,
+        "degradation": [
+          0.0,
+          -0.078321,
+          -0.072994
+        ],
+        "severities": [
+          0.0,
+          0.5,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.463969,
+          0.385648,
+          0.390975
+        ]
+      },
+      "D": {
+        "auc_degradation": -0.028029,
+        "baseline": 0.469882,
+        "degradation": [
+          0.0,
+          -0.034085,
+          -0.043945
+        ],
+        "severities": [
+          0.0,
+          0.5,
+          1.0
+        ],
+        "severity_at_50pct_degradation": null,
+        "values": [
+          0.469882,
+          0.435797,
+          0.425937
+        ]
+      }
+    }
+  },
+  "endpoint": "exogenous normalised regret (lower is better); degradation = increase in regret",
+  "n_errors": 0,
+  "n_runs": 720,
+  "perturbation_version": "eval_perturbations_v1",
+  "scope": {
+    "n_scenarios": 20,
+    "partition": "locked_test",
+    "scenario_ids": [
+      "asymmetric_risk__0000",
+      "asymmetric_risk__0004",
+      "asymmetric_risk__0008",
+      "asymmetric_risk__0012",
+      "asymmetric_risk__0016",
+      "competing_objectives__0000",
+      "competing_objectives__0004",
+      "competing_objectives__0008",
+      "competing_objectives__0012",
+      "competing_objectives__0016",
+      "missing_observations__0000",
+      "missing_observations__0004",
+      "missing_observations__0008",
+      "missing_observations__0012",
+      "missing_observations__0016",
+      "promotion_decision__0000",
+      "promotion_decision__0004",
+      "promotion_decision__0008",
+      "promotion_decision__0012",
+      "promotion_decision__0016"
+    ],
+    "seeds": [
+      20260906,
+      20260907
+    ],
+    "subsample_every": 4
+  },
+  "status": "complete"
+}

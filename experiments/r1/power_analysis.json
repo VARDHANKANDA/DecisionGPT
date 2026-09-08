@@ -1,0 +1,20 @@
+{
+  "assumed_effective_sd": 0.305352,
+  "assumptions": {
+    "alpha": 0.05,
+    "metric_sd_between_scenarios": 0.3,
+    "min_effect_of_interest": 0.05,
+    "n_scenarios": 408,
+    "n_seeds": 10,
+    "n_sim": 20000,
+    "note": "assumptions fixed pre-registration; not derived from observed results",
+    "primary_comparison": "D_vs_B",
+    "rng_seed": 20260907,
+    "target_power": 0.8,
+    "within_scenario_seed_sd": 0.18
+  },
+  "estimated_power": 0.8943,
+  "meets_target": true,
+  "n_sim": 20000,
+  "variance_source": "R1 development-stage pilot (prelock_diagnostics.json); NOT locked-test"
+}

@@ -1,0 +1,538 @@
+{
+  "source_hashes": {
+    "results.json": "9e302f1d1cf575940e62e9abdb66393c0e7d9e9d2f2ec940abe2bd161c853065",
+    "statistical_results.json": "2ce79bc588c34f7a8cc3c9cdf5ee229ff40b6b2014370438d02c06a26014880c",
+    "mechanism_results.json": "864ff6ca48762075c6b99e38b4ecccb964bdd94fa1b371257924060f3261923d",
+    "robustness_results.json": "86e26d313e9c036216c5aa353e4b54d556fc5ac1ae1d80cf28de42a560ab38f1",
+    "scenario_manifest.json": "5167621e550ec466b981d7290ea04d2b8b4f83bfa2fd2c35d7e2c58a2555f026",
+    "frozen_experiment_manifest.json": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff"
+  },
+  "checks": [
+    {
+      "check": "n_records == 4080",
+      "recomputed": 4080,
+      "stored": 4080,
+      "match": true
+    },
+    {
+      "check": "n_result == 4080",
+      "recomputed": 4080,
+      "stored": 4080,
+      "match": true
+    },
+    {
+      "check": "n_error == 0",
+      "recomputed": 0,
+      "stored": 0,
+      "match": true
+    },
+    {
+      "check": "raw.n_instances field",
+      "recomputed": 4080,
+      "stored": 4080,
+      "match": true
+    },
+    {
+      "check": "raw.n_ok field",
+      "recomputed": 4080,
+      "stored": 4080,
+      "match": true
+    },
+    {
+      "check": "raw.n_error field",
+      "recomputed": 0,
+      "stored": 0,
+      "match": true
+    },
+    {
+      "check": "invariant holds on every instance",
+      "recomputed": 0,
+      "stored": 0,
+      "match": true
+    },
+    {
+      "check": "zero exclusions",
+      "recomputed": 0,
+      "stored": 0,
+      "match": true
+    },
+    {
+      "check": "frozen manifest at runtime",
+      "recomputed": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+      "stored": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+      "match": true
+    },
+    {
+      "check": "arch label full",
+      "recomputed": "full",
+      "stored": "full",
+      "match": true
+    },
+    {
+      "check": "eligible == 408 scenarios x 10 seeds == 4080 rows",
+      "recomputed": 4080,
+      "stored": 4080,
+      "match": true
+    },
+    {
+      "check": "n scenarios (D) == 408",
+      "recomputed": 408,
+      "stored": 408,
+      "match": true
+    },
+    {
+      "check": "mean regret A",
+      "recomputed": 0.25913,
+      "stored": 0.25913,
+      "match": true
+    },
+    {
+      "check": "mean regret B",
+      "recomputed": 0.215579,
+      "stored": 0.215579,
+      "match": true
+    },
+    {
+      "check": "mean regret C",
+      "recomputed": 0.161574,
+      "stored": 0.161574,
+      "match": true
+    },
+    {
+      "check": "mean regret D",
+      "recomputed": 0.300801,
+      "stored": 0.300801,
+      "match": true
+    },
+    {
+      "check": "mean regret naive",
+      "recomputed": 0.367005,
+      "stored": 0.367005,
+      "match": true
+    },
+    {
+      "check": "mean regret greedy",
+      "recomputed": 0.197214,
+      "stored": 0.197214,
+      "match": true
+    },
+    {
+      "check": "mean regret classical_optimizer",
+      "recomputed": 0.088514,
+      "stored": 0.088514,
+      "match": true
+    },
+    {
+      "check": "B_vs_A mean",
+      "recomputed": -0.043551,
+      "stored": -0.043551,
+      "match": true
+    },
+    {
+      "check": "B_vs_A median",
+      "recomputed": -0.193642,
+      "stored": -0.193642,
+      "match": true
+    },
+    {
+      "check": "B_vs_A boot CI95",
+      "recomputed": [
+        -0.08429,
+        -0.002139
+      ],
+      "stored": [
+        -0.08429,
+        -0.002139
+      ],
+      "match": true
+    },
+    {
+      "check": "B_vs_A wilcoxon p",
+      "recomputed": 4.8381183588984175e-09,
+      "stored": 4.8381183588984175e-09,
+      "match": true
+    },
+    {
+      "check": "B_vs_A rank_biserial",
+      "recomputed": 0.431373,
+      "stored": 0.431373,
+      "match": true
+    },
+    {
+      "check": "B_vs_A W/T/L",
+      "recomputed": [
+        292,
+        0,
+        116
+      ],
+      "stored": [
+        292,
+        0,
+        116
+      ],
+      "match": true
+    },
+    {
+      "check": "B_vs_A n_nonzero",
+      "recomputed": 408,
+      "stored": 408,
+      "match": true
+    },
+    {
+      "check": "C_vs_B mean",
+      "recomputed": -0.054005,
+      "stored": -0.054005,
+      "match": true
+    },
+    {
+      "check": "C_vs_B median",
+      "recomputed": 0.0,
+      "stored": 0.0,
+      "match": true
+    },
+    {
+      "check": "C_vs_B boot CI95",
+      "recomputed": [
+        -0.08806,
+        -0.02043
+      ],
+      "stored": [
+        -0.08806,
+        -0.02043
+      ],
+      "match": true
+    },
+    {
+      "check": "C_vs_B wilcoxon p",
+      "recomputed": 0.6094875413797051,
+      "stored": 0.6094875413797051,
+      "match": true
+    },
+    {
+      "check": "C_vs_B rank_biserial",
+      "recomputed": -0.084416,
+      "stored": -0.084416,
+      "match": true
+    },
+    {
+      "check": "C_vs_B W/T/L",
+      "recomputed": [
+        141,
+        100,
+        167
+      ],
+      "stored": [
+        141,
+        100,
+        167
+      ],
+      "match": true
+    },
+    {
+      "check": "C_vs_B n_nonzero",
+      "recomputed": 308,
+      "stored": 308,
+      "match": true
+    },
+    {
+      "check": "D_vs_C mean",
+      "recomputed": 0.139227,
+      "stored": 0.139227,
+      "match": true
+    },
+    {
+      "check": "D_vs_C median",
+      "recomputed": 0.055785,
+      "stored": 0.055785,
+      "match": true
+    },
+    {
+      "check": "D_vs_C boot CI95",
+      "recomputed": [
+        0.115775,
+        0.162343
+      ],
+      "stored": [
+        0.115775,
+        0.162343
+      ],
+      "match": true
+    },
+    {
+      "check": "D_vs_C wilcoxon p",
+      "recomputed": 1.7310580115755422e-31,
+      "stored": 1.7310580115755422e-31,
+      "match": true
+    },
+    {
+      "check": "D_vs_C rank_biserial",
+      "recomputed": -0.632653,
+      "stored": -0.632653,
+      "match": true
+    },
+    {
+      "check": "D_vs_C W/T/L",
+      "recomputed": [
+        63,
+        65,
+        280
+      ],
+      "stored": [
+        63,
+        65,
+        280
+      ],
+      "match": true
+    },
+    {
+      "check": "D_vs_C n_nonzero",
+      "recomputed": 343,
+      "stored": 343,
+      "match": true
+    },
+    {
+      "check": "D_vs_B mean",
+      "recomputed": 0.085223,
+      "stored": 0.085223,
+      "match": true
+    },
+    {
+      "check": "D_vs_B median",
+      "recomputed": 0.1,
+      "stored": 0.1,
+      "match": true
+    },
+    {
+      "check": "D_vs_B boot CI95",
+      "recomputed": [
+        0.0479,
+        0.123114
+      ],
+      "stored": [
+        0.0479,
+        0.123114
+      ],
+      "match": true
+    },
+    {
+      "check": "D_vs_B wilcoxon p",
+      "recomputed": 5.438841663211047e-10,
+      "stored": 5.438841663211047e-10,
+      "match": true
+    },
+    {
+      "check": "D_vs_B rank_biserial",
+      "recomputed": -0.469169,
+      "stored": -0.469169,
+      "match": true
+    },
+    {
+      "check": "D_vs_B W/T/L",
+      "recomputed": [
+        99,
+        35,
+        274
+      ],
+      "stored": [
+        99,
+        35,
+        274
+      ],
+      "match": true
+    },
+    {
+      "check": "D_vs_B n_nonzero",
+      "recomputed": 373,
+      "stored": 373,
+      "match": true
+    },
+    {
+      "check": "B_vs_A Holm p",
+      "recomputed": 1e-08,
+      "stored": 1e-08,
+      "match": true
+    },
+    {
+      "check": "C_vs_B Holm p",
+      "recomputed": 0.60948754,
+      "stored": 0.60948754,
+      "match": true
+    },
+    {
+      "check": "D_vs_C Holm p",
+      "recomputed": 0.0,
+      "stored": 0.0,
+      "match": true
+    },
+    {
+      "check": "D_vs_B Holm p",
+      "recomputed": 0.0,
+      "stored": 0.0,
+      "match": true
+    },
+    {
+      "check": "secondary D_vs_A mean",
+      "recomputed": 0.041672,
+      "stored": 0.041672,
+      "match": true
+    },
+    {
+      "check": "secondary D_vs_oracle mean",
+      "recomputed": 0.300801,
+      "stored": 0.300801,
+      "match": true
+    },
+    {
+      "check": "secondary D_vs_naive mean",
+      "recomputed": -0.066203,
+      "stored": -0.066203,
+      "match": true
+    },
+    {
+      "check": "secondary D_vs_greedy mean",
+      "recomputed": 0.103587,
+      "stored": 0.103587,
+      "match": true
+    },
+    {
+      "check": "secondary D_vs_classical_optimizer mean",
+      "recomputed": 0.212288,
+      "stored": 0.212288,
+      "match": true
+    },
+    {
+      "check": "secondary A_vs_oracle mean",
+      "recomputed": 0.25913,
+      "stored": 0.25913,
+      "match": true
+    },
+    {
+      "check": "secondary B_vs_oracle mean",
+      "recomputed": 0.215579,
+      "stored": 0.215579,
+      "match": true
+    },
+    {
+      "check": "secondary C_vs_oracle mean",
+      "recomputed": 0.161574,
+      "stored": 0.161574,
+      "match": true
+    },
+    {
+      "check": "LOFO D_vs_B min in [0.045,0.055]",
+      "recomputed": true,
+      "stored": true,
+      "match": true
+    },
+    {
+      "check": "LOFO D_vs_B max in [0.150,0.165]",
+      "recomputed": true,
+      "stored": true,
+      "match": true
+    },
+    {
+      "check": "LOFO: every removal still D worse (>0)",
+      "recomputed": true,
+      "stored": true,
+      "match": true
+    },
+    {
+      "check": "internal goal_achievement B ~0.496",
+      "recomputed": 0.496,
+      "stored": 0.496,
+      "match": true
+    },
+    {
+      "check": "internal goal_achievement D ~0.364",
+      "recomputed": 0.364,
+      "stored": 0.364,
+      "match": true
+    },
+    {
+      "check": "D changed action vs B",
+      "recomputed": 2336,
+      "stored": 2336,
+      "match": true
+    },
+    {
+      "check": "D changed & improved",
+      "recomputed": 763,
+      "stored": 763,
+      "match": true
+    },
+    {
+      "check": "D changed & worsened",
+      "recomputed": 1573,
+      "stored": 1573,
+      "match": true
+    },
+    {
+      "check": "B action == oracle count",
+      "recomputed": 2550,
+      "stored": 2550,
+      "match": true
+    },
+    {
+      "check": "D action == oracle count",
+      "recomputed": 1410,
+      "stored": 1410,
+      "match": true
+    },
+    {
+      "check": "B optimal-action rate",
+      "recomputed": 0.625,
+      "stored": 0.625,
+      "match": true
+    },
+    {
+      "check": "D optimal-action rate",
+      "recomputed": 0.346,
+      "stored": 0.346,
+      "match": true
+    },
+    {
+      "check": "robustness cells == 18",
+      "recomputed": 18,
+      "stored": 18,
+      "match": true
+    },
+    {
+      "check": "robustness sign flips == 0",
+      "recomputed": 0,
+      "stored": 0,
+      "match": true
+    },
+    {
+      "check": "robustness primary_conclusion_changes == False",
+      "recomputed": false,
+      "stored": false,
+      "match": true
+    },
+    {
+      "check": "family-level D_vs_B means reproduce (12/12)",
+      "recomputed": 12,
+      "stored": 12,
+      "match": true
+    }
+  ],
+  "leave_one_family_out_D_vs_B": {
+    "asymmetric_risk": 0.075756,
+    "capacity_bound": 0.049598,
+    "delayed_price": 0.073272,
+    "demand_saturation": 0.114308,
+    "noisy_observations": 0.078069,
+    "nonlinear_response": 0.15901,
+    "price_elastic": 0.080436,
+    "promotion_threshold": 0.089399,
+    "regime_shift": 0.078564,
+    "strong_seasonality": 0.086254,
+    "weak_marketing": 0.072293,
+    "weak_seasonality": 0.065713
+  },
+  "summary": {
+    "n_checks": 75,
+    "n_pass": 75,
+    "n_fail": 0,
+    "all_pass": true
+  }
+}

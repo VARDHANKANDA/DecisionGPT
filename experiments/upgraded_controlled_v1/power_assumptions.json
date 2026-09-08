@@ -1,0 +1,12 @@
+{
+  "n_scenarios": 80,
+  "n_seeds": 10,
+  "min_effect_of_interest": 0.10,
+  "metric_sd_between_scenarios": 0.28,
+  "within_scenario_seed_sd": 0.12,
+  "alpha": 0.05,
+  "target_power": 0.80,
+  "primary_comparison": "D_vs_B",
+  "n_sim": 20000,
+  "rng_seed": 20260906
+}

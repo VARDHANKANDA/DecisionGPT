@@ -1,0 +1,435 @@
+{
+  "contrast_convention": "each contrast value = regret[first] - regret[second]; negative => first has lower regret",
+  "endpoint": "exogenous normalised regret (0 = oracle, 1 = worst feasible; lower is better)",
+  "excluded": {
+    "count": 0,
+    "rows": []
+  },
+  "holm_family": {
+    "alpha": 0.05,
+    "method": "holm_bonferroni",
+    "n_tests_corrected": 4,
+    "results": {
+      "B_vs_A": {
+        "p_holm": 0.01461403,
+        "p_raw": 0.00487134,
+        "rank": 2,
+        "reject_at_alpha": true
+      },
+      "C_vs_B": {
+        "p_holm": 1.0,
+        "p_raw": 0.50497405,
+        "rank": 3,
+        "reject_at_alpha": false
+      },
+      "D_vs_A": {
+        "p_holm": 0.00255169,
+        "p_raw": 0.00063792,
+        "rank": 1,
+        "reject_at_alpha": true
+      },
+      "D_vs_B": {
+        "p_holm": 1.0,
+        "p_raw": 0.53926505,
+        "rank": 4,
+        "reject_at_alpha": false
+      }
+    }
+  },
+  "interpretation_rule": "a contrast is 'supported' only if Holm-adjusted p < 0.05 AND the cluster-bootstrap CI excludes 0 AND |mean shift| > 0.10 (MEI)",
+  "n_scenarios_eligible": 80,
+  "n_seeds": 10,
+  "per_family_mean_regret": {
+    "asymmetric_risk": {
+      "A": 0.622905,
+      "B": 0.0,
+      "C": 0.511238,
+      "D": 0.522066,
+      "greedy": 0.227669,
+      "n_scenarios": 20
+    },
+    "competing_objectives": {
+      "A": 0.406214,
+      "B": 0.023337,
+      "C": 0.441424,
+      "D": 0.468105,
+      "greedy": 0.406214,
+      "n_scenarios": 20
+    },
+    "missing_observations": {
+      "A": 0.234976,
+      "B": 0.772409,
+      "C": 0.259147,
+      "D": 0.259551,
+      "greedy": 0.155525,
+      "n_scenarios": 20
+    },
+    "promotion_decision": {
+      "A": 0.231168,
+      "B": 1.0,
+      "C": 0.705063,
+      "D": 0.680679,
+      "greedy": 0.231168,
+      "n_scenarios": 20
+    }
+  },
+  "positioning": {
+    "A": {
+      "mean_normalized_performance": 0.626184,
+      "mean_regret": 0.373816,
+      "mean_secondary_goal_achievement": null
+    },
+    "B": {
+      "mean_normalized_performance": 0.551063,
+      "mean_regret": 0.448937,
+      "mean_secondary_goal_achievement": 0.894519
+    },
+    "C": {
+      "mean_normalized_performance": 0.520782,
+      "mean_regret": 0.479218,
+      "mean_secondary_goal_achievement": 0.304611
+    },
+    "D": {
+      "mean_normalized_performance": 0.5174,
+      "mean_regret": 0.4826,
+      "mean_secondary_goal_achievement": 0.314806
+    },
+    "classical_optimizer": {
+      "mean_regret": 0.08393,
+      "n_na": 0
+    },
+    "greedy": {
+      "mean_regret": 0.255144,
+      "n_na": 0
+    },
+    "n_scenarios_eligible": 80,
+    "naive": {
+      "mean_regret": 0.510383,
+      "n_na": 0
+    },
+    "oracle": {
+      "mean_regret": 0.0,
+      "note": "upper-bound reference, not a competitor"
+    }
+  },
+  "primary_contrasts": {
+    "B_vs_A": {
+      "cluster_bootstrap": {
+        "ci95": [
+          -0.068771,
+          0.219137
+        ],
+        "n_boot": 10000,
+        "n_units": 80,
+        "point": 0.075121,
+        "seed": 12345,
+        "statistic": "mean"
+      },
+      "label": "regret[B] - regret[A]",
+      "mean_difference": 0.075121,
+      "median_difference": -0.325071,
+      "n_nonzero": 80,
+      "n_scenarios": 80,
+      "primary_effect_size": "matched_pairs_rank_biserial",
+      "primary_interval": "paired_scenario_cluster_bootstrap",
+      "rank_biserial": -0.1,
+      "sd_difference": 0.650442,
+      "student_t_ci95_of_mean_difference": [
+        -0.069628,
+        0.21987
+      ],
+      "wilcoxon": {
+        "mode": "approx",
+        "n": 80,
+        "n_nonzero": 80,
+        "p_value": 0.00487134354742567,
+        "statistic": 1033.0,
+        "test": "wilcoxon_signed_rank"
+      },
+      "wins_ties_losses": [
+        36,
+        0,
+        44
+      ]
+    },
+    "C_vs_B": {
+      "cluster_bootstrap": {
+        "ci95": [
+          -0.078189,
+          0.136653
+        ],
+        "n_boot": 10000,
+        "n_units": 80,
+        "point": 0.030282,
+        "seed": 12345,
+        "statistic": "mean"
+      },
+      "label": "regret[C] - regret[B]",
+      "mean_difference": 0.030282,
+      "median_difference": 0.200482,
+      "n_nonzero": 80,
+      "n_scenarios": 80,
+      "primary_effect_size": "matched_pairs_rank_biserial",
+      "primary_interval": "paired_scenario_cluster_bootstrap",
+      "rank_biserial": 0.1,
+      "sd_difference": 0.496267,
+      "student_t_ci95_of_mean_difference": [
+        -0.080157,
+        0.14072
+      ],
+      "wilcoxon": {
+        "mode": "approx",
+        "n": 80,
+        "n_nonzero": 80,
+        "p_value": 0.504974052249303,
+        "statistic": 1481.0,
+        "test": "wilcoxon_signed_rank"
+      },
+      "wins_ties_losses": [
+        44,
+        0,
+        36
+      ]
+    },
+    "D_vs_A": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.058531,
+          0.160706
+        ],
+        "n_boot": 10000,
+        "n_units": 80,
+        "point": 0.108785,
+        "seed": 12345,
+        "statistic": "mean"
+      },
+      "label": "regret[D] - regret[A]",
+      "mean_difference": 0.108785,
+      "median_difference": 0.091368,
+      "n_nonzero": 80,
+      "n_scenarios": 80,
+      "primary_effect_size": "matched_pairs_rank_biserial",
+      "primary_interval": "paired_scenario_cluster_bootstrap",
+      "rank_biserial": 0.225,
+      "sd_difference": 0.231076,
+      "student_t_ci95_of_mean_difference": [
+        0.057361,
+        0.160208
+      ],
+      "wilcoxon": {
+        "mode": "approx",
+        "n": 80,
+        "n_nonzero": 80,
+        "p_value": 0.0006379220291333459,
+        "statistic": 908.0,
+        "test": "wilcoxon_signed_rank"
+      },
+      "wins_ties_losses": [
+        49,
+        0,
+        31
+      ]
+    },
+    "D_vs_B": {
+      "cluster_bootstrap": {
+        "ci95": [
+          -0.077636,
+          0.142779
+        ],
+        "n_boot": 10000,
+        "n_units": 80,
+        "point": 0.033664,
+        "seed": 12345,
+        "statistic": "mean"
+      },
+      "label": "regret[D] - regret[B]",
+      "mean_difference": 0.033664,
+      "median_difference": 0.262936,
+      "n_nonzero": 80,
+      "n_scenarios": 80,
+      "primary_effect_size": "matched_pairs_rank_biserial",
+      "primary_interval": "paired_scenario_cluster_bootstrap",
+      "rank_biserial": 0.1,
+      "sd_difference": 0.50835,
+      "student_t_ci95_of_mean_difference": [
+        -0.079464,
+        0.146791
+      ],
+      "wilcoxon": {
+        "mode": "approx",
+        "n": 80,
+        "n_nonzero": 80,
+        "p_value": 0.5392650472755577,
+        "statistic": 1492.0,
+        "test": "wilcoxon_signed_rank"
+      },
+      "wins_ties_losses": [
+        44,
+        0,
+        36
+      ]
+    }
+  },
+  "reference_contrasts": {
+    "D_vs_classical_optimizer": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.331337,
+          0.462214
+        ],
+        "n_boot": 10000,
+        "n_units": 80,
+        "point": 0.39867,
+        "seed": 12345,
+        "statistic": "mean"
+      },
+      "label": "regret[D] - regret_classical_optimizer",
+      "mean_difference": 0.39867,
+      "median_difference": 0.504282,
+      "n_nonzero": 80,
+      "n_scenarios": 80,
+      "primary_effect_size": "matched_pairs_rank_biserial",
+      "primary_interval": "paired_scenario_cluster_bootstrap",
+      "rank_biserial": 0.775,
+      "sd_difference": 0.302831,
+      "student_t_ci95_of_mean_difference": [
+        0.331278,
+        0.466062
+      ],
+      "wilcoxon": {
+        "mode": "approx",
+        "n": 80,
+        "n_nonzero": 80,
+        "p_value": 2.8813255258668134e-12,
+        "statistic": 164.0,
+        "test": "wilcoxon_signed_rank"
+      },
+      "wins_ties_losses": [
+        71,
+        0,
+        9
+      ]
+    },
+    "D_vs_greedy": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.189236,
+          0.266321
+        ],
+        "n_boot": 10000,
+        "n_units": 80,
+        "point": 0.227456,
+        "seed": 12345,
+        "statistic": "mean"
+      },
+      "label": "regret[D] - regret_greedy",
+      "mean_difference": 0.227456,
+      "median_difference": 0.225208,
+      "n_nonzero": 80,
+      "n_scenarios": 80,
+      "primary_effect_size": "matched_pairs_rank_biserial",
+      "primary_interval": "paired_scenario_cluster_bootstrap",
+      "rank_biserial": 0.825,
+      "sd_difference": 0.175114,
+      "student_t_ci95_of_mean_difference": [
+        0.188486,
+        0.266426
+      ],
+      "wilcoxon": {
+        "mode": "approx",
+        "n": 80,
+        "n_nonzero": 80,
+        "p_value": 7.046339081038933e-14,
+        "statistic": 59.0,
+        "test": "wilcoxon_signed_rank"
+      },
+      "wins_ties_losses": [
+        73,
+        0,
+        7
+      ]
+    },
+    "D_vs_naive": {
+      "cluster_bootstrap": {
+        "ci95": [
+          -0.090861,
+          0.034607
+        ],
+        "n_boot": 10000,
+        "n_units": 80,
+        "point": -0.027783,
+        "seed": 12345,
+        "statistic": "mean"
+      },
+      "label": "regret[D] - regret_naive",
+      "mean_difference": -0.027783,
+      "median_difference": -0.002077,
+      "n_nonzero": 80,
+      "n_scenarios": 80,
+      "primary_effect_size": "matched_pairs_rank_biserial",
+      "primary_interval": "paired_scenario_cluster_bootstrap",
+      "rank_biserial": -0.075,
+      "sd_difference": 0.286047,
+      "student_t_ci95_of_mean_difference": [
+        -0.091439,
+        0.035874
+      ],
+      "wilcoxon": {
+        "mode": "approx",
+        "n": 80,
+        "n_nonzero": 80,
+        "p_value": 0.8253811545163605,
+        "statistic": 1574.0,
+        "test": "wilcoxon_signed_rank"
+      },
+      "wins_ties_losses": [
+        37,
+        0,
+        43
+      ]
+    },
+    "D_vs_oracle": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.443481,
+          0.521605
+        ],
+        "n_boot": 10000,
+        "n_units": 80,
+        "point": 0.4826,
+        "seed": 12345,
+        "statistic": "mean"
+      },
+      "label": "regret[D] - regret_oracle",
+      "mean_difference": 0.4826,
+      "median_difference": 0.516138,
+      "n_nonzero": 80,
+      "n_scenarios": 80,
+      "primary_effect_size": "matched_pairs_rank_biserial",
+      "primary_interval": "paired_scenario_cluster_bootstrap",
+      "rank_biserial": 1.0,
+      "sd_difference": 0.179392,
+      "student_t_ci95_of_mean_difference": [
+        0.442678,
+        0.522522
+      ],
+      "wilcoxon": {
+        "mode": "approx",
+        "n": 80,
+        "n_nonzero": 80,
+        "p_value": 7.849526548031477e-15,
+        "statistic": 0.0,
+        "test": "wilcoxon_signed_rank"
+      },
+      "wins_ties_losses": [
+        80,
+        0,
+        0
+      ]
+    }
+  },
+  "source_results": "results.json",
+  "source_results_sha256": "804fbe91e064cd29562e7769784f6754c46a1395e511fc97ddbd5c2c8d1f506e",
+  "status": "complete",
+  "unit_of_analysis": "scenario"
+}

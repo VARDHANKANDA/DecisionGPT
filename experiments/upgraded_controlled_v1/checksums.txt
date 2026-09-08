@@ -1,0 +1,22 @@
+{
+  "README.md": "6733586d56b203f07f12d4fe487b6a45b3a1497803a3c36273a5e8965b4302d8",
+  "REPRODUCIBILITY_AUDIT.md": "acfec15117a70a955e176db67f61c2be9e78a61b517d27dd54dc3cf43f3d3aa5",
+  "SCHEMA.md": "9a0f22ecd9ca40a9b200a799af11fdaa8687897fdef5cb336ee350357f045eeb",
+  "UPGRADED_EVALUATION_PREREGISTRATION.md@prereg_freeze": "72c99bcf7a0a99185678625b085a93b527aa699b61f63a4e15eac646c0bfd7dd",
+  "_docs/UPGRADED_EVALUATION_PREREGISTRATION.md": "72c99bcf7a0a99185678625b085a93b527aa699b61f63a4e15eac646c0bfd7dd",
+  "_frozen_experiment_manifest.json": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+  "analysis_supplement.json": "5a8d9c2153c7d9503405de735e3e54555820c91af4309bc7080f6f67eb9ac066",
+  "checksums.txt": "8eeb5f564e943dce2934ab132705b9e36fb08115b551ffd19352c9f11148ff23",
+  "config.json": "c00d55f7b60c4fafe43798aba5166bbfa8257b1c1d001cc343831937d7fa9419",
+  "config.json@prereg_freeze": "7e3c008c686f8a0aa5dbfc086709a71f7db3e8f835e146ef42a6f5a574b76c95",
+  "dry_run_report.json": "573305dded81d3ffe3ae3526139051d7bced71c225b5791e3ea435b3d586e7d1",
+  "forbidden_claim_scan.json": "797c2444d688662d7ec1e6f43c2508f2ee894efc1faa99c3f58e18da621498b4",
+  "power_analysis.json": "134986c2d266ad9e64e687c9f99e617ee6af6c8efd544f4e1e748aa31c60ea14",
+  "power_assumptions.json": "619b501bbdc8b1d555f8ae3ee17fde5c044a51043bf7f73e90b205793eb21122",
+  "results.json": "804fbe91e064cd29562e7769784f6754c46a1395e511fc97ddbd5c2c8d1f506e",
+  "results_locked_test.jsonl": "7917abb0c9fdb05b794346307917f866444dc4dfd9ba5e2a131f3b03c88f1bf8",
+  "robustness_results.json": "a8571e3e2d607dd18402b86d39beb58c4cd4e7dd817d3bbc9812340dade5ed62",
+  "robustness_runs.jsonl": "9517affbf4c33cf012b314112985a34e05744a3ba615cd7b1a99e5ac20c8fa11",
+  "scenario_manifest.json": "12ad770791720992db3e8008e78d258bc73788a72669315286797ece18d74c06",
+  "statistical_results.json": "9582dd8943c3703421b50d0a9752f9d9e2367200fdbcc6bfad55b8a3f2539fce"
+}

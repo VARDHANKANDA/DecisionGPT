@@ -1,0 +1,903 @@
+{
+  "scanned": [
+    "docs\\R1_DT_DIAGNOSTIC.md",
+    "docs\\R1_INFORMATION_BOUNDARY.md",
+    "docs\\R1_PREREGISTRATION.md",
+    "docs\\R1_PRELOCK_GATE.md",
+    "docs\\R1_RESULTS.md",
+    "docs\\R1_AUDIT.md",
+    "docs\\R1_HOSTILE_REVIEW.md",
+    "docs\\R1_PUBLICATION_READINESS.md",
+    "docs\\R1_FINAL_REPORT.md",
+    "docs\\FINAL_SUBMISSION_AUDIT.md",
+    "docs\\ieee_paper_r1\\main.tex",
+    "docs\\ieee_paper_r1\\README.md",
+    "experiments\\r1\\MACHINE_AUDIT.md"
+  ],
+  "n_hits": 126,
+  "n_prohibited": 0,
+  "hits": [
+    {
+      "file": "docs\\R1_DT_DIAGNOSTIC.md",
+      "line": 255,
+      "pattern": "validated",
+      "text": "per-family count, total N, development / validation / locked split, locked",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_INFORMATION_BOUNDARY.md",
+      "line": 66,
+      "pattern": "validated",
+      "text": "`scripts/run_eval_r1.py prelock-diagnose` checks, on development/validation only:",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 11,
+      "pattern": "validated",
+      "text": "never presented as the production system and never as real-SME validation. V1",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 31,
+      "pattern": "real_world",
+      "text": "Not a real-world, SME, Indian-SME, LLM, causal, ROI, or deployment study.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 31,
+      "pattern": "causal",
+      "text": "Not a real-world, SME, Indian-SME, LLM, causal, ROI, or deployment study.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 31,
+      "pattern": "roi",
+      "text": "Not a real-world, SME, Indian-SME, LLM, causal, ROI, or deployment study.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 67,
+      "pattern": "causal",
+      "text": "- **H6 (mechanism, exploratory, associational, non-causal).** `D\u2212B` depends on",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 77,
+      "pattern": "validated",
+      "text": "- **SECONDARY (labelled, never external validation):** DecisionGPT-internal",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 112,
+      "pattern": "validated",
+      "text": "- **validation:** 4 families (136 scenarios) \u2014 allowed for methodology sanity",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 142,
+      "pattern": "proves",
+      "text": "(`docs/R1_INFORMATION_BOUNDARY.md`); outperforming them proves nothing about",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 152,
+      "pattern": "validated",
+      "text": "seed SD **0.180**, over 45 development/validation scenarios \u00d7 4 seeds).",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 247,
+      "pattern": "causal",
+      "text": "## 15. Mechanism analysis (Section 18 \u2014 exploratory, associational, NOT causal)",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 268,
+      "pattern": "validated",
+      "text": "No claim of production superiority, real-SME / Indian-SME validation, real-world",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 268,
+      "pattern": "real_world",
+      "text": "No claim of production superiority, real-SME / Indian-SME validation, real-world",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 268,
+      "pattern": "superior",
+      "text": "No claim of production superiority, real-SME / Indian-SME validation, real-world",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 269,
+      "pattern": "causal",
+      "text": "business improvement, ROI, customer improvement, causal business impact, or",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 269,
+      "pattern": "roi",
+      "text": "business improvement, ROI, customer improvement, causal business impact, or",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 269,
+      "pattern": "business_impact",
+      "text": "business improvement, ROI, customer improvement, causal business impact, or",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 269,
+      "pattern": "customer_outcome",
+      "text": "business improvement, ROI, customer improvement, causal business impact, or",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 272,
+      "pattern": "validated",
+      "text": "validation. A negative R1 result is not proof that multi-agent systems never",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PREREGISTRATION.md",
+      "line": 273,
+      "pattern": "validated",
+      "text": "work. The internal `goal_achievement` metric is never external validation.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PRELOCK_GATE.md",
+      "line": 21,
+      "pattern": "validated",
+      "text": "- `experiments/r1/prelock_diagnostics.json` (development/validation only; locked_test never touched)",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 12,
+      "pattern": "real_world",
+      "text": "production system, and is never real-SME / real-world / causal evidence.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 12,
+      "pattern": "causal",
+      "text": "production system, and is never real-SME / real-world / causal evidence.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 90,
+      "pattern": "validated",
+      "text": "**development 11 families / validation 4 / locked test 12 families = 408",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 91,
+      "pattern": "validated",
+      "text": "scenarios**. The pre-lock diagnostic touched development/validation only",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 102,
+      "pattern": "validated",
+      "text": "## 7. Ground-truth validation",
+      "verdict": "OK (heading / table / quoted forbidden phrase)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 161,
+      "pattern": "validated",
+      "text": "validation): B = 0.496, D = 0.364 \u2014 DecisionGPT's own internal metric also shows",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 243,
+      "pattern": "causal",
+      "text": "## 14. Mechanism analysis (exploratory, associational, NOT causal)",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 325,
+      "pattern": "real_world",
+      "text": "- The result does **not** establish real-world SME impact, ROI, causal business",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 325,
+      "pattern": "causal",
+      "text": "- The result does **not** establish real-world SME impact, ROI, causal business",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 325,
+      "pattern": "roi",
+      "text": "- The result does **not** establish real-world SME impact, ROI, causal business",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 325,
+      "pattern": "sme_impact",
+      "text": "- The result does **not** establish real-world SME impact, ROI, causal business",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 326,
+      "pattern": "superior",
+      "text": "effect, or general superiority/inferiority of multi-agent systems.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 342,
+      "pattern": "validated",
+      "text": "python scripts/run_eval_r1.py prelock-diagnose --per-family 3 --seeds 4 --include-validation",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_RESULTS.md",
+      "line": 471,
+      "pattern": "causal",
+      "text": "not causal, not interpreted at the factor level.)*",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_AUDIT.md",
+      "line": 71,
+      "pattern": "validated",
+      "text": "the pre-lock diagnostic is in development/validation (machine-verified). The",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_AUDIT.md",
+      "line": 74,
+      "pattern": "validated",
+      "text": "and manifest SHAs match. No development or validation outcome was used to choose",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_AUDIT.md",
+      "line": 186,
+      "pattern": "causal",
+      "text": "family-clustered, not causal, not interpreted at the factor level. `D_vs_C`",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_AUDIT.md",
+      "line": 187,
+      "pattern": "causal",
+      "text": "localises the damage to the risk gate + optimiser without claiming a causal",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_AUDIT.md",
+      "line": 238,
+      "pattern": "real_world",
+      "text": "research-only variant; that it does **not** establish real-world / SME / ROI /",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_AUDIT.md",
+      "line": 238,
+      "pattern": "roi",
+      "text": "research-only variant; that it does **not** establish real-world / SME / ROI /",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_AUDIT.md",
+      "line": 239,
+      "pattern": "causal",
+      "text": "causal / deployment effects; that it cannot show multi-agent architectures are",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_HOSTILE_REVIEW.md",
+      "line": 204,
+      "pattern": "real_world",
+      "text": "**nothing** about real-world / SME / Indian-SME / ROI / customer / causal /",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_HOSTILE_REVIEW.md",
+      "line": 204,
+      "pattern": "causal",
+      "text": "**nothing** about real-world / SME / Indian-SME / ROI / customer / causal /",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_HOSTILE_REVIEW.md",
+      "line": 204,
+      "pattern": "roi",
+      "text": "**nothing** about real-world / SME / Indian-SME / ROI / customer / causal /",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_HOSTILE_REVIEW.md",
+      "line": 217,
+      "pattern": "causal",
+      "text": "a causal design.\"",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_HOSTILE_REVIEW.md",
+      "line": 223,
+      "pattern": "causal",
+      "text": "factor level**; no per-component causal attribution is asserted. The concrete,",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_HOSTILE_REVIEW.md",
+      "line": 227,
+      "pattern": "causal",
+      "text": "not causal.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 106,
+      "pattern": "validated",
+      "text": "publication pass* (it was, in the earlier repro-validation pass). A bundled",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 118,
+      "pattern": "validated",
+      "text": "- Structural validation passed: all `\\begin/\\end` environments balanced; every",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 177,
+      "pattern": "real_world",
+      "text": "**nothing** about real-world / SME / Indian-SME / ROI / causal / deployment /",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 177,
+      "pattern": "causal",
+      "text": "**nothing** about real-world / SME / Indian-SME / ROI / causal / deployment /",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 177,
+      "pattern": "roi",
+      "text": "**nothing** about real-world / SME / Indian-SME / ROI / causal / deployment /",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 181,
+      "pattern": "accuracy_misuse",
+      "text": "- The term \"accuracy\" is never attached to a regret metric or error metric",
+      "verdict": "OK (discussing the term itself / forbidden-term scan)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 211,
+      "pattern": "validated",
+      "text": "18/18 robustness \u2014 without claiming equivalence to real-world validation.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 211,
+      "pattern": "real_world",
+      "text": "18/18 robustness \u2014 without claiming equivalence to real-world validation.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 246,
+      "pattern": "validated",
+      "text": "environment, so `main.tex` was validated structurally / numerically / for",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 263,
+      "pattern": "validated",
+      "text": "any claim that DecisionGPT is validated, superior, or effective for SMEs; any",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 263,
+      "pattern": "superior",
+      "text": "any claim that DecisionGPT is validated, superior, or effective for SMEs; any",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 264,
+      "pattern": "real_world",
+      "text": "causal or real-world interpretation. Those are out of scope by construction and",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_PUBLICATION_READINESS.md",
+      "line": 264,
+      "pattern": "causal",
+      "text": "causal or real-world interpretation. Those are out of scope by construction and",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 4,
+      "pattern": "real_world",
+      "text": "controlled evaluation. Synthetic. Not real-world, not SME, not causal.*",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 4,
+      "pattern": "causal",
+      "text": "controlled evaluation. Synthetic. Not real-world, not SME, not causal.*",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 92,
+      "pattern": "validated",
+      "text": "## 6. Pre-lock validation (`docs/R1_PRELOCK_GATE.md`, 12/12 GO)",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 94,
+      "pattern": "validated",
+      "text": "Development/validation only; locked partition never touched (machine-verified).",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 138,
+      "pattern": "validated",
+      "text": "Internal `goal_achievement` (labelled, not external validation): B 0.496 vs",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 248,
+      "pattern": "real_world",
+      "text": "| synthetic only | no real data; no real-world / SME / causal claim is made |",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 248,
+      "pattern": "causal",
+      "text": "| synthetic only | no real data; no real-world / SME / causal claim is made |",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 278,
+      "pattern": "causal",
+      "text": "real businesses, real SMEs, ROI, customer outcomes, causal effects, or",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 278,
+      "pattern": "roi",
+      "text": "real businesses, real SMEs, ROI, customer outcomes, causal effects, or",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 318,
+      "pattern": "causal",
+      "text": "B's 62.5 % to D's 34.6 %. Family-clustered OLS (associational, not causal,",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 323,
+      "pattern": "causal",
+      "text": "Stated as a localisation and a mechanism hypothesis, **not** a causal proof.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 336,
+      "pattern": "causal",
+      "text": "Nothing about real businesses, real SMEs, ROI, customer outcomes, causal",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 336,
+      "pattern": "roi",
+      "text": "Nothing about real businesses, real SMEs, ROI, customer outcomes, causal",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 360,
+      "pattern": "validated",
+      "text": "is validated, superior, or better/worse for real SMEs, and must not call this a",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 360,
+      "pattern": "superior",
+      "text": "is validated, superior, or better/worse for real SMEs, and must not call this a",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 361,
+      "pattern": "real_world",
+      "text": "causal or real-world result. All eight forbidden-claim forms (\u00a733 of the brief)",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 361,
+      "pattern": "causal",
+      "text": "causal or real-world result. All eight forbidden-claim forms (\u00a733 of the brief)",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 390,
+      "pattern": "real_world",
+      "text": "| No causal / real-world claims | \u2705 forbidden-term scan 0 prohibited; \u00a717 states the bounds |",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 390,
+      "pattern": "causal",
+      "text": "| No causal / real-world claims | \u2705 forbidden-term scan 0 prohibited; \u00a717 states the bounds |",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\R1_FINAL_REPORT.md",
+      "line": 414,
+      "pattern": "validated",
+      "text": "| IEEE manuscript drafted | \u2705 `docs/ieee_paper_r1/{main.tex,references.bib,README.md,figures/}` (separate from frozen `docs/ieee_paper/`; 24 sections, 9 tables, 5 figures incl. SVG+PDF; structural + 6",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\FINAL_SUBMISSION_AUDIT.md",
+      "line": 78,
+      "pattern": "validated",
+      "text": "| LaTeX structural validation | \u2705 all `\\begin/\\end` balanced; every `\\ref` \u2192 a `\\label`; every `\\cite` (29 keys) resolves in `references.bib`; no orphan citations |",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\FINAL_SUBMISSION_AUDIT.md",
+      "line": 97,
+      "pattern": "superior",
+      "text": "method + mechanism + reproducibility, not a system-superiority claim.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\FINAL_SUBMISSION_AUDIT.md",
+      "line": 106,
+      "pattern": "validated",
+      "text": "reviewer who conflates controlled evaluation with validation will not be",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\FINAL_SUBMISSION_AUDIT.md",
+      "line": 121,
+      "pattern": "validated",
+      "text": "none of which claims equivalence to real-world validation:",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\FINAL_SUBMISSION_AUDIT.md",
+      "line": 121,
+      "pattern": "real_world",
+      "text": "none of which claims equivalence to real-world validation:",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\FINAL_SUBMISSION_AUDIT.md",
+      "line": 139,
+      "pattern": "validated",
+      "text": "argue that a synthetic evaluation substitutes for real-world validation.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\FINAL_SUBMISSION_AUDIT.md",
+      "line": 139,
+      "pattern": "real_world",
+      "text": "argue that a synthetic evaluation substitutes for real-world validation.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 23,
+      "pattern": "causal",
+      "text": "% R0/D0 unchanged; R3 NOT PROMOTED. No real SME data. No real LLM. No causal claim.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 33,
+      "pattern": "validated",
+      "text": "%   only structural / numerical / citation validation was performed. Compile on",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 105,
+      "pattern": "causal",
+      "text": "not causally prove---the degradation to the transition from C to D",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 105,
+      "pattern": "proves",
+      "text": "not causally prove---the degradation to the transition from C to D",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 112,
+      "pattern": "real_world",
+      "text": "real-world, SME, causal, ROI, or deployment effect; no real large-language-model",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 112,
+      "pattern": "causal",
+      "text": "real-world, SME, causal, ROI, or deployment effect; no real large-language-model",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 112,
+      "pattern": "roi",
+      "text": "real-world, SME, causal, ROI, or deployment effect; no real large-language-model",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 144,
+      "pattern": "proves",
+      "text": "guarantee better decisions, so components should be measured independently rather",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 206,
+      "pattern": "accuracy_misuse",
+      "text": "regret metric or error metric as ``accuracy'' (the endpoint is normalised",
+      "verdict": "OK (discussing the term itself / forbidden-term scan)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 217,
+      "pattern": "real_world",
+      "text": "It \\emph{does not} establish, and the paper never claims: real-world or SME",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 218,
+      "pattern": "causal",
+      "text": "decision outcomes; causal business impact, ROI, or customer effects;",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 218,
+      "pattern": "roi",
+      "text": "decision outcomes; causal business impact, ROI, or customer effects;",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 218,
+      "pattern": "business_impact",
+      "text": "decision outcomes; causal business impact, ROI, or customer effects;",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 219,
+      "pattern": "superior",
+      "text": "effectiveness or superiority of DecisionGPT as a product; any statement about",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 328,
+      "pattern": "validated",
+      "text": "\\textbf{fallback rate was $0.0\\%$}. On the development/validation partition the",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 358,
+      "pattern": "validated",
+      "text": "11 families to the development partition and 4 to the validation partition. The",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 433,
+      "pattern": "validated",
+      "text": "gate (12/12 GO) confirmed, on development/validation only, that the corrected",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 704,
+      "pattern": "causal",
+      "text": "This section is \\textbf{associational, not causal}: the factor coefficients are",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 712,
+      "pattern": "causal",
+      "text": "observed performance loss; it does not establish causal attribution to any",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 835,
+      "pattern": "validated",
+      "text": "outcomes were available at any point; the real-world validation table of",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 835,
+      "pattern": "real_world",
+      "text": "outcomes were available at any point; the real-world validation table of",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 845,
+      "pattern": "causal",
+      "text": "businesses, ROI, customers, causal effects, deployment, or human",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 845,
+      "pattern": "roi",
+      "text": "businesses, ROI, customers, causal effects, deployment, or human",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 878,
+      "pattern": "validated",
+      "text": "real-world validation: (i)~the scoring objective is a \\emph{separate} functional",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 878,
+      "pattern": "real_world",
+      "text": "real-world validation: (i)~the scoring objective is a \\emph{separate} functional",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 900,
+      "pattern": "causal",
+      "text": "short of a causal claim.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 916,
+      "pattern": "real_world",
+      "text": "layer; the production configuration is unchanged pending real-world evaluation.",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 935,
+      "pattern": "real_world",
+      "text": "establish real-world SME, customer, ROI, causal, deployment, or general",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 935,
+      "pattern": "causal",
+      "text": "establish real-world SME, customer, ROI, causal, deployment, or general",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\main.tex",
+      "line": 935,
+      "pattern": "roi",
+      "text": "establish real-world SME, customer, ROI, causal, deployment, or general",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\README.md",
+      "line": 18,
+      "pattern": "real_world",
+      "text": "localisation. It establishes **nothing** about real-world / SME / customer / ROI",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\README.md",
+      "line": 18,
+      "pattern": "roi",
+      "text": "localisation. It establishes **nothing** about real-world / SME / customer / ROI",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\README.md",
+      "line": 19,
+      "pattern": "causal",
+      "text": "/ causal / deployment / human-decision / LLM effects, and does not claim",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\README.md",
+      "line": 20,
+      "pattern": "validated",
+      "text": "DecisionGPT is validated, superior, or effective. Production configuration",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\README.md",
+      "line": 20,
+      "pattern": "superior",
+      "text": "DecisionGPT is validated, superior, or effective. Production configuration",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "docs\\ieee_paper_r1\\README.md",
+      "line": 88,
+      "pattern": "validated",
+      "text": "> **not compiled here**. The manuscript passed structural validation (balanced",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    },
+    {
+      "file": "experiments\\r1\\MACHINE_AUDIT.md",
+      "line": 19,
+      "pattern": "validated",
+      "text": "| 13 | `D_prelock_never_touched_locked` | PASS | prelock ran only on development/validation families |",
+      "verdict": "OK (negation / limitation / methodological framing)"
+    }
+  ]
+}

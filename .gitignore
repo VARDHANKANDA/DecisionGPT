@@ -51,3 +51,7 @@ data/research_uploads/
 
 # External benchmark raw data (large; re-download per docs/DATASET_DOWNLOAD_INSTRUCTIONS.md)
 data/external/**/raw/
+
+# upgraded controlled evaluation — scratch DB (never committed)
+_eval_scratch.db
+backend/_eval_scratch.db

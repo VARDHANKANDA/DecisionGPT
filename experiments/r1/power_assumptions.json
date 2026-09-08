@@ -1,0 +1,14 @@
+{
+  "n_scenarios": 408,
+  "n_seeds": 10,
+  "min_effect_of_interest": 0.05,
+  "metric_sd_between_scenarios": 0.30,
+  "within_scenario_seed_sd": 0.18,
+  "alpha": 0.05,
+  "target_power": 0.80,
+  "primary_comparison": "D_vs_B",
+  "n_sim": 20000,
+  "rng_seed": 20260907,
+  "_variance_source": "R1 development-stage pilot (experiments/r1/prelock_diagnostics.json): D_vs_B scenario-level SD 0.282, within-scenario seed SD 0.180 over 45 development/validation scenarios x 4 seeds. metric_sd_between_scenarios rounded UP to 0.30 (conservative). Locked-test outcomes NOT used.",
+  "_tie_caveat": "simulate_power does not model exact ties; the dev pilot shows ~31% exact D=B ties, so achieved power is somewhat below the simulated value. The report states n_nonzero and the observed tie rate; a non-significant D_vs_B is reported as 'no significant incremental improvement detected', never as equivalence."
+}
