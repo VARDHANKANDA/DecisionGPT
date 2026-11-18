@@ -1,0 +1,25 @@
+{
+ "purpose": "sha256 of historical artifacts at the start of the ML benchmark work (2026-10-15); a test fails if any changes",
+ "files": {
+  "experiments/model_comparison_v1/mc_20261014T070438Z_pos_daily_revenue_ac8b32c9/results.json": "2403e690b3b6610fb73abe3783179e0a82b38b1759c0b2904f61d466120fe90a",
+  "experiments/model_comparison_v1/mc_20261014T070547Z_platform_units_891db345/results.json": "45124e13293d492f6c18b596999d13d0a2967008be1cba5e6800e1d40406166f",
+  "experiments/risk_calibration_v1/rc_20261014T070950Z_4dbaf788/results.json": "f65b488d765431e60eab8ed28ce04f7883f43fdecf796d394b0d2b2737842ddf",
+  "experiments/causal_identification_v1/ci_20261014T070741Z_18cd6b28/results.json": "18eee3abbae16e008eca8323c49d4f8b3758227f9d202e5dd907cd7875533e67",
+  "experiments/r1/results.json": "9e302f1d1cf575940e62e9abdb66393c0e7d9e9d2f2ec940abe2bd161c853065",
+  "experiments/r1/statistical_results.json": "2ce79bc588c34f7a8cc3c9cdf5ee229ff40b6b2014370438d02c06a26014880c",
+  "experiments/upgraded_controlled_v1/results.json": "804fbe91e064cd29562e7769784f6754c46a1395e511fc97ddbd5c2c8d1f506e",
+  "experiments/upgraded_controlled_v1/statistical_results.json": "9582dd8943c3703421b50d0a9752f9d9e2367200fdbcc6bfad55b8a3f2539fce",
+  "experiments/experiment_manifest.json": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+  "experiments/paper_results_snapshot.json": "8e09d298ac3ba3cbdfe5cc7b9a06c092967a52bc69a42b3874105238623bf10a",
+  "models/registry_index.jsonl": "3f0b7ccb0d505afd1330d837701ebd2285fe59d809ce0ad9a824d9b3ec3cd82d",
+  "research/llm_evaluation/runs/run_20261014T042125Z_0daf9d32/task_results.jsonl": "5faabf9d4b1f3f59880456864bd1aaee67df11703f1984a7a071e665808af647",
+  "research/llm_evaluation/runs/run_20261014T054253Z_a147cc55/task_results.jsonl": "d5e721a7a42fca04b65e00cb06753399c0ba76fd0fa7504b56600b7b13c40b1a",
+  "research/llm_evaluation/runs/run_20261014T172246Z_f320dc9f/task_results.jsonl": "a496bd208ff268d7778d711bffed858d115149e2605030ec992d6b01adec14c7",
+  "research/llm_evaluation/runs/run_20261014T042125Z_0daf9d32/metrics.json": "b89581b71368301e49010751a8f81db5ff6df87cd519742f0e70ce361510166c",
+  "research/llm_evaluation/runs/run_20261014T054253Z_a147cc55/metrics.json": "3e230ef8010e865ea3af39f4bb083ba94769fdd0b80a2cdb3296e1443654adbc",
+  "research/llm_evaluation/runs/run_20261014T172246Z_f320dc9f/metrics.json": "38fed74cd75c2b9e917a9aad8dad5e4f0b6b50382b1fb9d159493fb83748dc62",
+  "research/llm_evaluation/tasks/tasks_v1.json": "e17a44859ec5fed4a953daa3b07b5c4bcc0fe30c42e9f8c5c56ac06d3df656d9",
+  "data/platform/forecasting/sales_timeseries.csv": "d498c728399fbc0b653f6a8b4a89a2082570aa2c172c23dff5b13ca27b802e88",
+  "data/platform/churn/customers.csv": "c44c575681e9b3290d1877436604b0ae4aafc324470b2fa8b8b9eb2b01ee8ab9"
+ }
+}

@@ -1,0 +1,168 @@
+{
+  "manifest_name": "DecisionGPT Baseline Reproduction Manifest",
+  "version": "1.0.0",
+  "timestamp_utc": "2026-10-23T15:00:00Z",
+  "environment": {
+    "os": "Windows 11",
+    "python": "3.12.0",
+    "numpy": "2.0.1",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.6.1",
+    "scipy": "1.15.2",
+    "torch": "2.7.0.dev20250228+cu128",
+    "xgboost": "3.0.0",
+    "lightgbm": "4.6.0",
+    "catboost": "1.2.8"
+  },
+  "artifacts": [
+    {
+      "relative_path": "data/external/india_ecommerce/processed/india_ecommerce_forecasting.csv",
+      "sha256": "b153b4f6af0e1545b14d809e22c6bee88138b6232c980a2c543ac5240d36dcfa",
+      "description": "Indian SME retail transactions (Benroshan), 365 calendar days (2018-04-01 to 2019-03-31), 15.89% zero-sales days."
+    },
+    {
+      "relative_path": "experiments/results/improved_multiagent_per_instance_20261023T110704Z.csv",
+      "sha256": "6695ea503cdf7f9651995a0cc4b83110b7847b3942ebb2116ce9dc8a727af70d",
+      "description": "Per-instance decision regret records across 60 confirmatory instances (12 families x 5 seeds)."
+    },
+    {
+      "relative_path": "experiments/results/final_confirmatory_statistics.json",
+      "sha256": "7444f1bed87340504450e2cb2cf8325c7335b43f81806d53c426f508006ac0b6",
+      "description": "Statistical summary with descriptive stats, paired differences, Wilcoxon tests, and Holm-Bonferroni corrections."
+    },
+    {
+      "relative_path": "experiments/results/real_data_accuracy_study_20261023T085642Z.json",
+      "sha256": "fc665e8ad36717e2365d05769a5d88ca60ddb56e0c4aefad527abd877f8c52a7",
+      "description": "Empirical accuracy study results across daily, weekly, 14-day cumulative, and 28-day cumulative horizons on real Indian data."
+    },
+    {
+      "relative_path": "experiments/results/advanced_churn_calibration_20261023T065442Z.json",
+      "sha256": "23bd4a3b24101eaec3a1f4cc4fd2eb34103892c5fde6647736914adc822da5ca",
+      "description": "Churn prediction and probability calibration benchmark on 6,000 accounts across 5 seeds."
+    },
+    {
+      "relative_path": "experiments/results/real_llm_pilot_results_20261023T070938Z.json",
+      "sha256": "a1ea4c3f280c721b789c9feba85f0b5a305ad2a55c356149a82f96d7befc9397",
+      "description": "OpenAI Responses API and factual guardrail validation pilot across 7 operational tasks."
+    }
+  ],
+  "baselines": {
+    "multi_agent_decision_benchmark": {
+      "partition": "locked_test",
+      "instances": 60,
+      "families": 12,
+      "seeds": [42, 43, 44, 45, 46],
+      "metrics": {
+        "condition_A_status_quo_mean_regret": 0.2495,
+        "condition_A_status_quo_std": 0.1395,
+        "condition_F_greedy_mean_regret": 0.2065,
+        "condition_F_greedy_std": 0.0912,
+        "condition_B_simulation_alone_mean_regret": 0.1420,
+        "condition_B_simulation_alone_std": 0.2861,
+        "condition_C_single_agent_mean_regret": 0.1102,
+        "condition_C_single_agent_std": 0.1446,
+        "condition_D_production_multiagent_mean_regret": 0.1863,
+        "condition_D_production_multiagent_std": 0.2449,
+        "condition_E_classical_optimizer_mean_regret": 0.1455,
+        "condition_E_classical_optimizer_std": 0.2701,
+        "candidate_D_proposal_verification_mean_regret": 0.1420,
+        "candidate_D_proposal_verification_std": 0.2861,
+        "candidate_B_shared_objective_mean_regret": 0.1587,
+        "candidate_B_shared_objective_std": 0.2870,
+        "candidate_C_calibrated_mult_mean_regret": 0.1587,
+        "candidate_C_calibrated_mult_std": 0.2870
+      }
+    },
+    "demand_forecasting_real_data": {
+      "dataset": "India E-Commerce Orders (Benroshan, 365 calendar days)",
+      "horizons": {
+        "daily_h1": {
+          "partition": "test (untouched 51 days, 2019-02-09 to 2019-03-31)",
+          "samples": 51,
+          "best_model": "HistGradientBoostingRegressor",
+          "mae": 13.85,
+          "rmse": 18.06,
+          "wape_pct": 68.06,
+          "forecast_score_pct": 31.94,
+          "naive_baseline_wape_pct": 97.88,
+          "naive_baseline_score_pct": 2.12
+        },
+        "weekly_h1": {
+          "partition": "test (untouched 10 calendar weeks)",
+          "samples": 10,
+          "best_model": "4-Week Moving Average",
+          "mae": 41.50,
+          "wape_pct": 34.92,
+          "forecast_score_pct": 65.08,
+          "naive_baseline_score_pct": 39.55
+        },
+        "cumulative_14d": {
+          "partition": "test (51 rolling origins)",
+          "samples": 51,
+          "best_model": "RandomForestRegressor",
+          "mae": 58.64,
+          "rmse": 71.93,
+          "wape_pct": 19.83,
+          "forecast_score_pct": 80.17,
+          "bootstrap_95_ci": [77.2, 83.1],
+          "disjoint_4_blocks_score_pct": 81.65,
+          "naive_baseline_score_pct": 68.88
+        },
+        "cumulative_28d": {
+          "partition": "test (51 rolling origins)",
+          "samples": 51,
+          "best_model": "XGBoost",
+          "mae": 55.70,
+          "rmse": 69.14,
+          "wape_pct": 9.34,
+          "forecast_score_pct": 90.66,
+          "bootstrap_95_ci": [88.4, 92.8],
+          "disjoint_2_blocks_score_pct": 80.31,
+          "naive_baseline_score_pct": 77.82
+        }
+      }
+    },
+    "churn_and_risk_calibration": {
+      "partition": "test (5 seeds: 42, 43, 44, 45, 46; 1,200 test accounts per seed; 6,000 total)",
+      "dataset": "Synthetic SME Platform Profiles (15 features)",
+      "models": {
+        "logistic_regression": {
+          "test_roc_auc_mean": 0.8167,
+          "test_roc_auc_std": 0.0103,
+          "test_f1_mean": 0.7259,
+          "test_f1_std": 0.0132,
+          "test_ece_mean": 0.0573
+        },
+        "calibrated_linear_svc": {
+          "test_roc_auc_mean": 0.8169,
+          "test_roc_auc_std": 0.0103,
+          "test_ece_mean": 0.0315,
+          "test_ece_std": 0.0032,
+          "brier_score_mean": 0.1719,
+          "calibration_method": "Platt sigmoid on out-of-fold margins"
+        },
+        "random_forest": {
+          "test_roc_auc_mean": 0.8034,
+          "test_roc_auc_std": 0.0118,
+          "test_ece_mean": 0.0434,
+          "brier_score_mean": 0.1798
+        }
+      }
+    },
+    "llm_reliability": {
+      "provider": "OpenAI Responses API (gpt-5-mini)",
+      "tasks_evaluated": 7,
+      "schema_compliance_pct": 100.0,
+      "guardrail_rejection_pct": 100.0,
+      "tokens_consumed": 1624,
+      "cost_usd": 0.00249,
+      "factual_guardrail": "validate_explanation in analytics_answer_service.py"
+    },
+    "digital_twin_and_risk": {
+      "price_response_safeguard_gate": "Active in PipelineOptions(price_response_gate=True)",
+      "risk_monotonicity_invariants": "11/11 unit tests passing",
+      "real_world_sme_outcome_records": 0,
+      "table_vii_b_status": "Transparently preserved as empty awaiting real deployments"
+    }
+  }
+}

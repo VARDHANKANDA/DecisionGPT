@@ -1,0 +1,152 @@
+{
+  "system": "decisiongpt",
+  "question": "How much did I sell in February 2025 in total?",
+  "answer": "Your total sales for February 2025 were ₹13,86,969. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for February 2025 (9,847 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "revenue_total",
+    "sales_records_used",
+    "sections"
+  ],
+  "latency_s": 0.2499289000115823,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 700,
+      "temperature": 0,
+      "ts": 1791462454.7827377,
+      "ok": true,
+      "latency_s": 0.0005617999995592982,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 1200,
+      "output_tokens": 90,
+      "usage_raw": {
+        "prompt_tokens": 1200,
+        "completion_tokens": 90,
+        "total_tokens": 1290
+      },
+      "attempts": 1
+    },
+    {
+      "role": "explainer",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 300,
+      "temperature": 0,
+      "ts": 1791462454.967341,
+      "ok": true,
+      "latency_s": 0.0007942000083858147,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 350,
+      "output_tokens": 40,
+      "usage_raw": {
+        "prompt_tokens": 350,
+        "completion_tokens": 40,
+        "total_tokens": 390
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 2,
+    "n_errors": 0,
+    "input_tokens": 1550,
+    "output_tokens": 130,
+    "llm_latency_s": 0.0013560000079451129
+  },
+  "audit": {
+    "request_id": "09ae982a152d4816b18f56defae5fea9",
+    "business_id": "5712321a-0cc3-4249-8152-498cc3bc61d5",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 1200,
+        "output_tokens": 90
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "query",
+        "route"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "aggregate",
+        "metric": "revenue",
+        "period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 2,
+          "quarter": null
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.184,
+    "verified_result": {
+      "period": {
+        "start": "2025-02-01",
+        "end": "2025-02-28",
+        "label": "February 2025"
+      },
+      "n_records": 9847,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_call": {
+      "latency_s": 0.001,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 350,
+        "output_tokens": 40
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "explanation_rejected": {},
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.221
+  }
+}

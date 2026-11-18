@@ -1,0 +1,132 @@
+{
+  "dt_model_used": {
+    "name": "sales_forecast_xgboost",
+    "version": "v1",
+    "metrics": {
+      "mae": 15.13885516603038,
+      "rmse": 21.863057200107395,
+      "mape": 10.296922032515052,
+      "shap_global_importance": {
+        "lag_1": 9.995196,
+        "lag_7": 25.077827,
+        "rolling_mean_7": 20.957451,
+        "rolling_mean_28": 13.467849,
+        "day_of_week": 9.237835,
+        "is_weekend": 0.0,
+        "month": 6.143396,
+        "price": 0.873951,
+        "marketing_spend": 1.091796,
+        "promotion_flag": 3.163766
+      }
+    }
+  },
+  "shap_global_importance": {
+    "lag_1": 9.995196,
+    "lag_7": 25.077827,
+    "rolling_mean_7": 20.957451,
+    "rolling_mean_28": 13.467849,
+    "day_of_week": 9.237835,
+    "is_weekend": 0.0,
+    "month": 6.143396,
+    "price": 0.873951,
+    "marketing_spend": 1.091796,
+    "promotion_flag": 3.163766
+  },
+  "price_sweep_units_flat": [
+    {
+      "price": 50,
+      "pred_units": 111.8431,
+      "revenue": 5592.16
+    },
+    {
+      "price": 60,
+      "pred_units": 111.8431,
+      "revenue": 6710.59
+    },
+    {
+      "price": 70,
+      "pred_units": 111.8431,
+      "revenue": 7829.02
+    },
+    {
+      "price": 80,
+      "pred_units": 111.8431,
+      "revenue": 8947.45
+    },
+    {
+      "price": 90,
+      "pred_units": 111.8431,
+      "revenue": 10065.88
+    },
+    {
+      "price": 100,
+      "pred_units": 111.8431,
+      "revenue": 11184.31
+    },
+    {
+      "price": 110,
+      "pred_units": 111.8431,
+      "revenue": 12302.75
+    },
+    {
+      "price": 120,
+      "pred_units": 111.8431,
+      "revenue": 13421.18
+    },
+    {
+      "price": 130,
+      "pred_units": 111.8431,
+      "revenue": 14539.61
+    },
+    {
+      "price": 140,
+      "pred_units": 111.8431,
+      "revenue": 15658.04
+    },
+    {
+      "price": 150,
+      "pred_units": 111.8431,
+      "revenue": 16776.47
+    }
+  ],
+  "marketing_sweep_units_flat": [
+    {
+      "marketing_spend": 100,
+      "pred_units": 111.9594
+    },
+    {
+      "marketing_spend": 250,
+      "pred_units": 111.9594
+    },
+    {
+      "marketing_spend": 500,
+      "pred_units": 111.9594
+    },
+    {
+      "marketing_spend": 1000,
+      "pred_units": 111.8431
+    },
+    {
+      "marketing_spend": 2000,
+      "pred_units": 111.8431
+    },
+    {
+      "marketing_spend": 4000,
+      "pred_units": 112.4075
+    },
+    {
+      "marketing_spend": 8000,
+      "pred_units": 113.1963
+    }
+  ],
+  "pred_units_range_over_price_sweep": 0.0,
+  "training_csv": {
+    "rows": 29200,
+    "price_min": 269.81,
+    "price_mean": 1430.01,
+    "price_max": 2463.38,
+    "price_cv": 0.4812,
+    "crude_loglog_price_units_slope": 0.178,
+    "corr_price_units": 0.1034
+  }
+}

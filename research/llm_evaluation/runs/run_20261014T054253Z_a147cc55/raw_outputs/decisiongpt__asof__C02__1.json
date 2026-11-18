@@ -1,0 +1,179 @@
+{
+  "system": "decisiongpt",
+  "question": "What were my top 3 products by sales value from January to March 2025?",
+  "answer": "For Q1 2025, ranked by sales (highest first): 1. EGG (₹1,75,863), 2. BIG ONION (₹1,73,071), 3. MILK (₹1,47,896). This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for Q1 2025 (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.8594733000500128,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "api.typesafe.ai",
+      "model_requested": "jev-latest",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791956627.4627843,
+      "ok": true,
+      "latency_s": 0.49287650000769645,
+      "model_returned": "jev-1.13.0",
+      "input_tokens": 1352,
+      "output_tokens": 452,
+      "usage_raw": {
+        "input_tokens": 1352,
+        "output_tokens": 452
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1352,
+    "output_tokens": 452,
+    "llm_latency_s": 0.49287650000769645
+  },
+  "audit": {
+    "request_id": "8ed1dd4f0aba467f8b8942f2008b76d8",
+    "business_id": "03f9a0fe-2d2b-49bb-b52d-77b2095d6b78",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.493,
+      "provider": "typesafe-jev",
+      "model": "jev-latest",
+      "response_model": "jev-1.13.0",
+      "usage": {
+        "input_tokens": 1352,
+        "output_tokens": 452
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 1.0
+        },
+        "operation": {
+          "value": "ranking",
+          "confidence": 1.0
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 1.0
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 1.0
+        },
+        "group_by": {
+          "value": "product",
+          "confidence": 1.0
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 1.0
+        },
+        "named_products": {
+          "value": 0.26,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.01,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "other",
+          "confidence": 0.39
+        },
+        "missing_item": {
+          "value": "other",
+          "confidence": 0.67
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "ranking",
+        "metric": "revenue",
+        "periods": [
+          {
+            "kind": "absolute",
+            "start": "2025-01-01",
+            "end": "2025-03-31"
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "revenue",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "product",
+        "direction": "desc",
+        "limit": 3,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.31,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "Q1 2025"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.836
+  }
+}

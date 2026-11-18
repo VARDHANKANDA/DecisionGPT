@@ -1,0 +1,190 @@
+{
+  "claim_pattern_hits": [
+    {
+      "file": "docs\\UPGRADED_EVALUATION_REPORT.md",
+      "line": 373,
+      "pattern": "real_llm_claim",
+      "text": "intervention. No human decision-quality study. No real-LLM evaluation. No",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_REPORT.md",
+      "line": 374,
+      "pattern": "real_world_causal_impact",
+      "text": "real-world causal validation. `PredictionEvaluation = 0`,",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_REPORT.md",
+      "line": 397,
+      "pattern": "roi",
+      "text": "improves real decisions, business outcomes, ROI, revenue, or customer",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_REPORT.md",
+      "line": 399,
+      "pattern": "superiority_generic",
+      "text": "- Any statement that the architecture is \"validated\", \"superior\", or \"effective\"",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_REPORT.md",
+      "line": 412,
+      "pattern": "roi",
+      "text": "families declare the ROI-positive candidate set so the identical-action-space",
+      "verdict": "OK (technical term: marketing return-on-investment as a pipeline input)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 23,
+      "pattern": "roi",
+      "text": "| 2 | **Internal validity** | **B** | Identical-feasible-action-space invariant enforced and verified per instance (0 failures); R0/D0 read-only; architecture fingerprint captured and reproduced. Dedu",
+      "verdict": "OK (technical term: marketing return-on-investment as a pipeline input)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 32,
+      "pattern": "superiority_generic",
+      "text": "| 11 | **Publication readiness** | **B** (as a controlled-evaluation / negative-result / reproducibility paper) \u00b7 **F** (as any \"the system works / is validated / is superior\" paper) | See \u00a77. |",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 63,
+      "pattern": "roi",
+      "text": "- Any real-world, SME, ROI, revenue, customer-behaviour, deployment, or",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 68,
+      "pattern": "real_sme_validation",
+      "text": "- Any \"validated for Indian SMEs\" / \"superior for SMEs\" / \"proven business",
+      "verdict": "OK (inside a 'must not be claimed' / limitations section)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 68,
+      "pattern": "validated_for_indian_smes",
+      "text": "- Any \"validated for Indian SMEs\" / \"superior for SMEs\" / \"proven business",
+      "verdict": "OK (inside a 'must not be claimed' / limitations section)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 68,
+      "pattern": "superior_for_smes",
+      "text": "- Any \"validated for Indian SMEs\" / \"superior for SMEs\" / \"proven business",
+      "verdict": "OK (inside a 'must not be claimed' / limitations section)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 68,
+      "pattern": "proven_business_improvement",
+      "text": "- Any \"validated for Indian SMEs\" / \"superior for SMEs\" / \"proven business",
+      "verdict": "OK (inside a 'must not be claimed' / limitations section)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 134,
+      "pattern": "works_claim",
+      "text": "It **cannot** support a paper framed as \"DecisionGPT works / is validated / is",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 135,
+      "pattern": "superior_for_smes",
+      "text": "superior / is effective for SMEs.\" Every such phrasing must be removed or",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 152,
+      "pattern": "roi",
+      "text": "- any ROI, revenue, profit, cost, or customer-behaviour improvement",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_READINESS.md",
+      "line": 158,
+      "pattern": "deployment_success",
+      "text": "- deployment success or readiness",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_PREREGISTRATION.md",
+      "line": 85,
+      "pattern": "roi",
+      "text": "the harness seeds always records positive marketing ROI, so the production",
+      "verdict": "OK (technical term: marketing return-on-investment as a pipeline input)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_PREREGISTRATION.md",
+      "line": 234,
+      "pattern": "roi",
+      "text": "- No real-world / SME / ROI / causal / LLM / deployment claim is made regardless",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_PREREGISTRATION.md",
+      "line": 240,
+      "pattern": "real_world_causal_impact",
+      "text": "human decision-quality study; no real-LLM evaluation; no real-world causal",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_PREREGISTRATION.md",
+      "line": 240,
+      "pattern": "real_llm_claim",
+      "text": "human decision-quality study; no real-LLM evaluation; no real-world causal",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\UPGRADED_EVALUATION_IMPLEMENTATION.md",
+      "line": 29,
+      "pattern": "roi",
+      "text": "marketing ROI, so production emits an extra \"marketing +10%\" candidate for",
+      "verdict": "OK (technical term: marketing return-on-investment as a pipeline input)"
+    },
+    {
+      "file": "docs\\FROZEN_ARCHITECTURE_EVALUATION_AUDIT.md",
+      "line": 160,
+      "pattern": "r3_promotion",
+      "text": "- Do **not** promote R3 / R1 / R2-\u03bb / D1 or any non-default `PipelineOptions`",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    },
+    {
+      "file": "docs\\FROZEN_ARCHITECTURE_EVALUATION_AUDIT.md",
+      "line": 207,
+      "pattern": "roi",
+      "text": "| **PI12** | **Explicit evidence-boundary section** (unchanged discipline): no real SME / customer / prospective / human / real-LLM / real-world-causal evidence; contribution positioned as *a controll",
+      "verdict": "OK (limitation / negation / methodological framing)"
+    }
+  ],
+  "integrity_flags": {
+    "accidental_r3_promotion_phrase": false,
+    "accidental_real_llm_result_claim": false,
+    "accidental_real_sme_data_claim": false,
+    "mentions_r3_not_promoted": true,
+    "mentions_real_llm_blocked": true,
+    "states_no_real_sme_data": true,
+    "states_r0_d0_unchanged": true,
+    "states_table2_not_ready": true
+  },
+  "number_integrity": {
+    "n_numeric_tokens_pool": 156368,
+    "unexplained_decimals_in_report": []
+  },
+  "prohibited_count": 0,
+  "scanned_files": [
+    "docs\\UPGRADED_EVALUATION_REPORT.md",
+    "docs\\UPGRADED_EVALUATION_READINESS.md",
+    "docs\\UPGRADED_EVALUATION_PREREGISTRATION.md",
+    "docs\\UPGRADED_EVALUATION_IMPLEMENTATION.md",
+    "docs\\FROZEN_ARCHITECTURE_EVALUATION_AUDIT.md",
+    "experiments\\upgraded_controlled_v1\\README.md",
+    "experiments\\upgraded_controlled_v1\\REPRODUCIBILITY_AUDIT.md",
+    "experiments\\upgraded_controlled_v1\\SCHEMA.md"
+  ]
+}

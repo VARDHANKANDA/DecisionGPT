@@ -1,0 +1,211 @@
+"""Train and evaluate forecasting models on the platform dataset.
+
+Compares naive, linear, and XGBoost per docs/AI_MODULE_SPECIFICATION.md §3
+and docs/EXPERIMENT_PLAN.md Experiment A. All three are registered (not
+just the winner) so the Research Console can render the real comparison
+table — no metric on that page is ever hand-typed.
+
+Usage:
+    python -m ml.training.train_forecasting
+"""
+import argparse
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+from sklearn.linear_model import LinearRegression
+try:
+    from xgboost import XGBRegressor
+except ImportError:
+    XGBRegressor = None
+
+from ml.evaluation.explainability import tree_shap_global_importance
+from ml.evaluation.metrics import regression_diagnostics, regression_metrics
+from ml.features.forecasting_features import FEATURE_COLUMNS, TARGET_COLUMN, build_forecasting_features
+from ml.pipeline.loaders import PLATFORM_DATA_ROOT, load_platform_dataset
+from ml.pipeline.preprocessing import chronological_split, clean_dataframe
+from ml.features.contracts import FORECASTING_V1
+from ml.pipeline.registry import next_version, save_model_artifact
+from ml.pipeline.run_metadata import build_run_metadata, split_boundaries
+from ml.training.baselines import NaiveLagForecaster
+
+RANDOM_SEED = 42
+RESULTS_DIR = Path(__file__).resolve().parents[2] / "experiments" / "results"
+
+SUPPORTED_MODEL_TYPES = ("naive", "linear", "xgboost")
+REQUIRED_COLUMNS = ["series_id", "date", TARGET_COLUMN, "price", "marketing_spend", "promotion_flag"]
+
+
+def _build_model(model_type: str, random_seed: int, params: dict | None):
+    params = params or {}
+    if model_type == "naive":
+        return NaiveLagForecaster(), {}
+    if model_type == "linear":
+        return LinearRegression(), {}
+    if model_type == "xgboost":
+        cfg = {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05, **params}
+        return (
+            XGBRegressor(random_state=random_seed, objective="reg:squarederror", **cfg),
+            cfg,
+        )
+    raise ValueError(f"Unsupported forecasting model_type {model_type!r} (expected {SUPPORTED_MODEL_TYPES}).")
+
+
+def _validation_metrics(model, val) -> dict:
+    """Metrics on the chronological validation block (the model is fitted on train only, so these are genuinely out-of-sample).
+    Selection between registered models uses these instead of the test metrics."""
+    if val is None or len(val) == 0:
+        return {}
+    vm = regression_metrics(val[TARGET_COLUMN].to_numpy(), model.predict(val[FEATURE_COLUMNS]))
+    return {f"val_{k}": v for k, v in vm.items()}
+
+
+def _baseline_metrics(val, test) -> dict:
+    """Mean absolute error of the naive one-day-lag forecast on the SAME validation and test blocks (the lifecycle check requires a
+    candidate to beat it on its own data, not on a different dataset's baseline)."""
+    out = {}
+    if val is not None and len(val):
+        out["val_baseline_mae"] = float((val[TARGET_COLUMN] - val["lag_1"]).abs().mean())
+    if test is not None and len(test):
+        out["baseline_mae"] = float((test[TARGET_COLUMN] - test["lag_1"]).abs().mean())
+    return out
+
+
+def train_one(df, model_type: str, random_seed: int = RANDOM_SEED, params: dict | None = None) -> dict:
+    """Train + evaluate a single forecasting model on an arbitrary raw
+    dataframe (Research Console Training Center). The df must carry the
+    columns in ``REQUIRED_COLUMNS``. Returns the fitted model, its test
+    metrics, and the feature/target contract used — nothing is persisted
+    here (the caller registers the artifact)."""
+    missing = [c for c in REQUIRED_COLUMNS if c not in df.columns]
+    if missing:
+        raise ValueError(f"Forecasting training needs columns {missing} that are not in the dataset.")
+
+    cleaned = clean_dataframe(df, date_columns=["date"])
+    featured = build_forecasting_features(cleaned)
+    if len(featured) < 30:
+        raise ValueError(f"Only {len(featured)} usable rows after feature engineering — need at least 30.")
+    train, val, test = chronological_split(featured, "date")
+    if len(train) == 0 or len(test) == 0:
+        raise ValueError("Chronological split produced an empty train or test partition.")
+
+    X_train, y_train = train[FEATURE_COLUMNS], train[TARGET_COLUMN]
+    X_test, y_test = test[FEATURE_COLUMNS], test[TARGET_COLUMN]
+
+    model, resolved_params = _build_model(model_type, random_seed, params)
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    metrics = regression_metrics(y_test.to_numpy(), preds)
+    metrics.update(regression_diagnostics(y_test.to_numpy(), preds))
+    metrics.update(_validation_metrics(model, val))
+    metrics.update(_baseline_metrics(val, test))
+    if model_type == "xgboost":
+        sample = X_test.sample(min(200, len(X_test)), random_state=random_seed)
+        metrics["shap_global_importance"] = tree_shap_global_importance(model, sample)
+
+    return {
+        "model": model,
+        "metrics": metrics,
+        "parameters": resolved_params,
+        "feature_version": "forecasting_v1",
+        "feature_columns": list(FEATURE_COLUMNS),
+        "target": TARGET_COLUMN,
+        "train_rows": len(X_train),
+        "test_rows": len(X_test),
+    }
+
+
+def run(random_seed: int = RANDOM_SEED) -> dict:
+    dataset = load_platform_dataset("forecasting", "sales_timeseries.csv")
+    dataset_version = dataset.metadata["dataset_id"]
+
+    cleaned = clean_dataframe(dataset.dataframe, date_columns=["date"])
+    featured = build_forecasting_features(cleaned)
+    train, val, test = chronological_split(featured, "date")
+
+    X_train, y_train = train[FEATURE_COLUMNS], train[TARGET_COLUMN]
+    X_test, y_test = test[FEATURE_COLUMNS], test[TARGET_COLUMN]
+
+    models = {
+        "naive": (NaiveLagForecaster(), {}),
+        "linear": (LinearRegression(), {}),
+        "xgboost": (
+            XGBRegressor(
+                n_estimators=200,
+                max_depth=4,
+                learning_rate=0.05,
+                random_state=random_seed,
+                objective="reg:squarederror",
+            ),
+            {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05},
+        ),
+    }
+
+    results = {}
+    for model_type, (model, params) in models.items():
+        model.fit(X_train, y_train)
+        preds = model.predict(X_test)
+        metrics = regression_metrics(y_test.to_numpy(), preds)
+        metrics.update(regression_diagnostics(y_test.to_numpy(), preds))
+        metrics.update(_validation_metrics(model, val))
+        metrics.update(_baseline_metrics(val, test))
+
+        if model_type == "xgboost":
+            sample = X_test.sample(min(200, len(X_test)), random_state=random_seed)
+            metrics["shap_global_importance"] = tree_shap_global_importance(model, sample)
+
+        manifest = save_model_artifact(
+            model=model,
+            model_name=f"sales_forecast_{model_type}",
+            model_type=f"forecasting_{model_type}",
+            version=next_version(f"sales_forecast_{model_type}"),
+            dataset_version=dataset_version,
+            feature_version="forecasting_v1",
+            parameters=params,
+            metrics=metrics,
+            random_seed=random_seed,
+            run_metadata=build_run_metadata(
+                task="forecasting", dataset_version=dataset_version,
+                dataset_path=PLATFORM_DATA_ROOT / "forecasting" / "sales_timeseries.csv",
+                seed=random_seed, parameters=params, feature_columns=FEATURE_COLUMNS,
+                splits=split_boundaries(train, val, test, "date"),
+                selection="registry selects on val_mae when every candidate has it, else test mae",
+                extra={
+                    "applicability": {
+                        "source": "recorded", "provenance": "synthetic_platform", "target": "units_sold",
+                        "target_unit": "units per series per day", "aggregation": "per_series_daily",
+                        "population": f"{int(train['series_id'].nunique())} synthetic series ({dataset_version})", "business_id": None,
+                        "task": "recursive next-day forecast, horizon up to 90 days", "horizon_max_days": 90,
+                        "evaluation_scope": "held-out chronological block of the same synthetic population",
+                        "feature_contract": FORECASTING_V1.describe(),
+                    },
+                    "feature_contract": FORECASTING_V1.describe(),
+                    # 5th-95th percentile of every feature in the TRAINING block: inference warns when a business is outside this range
+                    "feature_ranges": {c: [float(train[c].quantile(0.05)), float(train[c].quantile(0.95))] for c in FEATURE_COLUMNS},
+                },
+            ),
+        )
+        results[model_type] = {"metrics": metrics, "manifest": manifest.artifact_path}
+        print(f"[forecasting/{model_type}] MAE={metrics['mae']:.3f} RMSE={metrics['rmse']:.3f} MAPE={metrics['mape']:.2f}%")
+
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    result_record = {
+        "experiment_type": "forecasting",
+        "dataset_version": dataset_version,
+        "random_seed": random_seed,
+        "train_rows": len(X_train),
+        "test_rows": len(X_test),
+        "results": {k: v["metrics"] for k, v in results.items()},
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+    out_path = RESULTS_DIR / f"forecasting_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}.json"
+    out_path.write_text(json.dumps(result_record, indent=2))
+    print(f"Saved experiment result to {out_path}")
+    return result_record
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--seed", type=int, default=RANDOM_SEED)
+    args = parser.parse_args()
+    run(random_seed=args.seed)

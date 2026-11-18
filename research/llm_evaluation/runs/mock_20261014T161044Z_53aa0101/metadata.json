@@ -1,0 +1,280 @@
+{
+  "run_id": "mock_20261014T161044Z_53aa0101",
+  "mode": "mock",
+  "research_result": false,
+  "mock": true,
+  "status": "COMPLETED",
+  "created_utc": "2026-10-14T16:10:44+00:00",
+  "python": "3.12.0",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "ground_truth_version": "gt-1.0",
+  "scorer_version": "score-1.0",
+  "prompt_version": "b2-prompts-1",
+  "llm": {
+    "enabled": true,
+    "provider": "openai",
+    "model_configured": "mock-openai",
+    "model_note": "the provider echoes the exact model snapshot that ran (recorded per call as model_returned)",
+    "base_url": "https://api.openai.com",
+    "api_key_present": true,
+    "provider_supported": true,
+    "timeout_s": 20,
+    "temperature": null,
+    "temperature_note": "not set: requests carry no sampling parameter, so repeats are independent samples and no seed is supported"
+  },
+  "production_llm_path": {
+    "frozen_questions_total": 27,
+    "analytics_llm_path_implemented": true,
+    "analytics_llm_path_enabled": true,
+    "frozen_questions_that_reach_the_llm_interpreter_when_configured": 27,
+    "legacy_router_recognizes": 3,
+    "chat_path_llm_powered_for_evaluated_questions": true,
+    "statement": "The production chat has an AI analytics path (question -> model classification + deterministic extraction -> validated structured request -> deterministic query engine -> verified result -> validated explanation); it needs OPENAI_API_KEY. Without one the legacy router answers."
+  },
+  "system_labels": {
+    "decisiongpt": "DecisionGPT production chat, AI analytics path (the OpenAI model classifies the question into closed labels; deterministic code extracts periods/products/limits -> validated structured request -> deterministic query engine -> verified result -> templated answer); any answer served by the legacy fixed-intent router is flagged path=legacy_router and is NOT an AI answer - Target B (OpenAI)",
+    "llm_code_baseline": "Reference tool-use system: a model writing pandas code; NOT executed by this harness (not implemented for the OpenAI provider); retained for the record (NOT a simpler baseline, NOT DecisionGPT)"
+  },
+  "systems": [
+    "decisiongpt"
+  ],
+  "conditions": [
+    "asof"
+  ],
+  "repeats": 5,
+  "n_tasks": 27,
+  "view": {
+    "raw_zip_sha256": "2ee177e85839ba6a235b6a92cf667bbb51d7b2364e6e79fdaf513e57b810bd59",
+    "processed_rows": 94290,
+    "after_whole_quantity": 60245,
+    "after_amount_agreement": 60244,
+    "after_merge": 30293,
+    "lines_merged_away": 29951,
+    "gst_mixed_groups": 16,
+    "revenue_processed": 5567256.65,
+    "revenue_view": 4354736.16,
+    "date_min": "2025-01-01",
+    "date_max": "2025-03-31",
+    "days_with_sales": 89,
+    "distinct_products": 1645,
+    "view_sha256": "65e06599613ab6b0655114d2ba3fa00dc02e1f8481a28b165bc10eba00f7cef2",
+    "rules": "1) keep lines whose quantity is a whole number > 0 (sales.quantity is an integer column); 2) keep lines whose recomputed amount (qty*rate) agrees with a printed amount column; 3) merge lines that share (date, product, unit price) by summing quantity (the production upload validator rejects duplicate rows; merging preserves total sales and total units exactly; when a merged group mixed GST slabs, the slab with the largest revenue in the group is kept). Consequence: 'one row' no longer means 'one bill line', so no task asks about individual sale entries."
+  },
+  "dataset_disclosure": {
+    "path": "data/external/india_pos_register/",
+    "description": "Indian POS retail register, 1 Jan-31 Mar 2025",
+    "provenance_limitation": "Appears to be real Indian POS data from its structure and content; uploader/store provenance is NOT independently verified.",
+    "license": "CC BY-NC-SA 4.0 (as recorded in the repository)",
+    "representativeness": "NOT representative of Indian SMEs or Indian retail generally."
+  },
+  "pricing_supplied": true,
+  "pricing_is_mock": true,
+  "frozen_spec_sha256_expected": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "manifest_sha256": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+  "git": {
+    "commit": "41c1d1443267fae1704718561b39405af0807d4e",
+    "uncommitted_files": 216
+  },
+  "prompts": {
+    "interpreter_questions_sha256": "50d66786aa27d3a6434f281275bad9e21b357d92564878353478dbcef163dc67",
+    "explainer_system_sha256": "2f15433c71e067553ab361647a35e55ec8a1be5f75f0b61601aac6d4adf478d0",
+    "baseline_prompt_version": "b2-prompts-1"
+  },
+  "evaluation_clock": {
+    "conditions": {
+      "asof": "2025-03-31"
+    },
+    "mechanism": "app.core.clock.reference_date (ContextVar, scoped to the condition)"
+  },
+  "repeat_design": {
+    "repeats_per_task": 5,
+    "task_set_fixed_for_all_repeats": true,
+    "task_loop": "for task: for repeat (same frozen tasks every repeat)"
+  },
+  "planned_attempts": 135,
+  "completed_attempts": 135,
+  "errors": [],
+  "run_type": "full",
+  "selection": {
+    "tasks_in_frozen_spec": 27,
+    "task_ids_attempted": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "F01",
+      "F02",
+      "F03",
+      "E01",
+      "E02",
+      "E03",
+      "E04"
+    ],
+    "task_ids_not_attempted": [],
+    "repeats_frozen": 5,
+    "repeats_used": 5,
+    "conditions": [
+      "asof"
+    ],
+    "max_requests_cap": null
+  },
+  "note": "MOCK INFRASTRUCTURE VALIDATION - NOT RESEARCH RESULTS. A wire-level fake provider replaced the network; token counts, model id, prices and injected failures are MOCK values that exist only to exercise the measurement and accounting plumbing. Nothing here measures any model.",
+  "mock_injections": {
+    "B01": {
+      "interpreter#2": "http_529"
+    },
+    "C03": {
+      "interpreter#2": "timeout"
+    },
+    "A04": {
+      "interpreter#3": "malformed"
+    },
+    "A05": {
+      "interpreter#5": "invalid_option"
+    },
+    "F01": {
+      "interpreter#4": "route_other_tool"
+    },
+    "D03": {
+      "interpreter#1": "http_429"
+    },
+    "A02": {
+      "interpreter#1": "low_confidence"
+    }
+  },
+  "ground_truth_isolation": {
+    "guard": "whitelist check of every interpreter request + ground-truth fragment scan; a violating request is never sent and aborts the run",
+    "forbidden_fragment_count": 41
+  },
+  "decisiongpt_ingestion": {
+    "uploads": {
+      "products": {
+        "status": "completed",
+        "rows_ingested": {
+          "products": 1645
+        },
+        "error": null
+      },
+      "sales": {
+        "status": "completed",
+        "rows_ingested": {
+          "sales": 30293
+        },
+        "error": null
+      }
+    },
+    "stored_sales_rows": 30293,
+    "stored_units": 131545,
+    "stored_revenue": 4354736.16,
+    "view_rows": 30293,
+    "view_units": 131545,
+    "view_revenue": 4354736.16,
+    "matches_view": true
+  },
+  "model_identity": {
+    "provider": "openai",
+    "model_requested": "mock-openai",
+    "models_returned_by_provider": [
+      "mock-openai-2026-01-01"
+    ],
+    "base_url_host": [
+      "api.openai.com"
+    ],
+    "request_parameters_by_role": {
+      "interpreter": {
+        "max_tokens": [
+          "700"
+        ],
+        "temperature": [
+          "None"
+        ]
+      },
+      "explainer": {
+        "max_tokens": [
+          "300"
+        ],
+        "temperature": [
+          "None"
+        ]
+      }
+    },
+    "seed": null,
+    "seed_note": "no sampling parameter or seed is set; repeats are independent requests",
+    "retry_policy": "none: exactly one HTTP attempt per call (a failed or ambiguous call is never re-sent, so it cannot spend more credits); per-request timeout from OPENAI_TIMEOUT_SECONDS; attempt counts are recorded per call",
+    "timeout_s": 20,
+    "n_provider_calls_recorded": 243
+  },
+  "finished_utc": "2026-10-14T16:12:17+00:00",
+  "n_attempt_errors": 0,
+  "decisiongpt_answer_paths": {
+    "llm_analytics": 128,
+    "legacy_router": 7
+  },
+  "decisiongpt_attempts_not_served_by_llm_analytics_path": 7,
+  "decisiongpt_path_groups": {
+    "legacy_fallback": 7,
+    "llm_path": 108,
+    "unsupported": 20
+  },
+  "mock_injected_events": [
+    {
+      "task_id": "A02",
+      "role": "interpreter",
+      "ordinal": 1,
+      "kind": "low_confidence"
+    },
+    {
+      "task_id": "A04",
+      "role": "interpreter",
+      "ordinal": 3,
+      "kind": "malformed"
+    },
+    {
+      "task_id": "A05",
+      "role": "interpreter",
+      "ordinal": 5,
+      "kind": "invalid_option"
+    },
+    {
+      "task_id": "B01",
+      "role": "interpreter",
+      "ordinal": 2,
+      "kind": "http_529"
+    },
+    {
+      "task_id": "C03",
+      "role": "interpreter",
+      "ordinal": 2,
+      "kind": "timeout"
+    },
+    {
+      "task_id": "D03",
+      "role": "interpreter",
+      "ordinal": 1,
+      "kind": "http_429"
+    },
+    {
+      "task_id": "F01",
+      "role": "interpreter",
+      "ordinal": 4,
+      "kind": "route_other_tool"
+    }
+  ]
+}

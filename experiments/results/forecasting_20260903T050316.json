@@ -1,0 +1,37 @@
+{
+  "experiment_type": "forecasting",
+  "dataset_version": "platform-forecasting-v1",
+  "random_seed": 42,
+  "train_rows": 19640,
+  "test_rows": 4240,
+  "results": {
+    "naive": {
+      "mae": 24.659669811320754,
+      "rmse": 38.27514896511687,
+      "mape": 15.464740828127482
+    },
+    "linear": {
+      "mae": 17.29126388372856,
+      "rmse": 25.51122770712597,
+      "mape": 12.489406914138296
+    },
+    "xgboost": {
+      "mae": 15.13885516603038,
+      "rmse": 21.863057200107395,
+      "mape": 10.296922032515052,
+      "shap_global_importance": {
+        "lag_1": 9.995196,
+        "lag_7": 25.077827,
+        "rolling_mean_7": 20.957451,
+        "rolling_mean_28": 13.467849,
+        "day_of_week": 9.237835,
+        "is_weekend": 0.0,
+        "month": 6.143396,
+        "price": 0.873951,
+        "marketing_spend": 1.091796,
+        "promotion_flag": 3.163766
+      }
+    }
+  },
+  "timestamp": "2026-09-03T05:03:16.500288+00:00"
+}

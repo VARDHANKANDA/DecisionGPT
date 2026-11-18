@@ -1,0 +1,408 @@
+{
+  "timestamp": "2026-10-23T09:44:07.744322+00:00",
+  "study_name": "improved_multiagent_architecture_evaluation",
+  "master_seed": 20260907,
+  "eval_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "partition": "locked_test",
+  "n_families": 12,
+  "n_instances": 60,
+  "tuning_partition": "development",
+  "summary": {
+    "A_status_quo": {
+      "key": "A_status_quo",
+      "label": "Condition A: Status Quo (Prediction Only)",
+      "mean_regret": 0.2495,
+      "sd_regret": 0.1395,
+      "median_regret": 0.2323,
+      "ci95_regret": [
+        0.2156,
+        0.2857
+      ],
+      "delta_vs_B": 0.1075,
+      "ci95_vs_B": [
+        0.0065,
+        0.1972
+      ],
+      "p_raw_vs_B": 2.9e-05,
+      "p_holm_vs_B": 0.000372,
+      "delta_vs_D": 0.0658,
+      "ci95_vs_D": [
+        -0.0044,
+        0.128
+      ],
+      "p_raw_vs_D": 0.000607,
+      "p_holm_vs_D": 0.007286,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 91.7,
+      "mean_latency_sec": 0.0,
+      "mean_cost_usd": 0.0,
+      "n_instances": 60
+    },
+    "F_greedy": {
+      "key": "F_greedy",
+      "label": "Condition F: Greedy Heuristic Baseline",
+      "mean_regret": 0.2065,
+      "sd_regret": 0.0912,
+      "median_regret": 0.2148,
+      "ci95_regret": [
+        0.1835,
+        0.2292
+      ],
+      "delta_vs_B": 0.0645,
+      "ci95_vs_B": [
+        -0.0315,
+        0.1486
+      ],
+      "p_raw_vs_B": 8.1e-05,
+      "p_holm_vs_B": 0.000974,
+      "delta_vs_D": 0.0228,
+      "ci95_vs_D": [
+        -0.0455,
+        0.0834
+      ],
+      "p_raw_vs_D": 0.022044,
+      "p_holm_vs_D": 0.220441,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 100.0,
+      "mean_latency_sec": 0.00026,
+      "mean_cost_usd": 0.0,
+      "n_instances": 60
+    },
+    "B_simulation_alone": {
+      "key": "B_simulation_alone",
+      "label": "Condition B: Digital Twin Simulation Alone",
+      "mean_regret": 0.142,
+      "sd_regret": 0.2861,
+      "median_regret": 0.0,
+      "ci95_regret": [
+        0.0747,
+        0.2204
+      ],
+      "delta_vs_B": 0.0,
+      "ci95_vs_B": [
+        0.0,
+        0.0
+      ],
+      "p_raw_vs_B": 1.0,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": -0.0417,
+      "ci95_vs_D": [
+        -0.1315,
+        0.0502
+      ],
+      "p_raw_vs_D": 0.188524,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 91.7,
+      "mean_latency_sec": 4e-05,
+      "mean_cost_usd": 0.0,
+      "n_instances": 60
+    },
+    "C_single_agent": {
+      "key": "C_single_agent",
+      "label": "Condition C: Single Agent (Blended)",
+      "mean_regret": 0.1102,
+      "sd_regret": 0.1446,
+      "median_regret": 0.0,
+      "ci95_regret": [
+        0.0746,
+        0.1481
+      ],
+      "delta_vs_B": -0.0318,
+      "ci95_vs_B": [
+        -0.106,
+        0.0358
+      ],
+      "p_raw_vs_B": 0.732132,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": -0.0735,
+      "ci95_vs_D": [
+        -0.1307,
+        -0.027
+      ],
+      "p_raw_vs_D": 0.001953,
+      "p_holm_vs_D": 0.021484,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 100.0,
+      "mean_latency_sec": 9e-05,
+      "mean_cost_usd": 0.0,
+      "n_instances": 60
+    },
+    "D_legacy_multi_agent": {
+      "key": "D_legacy_multi_agent",
+      "label": "Condition D: Legacy Multi-Agent (lambda=1.0)",
+      "mean_regret": 0.1837,
+      "sd_regret": 0.246,
+      "median_regret": 0.0765,
+      "ci95_regret": [
+        0.1251,
+        0.2506
+      ],
+      "delta_vs_B": 0.0417,
+      "ci95_vs_B": [
+        -0.0502,
+        0.1315
+      ],
+      "p_raw_vs_B": 0.188524,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": 0.0,
+      "ci95_vs_D": [
+        0.0,
+        0.0
+      ],
+      "p_raw_vs_D": 1.0,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 93.3,
+      "mean_latency_sec": 0.0015,
+      "mean_cost_usd": 0.00035,
+      "n_instances": 60
+    },
+    "D_ablation_unpenalized": {
+      "key": "D_ablation_unpenalized",
+      "label": "Ablation D1: Unpenalized Multi-Agent (lambda=0.0)",
+      "mean_regret": 0.1826,
+      "sd_regret": 0.2651,
+      "median_regret": 0.0548,
+      "ci95_regret": [
+        0.1205,
+        0.254
+      ],
+      "delta_vs_B": 0.0405,
+      "ci95_vs_B": [
+        -0.0522,
+        0.1322
+      ],
+      "p_raw_vs_B": 0.198453,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": -0.0012,
+      "ci95_vs_D": [
+        -0.0321,
+        0.0294
+      ],
+      "p_raw_vs_D": 0.984375,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 93.3,
+      "mean_latency_sec": 0.00135,
+      "mean_cost_usd": 0.0,
+      "n_instances": 60
+    },
+    "D_ablation_calibrated_sub": {
+      "key": "D_ablation_calibrated_sub",
+      "label": "Ablation D2: Calibrated Subtractive MA (lambda=0.25)",
+      "mean_regret": 0.1902,
+      "sd_regret": 0.2621,
+      "median_regret": 0.0765,
+      "ci95_regret": [
+        0.1284,
+        0.2626
+      ],
+      "delta_vs_B": 0.0481,
+      "ci95_vs_B": [
+        -0.0474,
+        0.1406
+      ],
+      "p_raw_vs_B": 0.160494,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": 0.0064,
+      "ci95_vs_D": [
+        -0.0002,
+        0.0195
+      ],
+      "p_raw_vs_D": 1.0,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 93.3,
+      "mean_latency_sec": 0.00136,
+      "mean_cost_usd": 0.0,
+      "n_instances": 60
+    },
+    "Cand_B_shared_objective": {
+      "key": "Cand_B_shared_objective",
+      "label": "Candidate B: Multi-Agent Shared Objective",
+      "mean_regret": 0.1587,
+      "sd_regret": 0.2876,
+      "median_regret": 0.0,
+      "ci95_regret": [
+        0.0915,
+        0.2356
+      ],
+      "delta_vs_B": 0.0167,
+      "ci95_vs_B": [
+        -0.0067,
+        0.0437
+      ],
+      "p_raw_vs_B": 0.5625,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": -0.025,
+      "ci95_vs_D": [
+        -0.1112,
+        0.0661
+      ],
+      "p_raw_vs_D": 0.335486,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 91.7,
+      "mean_latency_sec": 5e-05,
+      "mean_cost_usd": 0.00035,
+      "n_instances": 60
+    },
+    "Cand_C_calibrated_mult": {
+      "key": "Cand_C_calibrated_mult",
+      "label": "Candidate C: Multi-Agent Calibrated Multiplicative",
+      "mean_regret": 0.1587,
+      "sd_regret": 0.287,
+      "median_regret": 0.0,
+      "ci95_regret": [
+        0.0918,
+        0.2349
+      ],
+      "delta_vs_B": 0.0167,
+      "ci95_vs_B": [
+        -0.0086,
+        0.0453
+      ],
+      "p_raw_vs_B": 0.390625,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": -0.025,
+      "ci95_vs_D": [
+        -0.1091,
+        0.064
+      ],
+      "p_raw_vs_D": 0.312076,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 91.7,
+      "mean_latency_sec": 3e-05,
+      "mean_cost_usd": 0.00035,
+      "n_instances": 60
+    },
+    "Cand_D_proposal_verification": {
+      "key": "Cand_D_proposal_verification",
+      "label": "Candidate D: Independent Proposal & Verification",
+      "mean_regret": 0.142,
+      "sd_regret": 0.2861,
+      "median_regret": 0.0,
+      "ci95_regret": [
+        0.0747,
+        0.2204
+      ],
+      "delta_vs_B": 0.0,
+      "ci95_vs_B": [
+        0.0,
+        0.0
+      ],
+      "p_raw_vs_B": 1.0,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": -0.0417,
+      "ci95_vs_D": [
+        -0.1315,
+        0.0502
+      ],
+      "p_raw_vs_D": 0.188524,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 91.7,
+      "mean_latency_sec": 0.00021,
+      "mean_cost_usd": 0.00035,
+      "n_instances": 60
+    },
+    "Cand_E_adaptive_escalation": {
+      "key": "Cand_E_adaptive_escalation",
+      "label": "Candidate E: Adaptive Escalation (Hybrid Architecture)",
+      "mean_regret": 0.1794,
+      "sd_regret": 0.2858,
+      "median_regret": 0.0,
+      "ci95_regret": [
+        0.1129,
+        0.2548
+      ],
+      "delta_vs_B": 0.0374,
+      "ci95_vs_B": [
+        -0.0026,
+        0.0788
+      ],
+      "p_raw_vs_B": 0.253485,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": -0.0043,
+      "ci95_vs_D": [
+        -0.1007,
+        0.0901
+      ],
+      "p_raw_vs_D": 0.626286,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 91.7,
+      "mean_latency_sec": 3e-05,
+      "mean_cost_usd": 0.000117,
+      "n_instances": 60
+    },
+    "E_classical_optimizer": {
+      "key": "E_classical_optimizer",
+      "label": "Condition E: Classical Numerical Optimizer",
+      "mean_regret": 0.1455,
+      "sd_regret": 0.2701,
+      "median_regret": 0.0,
+      "ci95_regret": [
+        0.0815,
+        0.2191
+      ],
+      "delta_vs_B": 0.0034,
+      "ci95_vs_B": [
+        -0.1069,
+        0.1092
+      ],
+      "p_raw_vs_B": 0.923214,
+      "p_holm_vs_B": 1.0,
+      "delta_vs_D": -0.0383,
+      "ci95_vs_D": [
+        -0.1258,
+        0.0481
+      ],
+      "p_raw_vs_D": 0.395655,
+      "p_holm_vs_D": 1.0,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 91.7,
+      "mean_latency_sec": 0.00315,
+      "mean_cost_usd": 0.0,
+      "n_instances": 60
+    },
+    "oracle": {
+      "key": "oracle",
+      "label": "Oracle Reference (Diagnostic Upper Bound)",
+      "mean_regret": 0.0,
+      "sd_regret": 0.0,
+      "median_regret": 0.0,
+      "ci95_regret": [
+        0.0,
+        0.0
+      ],
+      "delta_vs_B": -0.142,
+      "ci95_vs_B": [
+        -0.2204,
+        -0.0747
+      ],
+      "p_raw_vs_B": 0.000181,
+      "p_holm_vs_B": 0.001996,
+      "delta_vs_D": -0.1837,
+      "ci95_vs_D": [
+        -0.2506,
+        -0.1251
+      ],
+      "p_raw_vs_D": 0.0,
+      "p_holm_vs_D": 3e-06,
+      "constraint_violations": 0,
+      "goal_achievement_pct": 91.7,
+      "mean_latency_sec": 0.0,
+      "mean_cost_usd": 0.0,
+      "n_instances": 60
+    }
+  }
+}

@@ -1,0 +1,124 @@
+# DecisionGPT - containers for local use and as the starting point of a deployment.
+#
+# What this file guarantees (and what it does not - read docs/DEPLOYMENT.md before exposing anything to a network):
+#  * PostgreSQL publishes NO host port and sits on an internal network that only the backend and the one-off migrate job share (the web
+#    server and the reverse proxy are on a different network).
+#  * Two database roles: POSTGRES_USER owns the schema and runs migrations; the API connects as APP_DB_USER, which can read and write rows but
+#    cannot alter the schema or drop the append-only triggers (deploy/postgres/app-role.sql). A hardened start refuses anything else.
+#  * The backend and frontend ports are published on 127.0.0.1 only. Put a TLS-terminating reverse proxy in front for anything beyond this
+#    machine (deploy/Caddyfile.example); this file does not provide TLS.
+#  * Secrets come from .env (git-ignored) or the environment; the two database passwords are REQUIRED and have no default.
+#  * Migrations are an explicit step:  docker compose --profile tools run --rm migrate
+name: decisiongpt
+
+x-backend-build: &backend-build
+  context: .
+  dockerfile: backend/Dockerfile
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-decisiongpt_owner}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env (openssl rand -hex 24)}
+      POSTGRES_DB: ${POSTGRES_DB:-decisiongpt}
+      APP_DB_USER: ${APP_DB_USER:-decisiongpt_app}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?set APP_DB_PASSWORD in .env (openssl rand -hex 24)}
+    # No "ports:" on purpose. For an administrator session:  docker compose exec postgres psql -U "$POSTGRES_USER" "$POSTGRES_DB"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./deploy/postgres/app-role.sql:/deploy/app-role.sql:ro
+      # runs once, when the data directory is first created; for an existing volume run app-role.sql by hand (docs/DEPLOYMENT.md)
+      - ./deploy/postgres/initdb-app-role.sh:/docker-entrypoint-initdb.d/10-app-role.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-decisiongpt_owner} -d ${POSTGRES_DB:-decisiongpt}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [db]
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+  migrate:
+    # One-off, run by an operator before starting a new version:  docker compose --profile tools run --rm migrate
+    profiles: ["tools"]
+    image: decisiongpt/backend:${IMAGE_TAG:-local}      # the same image as `backend`
+    build: *backend-build
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      # the schema OWNER, not the application role
+      MIGRATION_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-decisiongpt_owner}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-decisiongpt}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-decisiongpt_owner}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-decisiongpt}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [db]
+    security_opt:
+      - no-new-privileges:true
+
+  backend:
+    image: decisiongpt/backend:${IMAGE_TAG:-local}
+    build: *backend-build
+    env_file:
+      - .env
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      # Derived here from the APP_DB_* variables (the least-privilege role) rather than trusting .env's own DATABASE_URL to stay in sync.
+      DATABASE_URL: postgresql+psycopg://${APP_DB_USER:-decisiongpt_app}:${APP_DB_PASSWORD:?set APP_DB_PASSWORD}@postgres:5432/${POSTGRES_DB:-decisiongpt}
+      MODEL_REGISTRY_PATH: /app/models
+      # .env is shared with this compose file, so env_file would hand the API the schema OWNER's credentials - and in the postgres image that role
+      # is a SUPERUSER. Blank them here: the API holds only its own least-privilege password (inside DATABASE_URL). Verified at run time by
+      # deploy/staging/verify_staging.py (the backend's environment must not contain the owner password).
+      POSTGRES_USER: ""
+      POSTGRES_PASSWORD: ""
+      MIGRATION_DATABASE_URL: ""
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      # Trained model artifacts and experiment results persist across `docker compose down`/`up`. The API runs as uid 10001: these host
+      # folders must be writable by it (chown 10001:10001 models experiments/results) or the research console cannot save models.
+      - ./models:/app/models
+      - ./experiments/results:/app/experiments/results
+      # The unchanged ORIGINAL of every uploaded business file (needed to resume a mapping that awaits confirmation; kept as the record of what was
+      # uploaded). A named volume, so it survives container recreation. It is customer data and is NOT in the database backup: back it up with the database.
+      - business-uploads:/app/data/business_uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [db, web]
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+  frontend:
+    image: decisiongpt/frontend:${IMAGE_TAG:-local}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000/api/v1}
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - backend
+    networks: [web]
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+networks:
+  # The database network is internal (no route out) and only PostgreSQL, the API and the migration job are on it: the web server and any
+  # reverse proxy cannot reach the database. The API is on both because it must serve the web tier and reach the database.
+  db:
+    internal: true
+  web: {}
+
+volumes:
+  postgres-data:
+  business-uploads:

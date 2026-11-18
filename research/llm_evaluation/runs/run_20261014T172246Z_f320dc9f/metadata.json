@@ -1,0 +1,243 @@
+{
+  "run_id": "run_20261014T172246Z_f320dc9f",
+  "mode": "research",
+  "research_result": true,
+  "mock": false,
+  "status": "PARTIALLY_COMPLETED",
+  "created_utc": "2026-10-14T17:22:46+00:00",
+  "python": "3.12.0",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "ground_truth_version": "gt-1.0",
+  "scorer_version": "score-1.0",
+  "prompt_version": "b2-prompts-1",
+  "llm": {
+    "enabled": true,
+    "provider": "openai",
+    "model_configured": "gpt-5-mini",
+    "model_note": "the provider echoes the exact model snapshot that ran (recorded per call as model_returned)",
+    "base_url": "https://api.openai.com",
+    "api_key_present": true,
+    "provider_supported": true,
+    "timeout_s": 20,
+    "temperature": null,
+    "temperature_note": "not set: requests carry no sampling parameter, so repeats are independent samples and no seed is supported"
+  },
+  "production_llm_path": {
+    "frozen_questions_total": 27,
+    "analytics_llm_path_implemented": true,
+    "analytics_llm_path_enabled": true,
+    "frozen_questions_that_reach_the_llm_interpreter_when_configured": 27,
+    "legacy_router_recognizes": 3,
+    "chat_path_llm_powered_for_evaluated_questions": true,
+    "statement": "The production chat has an AI analytics path (question -> model classification + deterministic extraction -> validated structured request -> deterministic query engine -> verified result -> validated explanation); it needs OPENAI_API_KEY. Without one the legacy router answers."
+  },
+  "system_labels": {
+    "decisiongpt": "DecisionGPT production chat, AI analytics path (the OpenAI model classifies the question into closed labels; deterministic code extracts periods/products/limits -> validated structured request -> deterministic query engine -> verified result -> templated answer); any answer served by the legacy fixed-intent router is flagged path=legacy_router and is NOT an AI answer - Target B (OpenAI)",
+    "llm_code_baseline": "Reference tool-use system: a model writing pandas code; NOT executed by this harness (not implemented for the OpenAI provider); retained for the record (NOT a simpler baseline, NOT DecisionGPT)"
+  },
+  "systems": [
+    "decisiongpt"
+  ],
+  "conditions": [
+    "asof"
+  ],
+  "repeats": 1,
+  "n_tasks": 6,
+  "view": {
+    "raw_zip_sha256": "2ee177e85839ba6a235b6a92cf667bbb51d7b2364e6e79fdaf513e57b810bd59",
+    "processed_rows": 94290,
+    "after_whole_quantity": 60245,
+    "after_amount_agreement": 60244,
+    "after_merge": 30293,
+    "lines_merged_away": 29951,
+    "gst_mixed_groups": 16,
+    "revenue_processed": 5567256.65,
+    "revenue_view": 4354736.16,
+    "date_min": "2025-01-01",
+    "date_max": "2025-03-31",
+    "days_with_sales": 89,
+    "distinct_products": 1645,
+    "view_sha256": "65e06599613ab6b0655114d2ba3fa00dc02e1f8481a28b165bc10eba00f7cef2",
+    "rules": "1) keep lines whose quantity is a whole number > 0 (sales.quantity is an integer column); 2) keep lines whose recomputed amount (qty*rate) agrees with a printed amount column; 3) merge lines that share (date, product, unit price) by summing quantity (the production upload validator rejects duplicate rows; merging preserves total sales and total units exactly; when a merged group mixed GST slabs, the slab with the largest revenue in the group is kept). Consequence: 'one row' no longer means 'one bill line', so no task asks about individual sale entries."
+  },
+  "dataset_disclosure": {
+    "path": "data/external/india_pos_register/",
+    "description": "Indian POS retail register, 1 Jan-31 Mar 2025",
+    "provenance_limitation": "Appears to be real Indian POS data from its structure and content; uploader/store provenance is NOT independently verified.",
+    "license": "CC BY-NC-SA 4.0 (as recorded in the repository)",
+    "representativeness": "NOT representative of Indian SMEs or Indian retail generally."
+  },
+  "pricing_supplied": true,
+  "pricing_is_mock": false,
+  "frozen_spec_sha256_expected": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "manifest_sha256": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+  "git": {
+    "commit": "41c1d1443267fae1704718561b39405af0807d4e",
+    "uncommitted_files": 216
+  },
+  "prompts": {
+    "interpreter_questions_sha256": "50d66786aa27d3a6434f281275bad9e21b357d92564878353478dbcef163dc67",
+    "explainer_system_sha256": "2f15433c71e067553ab361647a35e55ec8a1be5f75f0b61601aac6d4adf478d0",
+    "baseline_prompt_version": "b2-prompts-1"
+  },
+  "evaluation_clock": {
+    "conditions": {
+      "asof": "2025-03-31"
+    },
+    "mechanism": "app.core.clock.reference_date (ContextVar, scoped to the condition)"
+  },
+  "repeat_design": {
+    "repeats_per_task": 1,
+    "task_set_fixed_for_all_repeats": true,
+    "task_loop": "for task: for repeat (same frozen tasks every repeat)"
+  },
+  "planned_attempts": 6,
+  "completed_attempts": 6,
+  "errors": [],
+  "run_type": "partial_pilot",
+  "selection": {
+    "tasks_in_frozen_spec": 27,
+    "task_ids_attempted": [
+      "A01",
+      "B01",
+      "C01",
+      "D01",
+      "F01",
+      "E01"
+    ],
+    "task_ids_not_attempted": [
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "D02",
+      "D03",
+      "D04",
+      "F02",
+      "F03",
+      "E02",
+      "E03",
+      "E04"
+    ],
+    "repeats_frozen": 5,
+    "repeats_used": 1,
+    "conditions": [
+      "asof"
+    ],
+    "max_requests_cap": 12,
+    "record": {
+      "record_type": "pilot_selection_proposal",
+      "status": "PROPOSED - NOT EXECUTED. No OpenAI request has been made for this smoke run; OPENAI_API_KEY was not configured when it was written.",
+      "date": "2026-10-14",
+      "provider": "openai",
+      "frozen_spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+      "purpose": "Bounded smoke evaluation of the new provider on the frozen benchmark: confirm the live path works on each task family before any larger run.",
+      "selection_rule": "For each of the six frozen task categories, the first task in frozen spec order (the same rule used for the earlier pilot). Applied to task metadata only.",
+      "task_ids": [
+        "A01",
+        "B01",
+        "C01",
+        "D01",
+        "F01",
+        "E01"
+      ],
+      "repeats": 1,
+      "condition": "asof",
+      "max_requests": 12,
+      "planned_requests": "6 classification + up to 6 explanation requests = up to 12 (one bounded retry per request is possible on rate-limit / connection errors)",
+      "budget_basis": {
+        "price_source": "https://developers.openai.com/api/docs/pricing (Standard tier), retrieved 2026-10-14; stored in research/llm_evaluation/pricing.json",
+        "default_model": "gpt-4.1-mini: $0.40 / 1M input tokens, $1.60 / 1M output tokens",
+        "token_measurement": "none yet for this provider; the first run's provider-reported usage replaces any estimate"
+      },
+      "command": "python -m research.llm_evaluation.run_evaluation run --selection-file research/llm_evaluation/pilots/openai_smoke_PROPOSAL_not_executed.json --repeats 1 --max-requests 12",
+      "not_proposed": [
+        "the full 27 x 5 protocol",
+        "pooling with the earlier Jev runs"
+      ],
+      "interpretation_limits": "n=5 scored tasks, one repeat: shows whether the path works per task family; not an accuracy estimate and no comparison with any other provider."
+    }
+  },
+  "note": "PARTIAL / PILOT EVALUATION: 6 of 27 frozen tasks x 1 repeat(s) (frozen protocol: 5). Frozen spec, ground truth, scorer and tolerances are unchanged. Not the full benchmark; small-sample figures are indicative only.",
+  "ground_truth_isolation": {
+    "guard": "whitelist check of every interpreter request + ground-truth fragment scan; a violating request is never sent and aborts the run",
+    "forbidden_fragment_count": 41
+  },
+  "decisiongpt_ingestion": {
+    "uploads": {
+      "products": {
+        "status": "completed",
+        "rows_ingested": {
+          "products": 1645
+        },
+        "error": null
+      },
+      "sales": {
+        "status": "completed",
+        "rows_ingested": {
+          "sales": 30293
+        },
+        "error": null
+      }
+    },
+    "stored_sales_rows": 30293,
+    "stored_units": 131545,
+    "stored_revenue": 4354736.16,
+    "view_rows": 30293,
+    "view_units": 131545,
+    "view_revenue": 4354736.16,
+    "matches_view": true
+  },
+  "model_identity": {
+    "provider": "openai",
+    "model_requested": "gpt-5-mini",
+    "models_returned_by_provider": [
+      "gpt-5-mini-2025-08-07"
+    ],
+    "base_url_host": [
+      "api.openai.com"
+    ],
+    "request_parameters_by_role": {
+      "interpreter": {
+        "max_tokens": [
+          "1500"
+        ],
+        "temperature": [
+          "None"
+        ]
+      },
+      "explainer": {
+        "max_tokens": [
+          "1000"
+        ],
+        "temperature": [
+          "None"
+        ]
+      }
+    },
+    "seed": null,
+    "seed_note": "no sampling parameter or seed is set; repeats are independent requests",
+    "retry_policy": "bounded: at most 1 retry, only for rate-limit / connection errors that cannot have been processed; a timeout or server error is never re-sent, so an ambiguous failure cannot spend more; per-request timeout from OPENAI_TIMEOUT_SECONDS; attempt counts are recorded per call",
+    "timeout_s": 20,
+    "n_provider_calls_recorded": 11
+  },
+  "finished_utc": "2026-10-14T17:24:14+00:00",
+  "n_attempt_errors": 0,
+  "decisiongpt_answer_paths": {
+    "llm_analytics": 6
+  },
+  "decisiongpt_attempts_not_served_by_llm_analytics_path": 0,
+  "decisiongpt_path_groups": {
+    "llm_path": 6
+  }
+}

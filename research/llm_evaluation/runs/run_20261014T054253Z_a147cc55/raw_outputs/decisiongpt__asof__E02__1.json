@@ -1,0 +1,135 @@
+{
+  "system": "decisiongpt",
+  "question": "What percentage of my sales came from items with 18% GST?",
+  "answer": "Which product do you mean?",
+  "intent": "analytics_clarification",
+  "sufficient_evidence": true,
+  "answer_type": "clarification",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.5697216000407934,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "api.typesafe.ai",
+      "model_requested": "jev-latest",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791956635.4670296,
+      "ok": true,
+      "latency_s": 0.5148885999806225,
+      "model_returned": "jev-1.13.0",
+      "input_tokens": 1347,
+      "output_tokens": 456,
+      "usage_raw": {
+        "input_tokens": 1347,
+        "output_tokens": 456
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1347,
+    "output_tokens": 456,
+    "llm_latency_s": 0.5148885999806225
+  },
+  "audit": {
+    "request_id": "64e2d7b5885b4d7a8a34a6b03aedda24",
+    "business_id": "03f9a0fe-2d2b-49bb-b52d-77b2095d6b78",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.515,
+      "provider": "typesafe-jev",
+      "model": "jev-latest",
+      "response_model": "jev-1.13.0",
+      "usage": {
+        "input_tokens": 1347,
+        "output_tokens": 456
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.7
+        },
+        "operation": {
+          "value": "share_of_total",
+          "confidence": 1.0
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 1.0
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 1.0
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.73
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.82
+        },
+        "named_products": {
+          "value": 0.08,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.02,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.73
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.92
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "share_of_total",
+        "metric": "revenue",
+        "periods": []
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "clarification",
+    "structured_request": {
+      "route": "clarification",
+      "query": null,
+      "clarification_question": "Which product do you mean?",
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "outcome": "clarification",
+    "total_latency_s": 0.547
+  }
+}

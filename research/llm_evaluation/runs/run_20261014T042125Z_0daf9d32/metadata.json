@@ -1,0 +1,243 @@
+{
+  "run_id": "run_20261014T042125Z_0daf9d32",
+  "mode": "research",
+  "research_result": true,
+  "mock": false,
+  "status": "PARTIALLY_COMPLETED",
+  "created_utc": "2026-10-14T04:21:25+00:00",
+  "python": "3.12.0",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "ground_truth_version": "gt-1.0",
+  "scorer_version": "score-1.0",
+  "prompt_version": "b2-prompts-1",
+  "llm": {
+    "enabled": true,
+    "provider": "typesafe-jev",
+    "model_configured": "jev-latest",
+    "model_note": "'jev-latest' is an alias; the provider echoes the exact version that ran (recorded per call as model_returned)",
+    "base_url": "https://api.typesafe.ai",
+    "api_key_present": true,
+    "provider_supported": true,
+    "timeout_s": 15,
+    "temperature": null,
+    "temperature_note": "not applicable: Jev returns typed decisions and exposes no sampling parameter or seed"
+  },
+  "production_llm_path": {
+    "frozen_questions_total": 27,
+    "analytics_llm_path_implemented": true,
+    "analytics_llm_path_enabled": true,
+    "frozen_questions_that_reach_the_llm_interpreter_when_configured": 27,
+    "legacy_router_recognizes": 3,
+    "chat_path_llm_powered_for_evaluated_questions": true,
+    "statement": "The production chat has a Jev analytics path (question -> typed decisions + deterministic extraction -> validated structured request -> deterministic query engine -> verified result -> templated answer); it needs TYPESAFE_API_KEY. Without one the legacy router answers."
+  },
+  "system_labels": {
+    "decisiongpt": "DecisionGPT production chat, Jev analytics path (TypeSafe AI Jev returns typed decisions about the question; deterministic code extracts periods/products/limits -> validated structured request -> deterministic query engine -> verified result -> templated answer); any answer served by the legacy fixed-intent router is flagged path=legacy_router and is NOT an AI answer - Target B (Jev)",
+    "llm_code_baseline": "Reference tool-use system: needs a text/code-generating model and CANNOT run on Jev (typed decisions only); retained for the record (NOT a simpler baseline, NOT DecisionGPT)"
+  },
+  "systems": [
+    "decisiongpt"
+  ],
+  "conditions": [
+    "asof"
+  ],
+  "repeats": 1,
+  "n_tasks": 6,
+  "view": {
+    "raw_zip_sha256": "2ee177e85839ba6a235b6a92cf667bbb51d7b2364e6e79fdaf513e57b810bd59",
+    "processed_rows": 94290,
+    "after_whole_quantity": 60245,
+    "after_amount_agreement": 60244,
+    "after_merge": 30293,
+    "lines_merged_away": 29951,
+    "gst_mixed_groups": 16,
+    "revenue_processed": 5567256.65,
+    "revenue_view": 4354736.16,
+    "date_min": "2025-01-01",
+    "date_max": "2025-03-31",
+    "days_with_sales": 89,
+    "distinct_products": 1645,
+    "view_sha256": "65e06599613ab6b0655114d2ba3fa00dc02e1f8481a28b165bc10eba00f7cef2",
+    "rules": "1) keep lines whose quantity is a whole number > 0 (sales.quantity is an integer column); 2) keep lines whose recomputed amount (qty*rate) agrees with a printed amount column; 3) merge lines that share (date, product, unit price) by summing quantity (the production upload validator rejects duplicate rows; merging preserves total sales and total units exactly; when a merged group mixed GST slabs, the slab with the largest revenue in the group is kept). Consequence: 'one row' no longer means 'one bill line', so no task asks about individual sale entries."
+  },
+  "dataset_disclosure": {
+    "path": "data/external/india_pos_register/",
+    "description": "Indian POS retail register, 1 Jan-31 Mar 2025",
+    "provenance_limitation": "Appears to be real Indian POS data from its structure and content; uploader/store provenance is NOT independently verified.",
+    "license": "CC BY-NC-SA 4.0 (as recorded in the repository)",
+    "representativeness": "NOT representative of Indian SMEs or Indian retail generally."
+  },
+  "pricing_supplied": true,
+  "pricing_is_mock": false,
+  "frozen_spec_sha256_expected": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "manifest_sha256": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+  "git": {
+    "commit": "41c1d1443267fae1704718561b39405af0807d4e",
+    "uncommitted_files": 190
+  },
+  "prompts": {
+    "interpreter_questions_sha256": "50d66786aa27d3a6434f281275bad9e21b357d92564878353478dbcef163dc67",
+    "explainer_system_sha256": null,
+    "baseline_prompt_version": "b2-prompts-1"
+  },
+  "evaluation_clock": {
+    "conditions": {
+      "asof": "2025-03-31"
+    },
+    "mechanism": "app.core.clock.reference_date (ContextVar, scoped to the condition)"
+  },
+  "repeat_design": {
+    "repeats_per_task": 1,
+    "task_set_fixed_for_all_repeats": true,
+    "task_loop": "for task: for repeat (same frozen tasks every repeat)"
+  },
+  "planned_attempts": 6,
+  "completed_attempts": 6,
+  "errors": [],
+  "run_type": "partial_pilot",
+  "selection": {
+    "tasks_in_frozen_spec": 27,
+    "task_ids_attempted": [
+      "A01",
+      "B01",
+      "C01",
+      "D01",
+      "F01",
+      "E01"
+    ],
+    "task_ids_not_attempted": [
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "D02",
+      "D03",
+      "D04",
+      "F02",
+      "F03",
+      "E02",
+      "E03",
+      "E04"
+    ],
+    "repeats_frozen": 5,
+    "repeats_used": 1,
+    "conditions": [
+      "asof"
+    ],
+    "max_requests_cap": 6,
+    "record": {
+      "record_type": "pilot_selection",
+      "written_before_run": true,
+      "date": "2026-10-14",
+      "purpose": "First live measurement of the Jev analytics path on frozen tasks, kept deliberately small because the provider's credit unit is undefined and the account balance cannot be inspected.",
+      "frozen_spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+      "selection_rule": "For each of the six frozen task categories, take the first task in the frozen spec order (lowest task_id). The rule is applied to task metadata only; no model output was seen and none was used to choose.",
+      "task_ids": [
+        "A01",
+        "B01",
+        "C01",
+        "D01",
+        "F01",
+        "E01"
+      ],
+      "categories": {
+        "A01": "aggregation",
+        "B01": "time_comparison",
+        "C01": "product",
+        "D01": "calendar",
+        "F01": "exact_numeric",
+        "E01": "gst (supplementary track: refusal is the correct behaviour; excluded from accuracy)"
+      },
+      "repeats": 1,
+      "condition": "asof",
+      "max_requests": 6,
+      "planned_requests": 6,
+      "budget_basis": {
+        "requests_already_made_before_this_run": 2,
+        "measured_input_tokens_per_request": 1345,
+        "estimated_input_tokens": 8070,
+        "estimated_usd_at_list_price": 0.00034,
+        "list_price_usd_per_million_input_tokens": 0.042,
+        "credit_unit": "not defined by the provider; balance not inspectable; no credit estimate is made"
+      },
+      "not_attempted": "the remaining 21 frozen tasks and repeats 2-5; the reference tool-use baseline B2 cannot run on Jev",
+      "interpretation_limits": "n=5 primary tasks, one repeat each: a pilot that shows whether the live path works end to end on each task family. It is not a benchmark result, not an accuracy estimate, and supports no comparison with any other model."
+    }
+  },
+  "note": "PARTIAL / PILOT EVALUATION: 6 of 27 frozen tasks x 1 repeat(s) (frozen protocol: 5). Frozen spec, ground truth, scorer and tolerances are unchanged. Not the full benchmark; small-sample figures are indicative only.",
+  "ground_truth_isolation": {
+    "guard": "whitelist check of every interpreter request + ground-truth fragment scan; a violating request is never sent and aborts the run",
+    "forbidden_fragment_count": 41
+  },
+  "decisiongpt_ingestion": {
+    "uploads": {
+      "products": {
+        "status": "completed",
+        "rows_ingested": {
+          "products": 1645
+        },
+        "error": null
+      },
+      "sales": {
+        "status": "completed",
+        "rows_ingested": {
+          "sales": 30293
+        },
+        "error": null
+      }
+    },
+    "stored_sales_rows": 30293,
+    "stored_units": 131545,
+    "stored_revenue": 4354736.16,
+    "view_rows": 30293,
+    "view_units": 131545,
+    "view_revenue": 4354736.16,
+    "matches_view": true
+  },
+  "model_identity": {
+    "provider": "typesafe-jev",
+    "model_requested": "jev-latest",
+    "models_returned_by_provider": [
+      "jev-1.13.0"
+    ],
+    "base_url_host": [
+      "api.typesafe.ai"
+    ],
+    "request_parameters_by_role": {
+      "interpreter": {
+        "max_tokens": [
+          "None"
+        ],
+        "temperature": [
+          "None"
+        ]
+      }
+    },
+    "seed": null,
+    "seed_note": "Jev has no sampling parameter or seed; repeats are independent requests",
+    "retry_policy": "none: exactly one HTTP attempt per call (a failed or ambiguous call is never re-sent, so it cannot spend more credits); per-request timeout from JEV_TIMEOUT_SECONDS; attempt counts are recorded per call",
+    "timeout_s": 15,
+    "n_provider_calls_recorded": 6
+  },
+  "finished_utc": "2026-10-14T04:23:29+00:00",
+  "n_attempt_errors": 0,
+  "decisiongpt_answer_paths": {
+    "llm_analytics": 5,
+    "legacy_router": 1
+  },
+  "decisiongpt_attempts_not_served_by_llm_analytics_path": 1,
+  "decisiongpt_path_groups": {
+    "legacy_fallback": 1,
+    "llm_path": 5
+  }
+}

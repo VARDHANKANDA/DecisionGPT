@@ -1,0 +1,534 @@
+{
+  "gate": "FINAL PRE-EXPERIMENT READINESS GATE (OpenAI)",
+  "date": "2026-10-14",
+  "generated_utc": "2026-10-14T16:13:23+00:00",
+  "verdict": "READY FOR A REAL OPENAI EVALUATION (after live verification)",
+  "gates": {
+    "architecture_matches_description": true,
+    "frozen_task_spec_unchanged": true,
+    "experiment_manifest_unchanged": true,
+    "dataset_source_untouched_and_view_reproducible": true,
+    "view_conservation_holds": true,
+    "clock_deterministic_and_scoped": true,
+    "ground_truth_not_visible_to_interpreter": true,
+    "task_split_23_primary_4_gst": true,
+    "fallbacks_not_counted_as_llm_success": true,
+    "mock_infrastructure_validation_complete": true,
+    "no_secrets_in_repo_or_generated_files": true,
+    "secrets_not_exposed_by_api_or_runner": true,
+    "preflight_has_no_environment_problems": true,
+    "no_real_llm_configured_or_called": true
+  },
+  "blockers": [],
+  "real_llm": {
+    "provider_configured": false,
+    "api_key_present": false,
+    "model_configured": true,
+    "real_llm_called_in_this_gate": false,
+    "statement": "No OPENAI_API_KEY is used by this gate; no live OpenAI request was made."
+  },
+  "runner_preflight_blockers_now": [
+    "provider_not_configured"
+  ],
+  "runner_preflight_problems_now": [],
+  "architecture": {
+    "modules_and_functions": [
+      {
+        "stage": "A. chat endpoint",
+        "file": "backend/app/api/v1/endpoints/assistant.py",
+        "symbol": "chat",
+        "defined": true
+      },
+      {
+        "stage": "B. assistant_service",
+        "file": "backend/app/services/assistant_service.py",
+        "symbol": "answer_question",
+        "defined": true
+      },
+      {
+        "stage": "C. analytics_chat_service",
+        "file": "backend/app/services/analytics_chat_service.py",
+        "symbol": "try_answer",
+        "defined": true
+      },
+      {
+        "stage": "D. OpenAI classification interpreter + deterministic extraction",
+        "file": "backend/app/services/analytics_interpreter_service.py",
+        "symbol": "interpret",
+        "defined": true
+      },
+      {
+        "stage": "E. structured schema validation",
+        "file": "backend/app/schemas/analytics_query.py",
+        "symbol": "Interpretation",
+        "defined": true
+      },
+      {
+        "stage": "F. deterministic query engine",
+        "file": "backend/app/analytics/query_engine.py",
+        "symbol": "run_query",
+        "defined": true
+      },
+      {
+        "stage": "G. verified facts",
+        "file": "backend/app/analytics/query_presenter.py",
+        "symbol": "facts",
+        "defined": true
+      },
+      {
+        "stage": "H. answer composer",
+        "file": "backend/app/services/analytics_answer_service.py",
+        "symbol": "assemble",
+        "defined": true
+      },
+      {
+        "stage": "I. OpenAI client (one request seam, bounded retries)",
+        "file": "backend/app/services/openai_client.py",
+        "symbol": "OpenAIClient",
+        "defined": true
+      },
+      {
+        "stage": "J. fallback / legacy router",
+        "file": "backend/app/services/assistant_service.py",
+        "symbol": "_legacy_answer",
+        "defined": true
+      }
+    ],
+    "structural_checks": {
+      "answer_question_calls_analytics_path_first": true,
+      "answer_question_keeps_legacy_router_as_fallback": true,
+      "interpreter_calls_llm": true,
+      "orchestrator_runs_interpreter": true,
+      "orchestrator_executes_deterministic_engine": true,
+      "orchestrator_composes_a_templated_answer": true,
+      "answer_composition_has_no_llm_call": true,
+      "engine_has_no_llm_call": true
+    },
+    "implemented": true,
+    "legacy_remains_fallback": true
+  },
+  "frozen_files": {
+    "spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+    "spec_expected": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+    "spec_unchanged": true,
+    "spec_prefix_ok": true,
+    "n_tasks": 27,
+    "n_primary": 23,
+    "n_supplementary": 4,
+    "manifest_sha256": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+    "manifest_expected": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+    "manifest_unchanged": true,
+    "manifest_prefix_ok": true
+  },
+  "dataset": {
+    "source": "data/external/india_pos_register/",
+    "raw_sha256_matches_audited_file": true,
+    "raw_sha256": "2ee177e85839ba6a235b6a92cf667bbb51d7b2364e6e79fdaf513e57b810bd59",
+    "view_label": "evaluation-compatible view derived from the approved Indian POS dataset (NOT the original dataset)",
+    "view_sha256": "65e06599613ab6b0655114d2ba3fa00dc02e1f8481a28b165bc10eba00f7cef2",
+    "view_reproducible_two_builds_identical": true,
+    "view_matches_ground_truth_file": true,
+    "source_rows_lines": 94290,
+    "view_rows": 30293,
+    "source_revenue_inr": 5567256.65,
+    "view_revenue_inr": 4354736.16,
+    "revenue_retained_pct": 78.22,
+    "source_units_mixed": 151377.4,
+    "view_units": 131545,
+    "units_retained_pct": 86.9,
+    "units_note": "source quantity mixes pieces and kilograms (fractional); the percentage is indicative only",
+    "excluded_fractional_lines": {
+      "lines": 34045,
+      "pct_of_lines": 36.11,
+      "revenue_inr": 1212310.49,
+      "pct_of_revenue": 21.78,
+      "quantity": 19829.4
+    },
+    "excluded_amount_disagreement": {
+      "lines": 1,
+      "revenue_inr": 210.0
+    },
+    "merged_lines": 29951,
+    "revenue_conserved_by_merge": true,
+    "units_conserved_by_merge": true,
+    "max_abs_difference_per_merged_group_inr": 0.0
+  },
+  "clock": {
+    "evaluation_reference_date": "2025-03-31",
+    "production_default_is_real_date": true,
+    "pin_is_scoped_to_block": true,
+    "pin_not_inherited_by_new_threads": true,
+    "resolutions": [
+      {
+        "reference_date": "2025-03-31",
+        "phrase": "this month",
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      },
+      {
+        "reference_date": "2025-03-31",
+        "phrase": "previous month",
+        "start": "2025-02-01",
+        "end": "2025-02-28"
+      },
+      {
+        "reference_date": "2025-03-31",
+        "phrase": "February (no year)",
+        "start": "2025-02-01",
+        "end": "2025-02-28"
+      },
+      {
+        "reference_date": "2025-03-31",
+        "phrase": "March (no year)",
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      },
+      {
+        "reference_date": "2025-03-31",
+        "phrase": "last 30 days",
+        "start": "2025-03-02",
+        "end": "2025-03-31"
+      },
+      {
+        "reference_date": "2025-03-31",
+        "phrase": "explicit historical date",
+        "start": "2025-02-14",
+        "end": "2025-02-14"
+      },
+      {
+        "reference_date": "2025-04-01",
+        "phrase": "this month",
+        "start": "2025-04-01",
+        "end": "2025-04-30"
+      },
+      {
+        "reference_date": "2025-04-01",
+        "phrase": "previous month",
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      },
+      {
+        "reference_date": "2025-04-01",
+        "phrase": "February (no year)",
+        "start": "2025-02-01",
+        "end": "2025-02-28"
+      },
+      {
+        "reference_date": "2025-04-01",
+        "phrase": "March (no year)",
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      },
+      {
+        "reference_date": "2025-04-01",
+        "phrase": "last 30 days",
+        "start": "2025-03-03",
+        "end": "2025-04-01"
+      },
+      {
+        "reference_date": "2025-04-01",
+        "phrase": "explicit historical date",
+        "start": "2025-02-14",
+        "end": "2025-02-14"
+      },
+      {
+        "reference_date": "2025-01-01",
+        "phrase": "this month",
+        "start": "2025-01-01",
+        "end": "2025-01-31"
+      },
+      {
+        "reference_date": "2025-01-01",
+        "phrase": "previous month",
+        "start": "2024-12-01",
+        "end": "2024-12-31"
+      },
+      {
+        "reference_date": "2025-01-01",
+        "phrase": "February (no year)",
+        "start": "2024-02-01",
+        "end": "2024-02-29"
+      },
+      {
+        "reference_date": "2025-01-01",
+        "phrase": "March (no year)",
+        "start": "2024-03-01",
+        "end": "2024-03-31"
+      },
+      {
+        "reference_date": "2025-01-01",
+        "phrase": "last 30 days",
+        "start": "2024-12-03",
+        "end": "2025-01-01"
+      },
+      {
+        "reference_date": "2025-01-01",
+        "phrase": "explicit historical date",
+        "start": "2025-02-14",
+        "end": "2025-02-14"
+      }
+    ],
+    "deterministic": true
+  },
+  "ground_truth_isolation": {
+    "questions_checked": 27,
+    "interpreter_request_violations": [],
+    "forbidden_fragments": 41,
+    "baseline_code_prompt_fragment_collisions": [],
+    "interpreter_receives": [
+      "the fixed, pre-registered classification instructions and schema (identical for every question)",
+      "the frozen question text in a fixed wrapper"
+    ],
+    "interpreter_does_not_receive": [
+      "expected answer",
+      "pandas ground truth",
+      "score or tolerance",
+      "task id",
+      "any sales row",
+      "product names",
+      "reference date or data coverage",
+      "other tenants' data"
+    ],
+    "explainer_receives": [
+      "the frozen question and the facts the production engine computed from the data (not ground truth)"
+    ],
+    "engine_runs_after_interpretation": true
+  },
+  "provider_configuration": {
+    "settings_read_from_environment": [
+      "ANALYTICS_EXPLAIN_ENABLED",
+      "ANALYTICS_LLM_ENABLED",
+      "OPENAI_API_KEY",
+      "OPENAI_MAX_RETRIES",
+      "OPENAI_MODEL",
+      "OPENAI_TIMEOUT_SECONDS"
+    ],
+    "missing_key_state": {
+      "enabled": false,
+      "api_key_present": false,
+      "blocker": "provider_not_configured"
+    },
+    "invalid_provider_state": {
+      "provider": null,
+      "provider_supported": null,
+      "blocker": null,
+      "note": "there is exactly one provider (OpenAI); an unknown provider cannot be configured"
+    },
+    "api_key_in_status_endpoint_payload": false,
+    "api_key_in_runner_llm_status": false,
+    "runner_reports_only_key_presence": true,
+    ".env_files_gitignored": [
+      ".env",
+      "backend/.env"
+    ],
+    "tracked_env_files": [],
+    "model_must_be_named": "the model id is recorded per run (the configured model and the snapshot the provider reports back)"
+  },
+  "secret_scan": {
+    "files_scanned": 1425,
+    "pattern_hits_by_name": {},
+    "n_files_with_hits": 0,
+    "matched_text_printed": false,
+    "generated_evaluation_files_containing_the_mock_key": []
+  },
+  "baseline": {
+    "classification": "Reference tool-use system: NOT a simpler baseline, NOT DecisionGPT.",
+    "what_it_is": "a model that writes pandas code over the same evaluation view (protocol B2): code-writing call, sandbox execution (<=1 repair), phrasing call. It is not implemented for the OpenAI provider in this version and is not executed",
+    "runs_on_provider": false,
+    "runs_on_jev": false,
+    "fair_as_a_reference": false,
+    "asymmetries_documented": [
+      "it is not implemented for the current provider, so no comparison with it exists",
+      "it is MORE expressive than DecisionGPT (arbitrary pandas vs a closed request vocabulary), so it is a capability reference, not a handicapped control",
+      "it is shown column descriptions, the first 5 rows and the date range; the DecisionGPT interpreter is shown no rows and no product names",
+      "its numbers come from code the model writes; DecisionGPT's come from a fixed engine - so it measures the model's code, not its arithmetic",
+      "it receives the gst_pct column on the 4 GST tasks only (DecisionGPT cannot: the production schema has no GST field)",
+      "its phrasing step has no number guard",
+      "it reads the view DataFrame directly, not through production ingestion, authentication or tenant scoping"
+    ],
+    "must_not_be_called": [
+      "LLM-only baseline",
+      "simpler baseline",
+      "human baseline",
+      "a competing DecisionGPT system"
+    ],
+    "silently_redesigned": false
+  },
+  "mock_readiness_run": {
+    "BANNER": "MOCK INFRASTRUCTURE VALIDATION - NOT RESEARCH RESULTS. Not model performance. Not accuracy.",
+    "run_id": "mock_20261014T161327Z_a3021be6",
+    "status": "COMPLETED",
+    "research_result": false,
+    "mock": true,
+    "attempts": "135/135",
+    "repeats": 5,
+    "n_tasks": 27,
+    "frozen_spec_verified_before_and_after": true,
+    "unique_task_repeat_ids": true,
+    "raw_outputs_preserved": true,
+    "same_task_set_each_repeat": true,
+    "primary_tasks_through_llm_path": 115,
+    "primary_attempts": 115,
+    "primary_attempts_answered_by_llm_path": 108,
+    "primary_attempts_legacy_fallback_injected": 7,
+    "gst_attempts": 20,
+    "gst_refused_as_unsupported": 20,
+    "gst_counted_in_accuracy": 0,
+    "frozen_questions_verbatim_sent": true,
+    "ground_truth_isolation": {
+      "guard": "whitelist check of every interpreter request + ground-truth fragment scan; a violating request is never sent and aborts the run",
+      "forbidden_fragment_count": 41
+    },
+    "injected_events": [
+      {
+        "task_id": "A02",
+        "role": "interpreter",
+        "ordinal": 1,
+        "kind": "low_confidence"
+      },
+      {
+        "task_id": "A04",
+        "role": "interpreter",
+        "ordinal": 3,
+        "kind": "malformed"
+      },
+      {
+        "task_id": "A05",
+        "role": "interpreter",
+        "ordinal": 5,
+        "kind": "invalid_option"
+      },
+      {
+        "task_id": "B01",
+        "role": "interpreter",
+        "ordinal": 2,
+        "kind": "http_529"
+      },
+      {
+        "task_id": "C03",
+        "role": "interpreter",
+        "ordinal": 2,
+        "kind": "timeout"
+      },
+      {
+        "task_id": "D03",
+        "role": "interpreter",
+        "ordinal": 1,
+        "kind": "http_429"
+      },
+      {
+        "task_id": "F01",
+        "role": "interpreter",
+        "ordinal": 4,
+        "kind": "route_other_tool"
+      }
+    ],
+    "path_groups": {
+      "legacy_fallback": 7,
+      "llm_path": 108,
+      "unsupported": 20
+    },
+    "scores_generated_for_every_attempt": true,
+    "report_path": "research/llm_evaluation/reports/mock_20261014T161327Z_a3021be6.md",
+    "metadata_has": [
+      "evaluation_clock",
+      "git",
+      "manifest_sha256",
+      "model_identity",
+      "prompts",
+      "repeat_design",
+      "spec_sha256",
+      "view"
+    ],
+    "reference_dates_seen_in_audit": [
+      "2025-03-31"
+    ],
+    "metrics": {
+      "structured_request_exact_match_accuracy": {
+        "available": false,
+        "reason": "the frozen spec has no gold structured requests; adding them now would be post-hoc"
+      },
+      "structured_request_validity_rate": {
+        "available": true,
+        "source": "audit.validation.ok",
+        "observed_in_mock": "129/135"
+      },
+      "numerical_ground_truth_agreement": {
+        "available": true,
+        "field": "quality.accuracy_primary_pct (fallbacks count as not agreeing)"
+      },
+      "task_and_category_accuracy": {
+        "available": true,
+        "field": "quality.by_category / per-task repeat_consistency"
+      },
+      "fallback_rate": {
+        "available": true,
+        "field": "path_accounting.fallback_rate_pct",
+        "categories": {
+          "interpreter_routed_legacy": 1,
+          "invalid_output": 2,
+          "low_confidence": 1,
+          "provider_failure": 3
+        }
+      },
+      "unsupported_rate": {
+        "available": true,
+        "field": "path_accounting.unsupported_rate_pct; GST refusals excluded from accuracy"
+      },
+      "interpreter_latency": {
+        "available": true,
+        "field": "by_llm_call_role.interpreter.latency_s_including_retries (retries included)"
+      },
+      "explanation_latency": {
+        "available": true,
+        "field": "by_llm_call_role.explainer.latency_s_including_retries"
+      },
+      "engine_latency": {
+        "available": true,
+        "field": "engine_latency_s (from the production audit record)"
+      },
+      "end_to_end_latency": {
+        "available": true,
+        "field": "latency_end_to_end_s (runner wall clock, retries included); p95 only with >= 20 observations"
+      },
+      "input_output_total_tokens": {
+        "available": true,
+        "condition": "only for calls where the provider returns usage; never estimated; failed calls have none",
+        "mock_values_are_fake": true
+      },
+      "cost": {
+        "available": "only with a verified price for the exact returned model in pricing.json (none supplied) - otherwise 'not available'",
+        "pricing_json_present": true,
+        "mock_cost_is_fake": true
+      },
+      "retries": {
+        "available": true,
+        "field": "by_llm_call_role.*.n_calls_with_retries / retry_attempts_total; per-call attempts in task_results.jsonl",
+        "calls_with_unknown_attempts_in_mock": 0
+      },
+      "llm_calls_per_task": {
+        "available": true,
+        "observed_in_mock": {
+          "explainer": 0.939,
+          "interpreter": 1.0
+        }
+      },
+      "model_identity": {
+        "available": true,
+        "recorded": [
+          "provider",
+          "model requested",
+          "model(s) returned by the provider",
+          "request parameters by role",
+          "retry policy",
+          "prompt hashes",
+          "git commit"
+        ],
+        "mock_run_models_returned": [
+          "mock-openai-2026-01-01"
+        ]
+      }
+    }
+  },
+  "environment_fix_recorded": "Provider migration 2026-10-13: the OpenAI-compatible client, its retry layer and the model-written explanation step were removed; the OpenAI client has one request seam, disables SDK retries and never retries a timeout, and the runner refuses to start if that stops being true."
+}

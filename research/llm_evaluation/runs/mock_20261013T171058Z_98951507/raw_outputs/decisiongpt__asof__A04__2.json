@@ -1,0 +1,183 @@
+{
+  "system": "decisiongpt",
+  "question": "How many units did I sell in March 2025?",
+  "answer": "You sold 47,651 units in March 2025. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for March 2025 (10,060 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "units_total"
+  ],
+  "latency_s": 0.26469330000691116,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-jev",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791911506.916646,
+      "ok": true,
+      "latency_s": 0.000517600099556148,
+      "model_returned": "mock-jev-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 0,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1100,
+    "output_tokens": 0,
+    "llm_latency_s": 0.000517600099556148
+  },
+  "audit": {
+    "request_id": "e422afed574a4287a3bd55dccb9b17fe",
+    "business_id": "bfa31274-f972-48dd-8f5b-f94da16d5874",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "typesafe-jev",
+      "model": "mock-jev",
+      "response_model": "mock-jev-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "aggregate",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "units",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "aggregate",
+        "metric": "units",
+        "periods": [
+          {
+            "kind": "calendar",
+            "unit": "month",
+            "year": 2025,
+            "month": 3
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "aggregate",
+        "metric": "units",
+        "period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 3,
+          "quarter": null
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.207,
+    "verified_result": {
+      "period": {
+        "start": "2025-03-01",
+        "end": "2025-03-31",
+        "label": "March 2025"
+      },
+      "n_records": 10060,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.241
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "system": "decisiongpt",
+  "question": "How many units did I sell in March 2025?",
+  "answer": "I don't have enough data to answer that reliably. Try asking why a number changed, whether to change price or marketing spend, what to focus on, or why a specific recommendation was made.",
+  "intent": "unrecognized",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "legacy_router",
+  "notice": "Advanced question understanding is temporarily unavailable, so this answer comes from the standard assistant.",
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.03655740001704544,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-jev",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791911507.183108,
+      "ok": false,
+      "error": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+      "latency_s": 0.000444200006313622,
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 1,
+    "input_tokens": null,
+    "output_tokens": null,
+    "llm_latency_s": 0.000444200006313622
+  },
+  "audit": {
+    "fallback_reason": "malformed_output",
+    "request_id": "bb131176a2b741df90c6eea3dbe681c4",
+    "business_id": "bfa31274-f972-48dd-8f5b-f94da16d5874",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.0,
+      "provider": "typesafe-jev",
+      "model": "mock-jev",
+      "response_model": null,
+      "usage": null,
+      "attempts": 1,
+      "error": "malformed_output"
+    },
+    "interpreter_decisions": {},
+    "validation": {
+      "ok": false,
+      "errors": [],
+      "returned_fields": []
+    },
+    "outcome": "fallback",
+    "total_latency_s": 0.024
+  }
+}

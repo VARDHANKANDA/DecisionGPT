@@ -1,0 +1,210 @@
+{
+  "system": "decisiongpt",
+  "question": "Which day had the lowest total sales between January and March 2025, counting only days that have any sales recorded?",
+  "answer": "For Q1 2025, Sunday 9 February 2025 (2025-02-09) had the lowest sales: ₹5,680. This restates the verified figure above without adding any new figure. Only days that have at least one recorded sale are considered. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for Q1 2025 (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.43084150000140653,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 700,
+      "temperature": null,
+      "ts": 1791994494.7035925,
+      "ok": true,
+      "latency_s": 0.0005418000000645407,
+      "model_returned": "mock-openai-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 120,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1
+    },
+    {
+      "role": "explainer",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 300,
+      "temperature": null,
+      "ts": 1791994495.0870821,
+      "ok": true,
+      "latency_s": 0.00014120000196271576,
+      "model_returned": "mock-openai-2026-01-01",
+      "input_tokens": 300,
+      "output_tokens": 40,
+      "usage_raw": {
+        "input_tokens": 300,
+        "output_tokens": 40
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 2,
+    "n_errors": 0,
+    "input_tokens": 1400,
+    "output_tokens": 160,
+    "llm_latency_s": 0.0006830000020272564
+  },
+  "audit": {
+    "request_id": "d2ffe6127ee24ff3a909471e87a599e7",
+    "business_id": "84899537-07f3-4439-ab31-d7e57fe30048",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai",
+      "model": "mock-openai",
+      "response_model": "mock-openai-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "ai": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "ranking",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "day",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "asc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "ranking",
+        "metric": "revenue",
+        "periods": [
+          {
+            "kind": "absolute",
+            "start": "2025-01-01",
+            "end": "2025-03-31"
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "revenue",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "day",
+        "direction": "asc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.373,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "Q1 2025"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": [
+        "Only days that have at least one recorded sale are considered."
+      ]
+    },
+    "explanation_source": "openai",
+    "explanation_call": {
+      "ok": true,
+      "error": null,
+      "latency_s": 0.0,
+      "usage": {
+        "input_tokens": 300,
+        "output_tokens": 40
+      },
+      "model": "mock-openai-2026-01-01"
+    },
+    "outcome": "answered",
+    "total_latency_s": 0.407
+  }
+}

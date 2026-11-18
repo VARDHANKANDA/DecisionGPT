@@ -1,0 +1,38 @@
+# Staging reverse proxy (Caddy 2). Verified by deploy/staging/verify_staging.py against a running stack; see docs/STAGING_VERIFICATION.md for exactly
+# what that did and did not establish. `tls internal` = a locally generated CA, never a public certificate.
+{
+	admin off
+	# do not report usage or try ACME against the internet from a disposable test host
+	auto_https disable_redirects
+}
+
+# plain http: permanent redirect to https (the only thing served on port 80)
+http://staging.example.test {
+	redir https://staging.example.test{uri} permanent
+}
+
+staging.example.test {
+	tls internal
+	encode zstd gzip
+
+	request_body {
+		max_size 30MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		-Server
+		-Via
+	}
+
+	# By default Caddy does not trust a client-supplied X-Forwarded-For (no `trusted_proxies` is configured): it replaces the header with the
+	# connecting client's address, which is what lets the API's TRUSTED_PROXIES logic identify the real caller.
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+	handle {
+		reverse_proxy frontend:3000
+	}
+}

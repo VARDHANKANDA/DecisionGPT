@@ -1,0 +1,27 @@
+{
+  "record_type": "pilot_stage_execution",
+  "executed": "2026-10-14",
+  "proposal_file": "research/llm_evaluation/pilots/stage2_PROPOSAL_not_executed.json",
+  "proposal_sha256_prefix": "94f0672d361a45ed",
+  "run_id": "run_20261014T054253Z_a147cc55",
+  "run_type": "partial_pilot",
+  "tasks_attempted": 21,
+  "repeats": 1,
+  "condition": "asof",
+  "request_cap": 21,
+  "provider_requests": 21,
+  "attempt_errors": 0,
+  "primary": {
+    "correct": 18,
+    "attempts": 18
+  },
+  "supplementary_gst": {
+    "E02": "asked an unnecessary clarifying question (\"Which product do you mean?\"); outcome 'other'",
+    "E03": "fell back to the standard assistant on low confidence",
+    "E04": "declined as unsupported (correct behaviour; excluded from accuracy by design)"
+  },
+  "input_tokens": 28381,
+  "output_tokens": 9515,
+  "estimated_cost_usd_at_list_price": 0.001192,
+  "note": "Separate record from the six-task pilot (run_20261014T042125Z_0daf9d32), which was not re-run or modified. One repeat per task is not the frozen five-repeat protocol."
+}

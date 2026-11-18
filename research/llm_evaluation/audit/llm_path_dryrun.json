@@ -1,0 +1,322 @@
+{
+  "BANNER": "ARCHITECTURE DRY-RUN WITH A MOCKED PROVIDER - NOT RESEARCH RESULTS. No real model was called; no accuracy/latency/cost is claimed.",
+  "research_result": false,
+  "generated_utc": "2026-10-14T16:10:39+00:00",
+  "evaluation_clock": "2025-03-31",
+  "frozen_spec_modified": false,
+  "n_tasks": 27,
+  "flowed_through_llm_analytics_path": 27,
+  "primary": {
+    "n": 23,
+    "engine_produced_a_verified_answer": 23,
+    "engine_matches_independent_ground_truth_engine": 23
+  },
+  "supplementary_gst": {
+    "n": 4,
+    "correctly_refused_as_unsupported": 4,
+    "note": "production data has no GST field; refusing is the correct production behaviour, not an answer"
+  },
+  "mock_llm_calls": {
+    "interpreter": 27
+  },
+  "ingestion_matches_view": true,
+  "tasks": [
+    {
+      "task_id": "A01",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "Your total sales for January 2025 were ₹14,59,083. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "A02",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "Your total sales for February 2025 were ₹13,86,969. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "A03",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "Your total sales for Q1 2025 were ₹43,54,736. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "A04",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "You sold 47,651 units in March 2025. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "A05",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "You sold 41,387 units in February 2025. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "B01",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "Sales in February 2025 were ₹13,86,969, compared with ₹14,59,083 in January 2025 — 4.94% lower (a difference of ₹72,114). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "B02",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "Sales in March 2025 were ₹15,08,684, compared with ₹13,86,969 in February 2025 — 8.78% higher (a difference of ₹1,21,715). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "B03",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For Q1 2025, Sunday 30 March 2025 (2025-03-30) had the highest sales: ₹85,773. Only days that have at least one recorded sale are considered. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "B04",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For Q1 2025, Sunday 9 February 2025 (2025-02-09) had the lowest sales: ₹5,680. Only days that have at least one recorded sale are considered. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "B05",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "Sales in 1 March 2025 to 15 March 2025 were ₹7,60,958, compared with ₹7,54,578 in 1 February 2025 to 15 February 2025 — 0.85% higher (a difference of ₹6,380). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "C01",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For February 2025, EGG had the highest units sold: 9,414. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "C02",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For Q1 2025, ranked by sales (highest first): 1. EGG (₹1,75,863), 2. BIG ONION (₹1,73,071), 3. MILK (₹1,47,896). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "C03",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For March 2025, ranked by units sold (highest first): 1. EGG (10,905), 2. KADA MUTTA (2,470), 3. MILK (1,997). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "C04",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "You sold 4,556 units for BIG ONION in Q1 2025. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "C05",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For Q1 2025, ranked by units sold (highest first): 1. MILK (5,282), 2. BIG ONION (4,556). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "C06",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "EGG accounted for 4.04% of your total sales for Q1 2025 (₹1,75,863 out of ₹43,54,736). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "D01",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For all your recorded sales (1 January 2025 to 31 March 2025), Monday had the highest sales: ₹7,88,959. These are totals per weekday across the whole period, so a weekday that occurs more often has more days adding up. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "D02",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For all your recorded sales (1 January 2025 to 31 March 2025), Sunday had the lowest sales: ₹3,19,445. These are totals per weekday across the whole period, so a weekday that occurs more often has more days adding up. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "D03",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "Your total sales on Sundays for Q1 2025 were ₹3,19,445. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "D04",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "Q1 2025: on an average day that had sales, your sales were ₹48,930 (averaged over 89 days). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "F01",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "You sold 1,287 different products in January 2025. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "F02",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "March 2025: on an average day that had sales, you sold 1,588.37 units (averaged over 30 days). This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "F03",
+      "track": "primary",
+      "path": "llm_analytics",
+      "intent": "analytics_query",
+      "flowed_through_llm_path": true,
+      "engine_answered": true,
+      "refused_as_unsupported": false,
+      "engine_matches_ground_truth_engine": true,
+      "answer": "For Q1 2025, Sunday 30 March 2025 (2025-03-30) had the highest sales: ₹85,773. Only days that have at least one recorded sale are considered. This is based on the sales recorded in your uploaded data."
+    },
+    {
+      "task_id": "E01",
+      "track": "supplementary",
+      "path": "llm_analytics",
+      "intent": "analytics_unsupported",
+      "flowed_through_llm_path": true,
+      "engine_answered": false,
+      "refused_as_unsupported": true,
+      "engine_matches_ground_truth_engine": false,
+      "answer": "I can calculate sales, units, orders and product performance from your current data, but it doesn't contain GST or tax information."
+    },
+    {
+      "task_id": "E02",
+      "track": "supplementary",
+      "path": "llm_analytics",
+      "intent": "analytics_unsupported",
+      "flowed_through_llm_path": true,
+      "engine_answered": false,
+      "refused_as_unsupported": true,
+      "engine_matches_ground_truth_engine": false,
+      "answer": "I can calculate sales, units, orders and product performance from your current data, but it doesn't contain GST or tax information."
+    },
+    {
+      "task_id": "E03",
+      "track": "supplementary",
+      "path": "llm_analytics",
+      "intent": "analytics_unsupported",
+      "flowed_through_llm_path": true,
+      "engine_answered": false,
+      "refused_as_unsupported": true,
+      "engine_matches_ground_truth_engine": false,
+      "answer": "I can calculate sales, units, orders and product performance from your current data, but it doesn't contain GST or tax information."
+    },
+    {
+      "task_id": "E04",
+      "track": "supplementary",
+      "path": "llm_analytics",
+      "intent": "analytics_unsupported",
+      "flowed_through_llm_path": true,
+      "engine_answered": false,
+      "refused_as_unsupported": true,
+      "engine_matches_ground_truth_engine": false,
+      "answer": "I can calculate sales, units, orders and product performance from your current data, but it doesn't contain GST or tax information."
+    }
+  ]
+}

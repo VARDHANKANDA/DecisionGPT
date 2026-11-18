@@ -1,0 +1,1337 @@
+{
+  "kind": "real_public_retail_forecast_validation",
+  "report_version": 1,
+  "git_revision": "41c1d14",
+  "config": {
+    "horizons": [
+      7,
+      14,
+      28
+    ],
+    "origin_step_days": 7,
+    "policy_status": "provisional engineering policies"
+  },
+  "what_this_is": "own-history chronological backtest of the product's forecasting methods on real public retail series",
+  "what_this_is_not": [
+    "a DecisionGPT customer business",
+    "evidence of business impact",
+    "evidence about price, marketing or customer scores",
+    "production approval"
+  ],
+  "results": [
+    {
+      "source": {
+        "id": "india_pos_register",
+        "description": "Indian local-store POS register, Jan-Mar 2025, units = sum of quantity per day (weighed items are fractional)",
+        "provenance": "public Kaggle upload, CC BY-NC-SA 4.0, authenticity inferred, uploader gives no store name",
+        "source_file": "data/external/india_pos_register/processed/india_pos_register_clean.csv"
+      },
+      "as_of_date": "2025-04-01",
+      "dataset": {
+        "sha256": "6ea4ed12ce8c7793f14429da96ae600f45794a3e41da157462bac7048f4a992f",
+        "days": 90,
+        "first_date": "2025-01-01",
+        "last_date": "2025-03-31",
+        "series": "business daily units (all products)"
+      },
+      "series": {
+        "series_class": "regular",
+        "pattern": "smooth",
+        "adi": 1.0112359550561798,
+        "cv2_nonzero": 0.10150033546062986,
+        "zero_share": 0.011111111111111112,
+        "mean_units_per_day": 1681.9711111111114,
+        "metric_guidance": "WAPE and MAE are both meaningful",
+        "conventions": {
+          "adi_cutoff": 1.32,
+          "cv2_cutoff": 0.49,
+          "sparse_zero_share": 0.5
+        }
+      },
+      "negative_unit_days": 0,
+      "horizons": [
+        {
+          "horizon_days": 7,
+          "origins": 8,
+          "all_origins": {
+            "naive_last": {
+              "mae": 619.0389285714284,
+              "rmse": 838.6945875159631,
+              "wape": 0.35444379064551756,
+              "bias_units_per_day": 487.9107142857143,
+              "relative_bias": 0.2793635667906726,
+              "wape_note": null,
+              "n_origins": 8,
+              "n_points": 56
+            },
+            "seasonal_naive_7": {
+              "mae": 453.54714285714283,
+              "rmse": 710.3413284823008,
+              "wape": 0.25968797943242866,
+              "bias_units_per_day": -49.15857142857143,
+              "relative_bias": -0.02814677655260062,
+              "wape_note": null,
+              "n_origins": 8,
+              "n_points": 56
+            },
+            "trailing_mean_28": {
+              "mae": 459.24909438775506,
+              "rmse": 617.728315456358,
+              "wape": 0.2629527520037614,
+              "bias_units_per_day": -54.79428571428575,
+              "relative_bias": -0.03137362359279155,
+              "wape_note": null,
+              "n_origins": 8,
+              "n_points": 56
+            },
+            "trailing_median_28": {
+              "mae": 429.7903571428572,
+              "rmse": 614.3944051106341,
+              "wape": 0.246085530873084,
+              "bias_units_per_day": 60.97696428571438,
+              "relative_bias": 0.03491364656720635,
+              "wape_note": null,
+              "n_origins": 8,
+              "n_points": 56
+            },
+            "weekday_mean_4w": {
+              "mae": 321.2518749999999,
+              "rmse": 539.3977190342302,
+              "wape": 0.18393953444858588,
+              "bias_units_per_day": -54.79428571428572,
+              "relative_bias": -0.031373623592791534,
+              "wape_note": null,
+              "n_origins": 8,
+              "n_points": 56
+            }
+          },
+          "selection_origins": 6,
+          "holdout_origins": 2,
+          "holdout": {
+            "naive_last": {
+              "mae": 849.5550000000001,
+              "rmse": 1089.4070555614842,
+              "wape": 0.4882061095492647,
+              "bias_units_per_day": 784.8235714285713,
+              "relative_bias": 0.4510074833173865,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 14
+            },
+            "seasonal_naive_7": {
+              "mae": 829.5614285714288,
+              "rmse": 1156.2199636438438,
+              "wape": 0.47671658418229246,
+              "bias_units_per_day": -189.27428571428572,
+              "relative_bias": -0.10876854667006539,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 14
+            },
+            "trailing_mean_28": {
+              "mae": 576.3545408163264,
+              "rmse": 768.8518536452253,
+              "wape": 0.33120846571792484,
+              "bias_units_per_day": 11.34214285714292,
+              "relative_bias": 0.00651788693873584,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 14
+            },
+            "trailing_median_28": {
+              "mae": 580.2364285714286,
+              "rmse": 769.1828752249271,
+              "wape": 0.33343923514265345,
+              "bias_units_per_day": 103.35357142857153,
+              "relative_bias": 0.05939326472702173,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 14
+            },
+            "weekday_mean_4w": {
+              "mae": 589.3100000000001,
+              "rmse": 903.1494927613037,
+              "wape": 0.33865346259921625,
+              "bias_units_per_day": 11.342142857142806,
+              "relative_bias": 0.0065178869387357745,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 14
+            }
+          },
+          "production": {
+            "selected_method": "trailing_mean_28",
+            "basis": "business_specific_baseline",
+            "interval_reliable_in_product": false
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.7142857142857143,
+            "holdout_points": 14,
+            "mean_width_units": 1271.0543877551015,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": false
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 0.6784193381432944,
+            "selected_vs_trailing_mean_mae_ratio": 1.0,
+            "selected_vs_seasonal_naive_mae_ratio": 0.6947701773078518,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "beats_references",
+          "status": "evaluated",
+          "statement": "7-day horizon: 'trailing_mean_28' (business specific baseline) is the baseline and had a lower holdout MAE than the naive last-value forecast; holdout MAE 576.35 units/day; over-forecast by 0.7% of actual units on the holdout; 80% band covered 71% of 14 dependent held-out points."
+        },
+        {
+          "horizon_days": 14,
+          "origins": 7,
+          "all_origins": {
+            "naive_last": {
+              "mae": 614.4413265306123,
+              "rmse": 821.3192855344481,
+              "wape": 0.3549867158350064,
+              "bias_units_per_day": 463.28602040816327,
+              "relative_bias": 0.2676584008526484,
+              "wape_note": null,
+              "n_origins": 7,
+              "n_points": 98
+            },
+            "seasonal_naive_7": {
+              "mae": 369.8166326530612,
+              "rmse": 571.4195770604637,
+              "wape": 0.2136574905010571,
+              "bias_units_per_day": 10.55663265306122,
+              "relative_bias": 0.006098978362908162,
+              "wape_note": null,
+              "n_origins": 7,
+              "n_points": 98
+            },
+            "trailing_mean_28": {
+              "mae": 468.78506559766765,
+              "rmse": 621.3763572900065,
+              "wape": 0.2708354137060526,
+              "bias_units_per_day": -42.601071428571494,
+              "relative_bias": -0.024612300287271908,
+              "wape_note": null,
+              "n_origins": 7,
+              "n_points": 98
+            },
+            "trailing_median_28": {
+              "mae": 438.704387755102,
+              "rmse": 619.8456113803252,
+              "wape": 0.2534566330538511,
+              "bias_units_per_day": 74.67959183673479,
+              "relative_bias": 0.04314531249990794,
+              "wape_note": null,
+              "n_origins": 7,
+              "n_points": 98
+            },
+            "weekday_mean_4w": {
+              "mae": 298.8586224489796,
+              "rmse": 501.86971191193277,
+              "wape": 0.17266228084163837,
+              "bias_units_per_day": -42.60107142857144,
+              "relative_bias": -0.024612300287271873,
+              "wape_note": null,
+              "n_origins": 7,
+              "n_points": 98
+            }
+          },
+          "selection_origins": 5,
+          "holdout_origins": 2,
+          "holdout": {
+            "naive_last": {
+              "mae": 743.995,
+              "rmse": 974.3947403425075,
+              "wape": 0.45213386829255375,
+              "bias_units_per_day": 609.0957142857143,
+              "relative_bias": 0.3701541024609253,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 28
+            },
+            "seasonal_naive_7": {
+              "mae": 629.3221428571429,
+              "rmse": 886.9479205559769,
+              "wape": 0.38244592349701156,
+              "bias_units_per_day": 168.77785714285713,
+              "relative_bias": 0.1025681428398417,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 28
+            },
+            "trailing_mean_28": {
+              "mae": 572.5835204081633,
+              "rmse": 757.6273486534647,
+              "wape": 0.34796524439372745,
+              "bias_units_per_day": 142.94035714285704,
+              "relative_bias": 0.0868664125566961,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 28
+            },
+            "trailing_median_28": {
+              "mae": 583.2335714285715,
+              "rmse": 774.6418035937643,
+              "wape": 0.3544373964449781,
+              "bias_units_per_day": 217.4907142857144,
+              "relative_bias": 0.13217147691545056,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 28
+            },
+            "weekday_mean_4w": {
+              "mae": 493.0564285714285,
+              "rmse": 784.6171905367064,
+              "wape": 0.29963576413351056,
+              "bias_units_per_day": 142.94035714285707,
+              "relative_bias": 0.08686641255669612,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 28
+            }
+          },
+          "production": {
+            "selected_method": "weekday_mean_4w",
+            "basis": "business_specific_validated",
+            "interval_reliable_in_product": true
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.7142857142857143,
+            "holdout_points": 28,
+            "mean_width_units": 1057.225142857143,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": true
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 0.662714707184092,
+            "selected_vs_trailing_mean_mae_ratio": 0.8611083117096274,
+            "selected_vs_seasonal_naive_mae_ratio": 0.7834722394049832,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "beats_references",
+          "status": "evaluated",
+          "statement": "14-day horizon: 'weekday_mean_4w' (business specific validated) had a lower holdout MAE than the naive last-value forecast and was not worse than the trailing mean; holdout MAE 493.06 units/day; over-forecast by 8.7% of actual units on the holdout; 80% band covered 71% of 28 dependent held-out points."
+        },
+        {
+          "horizon_days": 28,
+          "origins": 5,
+          "all_origins": {
+            "naive_last": {
+              "mae": 595.208,
+              "rmse": 787.9218683256065,
+              "wape": 0.3387385459592938,
+              "bias_units_per_day": 412.86300000000006,
+              "relative_bias": 0.23496426845807172,
+              "wape_note": null,
+              "n_origins": 5,
+              "n_points": 140
+            },
+            "seasonal_naive_7": {
+              "mae": 330.3422857142857,
+              "rmse": 517.3436715707323,
+              "wape": 0.1880009434210003,
+              "bias_units_per_day": -44.831,
+              "relative_bias": -0.025513749401723605,
+              "wape_note": null,
+              "n_origins": 5,
+              "n_points": 140
+            },
+            "trailing_mean_28": {
+              "mae": 469.27963265306107,
+              "rmse": 615.2207535621226,
+              "wape": 0.26707151182983,
+              "bias_units_per_day": -108.91678571428575,
+              "relative_bias": -0.061985580878310007,
+              "wape_note": null,
+              "n_origins": 5,
+              "n_points": 140
+            },
+            "trailing_median_28": {
+              "mae": 435.68350000000004,
+              "rmse": 609.7743426295384,
+              "wape": 0.24795163251914626,
+              "bias_units_per_day": 25.456000000000067,
+              "relative_bias": 0.014487252231051677,
+              "wape_note": null,
+              "n_origins": 5,
+              "n_points": 140
+            },
+            "weekday_mean_4w": {
+              "mae": 290.4259285714285,
+              "rmse": 469.8264786783748,
+              "wape": 0.16528416411265212,
+              "bias_units_per_day": -108.91678571428572,
+              "relative_bias": -0.061985580878309986,
+              "wape_note": null,
+              "n_origins": 5,
+              "n_points": 140
+            }
+          },
+          "selection_origins": 3,
+          "holdout_origins": 2,
+          "holdout": {
+            "naive_last": {
+              "mae": 615.4971428571429,
+              "rmse": 810.2662985291582,
+              "wape": 0.3524228930753304,
+              "bias_units_per_day": 371.24178571428587,
+              "relative_bias": 0.2125665499348177,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 56
+            },
+            "seasonal_naive_7": {
+              "mae": 420.96071428571435,
+              "rmse": 678.2061786117425,
+              "wape": 0.2410347383758084,
+              "bias_units_per_day": 13.784642857142833,
+              "relative_bias": 0.007892845274916273,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 56
+            },
+            "trailing_mean_28": {
+              "mae": 512.4526785714286,
+              "rmse": 687.1562810349742,
+              "wape": 0.29342143605736054,
+              "bias_units_per_day": -49.088928571428674,
+              "relative_bias": -0.028107461465709013,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 56
+            },
+            "trailing_median_28": {
+              "mae": 498.7203571428571,
+              "rmse": 694.3397926499265,
+              "wape": 0.2855585491168426,
+              "bias_units_per_day": 108.67928571428584,
+              "relative_bias": 0.06222785716111559,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 56
+            },
+            "weekday_mean_4w": {
+              "mae": 378.023125,
+              "rmse": 618.1460366129975,
+              "wape": 0.2164494261394136,
+              "bias_units_per_day": -49.08892857142854,
+              "relative_bias": -0.028107461465708937,
+              "wape_note": null,
+              "n_origins": 2,
+              "n_points": 56
+            }
+          },
+          "production": {
+            "selected_method": "weekday_mean_4w",
+            "basis": "business_specific_validated",
+            "interval_reliable_in_product": true
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.8214285714285714,
+            "holdout_points": 56,
+            "mean_width_units": 1257.2615714285716,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": true
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 0.614175271789587,
+            "selected_vs_trailing_mean_mae_ratio": 0.7376742103364945,
+            "selected_vs_seasonal_naive_mae_ratio": 0.8980009586914285,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "beats_references",
+          "status": "evaluated",
+          "statement": "28-day horizon: 'weekday_mean_4w' (business specific validated) had a lower holdout MAE than the naive last-value forecast and was not worse than the trailing mean; holdout MAE 378.02 units/day; under-forecast by 2.8% of actual units on the holdout; 80% band covered 82% of 56 dependent held-out points."
+        }
+      ]
+    },
+    {
+      "source": {
+        "id": "india_ecommerce_benroshan",
+        "description": "Indian e-commerce orders, Apr 2018 onward, units per day",
+        "provenance": "public Kaggle upload, CC0, provenance unverified, ~500 orders in total",
+        "source_file": "data/external/india_ecommerce/processed/india_ecommerce_forecasting.csv"
+      },
+      "as_of_date": "2019-04-01",
+      "dataset": {
+        "sha256": "fae6134d3389895282b009c477c2ae66b1ab9240386e63bf439defae0ad6dc5b",
+        "days": 365,
+        "first_date": "2018-04-01",
+        "last_date": "2019-03-31",
+        "series": "business daily units (all products)"
+      },
+      "series": {
+        "series_class": "regular",
+        "pattern": "erratic",
+        "adi": 1.1889250814332248,
+        "cv2_nonzero": 1.1962982375316087,
+        "zero_share": 0.1589041095890411,
+        "mean_units_per_day": 15.383561643835616,
+        "metric_guidance": "WAPE and MAE are both meaningful",
+        "conventions": {
+          "adi_cutoff": 1.32,
+          "cv2_cutoff": 0.49,
+          "sparse_zero_share": 0.5
+        }
+      },
+      "negative_unit_days": 0,
+      "horizons": [
+        {
+          "horizon_days": 7,
+          "origins": 12,
+          "all_origins": {
+            "naive_last": {
+              "mae": 32.05952380952381,
+              "rmse": 51.33793269438626,
+              "wape": 1.414390756302521,
+              "bias_units_per_day": 12.916666666666666,
+              "relative_bias": 0.5698529411764706,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            },
+            "seasonal_naive_7": {
+              "mae": 25.035714285714285,
+              "rmse": 36.2502873551829,
+              "wape": 1.1045168067226891,
+              "bias_units_per_day": -0.9880952380952381,
+              "relative_bias": -0.043592436974789914,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            },
+            "trailing_mean_28": {
+              "mae": 18.0484693877551,
+              "rmse": 25.496694296869688,
+              "wape": 0.7962560024009603,
+              "bias_units_per_day": -2.43452380952381,
+              "relative_bias": -0.10740546218487398,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            },
+            "trailing_median_28": {
+              "mae": 17.214285714285715,
+              "rmse": 27.25376776049244,
+              "wape": 0.759453781512605,
+              "bias_units_per_day": -10.0,
+              "relative_bias": -0.4411764705882353,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            },
+            "weekday_mean_4w": {
+              "mae": 20.017857142857142,
+              "rmse": 28.349198989271873,
+              "wape": 0.883140756302521,
+              "bias_units_per_day": -2.4345238095238093,
+              "relative_bias": -0.10740546218487394,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            }
+          },
+          "selection_origins": 8,
+          "holdout_origins": 4,
+          "holdout": {
+            "naive_last": {
+              "mae": 47.142857142857146,
+              "rmse": 68.34993991010003,
+              "wape": 1.8644067796610169,
+              "bias_units_per_day": 15.714285714285714,
+              "relative_bias": 0.6214689265536724,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            },
+            "seasonal_naive_7": {
+              "mae": 28.571428571428573,
+              "rmse": 42.43819034784589,
+              "wape": 1.1299435028248588,
+              "bias_units_per_day": -4.5,
+              "relative_bias": -0.17796610169491525,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            },
+            "trailing_mean_28": {
+              "mae": 20.622448979591834,
+              "rmse": 28.927700604176927,
+              "wape": 0.8155770782889425,
+              "bias_units_per_day": -4.875000000000001,
+              "relative_bias": -0.19279661016949157,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            },
+            "trailing_median_28": {
+              "mae": 20.035714285714285,
+              "rmse": 30.60783046402155,
+              "wape": 0.7923728813559322,
+              "bias_units_per_day": -12.035714285714286,
+              "relative_bias": -0.4759887005649718,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            },
+            "weekday_mean_4w": {
+              "mae": 23.25,
+              "rmse": 32.70519017351396,
+              "wape": 0.9194915254237288,
+              "bias_units_per_day": -4.875,
+              "relative_bias": -0.19279661016949154,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            }
+          },
+          "production": {
+            "selected_method": "trailing_median_28",
+            "basis": "business_specific_validated",
+            "interval_reliable_in_product": true
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.7857142857142857,
+            "holdout_points": 28,
+            "mean_width_units": 66.80000000000001,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": true
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 0.42499999999999993,
+            "selected_vs_trailing_mean_mae_ratio": 0.9715487382483919,
+            "selected_vs_seasonal_naive_mae_ratio": 0.7012499999999999,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "beats_references",
+          "status": "evaluated",
+          "statement": "7-day horizon: 'trailing_median_28' (business specific validated) had a lower holdout MAE than the naive last-value forecast and was not worse than the trailing mean; holdout MAE 20.04 units/day; under-forecast by 47.6% of actual units on the holdout; 80% band covered 79% of 28 dependent held-out points."
+        },
+        {
+          "horizon_days": 14,
+          "origins": 12,
+          "all_origins": {
+            "naive_last": {
+              "mae": 33.517857142857146,
+              "rmse": 52.38950958241272,
+              "wape": 1.5116778523489933,
+              "bias_units_per_day": 12.827380952380953,
+              "relative_bias": 0.5785234899328859,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            },
+            "seasonal_naive_7": {
+              "mae": 23.589285714285715,
+              "rmse": 35.07805921220896,
+              "wape": 1.0638926174496643,
+              "bias_units_per_day": -1.4464285714285714,
+              "relative_bias": -0.06523489932885906,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            },
+            "trailing_mean_28": {
+              "mae": 17.556972789115644,
+              "rmse": 25.148637643819512,
+              "wape": 0.7918312559923297,
+              "bias_units_per_day": -2.5208333333333335,
+              "relative_bias": -0.11369127516778524,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            },
+            "trailing_median_28": {
+              "mae": 16.672619047619047,
+              "rmse": 26.7151530926159,
+              "wape": 0.7519463087248323,
+              "bias_units_per_day": -9.714285714285714,
+              "relative_bias": -0.4381208053691275,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            },
+            "weekday_mean_4w": {
+              "mae": 19.044642857142858,
+              "rmse": 27.408899428053342,
+              "wape": 0.8589261744966443,
+              "bias_units_per_day": -2.5208333333333335,
+              "relative_bias": -0.11369127516778524,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            }
+          },
+          "selection_origins": 8,
+          "holdout_origins": 4,
+          "holdout": {
+            "naive_last": {
+              "mae": 45.964285714285715,
+              "rmse": 67.43488923186784,
+              "wape": 1.9953488372093022,
+              "bias_units_per_day": 16.964285714285715,
+              "relative_bias": 0.7364341085271318,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            },
+            "seasonal_naive_7": {
+              "mae": 27.285714285714285,
+              "rmse": 41.375026974527245,
+              "wape": 1.1844961240310077,
+              "bias_units_per_day": -1.3928571428571428,
+              "relative_bias": -0.06046511627906977,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            },
+            "trailing_mean_28": {
+              "mae": 19.443877551020403,
+              "rmse": 27.950039702793898,
+              "wape": 0.8440753045404207,
+              "bias_units_per_day": -2.4642857142857157,
+              "relative_bias": -0.10697674418604658,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            },
+            "trailing_median_28": {
+              "mae": 18.446428571428573,
+              "rmse": 28.90918662689373,
+              "wape": 0.8007751937984496,
+              "bias_units_per_day": -8.160714285714286,
+              "relative_bias": -0.35426356589147284,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            },
+            "weekday_mean_4w": {
+              "mae": 20.732142857142858,
+              "rmse": 30.126667114511214,
+              "wape": 0.9,
+              "bias_units_per_day": -2.4642857142857144,
+              "relative_bias": -0.10697674418604651,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            }
+          },
+          "production": {
+            "selected_method": "trailing_mean_28",
+            "basis": "business_specific_baseline",
+            "interval_reliable_in_product": true
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.875,
+            "holdout_points": 56,
+            "mean_width_units": 52.96326530612247,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": true
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 0.4230214230214229,
+            "selected_vs_trailing_mean_mae_ratio": 1.0,
+            "selected_vs_seasonal_naive_mae_ratio": 0.7126028421839938,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "beats_references",
+          "status": "evaluated",
+          "statement": "14-day horizon: 'trailing_mean_28' (business specific baseline) is the baseline and had a lower holdout MAE than the naive last-value forecast; holdout MAE 19.44 units/day; under-forecast by 10.7% of actual units on the holdout; 80% band covered 88% of 56 dependent held-out points."
+        },
+        {
+          "horizon_days": 28,
+          "origins": 12,
+          "all_origins": {
+            "naive_last": {
+              "mae": 24.761904761904763,
+              "rmse": 39.176949004910185,
+              "wape": 1.1607142857142858,
+              "bias_units_per_day": 4.666666666666667,
+              "relative_bias": 0.21875,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            },
+            "seasonal_naive_7": {
+              "mae": 21.75,
+              "rmse": 32.106129810809826,
+              "wape": 1.01953125,
+              "bias_units_per_day": -3.0714285714285716,
+              "relative_bias": -0.14397321428571427,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            },
+            "trailing_mean_28": {
+              "mae": 16.870960884353742,
+              "rmse": 24.791498741785368,
+              "wape": 0.7908262914540816,
+              "bias_units_per_day": -2.5952380952380953,
+              "relative_bias": -0.12165178571428571,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            },
+            "trailing_median_28": {
+              "mae": 16.214285714285715,
+              "rmse": 26.255895029679028,
+              "wape": 0.7600446428571429,
+              "bias_units_per_day": -9.5,
+              "relative_bias": -0.4453125,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            },
+            "weekday_mean_4w": {
+              "mae": 18.444940476190474,
+              "rmse": 26.752086033482644,
+              "wape": 0.8646065848214286,
+              "bias_units_per_day": -2.5952380952380953,
+              "relative_bias": -0.12165178571428571,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            }
+          },
+          "selection_origins": 8,
+          "holdout_origins": 4,
+          "holdout": {
+            "naive_last": {
+              "mae": 16.830357142857142,
+              "rmse": 28.932958221180417,
+              "wape": 0.7543017206882753,
+              "bias_units_per_day": -11.0625,
+              "relative_bias": -0.4957983193277311,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            },
+            "seasonal_naive_7": {
+              "mae": 20.776785714285715,
+              "rmse": 32.03109538290209,
+              "wape": 0.9311724689875951,
+              "bias_units_per_day": -4.633928571428571,
+              "relative_bias": -0.20768307322929172,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            },
+            "trailing_mean_28": {
+              "mae": 18.253188775510203,
+              "rmse": 27.079684474241752,
+              "wape": 0.8180700851769279,
+              "bias_units_per_day": -0.7053571428571423,
+              "relative_bias": -0.031612645058023185,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            },
+            "trailing_median_28": {
+              "mae": 17.017857142857142,
+              "rmse": 27.635381048834585,
+              "wape": 0.7627050820328132,
+              "bias_units_per_day": -6.1875,
+              "relative_bias": -0.2773109243697479,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            },
+            "weekday_mean_4w": {
+              "mae": 19.473214285714285,
+              "rmse": 28.411831036685104,
+              "wape": 0.8727490996398559,
+              "bias_units_per_day": -0.7053571428571429,
+              "relative_bias": -0.031612645058023206,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            }
+          },
+          "production": {
+            "selected_method": "trailing_mean_28",
+            "basis": "business_specific_baseline",
+            "interval_reliable_in_product": true
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.8928571428571429,
+            "holdout_points": 112,
+            "mean_width_units": 56.85663265306123,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": true
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 1.0845395983327017,
+            "selected_vs_trailing_mean_mae_ratio": 1.0,
+            "selected_vs_seasonal_naive_mae_ratio": 0.8785376634538645,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "does_not_beat_naive",
+          "status": "evaluated",
+          "statement": "28-day horizon: 'trailing_mean_28' (business specific baseline) did not have a lower holdout MAE than the naive last-value forecast; holdout MAE 18.25 units/day; under-forecast by 3.2% of actual units on the holdout; 80% band covered 89% of 112 dependent held-out points."
+        }
+      ]
+    },
+    {
+      "source": {
+        "id": "uci_online_retail_ii",
+        "description": "UK online gift retailer, Dec 2009 - Dec 2011, net units per day (returns netted)",
+        "provenance": "UCI Machine Learning Repository, CC BY 4.0, a single wholesaler-style retailer",
+        "source_file": "data/external/uci_online_retail_ii/processed/online_retail_ii_raw_as_csv.csv"
+      },
+      "as_of_date": "2011-12-10",
+      "dataset": {
+        "sha256": "3ad013014a41be4eef897a375f8a982f6c77aa7832ab23b33c759233179c2615",
+        "days": 739,
+        "first_date": "2009-12-01",
+        "last_date": "2011-12-09",
+        "series": "business daily units (all products)"
+      },
+      "series": {
+        "series_class": "regular",
+        "pattern": "smooth",
+        "adi": 1.2337228714524207,
+        "cv2_nonzero": 0.4316718068053049,
+        "zero_share": 0.18267929634641408,
+        "mean_units_per_day": 14355.198917456022,
+        "metric_guidance": "WAPE and MAE are both meaningful",
+        "conventions": {
+          "adi_cutoff": 1.32,
+          "cv2_cutoff": 0.49,
+          "sparse_zero_share": 0.5
+        }
+      },
+      "negative_unit_days": 5,
+      "horizons": [
+        {
+          "horizon_days": 7,
+          "origins": 12,
+          "all_origins": {
+            "naive_last": {
+              "mae": 10699.297619047618,
+              "rmse": 13733.244116532907,
+              "wape": 0.49361656085728395,
+              "bias_units_per_day": 3195.345238095238,
+              "relative_bias": 0.14741858609225875,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            },
+            "seasonal_naive_7": {
+              "mae": 7062.238095238095,
+              "rmse": 9604.00792080354,
+              "wape": 0.32581930185030483,
+              "bias_units_per_day": -518.0238095238095,
+              "relative_bias": -0.023899244642387355,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            },
+            "trailing_mean_28": {
+              "mae": 10415.55824829932,
+              "rmse": 12690.205805759742,
+              "wape": 0.48052612657314514,
+              "bias_units_per_day": -1868.3184523809527,
+              "relative_bias": -0.08619565151722364,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            },
+            "trailing_median_28": {
+              "mae": 10069.672619047618,
+              "rmse": 12633.594507563856,
+              "wape": 0.4645685487170784,
+              "bias_units_per_day": -642.7797619047619,
+              "relative_bias": -0.029654912570637994,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            },
+            "weekday_mean_4w": {
+              "mae": 6299.747023809524,
+              "rmse": 8578.350758326855,
+              "wape": 0.2906414580549418,
+              "bias_units_per_day": -1868.3184523809523,
+              "relative_bias": -0.08619565151722361,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 84
+            }
+          },
+          "selection_origins": 8,
+          "holdout_origins": 4,
+          "holdout": {
+            "naive_last": {
+              "mae": 10245.357142857143,
+              "rmse": 13682.690644961403,
+              "wape": 0.4255511679033517,
+              "bias_units_per_day": 3431.0,
+              "relative_bias": 0.14251002056032067,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            },
+            "seasonal_naive_7": {
+              "mae": 6557.25,
+              "rmse": 8636.916258959891,
+              "wape": 0.2723619447155822,
+              "bias_units_per_day": 263.32142857142856,
+              "relative_bias": 0.010937319207137072,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            },
+            "trailing_mean_28": {
+              "mae": 10504.955357142857,
+              "rmse": 12969.606913993484,
+              "wape": 0.4363338396769686,
+              "bias_units_per_day": -1059.758928571429,
+              "relative_bias": -0.04401814826572361,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            },
+            "trailing_median_28": {
+              "mae": 9732.32142857143,
+              "rmse": 13047.22493893406,
+              "wape": 0.40424171579287776,
+              "bias_units_per_day": 1505.25,
+              "relative_bias": 0.06252206600070612,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            },
+            "weekday_mean_4w": {
+              "mae": 5767.508928571428,
+              "rmse": 7841.848574742848,
+              "wape": 0.23955925852303914,
+              "bias_units_per_day": -1059.7589285714287,
+              "relative_bias": -0.0440181482657236,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 28
+            }
+          },
+          "production": {
+            "selected_method": "weekday_mean_4w",
+            "basis": "business_specific_validated",
+            "interval_reliable_in_product": true
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.8928571428571429,
+            "holdout_points": 28,
+            "mean_width_units": 21736.142857142866,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": true
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 0.5629387876041412,
+            "selected_vs_trailing_mean_mae_ratio": 0.5490274572799402,
+            "selected_vs_seasonal_naive_mae_ratio": 0.8795621531238597,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "beats_references",
+          "status": "evaluated",
+          "statement": "7-day horizon: 'weekday_mean_4w' (business specific validated) had a lower holdout MAE than the naive last-value forecast and was not worse than the trailing mean; holdout MAE 5767.51 units/day; under-forecast by 4.4% of actual units on the holdout; 80% band covered 89% of 28 dependent held-out points."
+        },
+        {
+          "horizon_days": 14,
+          "origins": 12,
+          "all_origins": {
+            "naive_last": {
+              "mae": 10320.345238095239,
+              "rmse": 13251.132734151266,
+              "wape": 0.48189186034230697,
+              "bias_units_per_day": 2550.0238095238096,
+              "relative_bias": 0.11906924517918586,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            },
+            "seasonal_naive_7": {
+              "mae": 7373.416666666667,
+              "rmse": 10400.155726856072,
+              "wape": 0.3442897880453815,
+              "bias_units_per_day": -877.2619047619048,
+              "relative_bias": -0.040962328443498223,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            },
+            "trailing_mean_28": {
+              "mae": 10420.6462585034,
+              "rmse": 12682.074411018211,
+              "wape": 0.4865752545702739,
+              "bias_units_per_day": -2590.520833333333,
+              "relative_bias": -0.12096018832998881,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            },
+            "trailing_median_28": {
+              "mae": 10112.720238095239,
+              "rmse": 12674.258290029478,
+              "wape": 0.4721971461447384,
+              "bias_units_per_day": -1701.142857142857,
+              "relative_bias": -0.07943211949059739,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            },
+            "weekday_mean_4w": {
+              "mae": 6385.633928571428,
+              "rmse": 8975.000893147257,
+              "wape": 0.2981668677076327,
+              "bias_units_per_day": -2590.5208333333335,
+              "relative_bias": -0.12096018832998882,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 168
+            }
+          },
+          "selection_origins": 8,
+          "holdout_origins": 4,
+          "holdout": {
+            "naive_last": {
+              "mae": 9969.19642857143,
+              "rmse": 13585.141702952005,
+              "wape": 0.4118284067362004,
+              "bias_units_per_day": 4947.839285714285,
+              "relative_bias": 0.20439568870191155,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            },
+            "seasonal_naive_7": {
+              "mae": 6935.803571428572,
+              "rmse": 10181.106581906648,
+              "wape": 0.28651867326742897,
+              "bias_units_per_day": -333.125,
+              "relative_bias": -0.013761423899805326,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            },
+            "trailing_mean_28": {
+              "mae": 10651.936224489795,
+              "rmse": 12896.879738802332,
+              "wape": 0.44003244949762393,
+              "bias_units_per_day": -2601.8303571428564,
+              "relative_bias": -0.10748184753478345,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            },
+            "trailing_median_28": {
+              "mae": 9787.875,
+              "rmse": 12753.708574091583,
+              "wape": 0.4043380021112407,
+              "bias_units_per_day": -328.6607142857143,
+              "relative_bias": -0.01357700385290362,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            },
+            "weekday_mean_4w": {
+              "mae": 6129.991071428572,
+              "rmse": 8405.32534518933,
+              "wape": 0.2532304859615772,
+              "bias_units_per_day": -2601.8303571428573,
+              "relative_bias": -0.10748184753478346,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 56
+            }
+          },
+          "production": {
+            "selected_method": "weekday_mean_4w",
+            "basis": "business_specific_validated",
+            "interval_reliable_in_product": true
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.9464285714285714,
+            "holdout_points": 56,
+            "mean_width_units": 32387.89285714288,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": true
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 0.6148931977967848,
+            "selected_vs_trailing_mean_mae_ratio": 0.5754813906353617,
+            "selected_vs_seasonal_naive_mae_ratio": 0.8838184369408221,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "beats_references",
+          "status": "evaluated",
+          "statement": "14-day horizon: 'weekday_mean_4w' (business specific validated) had a lower holdout MAE than the naive last-value forecast and was not worse than the trailing mean; holdout MAE 6129.99 units/day; under-forecast by 10.7% of actual units on the holdout; 80% band covered 95% of 56 dependent held-out points."
+        },
+        {
+          "horizon_days": 28,
+          "origins": 12,
+          "all_origins": {
+            "naive_last": {
+              "mae": 10335.44642857143,
+              "rmse": 13137.132633393825,
+              "wape": 0.5003756372649457,
+              "bias_units_per_day": 1137.625,
+              "relative_bias": 0.055076463148212025,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            },
+            "seasonal_naive_7": {
+              "mae": 8030.946428571428,
+              "rmse": 11119.55673791087,
+              "wape": 0.38880661467397365,
+              "bias_units_per_day": -2373.5416666666665,
+              "relative_bias": -0.1149115746708383,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            },
+            "trailing_mean_28": {
+              "mae": 10473.760204081633,
+              "rmse": 12635.423694772904,
+              "wape": 0.5070718979481919,
+              "bias_units_per_day": -3436.654761904762,
+              "relative_bias": -0.16638065210168113,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            },
+            "trailing_median_28": {
+              "mae": 10381.979166666666,
+              "rmse": 12682.753116578097,
+              "wape": 0.5026284522390257,
+              "bias_units_per_day": -3195.125,
+              "relative_bias": -0.15468733925188966,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            },
+            "weekday_mean_4w": {
+              "mae": 6555.058035714285,
+              "rmse": 9210.830431432725,
+              "wape": 0.3173536203392234,
+              "bias_units_per_day": -3436.654761904762,
+              "relative_bias": -0.16638065210168113,
+              "wape_note": null,
+              "n_origins": 12,
+              "n_points": 336
+            }
+          },
+          "selection_origins": 8,
+          "holdout_origins": 4,
+          "holdout": {
+            "naive_last": {
+              "mae": 9970.25,
+              "rmse": 13410.903242724344,
+              "wape": 0.42105842650025455,
+              "bias_units_per_day": 3978.9821428571427,
+              "relative_bias": 0.16803830998661412,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            },
+            "seasonal_naive_7": {
+              "mae": 7388.125,
+              "rmse": 10209.09659760773,
+              "wape": 0.31201146283064046,
+              "bias_units_per_day": -2256.625,
+              "relative_bias": -0.09530061650421372,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            },
+            "trailing_mean_28": {
+              "mae": 11092.23533163265,
+              "rmse": 13007.32509660177,
+              "wape": 0.46844152905972997,
+              "bias_units_per_day": -3919.866071428571,
+              "relative_bias": -0.16554175072114022,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            },
+            "trailing_median_28": {
+              "mae": 10507.125,
+              "rmse": 12715.8967013594,
+              "wape": 0.4437314530269037,
+              "bias_units_per_day": -2546.5178571428573,
+              "relative_bias": -0.10754322128165004,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            },
+            "weekday_mean_4w": {
+              "mae": 6428.026785714285,
+              "rmse": 8758.616836614387,
+              "wape": 0.27146509304123223,
+              "bias_units_per_day": -3919.8660714285716,
+              "relative_bias": -0.16554175072114025,
+              "wape_note": null,
+              "n_origins": 4,
+              "n_points": 112
+            }
+          },
+          "production": {
+            "selected_method": "weekday_mean_4w",
+            "basis": "business_specific_validated",
+            "interval_reliable_in_product": true
+          },
+          "interval": {
+            "method": "empirical 80% quantile of the selection origins' absolute errors per horizon step (non-decreasing in the step)",
+            "nominal_coverage": 0.8,
+            "observed_holdout_coverage": 0.9196428571428571,
+            "holdout_points": 112,
+            "mean_width_units": 34691.839285714304,
+            "width_note": "full width before clipping the lower bound at zero",
+            "points_are_independent": false,
+            "limitation": "holdout points come from a handful of overlapping origins and are strongly dependent: the coverage figure is an approximate check, not a statistical guarantee",
+            "reliable_by_policy": true
+          },
+          "comparison_on_holdout": {
+            "selected_vs_naive_last_mae_ratio": 0.644720722721525,
+            "selected_vs_trailing_mean_mae_ratio": 0.5795068886956398,
+            "selected_vs_seasonal_naive_mae_ratio": 0.8700484609713947,
+            "note": "ratio < 1 means the selected method had a lower holdout MAE than that reference"
+          },
+          "verdict": "beats_references",
+          "status": "evaluated",
+          "statement": "28-day horizon: 'weekday_mean_4w' (business specific validated) had a lower holdout MAE than the naive last-value forecast and was not worse than the trailing mean; holdout MAE 6428.03 units/day; under-forecast by 16.6% of actual units on the holdout; 80% band covered 92% of 112 dependent held-out points."
+        }
+      ]
+    }
+  ]
+}

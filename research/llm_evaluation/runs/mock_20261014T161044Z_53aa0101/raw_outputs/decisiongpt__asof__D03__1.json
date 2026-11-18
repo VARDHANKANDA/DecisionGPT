@@ -1,0 +1,59 @@
+{
+  "system": "decisiongpt",
+  "question": "How much did I sell on Sundays in total between January and March 2025?",
+  "answer": "I don't have enough data to answer that reliably. Try asking why a number changed, whether to change price or marketing spend, what to focus on, or why a specific recommendation was made.",
+  "intent": "unrecognized",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "legacy_router",
+  "notice": "Advanced question understanding is temporarily unavailable, so this answer comes from the standard assistant.",
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.05372250000073109,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 700,
+      "temperature": null,
+      "ts": 1791994326.4542918,
+      "ok": false,
+      "error": "RateLimitError",
+      "latency_s": 0.0016814000009617303,
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 1,
+    "input_tokens": null,
+    "output_tokens": null,
+    "llm_latency_s": 0.0016814000009617303
+  },
+  "audit": {
+    "fallback_reason": "rate_limited",
+    "request_id": "4769233480ae4b6e9cb1a1e6096681ec",
+    "business_id": "af5a8cf7-337a-4fa0-a296-ce88c2b102fb",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.002,
+      "provider": "openai",
+      "model": "mock-openai",
+      "response_model": null,
+      "usage": null,
+      "attempts": 1,
+      "error": "rate_limited"
+    },
+    "interpreter_decisions": {},
+    "validation": {
+      "ok": false,
+      "errors": [],
+      "returned_fields": []
+    },
+    "outcome": "fallback",
+    "total_latency_s": 0.038
+  }
+}

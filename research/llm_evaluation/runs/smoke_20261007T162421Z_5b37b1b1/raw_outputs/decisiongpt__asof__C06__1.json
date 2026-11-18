@@ -1,0 +1,19 @@
+{
+  "system": "decisiongpt",
+  "question": "What share of my total sales came from EGG from January to March 2025? Give a percentage.",
+  "answer": "I don't have enough data to answer that reliably. Try asking why a number changed, whether to change price or marketing spend, what to focus on, or why a specific recommendation was made.",
+  "intent": "unrecognized",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.014375299999301205,
+  "llm_calls": [],
+  "llm_summary": {
+    "n_calls": 0,
+    "n_errors": 0,
+    "input_tokens": null,
+    "output_tokens": null,
+    "llm_latency_s": 0.0
+  }
+}

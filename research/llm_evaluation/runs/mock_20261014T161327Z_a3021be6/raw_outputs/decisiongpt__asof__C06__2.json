@@ -1,0 +1,214 @@
+{
+  "system": "decisiongpt",
+  "question": "What share of my total sales came from EGG from January to March 2025? Give a percentage.",
+  "answer": "EGG accounted for 4.04% of your total sales for Q1 2025 (₹1,75,863 out of ₹43,54,736). This restates the verified figure above without adding any new figure. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for Q1 2025 (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "share_percent",
+    "table"
+  ],
+  "latency_s": 0.5864120000005641,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 700,
+      "temperature": null,
+      "ts": 1791994503.1931343,
+      "ok": true,
+      "latency_s": 0.0005430999990494456,
+      "model_returned": "mock-openai-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 120,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1
+    },
+    {
+      "role": "explainer",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 300,
+      "temperature": null,
+      "ts": 1791994503.733384,
+      "ok": true,
+      "latency_s": 0.000149200001033023,
+      "model_returned": "mock-openai-2026-01-01",
+      "input_tokens": 300,
+      "output_tokens": 40,
+      "usage_raw": {
+        "input_tokens": 300,
+        "output_tokens": 40
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 2,
+    "n_errors": 0,
+    "input_tokens": 1400,
+    "output_tokens": 160,
+    "llm_latency_s": 0.0006923000000824686
+  },
+  "audit": {
+    "request_id": "c8d0355ac7874da0a0cae7cb2672acbf",
+    "business_id": "84899537-07f3-4439-ab31-d7e57fe30048",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai",
+      "model": "mock-openai",
+      "response_model": "mock-openai-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "ai": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "share_of_total",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.95,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "share_of_total",
+        "metric": "revenue",
+        "periods": [
+          {
+            "kind": "absolute",
+            "start": "2025-01-01",
+            "end": "2025-03-31"
+          }
+        ],
+        "products": [
+          "EGG"
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "share_of_total",
+        "metric": "revenue",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [
+          "EGG"
+        ],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.53,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "Q1 2025"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "openai",
+    "explanation_call": {
+      "ok": true,
+      "error": null,
+      "latency_s": 0.0,
+      "usage": {
+        "input_tokens": 300,
+        "output_tokens": 40
+      },
+      "model": "mock-openai-2026-01-01"
+    },
+    "outcome": "answered",
+    "total_latency_s": 0.563
+  }
+}

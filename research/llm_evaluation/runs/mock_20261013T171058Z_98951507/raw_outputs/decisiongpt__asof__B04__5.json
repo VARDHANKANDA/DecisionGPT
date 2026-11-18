@@ -1,0 +1,181 @@
+{
+  "system": "decisiongpt",
+  "question": "Which day had the lowest total sales between January and March 2025, counting only days that have any sales recorded?",
+  "answer": "For Q1 2025, Sunday 9 February 2025 (2025-02-09) had the lowest sales: ₹5,680. Only days that have at least one recorded sale are considered. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for Q1 2025 (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.4375741999829188,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-jev",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791911516.4471004,
+      "ok": true,
+      "latency_s": 0.0004610000178217888,
+      "model_returned": "mock-jev-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 0,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1100,
+    "output_tokens": 0,
+    "llm_latency_s": 0.0004610000178217888
+  },
+  "audit": {
+    "request_id": "2b0e9fb319354a7194efd39eca8e79e1",
+    "business_id": "bfa31274-f972-48dd-8f5b-f94da16d5874",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "typesafe-jev",
+      "model": "mock-jev",
+      "response_model": "mock-jev-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "ranking",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "day",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "asc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "ranking",
+        "metric": "revenue",
+        "periods": [
+          {
+            "kind": "absolute",
+            "start": "2025-01-01",
+            "end": "2025-03-31"
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "revenue",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "day",
+        "direction": "asc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.391,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "Q1 2025"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": [
+        "Only days that have at least one recorded sale are considered."
+      ]
+    },
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.423
+  }
+}

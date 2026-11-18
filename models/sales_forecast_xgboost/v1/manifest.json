@@ -1,0 +1,32 @@
+{
+  "model_name": "sales_forecast_xgboost",
+  "model_type": "forecasting_xgboost",
+  "version": "v1",
+  "dataset_version": "platform-forecasting-v1",
+  "feature_version": "forecasting_v1",
+  "parameters": {
+    "n_estimators": 200,
+    "max_depth": 4,
+    "learning_rate": 0.05
+  },
+  "metrics": {
+    "mae": 15.13885516603038,
+    "rmse": 21.863057200107395,
+    "mape": 10.296922032515052,
+    "shap_global_importance": {
+      "lag_1": 9.995196,
+      "lag_7": 25.077827,
+      "rolling_mean_7": 20.957451,
+      "rolling_mean_28": 13.467849,
+      "day_of_week": 9.237835,
+      "is_weekend": 0.0,
+      "month": 6.143396,
+      "price": 0.873951,
+      "marketing_spend": 1.091796,
+      "promotion_flag": 3.163766
+    }
+  },
+  "artifact_path": "models/sales_forecast_xgboost/v1/model.joblib",
+  "trained_at": "2026-08-30T14:09:04.641257+00:00",
+  "random_seed": 42
+}

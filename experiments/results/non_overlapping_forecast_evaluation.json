@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "20261023T113000Z",
+  "description": "Non-overlapping block forecast evaluation to audit serial correlation from rolling-origin windows",
+  "h14_blocks": {
+    "num_blocks": 4,
+    "stride_days": 14,
+    "block_origins": [
+      "2019-01-26",
+      "2019-02-09",
+      "2019-02-23",
+      "2019-03-09"
+    ],
+    "results": [
+      {
+        "model": "past_14d_sum",
+        "roll_mae": 92.04,
+        "roll_wape_pct": 31.12,
+        "roll_score_pct": 68.88,
+        "block_mae": 78.5,
+        "block_rmse": 94.87,
+        "block_wape_pct": 26.08,
+        "block_score_pct": 73.92
+      },
+      {
+        "model": "Random Forest",
+        "roll_mae": 58.64,
+        "roll_wape_pct": 19.83,
+        "roll_score_pct": 80.17,
+        "block_mae": 55.24,
+        "block_rmse": 57.03,
+        "block_wape_pct": 18.35,
+        "block_score_pct": 81.65
+      },
+      {
+        "model": "XGBoost",
+        "roll_mae": 59.19,
+        "roll_wape_pct": 20.01,
+        "roll_score_pct": 79.99,
+        "block_mae": 55.15,
+        "block_rmse": 55.25,
+        "block_wape_pct": 18.32,
+        "block_score_pct": 81.68
+      },
+      {
+        "model": "HistGradientBoosting",
+        "roll_mae": 64.57,
+        "roll_wape_pct": 21.84,
+        "roll_score_pct": 78.16,
+        "block_mae": 58.93,
+        "block_rmse": 59.5,
+        "block_wape_pct": 19.58,
+        "block_score_pct": 80.42
+      }
+    ]
+  },
+  "h28_blocks": {
+    "num_blocks": 2,
+    "stride_days": 28,
+    "block_origins": [
+      "2019-01-12",
+      "2019-02-09"
+    ],
+    "results": [
+      {
+        "model": "past_28d_sum",
+        "roll_mae": 132.35,
+        "roll_wape_pct": 22.18,
+        "roll_score_pct": 77.82,
+        "block_mae": 475.0,
+        "block_rmse": 488.26,
+        "block_wape_pct": 71.97,
+        "block_score_pct": 28.03
+      },
+      {
+        "model": "Random Forest",
+        "roll_mae": 115.69,
+        "roll_wape_pct": 19.39,
+        "roll_score_pct": 80.61,
+        "block_mae": 129.93,
+        "block_rmse": 148.92,
+        "block_wape_pct": 19.69,
+        "block_score_pct": 80.31
+      },
+      {
+        "model": "XGBoost",
+        "roll_mae": 55.7,
+        "roll_wape_pct": 9.34,
+        "roll_score_pct": 90.66,
+        "block_mae": 137.68,
+        "block_rmse": 139.56,
+        "block_wape_pct": 20.86,
+        "block_score_pct": 79.14
+      },
+      {
+        "model": "HistGradientBoosting",
+        "roll_mae": 101.82,
+        "roll_wape_pct": 17.07,
+        "roll_score_pct": 82.93,
+        "block_mae": 176.73,
+        "block_rmse": 179.19,
+        "block_wape_pct": 26.78,
+        "block_score_pct": 73.22
+      }
+    ]
+  }
+}

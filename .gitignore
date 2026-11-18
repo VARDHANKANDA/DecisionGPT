@@ -1,0 +1,81 @@
+# ==============================================================================
+# DecisionGPT .gitignore
+# ==============================================================================
+
+# Local Archive (Contains all academic papers, theses, experiments & audits)
+_LOCAL_ARCHIVE_NOT_FOR_GITHUB/
+Project Report/
+Project_Report/
+*.docx
+*.pdf
+
+# Environment configurations & Secrets (Never commit secrets!)
+.env
+.env.*
+!.env.example
+!.env.test
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env.local
+frontend/.env.*.local
+
+# Databases & Runtime Storage
+backups_recovery/
+*.db
+*.sqlite
+*.sqlite3
+postgres-data/
+dev.db
+backend/dev.db
+_eval_scratch*.db
+backend/_eval_scratch*.db
+.local/
+data/business_uploads/
+data/research_uploads/
+data/external/
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+ENV/
+backend/.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+catboost_info/
+
+# Node & Next.js
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+out/
+frontend/out/
+frontend/.turbo/
+*.tsbuildinfo
+frontend/tsconfig.tsbuildinfo
+
+# ML Artifacts & Checkpoints
+*.pkl
+*.joblib
+mlruns/
+
+# Logs & Temporary Files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.tools/
+.formatting_fix_backup/
+.claude/
+
+# Operating System & IDE Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

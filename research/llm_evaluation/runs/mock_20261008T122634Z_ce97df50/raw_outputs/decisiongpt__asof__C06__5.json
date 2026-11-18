@@ -1,0 +1,152 @@
+{
+  "system": "decisiongpt",
+  "question": "What share of my total sales came from EGG from January to March 2025? Give a percentage.",
+  "answer": "EGG accounted for 4.04% of your total sales for Q1 2025 (₹1,75,863 out of ₹43,54,736). This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for Q1 2025 (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "share_percent",
+    "table"
+  ],
+  "latency_s": 0.4455300999979954,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 700,
+      "temperature": 0,
+      "ts": 1791462487.1080685,
+      "ok": true,
+      "latency_s": 0.0004938000056426972,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 1200,
+      "output_tokens": 90,
+      "usage_raw": {
+        "prompt_tokens": 1200,
+        "completion_tokens": 90,
+        "total_tokens": 1290
+      },
+      "attempts": 1
+    },
+    {
+      "role": "explainer",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 300,
+      "temperature": 0,
+      "ts": 1791462487.499985,
+      "ok": true,
+      "latency_s": 0.00031550000130664557,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 350,
+      "output_tokens": 40,
+      "usage_raw": {
+        "prompt_tokens": 350,
+        "completion_tokens": 40,
+        "total_tokens": 390
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 2,
+    "n_errors": 0,
+    "input_tokens": 1550,
+    "output_tokens": 130,
+    "llm_latency_s": 0.0008093000069493428
+  },
+  "audit": {
+    "request_id": "f8f5f596e0c7489a95e51a603c580af3",
+    "business_id": "5712321a-0cc3-4249-8152-498cc3bc61d5",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 1200,
+        "output_tokens": 90
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "query",
+        "route"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "share_of_total",
+        "metric": "revenue",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [
+          "EGG"
+        ],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.391,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "Q1 2025"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_call": {
+      "latency_s": 0.0,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 350,
+        "output_tokens": 40
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "explanation_rejected": {},
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.418
+  }
+}

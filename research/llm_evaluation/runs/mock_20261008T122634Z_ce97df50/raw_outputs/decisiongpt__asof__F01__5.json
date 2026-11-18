@@ -1,0 +1,152 @@
+{
+  "system": "decisiongpt",
+  "question": "How many different products did I sell in January 2025?",
+  "answer": "You sold 1,287 different products in January 2025. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for January 2025 (10,386 records)"
+  ],
+  "details_keys": [
+    "distinct_products_total",
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections"
+  ],
+  "latency_s": 0.2663559999928111,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 700,
+      "temperature": 0,
+      "ts": 1791462499.9656851,
+      "ok": true,
+      "latency_s": 0.0007260999991558492,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 1200,
+      "output_tokens": 90,
+      "usage_raw": {
+        "prompt_tokens": 1200,
+        "completion_tokens": 90,
+        "total_tokens": 1290
+      },
+      "attempts": 1
+    },
+    {
+      "role": "explainer",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 300,
+      "temperature": 0,
+      "ts": 1791462500.1802852,
+      "ok": true,
+      "latency_s": 0.00033229999826289713,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 350,
+      "output_tokens": 40,
+      "usage_raw": {
+        "prompt_tokens": 350,
+        "completion_tokens": 40,
+        "total_tokens": 390
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 2,
+    "n_errors": 0,
+    "input_tokens": 1550,
+    "output_tokens": 130,
+    "llm_latency_s": 0.0010583999974187464
+  },
+  "audit": {
+    "request_id": "a259418529594582a3df4281858b2080",
+    "business_id": "5712321a-0cc3-4249-8152-498cc3bc61d5",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 1200,
+        "output_tokens": 90
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "query",
+        "route"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "aggregate",
+        "metric": "distinct_products",
+        "period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 1,
+          "quarter": null
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.214,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-01-31",
+        "label": "January 2025"
+      },
+      "n_records": 10386,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_call": {
+      "latency_s": 0.0,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 350,
+        "output_tokens": 40
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "explanation_rejected": {},
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.236
+  }
+}

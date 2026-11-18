@@ -1,0 +1,861 @@
+{
+  "confirmatory_family_holm": {
+    "alpha": 0.05,
+    "family": [
+      "B_vs_A",
+      "C_vs_B",
+      "D_vs_B",
+      "D_vs_C"
+    ],
+    "method": "holm_bonferroni",
+    "n_tests_corrected": 4,
+    "results": {
+      "B_vs_A": {
+        "p_holm": 1e-08,
+        "p_raw": 0.0,
+        "rank": 3,
+        "reject_at_alpha": true
+      },
+      "C_vs_B": {
+        "p_holm": 0.60948754,
+        "p_raw": 0.60948754,
+        "rank": 4,
+        "reject_at_alpha": false
+      },
+      "D_vs_B": {
+        "p_holm": 0.0,
+        "p_raw": 0.0,
+        "rank": 2,
+        "reject_at_alpha": true
+      },
+      "D_vs_C": {
+        "p_holm": 0.0,
+        "p_raw": 0.0,
+        "rank": 1,
+        "reject_at_alpha": true
+      }
+    }
+  },
+  "endpoint": "exogenous normalised regret (0=oracle, 1=worst feasible; lower better)",
+  "excluded": {
+    "count": 0,
+    "rows": []
+  },
+  "family_contribution": {
+    "aggregate_mean_D_minus_B": 0.085223,
+    "families_by_abs_effect": [
+      {
+        "family": "nonlinear_response",
+        "mean_D_minus_B": -0.726433
+      },
+      {
+        "family": "capacity_bound",
+        "mean_D_minus_B": 0.477099
+      },
+      {
+        "family": "weak_seasonality",
+        "mean_D_minus_B": 0.299828
+      },
+      {
+        "family": "demand_saturation",
+        "mean_D_minus_B": -0.23472
+      },
+      {
+        "family": "weak_marketing",
+        "mean_D_minus_B": 0.227452
+      },
+      {
+        "family": "delayed_price",
+        "mean_D_minus_B": 0.216685
+      },
+      {
+        "family": "asymmetric_risk",
+        "mean_D_minus_B": 0.189356
+      },
+      {
+        "family": "noisy_observations",
+        "mean_D_minus_B": 0.163907
+      },
+      {
+        "family": "regime_shift",
+        "mean_D_minus_B": 0.158464
+      },
+      {
+        "family": "price_elastic",
+        "mean_D_minus_B": 0.137871
+      },
+      {
+        "family": "strong_seasonality",
+        "mean_D_minus_B": 0.073883
+      },
+      {
+        "family": "promotion_threshold",
+        "mean_D_minus_B": 0.039279
+      }
+    ],
+    "n_families": 12,
+    "top3_abs_effect_share_of_sum_abs": 0.5105
+  },
+  "family_level_D_vs_B": {
+    "asymmetric_risk": {
+      "cluster_bootstrap_ci95": [
+        0.084866,
+        0.277607
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.189356,
+      "mean_regret": {
+        "A": 0.563241,
+        "B": 0.164402,
+        "C": 0.375114,
+        "D": 0.353758
+      },
+      "median_D_minus_B": 0.285537,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        4,
+        0,
+        30
+      ]
+    },
+    "capacity_bound": {
+      "cluster_bootstrap_ci95": [
+        0.421533,
+        0.526521
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.477099,
+      "mean_regret": {
+        "A": 0.375881,
+        "B": 0.013247,
+        "C": 0.375881,
+        "D": 0.490346
+      },
+      "median_D_minus_B": 0.52307,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        1,
+        0,
+        33
+      ]
+    },
+    "delayed_price": {
+      "cluster_bootstrap_ci95": [
+        0.155902,
+        0.284525
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.216685,
+      "mean_regret": {
+        "A": 0.23933,
+        "B": 0.050357,
+        "C": 0.056089,
+        "D": 0.267041
+      },
+      "median_D_minus_B": 0.139941,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        1,
+        1,
+        32
+      ]
+    },
+    "demand_saturation": {
+      "cluster_bootstrap_ci95": [
+        -0.347097,
+        -0.122875
+      ],
+      "direction": "D_better",
+      "mean_D_minus_B": -0.23472,
+      "mean_regret": {
+        "A": 0.192171,
+        "B": 0.46813,
+        "C": 0.136025,
+        "D": 0.23341
+      },
+      "median_D_minus_B": -0.175704,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        23,
+        0,
+        11
+      ]
+    },
+    "noisy_observations": {
+      "cluster_bootstrap_ci95": [
+        0.055327,
+        0.265772
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.163907,
+      "mean_regret": {
+        "A": 0.246313,
+        "B": 0.276456,
+        "C": 0.259798,
+        "D": 0.440363
+      },
+      "median_D_minus_B": 0.18728,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        9,
+        0,
+        25
+      ]
+    },
+    "nonlinear_response": {
+      "cluster_bootstrap_ci95": [
+        -0.793096,
+        -0.651194
+      ],
+      "direction": "D_better",
+      "mean_D_minus_B": -0.726433,
+      "mean_regret": {
+        "A": 0.056176,
+        "B": 0.974671,
+        "C": 0.070981,
+        "D": 0.248238
+      },
+      "median_D_minus_B": -0.782371,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        34,
+        0,
+        0
+      ]
+    },
+    "price_elastic": {
+      "cluster_bootstrap_ci95": [
+        0.088588,
+        0.19453
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.137871,
+      "mean_regret": {
+        "A": 0.259376,
+        "B": 0.0,
+        "C": 0.009011,
+        "D": 0.137871
+      },
+      "median_D_minus_B": 0.06024,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        0,
+        7,
+        27
+      ]
+    },
+    "promotion_threshold": {
+      "cluster_bootstrap_ci95": [
+        0.016638,
+        0.069309
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.039279,
+      "mean_regret": {
+        "A": 0.253756,
+        "B": 0.002312,
+        "C": 0.004438,
+        "D": 0.041591
+      },
+      "median_D_minus_B": 0.0,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        0,
+        18,
+        16
+      ]
+    },
+    "regime_shift": {
+      "cluster_bootstrap_ci95": [
+        0.085167,
+        0.238992
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.158464,
+      "mean_regret": {
+        "A": 0.233896,
+        "B": 0.150258,
+        "C": 0.135247,
+        "D": 0.308723
+      },
+      "median_D_minus_B": 0.068839,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        9,
+        2,
+        23
+      ]
+    },
+    "strong_seasonality": {
+      "cluster_bootstrap_ci95": [
+        -0.029674,
+        0.172944
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.073883,
+      "mean_regret": {
+        "A": 0.242708,
+        "B": 0.26686,
+        "C": 0.279648,
+        "D": 0.340743
+      },
+      "median_D_minus_B": 0.116965,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        14,
+        1,
+        19
+      ]
+    },
+    "weak_marketing": {
+      "cluster_bootstrap_ci95": [
+        0.132528,
+        0.328853
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.227452,
+      "mean_regret": {
+        "A": 0.219348,
+        "B": 0.041023,
+        "C": 0.051157,
+        "D": 0.268475
+      },
+      "median_D_minus_B": 0.073874,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        1,
+        6,
+        27
+      ]
+    },
+    "weak_seasonality": {
+      "cluster_bootstrap_ci95": [
+        0.194605,
+        0.399136
+      ],
+      "direction": "D_worse",
+      "mean_D_minus_B": 0.299828,
+      "mean_regret": {
+        "A": 0.227359,
+        "B": 0.179229,
+        "C": 0.185501,
+        "D": 0.479057
+      },
+      "median_D_minus_B": 0.286709,
+      "n_seeds": 10,
+      "n_structural_scenarios": 34,
+      "wins_ties_losses_D_better_tie_worse": [
+        3,
+        0,
+        31
+      ]
+    }
+  },
+  "interpretation_rule": "D_vs_B is SUPPORTED only if mean(D-B)<0 AND |mean|>=0.05 AND bootstrap CI excludes 0 AND Holm p<0.05 AND not driven by one family AND robustness preserves sign AND mechanism plausible AND no post-hoc exclusion. A non-significant D_vs_B is 'no significant incremental improvement detected', NOT equivalence.",
+  "n_scenarios_eligible": 408,
+  "n_seeds": 10,
+  "positioning": {
+    "A": {
+      "mean_normalized_performance": 0.74087,
+      "mean_regret": 0.25913,
+      "mean_secondary_goal_achievement": null
+    },
+    "B": {
+      "mean_normalized_performance": 0.784421,
+      "mean_regret": 0.215579,
+      "mean_secondary_goal_achievement": 0.495852
+    },
+    "C": {
+      "mean_normalized_performance": 0.838426,
+      "mean_regret": 0.161574,
+      "mean_secondary_goal_achievement": 0.454306
+    },
+    "D": {
+      "mean_normalized_performance": 0.699199,
+      "mean_regret": 0.300801,
+      "mean_secondary_goal_achievement": 0.364227
+    },
+    "classical_optimizer": {
+      "mean_regret": 0.088514,
+      "n_na": 0
+    },
+    "greedy": {
+      "mean_regret": 0.197214,
+      "n_na": 0
+    },
+    "n_scenarios_eligible": 408,
+    "n_seeds": 10,
+    "naive": {
+      "mean_regret": 0.367005,
+      "n_na": 0
+    },
+    "oracle": {
+      "mean_regret": 0.0,
+      "note": "upper-bound reference"
+    }
+  },
+  "primary_and_confirmatory_contrasts": {
+    "B_vs_A": {
+      "cluster_bootstrap": {
+        "ci95": [
+          -0.08429,
+          -0.002139
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": -0.043551,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 116,
+      "matched_pairs_rank_biserial": 0.431373,
+      "mean_difference": -0.043551,
+      "median_difference": -0.193642,
+      "n_nonzero": 408,
+      "n_scenarios": 408,
+      "sd_difference": 0.415604,
+      "student_t_ci95_secondary": [
+        -0.083998,
+        -0.003103
+      ],
+      "ties": 0,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 4.8381183588984175e-09,
+        "statistic": 27769.0
+      },
+      "wins_first_better": 292,
+      "wins_ties_losses": [
+        292,
+        0,
+        116
+      ]
+    },
+    "C_vs_B": {
+      "cluster_bootstrap": {
+        "ci95": [
+          -0.08806,
+          -0.02043
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": -0.054005,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 167,
+      "matched_pairs_rank_biserial": -0.084416,
+      "mean_difference": -0.054005,
+      "median_difference": 0.0,
+      "n_nonzero": 308,
+      "n_scenarios": 408,
+      "sd_difference": 0.343203,
+      "student_t_ci95_secondary": [
+        -0.087406,
+        -0.020603
+      ],
+      "ties": 100,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 0.6094875413797051,
+        "statistic": 22994.0
+      },
+      "wins_first_better": 141,
+      "wins_ties_losses": [
+        141,
+        100,
+        167
+      ]
+    },
+    "D_vs_B": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.0479,
+          0.123114
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.085223,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 274,
+      "matched_pairs_rank_biserial": -0.469169,
+      "mean_difference": 0.085223,
+      "median_difference": 0.1,
+      "n_nonzero": 373,
+      "n_scenarios": 408,
+      "sd_difference": 0.386277,
+      "student_t_ci95_secondary": [
+        0.047629,
+        0.122816
+      ],
+      "ties": 35,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 5.438841663211047e-10,
+        "statistic": 21944.0
+      },
+      "wins_first_better": 99,
+      "wins_ties_losses": [
+        99,
+        35,
+        274
+      ]
+    },
+    "D_vs_C": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.115775,
+          0.162343
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.139227,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 280,
+      "matched_pairs_rank_biserial": -0.632653,
+      "mean_difference": 0.139227,
+      "median_difference": 0.055785,
+      "n_nonzero": 343,
+      "n_scenarios": 408,
+      "sd_difference": 0.240395,
+      "student_t_ci95_secondary": [
+        0.115831,
+        0.162623
+      ],
+      "ties": 65,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 1.7310580115755422e-31,
+        "statistic": 8043.5
+      },
+      "wins_first_better": 63,
+      "wins_ties_losses": [
+        63,
+        65,
+        280
+      ]
+    }
+  },
+  "primary_contrast": "D_vs_B = regret_D - regret_B  (NEGATIVE => D better)",
+  "secondary_contrasts": {
+    "A_vs_oracle": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.243747,
+          0.274742
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.25913,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 382,
+      "matched_pairs_rank_biserial": -1.0,
+      "mean_difference": 0.25913,
+      "median_difference": 0.250723,
+      "n_nonzero": 382,
+      "n_scenarios": 408,
+      "sd_difference": 0.158171,
+      "student_t_ci95_secondary": [
+        0.243736,
+        0.274523
+      ],
+      "ties": 26,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 2.3850053767912622e-64,
+        "statistic": 0.0
+      },
+      "wins_first_better": 0,
+      "wins_ties_losses": [
+        0,
+        26,
+        382
+      ]
+    },
+    "B_vs_oracle": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.183706,
+          0.248487
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.215579,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 247,
+      "matched_pairs_rank_biserial": -1.0,
+      "mean_difference": 0.215579,
+      "median_difference": 0.04688,
+      "n_nonzero": 247,
+      "n_scenarios": 408,
+      "sd_difference": 0.32941,
+      "student_t_ci95_secondary": [
+        0.18352,
+        0.247638
+      ],
+      "ties": 161,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 2.5786883032470473e-42,
+        "statistic": 0.0
+      },
+      "wins_first_better": 0,
+      "wins_ties_losses": [
+        0,
+        161,
+        247
+      ]
+    },
+    "C_vs_oracle": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.142806,
+          0.181219
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.161574,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 327,
+      "matched_pairs_rank_biserial": -1.0,
+      "mean_difference": 0.161574,
+      "median_difference": 0.069357,
+      "n_nonzero": 327,
+      "n_scenarios": 408,
+      "sd_difference": 0.198481,
+      "student_t_ci95_secondary": [
+        0.142258,
+        0.180891
+      ],
+      "ties": 81,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 2.335538693349433e-55,
+        "statistic": 0.0
+      },
+      "wins_first_better": 0,
+      "wins_ties_losses": [
+        0,
+        81,
+        327
+      ]
+    },
+    "D_vs_A": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.015747,
+          0.067771
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.041672,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 209,
+      "matched_pairs_rank_biserial": -0.027027,
+      "mean_difference": 0.041672,
+      "median_difference": 0.013828,
+      "n_nonzero": 407,
+      "n_scenarios": 408,
+      "sd_difference": 0.272299,
+      "student_t_ci95_secondary": [
+        0.015171,
+        0.068173
+      ],
+      "ties": 1,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 0.12887918565929282,
+        "statistic": 37908.0
+      },
+      "wins_first_better": 198,
+      "wins_ties_losses": [
+        198,
+        1,
+        209
+      ]
+    },
+    "D_vs_classical_optimizer": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.183493,
+          0.241176
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.212288,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 320,
+      "matched_pairs_rank_biserial": -0.658031,
+      "mean_difference": 0.212288,
+      "median_difference": 0.189902,
+      "n_nonzero": 386,
+      "n_scenarios": 408,
+      "sd_difference": 0.299081,
+      "student_t_ci95_secondary": [
+        0.183181,
+        0.241395
+      ],
+      "ties": 22,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 1.0134771068760524e-33,
+        "statistic": 10797.0
+      },
+      "wins_first_better": 66,
+      "wins_ties_losses": [
+        66,
+        22,
+        320
+      ]
+    },
+    "D_vs_greedy": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.078861,
+          0.128737
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.103587,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 268,
+      "matched_pairs_rank_biserial": -0.313725,
+      "mean_difference": 0.103587,
+      "median_difference": 0.089788,
+      "n_nonzero": 408,
+      "n_scenarios": 408,
+      "sd_difference": 0.258977,
+      "student_t_ci95_secondary": [
+        0.078383,
+        0.128792
+      ],
+      "ties": 0,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 7.923129313292454e-11,
+        "statistic": 26221.0
+      },
+      "wins_first_better": 140,
+      "wins_ties_losses": [
+        140,
+        0,
+        268
+      ]
+    },
+    "D_vs_naive": {
+      "cluster_bootstrap": {
+        "ci95": [
+          -0.094764,
+          -0.037297
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": -0.066203,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 156,
+      "matched_pairs_rank_biserial": 0.235294,
+      "mean_difference": -0.066203,
+      "median_difference": -0.08683,
+      "n_nonzero": 408,
+      "n_scenarios": 408,
+      "sd_difference": 0.295957,
+      "student_t_ci95_secondary": [
+        -0.095006,
+        -0.0374
+      ],
+      "ties": 0,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 8.085751154393591e-07,
+        "statistic": 29960.0
+      },
+      "wins_first_better": 252,
+      "wins_ties_losses": [
+        252,
+        0,
+        156
+      ]
+    },
+    "D_vs_oracle": {
+      "cluster_bootstrap": {
+        "ci95": [
+          0.277571,
+          0.324347
+        ],
+        "method": "percentile",
+        "n_boot": 10000,
+        "point": 0.300801,
+        "resampling_unit": "scenario",
+        "seed": 12345
+      },
+      "convention": "value = regret[first] - regret[second]; NEGATIVE => first has lower regret (better)",
+      "losses_first_worse": 377,
+      "matched_pairs_rank_biserial": -1.0,
+      "mean_difference": 0.300801,
+      "median_difference": 0.252932,
+      "n_nonzero": 377,
+      "n_scenarios": 408,
+      "sd_difference": 0.242474,
+      "student_t_ci95_secondary": [
+        0.277203,
+        0.3244
+      ],
+      "ties": 31,
+      "wilcoxon": {
+        "mode": "approx",
+        "p_value": 1.5657379993055626e-63,
+        "statistic": 0.0
+      },
+      "wins_first_better": 0,
+      "wins_ties_losses": [
+        0,
+        31,
+        377
+      ]
+    }
+  },
+  "source_results": "results.json",
+  "source_results_sha256": "9e302f1d1cf575940e62e9abdb66393c0e7d9e9d2f2ec940abe2bd161c853065",
+  "status": "complete",
+  "unit_of_analysis": "scenario"
+}

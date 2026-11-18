@@ -1,0 +1,23 @@
+{
+  "system": "decisiongpt",
+  "question": "Which three products sold the most units in March 2025?",
+  "answer": "EGG brought in the most money in the last 30 days: ₹57,646 from 10,905 units sold. Next were MILK (₹55,916), BIG ONION (₹54,282). Compared with the 30 days before, EGG sales were about 3% lower.",
+  "intent": "top_products",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "sources": [
+    "Sales in the last 30 days, grouped by product"
+  ],
+  "details_keys": [
+    "table"
+  ],
+  "latency_s": 0.06590099999993981,
+  "llm_calls": [],
+  "llm_summary": {
+    "n_calls": 0,
+    "n_errors": 0,
+    "input_tokens": null,
+    "output_tokens": null,
+    "llm_latency_s": 0.0
+  }
+}

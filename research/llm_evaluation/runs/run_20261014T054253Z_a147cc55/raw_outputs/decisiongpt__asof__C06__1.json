@@ -1,0 +1,185 @@
+{
+  "system": "decisiongpt",
+  "question": "What share of my total sales came from EGG from January to March 2025? Give a percentage.",
+  "answer": "EGG accounted for 4.04% of your total sales for Q1 2025 (₹1,75,863 out of ₹43,54,736). This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for Q1 2025 (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "share_percent",
+    "table"
+  ],
+  "latency_s": 0.9851855000015348,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "api.typesafe.ai",
+      "model_requested": "jev-latest",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791956630.318369,
+      "ok": true,
+      "latency_s": 0.4949495999608189,
+      "model_returned": "jev-1.13.0",
+      "input_tokens": 1356,
+      "output_tokens": 454,
+      "usage_raw": {
+        "input_tokens": 1356,
+        "output_tokens": 454
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1356,
+    "output_tokens": 454,
+    "llm_latency_s": 0.4949495999608189
+  },
+  "audit": {
+    "request_id": "598921f4724a458db64ac8aa62827748",
+    "business_id": "03f9a0fe-2d2b-49bb-b52d-77b2095d6b78",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.495,
+      "provider": "typesafe-jev",
+      "model": "jev-latest",
+      "response_model": "jev-1.13.0",
+      "usage": {
+        "input_tokens": 1356,
+        "output_tokens": 454
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 1.0
+        },
+        "operation": {
+          "value": "share_of_total",
+          "confidence": 1.0
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 1.0
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 1.0
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.7
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.86
+        },
+        "named_products": {
+          "value": 0.94,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.03,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "product",
+          "confidence": 0.49
+        },
+        "missing_item": {
+          "value": "other",
+          "confidence": 0.85
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "share_of_total",
+        "metric": "revenue",
+        "periods": [
+          {
+            "kind": "absolute",
+            "start": "2025-01-01",
+            "end": "2025-03-31"
+          }
+        ],
+        "products": [
+          "EGG"
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "share_of_total",
+        "metric": "revenue",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [
+          "EGG"
+        ],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.434,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "Q1 2025"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.964
+  }
+}

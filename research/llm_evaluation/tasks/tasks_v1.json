@@ -1,0 +1,1031 @@
+{
+  "spec_version": "tasks_v1",
+  "preregistration": "Frozen BEFORE any model was run. Tolerances, scoring rules, task wording and repeat counts must not change after results are seen; any change requires a new spec version and a logged deviation.",
+  "research_question": "How effectively does the actual DecisionGPT system answer objective business-analytics questions over real Indian POS data, compared with an LLM given direct read-only access to the same data?",
+  "dataset": {
+    "path": "data/external/india_pos_register/",
+    "description": "Indian POS retail register, 1 Jan-31 Mar 2025",
+    "provenance_limitation": "Appears to be real Indian POS data from its structure and content; uploader/store provenance is NOT independently verified.",
+    "license": "CC BY-NC-SA 4.0 (as recorded in the repository)",
+    "representativeness": "NOT representative of Indian SMEs or Indian retail generally."
+  },
+  "view_rules": "1) keep lines whose quantity is a whole number > 0 (sales.quantity is an integer column); 2) keep lines whose recomputed amount (qty*rate) agrees with a printed amount column; 3) merge lines that share (date, product, unit price) by summing quantity (the production upload validator rejects duplicate rows; merging preserves total sales and total units exactly; when a merged group mixed GST slabs, the slab with the largest revenue in the group is kept). Consequence: 'one row' no longer means 'one bill line', so no task asks about individual sale entries.",
+  "selection_rules": {
+    "C04_product": "2nd-ranked product by total revenue over 1 Jan-31 Mar 2025",
+    "C05_products": "3rd- and 4th-ranked products by total units over 1 Jan-31 Mar 2025, listed alphabetically",
+    "C06_product": "top-ranked product by total revenue over 1 Jan-31 Mar 2025",
+    "selected": {
+      "C04": "BIG ONION",
+      "C05": [
+        "BIG ONION",
+        "MILK"
+      ],
+      "C06": "EGG"
+    }
+  },
+  "repeats_per_task": 5,
+  "conditions": {
+    "primary": "DecisionGPT with the evaluation clock fixed at 2025-03-31 (emulates a user asking right after the data period; production code unmodified)",
+    "secondary": "DecisionGPT with the real clock (a user asking about stale data); 'realclock'"
+  },
+  "systems": {
+    "decisiongpt": "POST /businesses/{id}/chat on a business created and filled through the production upload endpoints; the configured LLM only rephrases a computed template answer (production behaviour).",
+    "llm_code_baseline": "Protocol B2: the same configured LLM client, given the schema, sample rows and read-only access to the same data view through a sandboxed pandas snippet it writes itself (<=1 repair attempt), then phrases the executed result. No DecisionGPT routing/analytics."
+  },
+  "information_given": {
+    "decisiongpt": "date, product, quantity, unit_price (and computed revenue) for every view line, via the production ingestion path. No GST column (cannot be stored).",
+    "llm_code_baseline": "the same four fields plus computed revenue as a DataFrame; plus gst_pct ONLY for supplementary-track tasks. Never the ground truth, task metadata or tolerances."
+  },
+  "scoring": {
+    "numbers": "primary = the ground truth appears among the numbers in the answer within tolerance (dates/years removed first; lakh/crore/K/M multipliers understood); secondary = first number only; n_numbers recorded",
+    "signed_change": "a signed change is correct only if the magnitude is within tolerance AND the direction (up/down) matches; missing direction -> partially_correct",
+    "entities": "first candidate entity named in the answer (products: names present in the view; weekdays; dates; GST slabs); secondary lenient metric: truth mentioned anywhere",
+    "ranking": "primary = exact ordered top-k; secondary = top-1 correct and overlap@k",
+    "refusal": "answers that decline or say there is not enough information are 'unable_to_answer' (checked by pattern list in scoring.py)",
+    "unsupported_claim": "NOT assessed automatically; raw outputs preserved for human audit",
+    "judge": "no LLM judge is used"
+  },
+  "tasks": [
+    {
+      "task_id": "A01",
+      "track": "primary",
+      "category": "aggregation",
+      "natural_language_question": "What were my total sales in January 2025?",
+      "expected_answer_type": "currency",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-01-31"
+      },
+      "aggregation_definition": "sales = sum(quantity x unit price) of the recorded lines; GST treatment of the recorded rate is not known",
+      "ground_truth_definition": {
+        "op": "sum_revenue",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-01-31"
+        }
+      },
+      "tolerance": {
+        "type": "relative",
+        "value": 0.005,
+        "min_abs": 1.0,
+        "rule": "correct if |answer - truth| <= max(0.5% of truth, INR 1)"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "A02",
+      "track": "primary",
+      "category": "aggregation",
+      "natural_language_question": "How much did I sell in February 2025 in total?",
+      "expected_answer_type": "currency",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-02-01",
+        "end": "2025-02-28"
+      },
+      "aggregation_definition": "sales = sum(quantity x unit price) of the recorded lines; GST treatment of the recorded rate is not known",
+      "ground_truth_definition": {
+        "op": "sum_revenue",
+        "params": {
+          "start": "2025-02-01",
+          "end": "2025-02-28"
+        }
+      },
+      "tolerance": {
+        "type": "relative",
+        "value": 0.005,
+        "min_abs": 1.0,
+        "rule": "correct if |answer - truth| <= max(0.5% of truth, INR 1)"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "A03",
+      "track": "primary",
+      "category": "aggregation",
+      "natural_language_question": "What were my total sales for the three months from January to March 2025?",
+      "expected_answer_type": "currency",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "sales = sum(quantity x unit price) of the recorded lines; GST treatment of the recorded rate is not known",
+      "ground_truth_definition": {
+        "op": "sum_revenue",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        }
+      },
+      "tolerance": {
+        "type": "relative",
+        "value": 0.005,
+        "min_abs": 1.0,
+        "rule": "correct if |answer - truth| <= max(0.5% of truth, INR 1)"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "A04",
+      "track": "primary",
+      "category": "aggregation",
+      "natural_language_question": "How many units did I sell in March 2025?",
+      "expected_answer_type": "exact_number",
+      "required_fields": [
+        "date",
+        "quantity"
+      ],
+      "date_range": {
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "units = sum of quantity",
+      "ground_truth_definition": {
+        "op": "sum_quantity",
+        "params": {
+          "start": "2025-03-01",
+          "end": "2025-03-31"
+        }
+      },
+      "tolerance": {
+        "type": "absolute",
+        "value": 0.0,
+        "rule": "correct only if the integer equals the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "A05",
+      "track": "primary",
+      "category": "aggregation",
+      "natural_language_question": "How many units did I sell in February 2025?",
+      "expected_answer_type": "exact_number",
+      "required_fields": [
+        "date",
+        "quantity"
+      ],
+      "date_range": {
+        "start": "2025-02-01",
+        "end": "2025-02-28"
+      },
+      "aggregation_definition": "units = sum of quantity",
+      "ground_truth_definition": {
+        "op": "sum_quantity",
+        "params": {
+          "start": "2025-02-01",
+          "end": "2025-02-28"
+        }
+      },
+      "tolerance": {
+        "type": "absolute",
+        "value": 0.0,
+        "rule": "correct only if the integer equals the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "B01",
+      "track": "primary",
+      "category": "time_comparison",
+      "natural_language_question": "How did February 2025 sales compare with January? Tell me the percentage change.",
+      "expected_answer_type": "percentage",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "(Feb total - Jan total) / Jan total x 100",
+      "ground_truth_definition": {
+        "op": "pct_change_revenue",
+        "params": {
+          "new": {
+            "start": "2025-02-01",
+            "end": "2025-02-28"
+          },
+          "base": {
+            "start": "2025-01-01",
+            "end": "2025-01-31"
+          }
+        }
+      },
+      "tolerance": {
+        "type": "absolute_pp",
+        "value": 0.5,
+        "rule": "correct if |answer - truth| <= 0.5 percentage points"
+      },
+      "signed_change": true,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "B02",
+      "track": "primary",
+      "category": "time_comparison",
+      "natural_language_question": "By what percentage did sales change in March 2025 compared with February 2025?",
+      "expected_answer_type": "percentage",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "(Mar total - Feb total) / Feb total x 100",
+      "ground_truth_definition": {
+        "op": "pct_change_revenue",
+        "params": {
+          "new": {
+            "start": "2025-03-01",
+            "end": "2025-03-31"
+          },
+          "base": {
+            "start": "2025-02-01",
+            "end": "2025-02-28"
+          }
+        }
+      },
+      "tolerance": {
+        "type": "absolute_pp",
+        "value": 0.5,
+        "rule": "correct if |answer - truth| <= 0.5 percentage points"
+      },
+      "signed_change": true,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "B03",
+      "track": "primary",
+      "category": "time_comparison",
+      "natural_language_question": "Which day had the highest total sales between January and March 2025?",
+      "expected_answer_type": "date",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "calendar day with the largest daily total",
+      "ground_truth_definition": {
+        "op": "argmax_day_revenue",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        }
+      },
+      "tolerance": {
+        "type": "normalized_first_mention",
+        "rule": "the first candidate entity named in the answer must equal the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "B04",
+      "track": "primary",
+      "category": "time_comparison",
+      "natural_language_question": "Which day had the lowest total sales between January and March 2025, counting only days that have any sales recorded?",
+      "expected_answer_type": "date",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "calendar day with the smallest daily total among days with >=1 sale",
+      "ground_truth_definition": {
+        "op": "argmin_day_revenue",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        }
+      },
+      "tolerance": {
+        "type": "normalized_first_mention",
+        "rule": "the first candidate entity named in the answer must equal the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "B05",
+      "track": "primary",
+      "category": "time_comparison",
+      "natural_language_question": "How did sales from 1 to 15 March 2025 compare with 1 to 15 February 2025, as a percentage change?",
+      "expected_answer_type": "percentage",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "(1-15 Mar total - 1-15 Feb total) / 1-15 Feb total x 100",
+      "ground_truth_definition": {
+        "op": "pct_change_revenue",
+        "params": {
+          "new": {
+            "start": "2025-03-01",
+            "end": "2025-03-15"
+          },
+          "base": {
+            "start": "2025-02-01",
+            "end": "2025-02-15"
+          }
+        }
+      },
+      "tolerance": {
+        "type": "absolute_pp",
+        "value": 0.5,
+        "rule": "correct if |answer - truth| <= 0.5 percentage points"
+      },
+      "signed_change": true,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "C01",
+      "track": "primary",
+      "category": "product",
+      "natural_language_question": "Which product sold the most units in February 2025?",
+      "expected_answer_type": "ranking",
+      "required_fields": [
+        "date",
+        "product",
+        "quantity"
+      ],
+      "date_range": {
+        "start": "2025-02-01",
+        "end": "2025-02-28"
+      },
+      "aggregation_definition": "product with the largest unit total",
+      "ground_truth_definition": {
+        "op": "top_products",
+        "params": {
+          "start": "2025-02-01",
+          "end": "2025-02-28",
+          "metric": "quantity",
+          "k": 1
+        }
+      },
+      "tolerance": {
+        "type": "normalized_first_mention",
+        "rule": "the first candidate entity named in the answer must equal the truth"
+      },
+      "signed_change": false,
+      "ranking_k": 1,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "C02",
+      "track": "primary",
+      "category": "product",
+      "natural_language_question": "What were my top 3 products by sales value from January to March 2025?",
+      "expected_answer_type": "ranking",
+      "required_fields": [
+        "date",
+        "product",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "products ranked by revenue",
+      "ground_truth_definition": {
+        "op": "top_products",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "metric": "revenue",
+          "k": 3
+        }
+      },
+      "tolerance": {
+        "type": "ordered_list",
+        "rule": "primary: exact ordered match of the 3 products"
+      },
+      "signed_change": false,
+      "ranking_k": 3,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "C03",
+      "track": "primary",
+      "category": "product",
+      "natural_language_question": "Which three products sold the most units in March 2025?",
+      "expected_answer_type": "ranking",
+      "required_fields": [
+        "date",
+        "product",
+        "quantity"
+      ],
+      "date_range": {
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "products ranked by units",
+      "ground_truth_definition": {
+        "op": "top_products",
+        "params": {
+          "start": "2025-03-01",
+          "end": "2025-03-31",
+          "metric": "quantity",
+          "k": 3
+        }
+      },
+      "tolerance": {
+        "type": "ordered_list",
+        "rule": "primary: exact ordered match of the 3 products"
+      },
+      "signed_change": false,
+      "ranking_k": 3,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "C04",
+      "track": "primary",
+      "category": "product",
+      "natural_language_question": "How many units of BIG ONION did I sell between January and March 2025?",
+      "expected_answer_type": "exact_number",
+      "required_fields": [
+        "date",
+        "product",
+        "quantity"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "sum of quantity for the named product",
+      "ground_truth_definition": {
+        "op": "product_quantity",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "product": "BIG ONION"
+        }
+      },
+      "tolerance": {
+        "type": "absolute",
+        "value": 0.0,
+        "rule": "correct only if the integer equals the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": "product selected by rule C04_product"
+    },
+    {
+      "task_id": "C05",
+      "track": "primary",
+      "category": "product",
+      "natural_language_question": "Which sold more units between January and March 2025, BIG ONION or MILK?",
+      "expected_answer_type": "comparison",
+      "required_fields": [
+        "date",
+        "product",
+        "quantity"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "larger unit total wins",
+      "ground_truth_definition": {
+        "op": "compare_products_quantity",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "products": [
+            "BIG ONION",
+            "MILK"
+          ]
+        }
+      },
+      "tolerance": {
+        "type": "normalized_first_mention",
+        "rule": "the first candidate entity named in the answer must equal the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": [
+        "BIG ONION",
+        "MILK"
+      ],
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": "products selected by rule C05_products"
+    },
+    {
+      "task_id": "C06",
+      "track": "primary",
+      "category": "product",
+      "natural_language_question": "What share of my total sales came from EGG from January to March 2025? Give a percentage.",
+      "expected_answer_type": "percentage",
+      "required_fields": [
+        "date",
+        "product",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "product revenue / total revenue x 100",
+      "ground_truth_definition": {
+        "op": "product_revenue_share",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "product": "EGG"
+        }
+      },
+      "tolerance": {
+        "type": "absolute_pp",
+        "value": 0.5,
+        "rule": "correct if |answer - truth| <= 0.5 percentage points"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": "product selected by rule C06_product"
+    },
+    {
+      "task_id": "D01",
+      "track": "primary",
+      "category": "calendar",
+      "natural_language_question": "Which day of the week brings in the most sales for me?",
+      "expected_answer_type": "categorical",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "weekday with the largest total sales over the whole period",
+      "ground_truth_definition": {
+        "op": "weekday_extreme",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "which": "max"
+        }
+      },
+      "tolerance": {
+        "type": "normalized_first_mention",
+        "rule": "the first candidate entity named in the answer must equal the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "D02",
+      "track": "primary",
+      "category": "calendar",
+      "natural_language_question": "Which day of the week is my weakest for sales?",
+      "expected_answer_type": "categorical",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "weekday with the smallest total sales over the whole period",
+      "ground_truth_definition": {
+        "op": "weekday_extreme",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "which": "min"
+        }
+      },
+      "tolerance": {
+        "type": "normalized_first_mention",
+        "rule": "the first candidate entity named in the answer must equal the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "D03",
+      "track": "primary",
+      "category": "calendar",
+      "natural_language_question": "How much did I sell on Sundays in total between January and March 2025?",
+      "expected_answer_type": "currency",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "sales = sum(quantity x unit price) of the recorded lines; GST treatment of the recorded rate is not known; summed over all Sundays",
+      "ground_truth_definition": {
+        "op": "sum_revenue_weekday",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "weekday": "Sunday"
+        }
+      },
+      "tolerance": {
+        "type": "relative",
+        "value": 0.005,
+        "min_abs": 1.0,
+        "rule": "correct if |answer - truth| <= max(0.5% of truth, INR 1)"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "D04",
+      "track": "primary",
+      "category": "calendar",
+      "natural_language_question": "On an average day that I had sales, how much did I sell between January and March 2025?",
+      "expected_answer_type": "currency",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "mean of daily totals over days with at least one sale",
+      "ground_truth_definition": {
+        "op": "mean_daily_revenue",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        }
+      },
+      "tolerance": {
+        "type": "relative",
+        "value": 0.005,
+        "min_abs": 1.0,
+        "rule": "correct if |answer - truth| <= max(0.5% of truth, INR 1)"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "F01",
+      "track": "primary",
+      "category": "exact_numeric",
+      "natural_language_question": "How many different products did I sell in January 2025?",
+      "expected_answer_type": "exact_number",
+      "required_fields": [
+        "date",
+        "product"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-01-31"
+      },
+      "aggregation_definition": "count of distinct product names",
+      "ground_truth_definition": {
+        "op": "distinct_products",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-01-31"
+        }
+      },
+      "tolerance": {
+        "type": "absolute",
+        "value": 0.0,
+        "rule": "correct only if the integer equals the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "F02",
+      "track": "primary",
+      "category": "exact_numeric",
+      "natural_language_question": "On an average day that I had sales, how many units did I sell in March 2025?",
+      "expected_answer_type": "number",
+      "required_fields": [
+        "date",
+        "quantity"
+      ],
+      "date_range": {
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "mean of daily unit totals over days with at least one sale",
+      "ground_truth_definition": {
+        "op": "mean_daily_quantity",
+        "params": {
+          "start": "2025-03-01",
+          "end": "2025-03-31"
+        }
+      },
+      "tolerance": {
+        "type": "relative",
+        "value": 0.005,
+        "min_abs": 0.5,
+        "rule": "correct if |answer - truth| <= max(0.5% of truth, 0.5)"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "F03",
+      "track": "primary",
+      "category": "exact_numeric",
+      "natural_language_question": "What was the highest total sales I made on any single day between January and March 2025?",
+      "expected_answer_type": "currency",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "maximum daily total over days in the window",
+      "ground_truth_definition": {
+        "op": "max_day_revenue",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        }
+      },
+      "tolerance": {
+        "type": "relative",
+        "value": 0.005,
+        "min_abs": 1.0,
+        "rule": "correct if |answer - truth| <= max(0.5% of truth, INR 1)"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "E01",
+      "track": "supplementary",
+      "category": "gst",
+      "natural_language_question": "How much of my sales between January and March 2025 came from items with 5% GST?",
+      "expected_answer_type": "currency",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price",
+        "gst_pct"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "sales = sum(quantity x unit price) of the recorded lines; GST treatment of the recorded rate is not known; lines whose recorded GST slab is 5%",
+      "ground_truth_definition": {
+        "op": "gst_revenue",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "gst": 5.0
+        }
+      },
+      "tolerance": {
+        "type": "relative",
+        "value": 0.005,
+        "min_abs": 1.0,
+        "rule": "correct if |answer - truth| <= max(0.5% of truth, INR 1)"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": "GST is not representable in DecisionGPT's canonical sales schema; the LLM baseline receives gst_pct only on this track."
+    },
+    {
+      "task_id": "E02",
+      "track": "supplementary",
+      "category": "gst",
+      "natural_language_question": "What percentage of my sales came from items with 18% GST?",
+      "expected_answer_type": "percentage",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price",
+        "gst_pct"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "revenue of 18% lines / total revenue x 100",
+      "ground_truth_definition": {
+        "op": "gst_share",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "gst": 18.0
+        }
+      },
+      "tolerance": {
+        "type": "absolute_pp",
+        "value": 0.5,
+        "rule": "correct if |answer - truth| <= 0.5 percentage points"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "E03",
+      "track": "supplementary",
+      "category": "gst",
+      "natural_language_question": "What percentage of my sales came from items with 0% GST?",
+      "expected_answer_type": "percentage",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price",
+        "gst_pct"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "revenue of 0% lines / total revenue x 100",
+      "ground_truth_definition": {
+        "op": "gst_share",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "gst": 0.0
+        }
+      },
+      "tolerance": {
+        "type": "absolute_pp",
+        "value": 0.5,
+        "rule": "correct if |answer - truth| <= 0.5 percentage points"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": null,
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    },
+    {
+      "task_id": "E04",
+      "track": "supplementary",
+      "category": "gst",
+      "natural_language_question": "Which GST rate brought in the most sales between January and March 2025?",
+      "expected_answer_type": "categorical",
+      "required_fields": [
+        "date",
+        "quantity",
+        "unit_price",
+        "gst_pct"
+      ],
+      "date_range": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "aggregation_definition": "GST slab with the largest total sales",
+      "ground_truth_definition": {
+        "op": "gst_argmax",
+        "params": {
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        }
+      },
+      "tolerance": {
+        "type": "normalized_first_mention",
+        "rule": "the first candidate entity named in the answer must equal the truth"
+      },
+      "signed_change": false,
+      "ranking_k": null,
+      "candidate_entities": [
+        "0%",
+        "5%",
+        "18%",
+        "28%",
+        "40%",
+        "121%"
+      ],
+      "source_dataset": "data/external/india_pos_register (evaluation data view, see view_rules)",
+      "notes": ""
+    }
+  ]
+}

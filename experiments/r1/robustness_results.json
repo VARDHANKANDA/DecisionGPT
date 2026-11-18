@@ -1,0 +1,251 @@
+{
+  "clean_subsample_mean_D_minus_B": 0.18217,
+  "curves": {
+    "adversarial": {
+      "1.0": {
+        "ci95": [
+          0.223187,
+          0.449367
+        ],
+        "delta_vs_clean": 0.156478,
+        "mean_D_minus_B": 0.338648,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "constraint_relax": {
+      "0.25": {
+        "ci95": [
+          0.129047,
+          0.288073
+        ],
+        "delta_vs_clean": 0.027615,
+        "mean_D_minus_B": 0.209785,
+        "n": 90,
+        "sign_vs_clean": "same"
+      },
+      "0.5": {
+        "ci95": [
+          0.129047,
+          0.288073
+        ],
+        "delta_vs_clean": 0.027615,
+        "mean_D_minus_B": 0.209785,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "constraint_tighten": {
+      "0.25": {
+        "ci95": [
+          0.129047,
+          0.288073
+        ],
+        "delta_vs_clean": 0.027615,
+        "mean_D_minus_B": 0.209785,
+        "n": 90,
+        "sign_vs_clean": "same"
+      },
+      "0.5": {
+        "ci95": [
+          0.129047,
+          0.288073
+        ],
+        "delta_vs_clean": 0.027615,
+        "mean_D_minus_B": 0.209785,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "contradictory_signals": {
+      "0.5": {
+        "ci95": [
+          0.088816,
+          0.259008
+        ],
+        "delta_vs_clean": -0.007464,
+        "mean_D_minus_B": 0.174706,
+        "n": 90,
+        "sign_vs_clean": "same"
+      },
+      "1.0": {
+        "ci95": [
+          0.068441,
+          0.263143
+        ],
+        "delta_vs_clean": -0.015128,
+        "mean_D_minus_B": 0.167042,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "distribution_shift": {
+      "0.3": {
+        "ci95": [
+          0.096024,
+          0.254721
+        ],
+        "delta_vs_clean": -0.007912,
+        "mean_D_minus_B": 0.174258,
+        "n": 90,
+        "sign_vs_clean": "same"
+      },
+      "0.6": {
+        "ci95": [
+          0.069036,
+          0.235193
+        ],
+        "delta_vs_clean": -0.030917,
+        "mean_D_minus_B": 0.151253,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "extreme_but_feasible": {
+      "1.0": {
+        "ci95": [
+          0.074755,
+          0.259597
+        ],
+        "delta_vs_clean": -0.012404,
+        "mean_D_minus_B": 0.169766,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "forecast_error_bias": {
+      "0.25": {
+        "ci95": [
+          0.094894,
+          0.252936
+        ],
+        "delta_vs_clean": -0.007838,
+        "mean_D_minus_B": 0.174332,
+        "n": 90,
+        "sign_vs_clean": "same"
+      },
+      "0.5": {
+        "ci95": [
+          0.069832,
+          0.241742
+        ],
+        "delta_vs_clean": -0.024309,
+        "mean_D_minus_B": 0.157861,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "input_noise": {
+      "0.25": {
+        "ci95": [
+          0.080987,
+          0.242452
+        ],
+        "delta_vs_clean": -0.020845,
+        "mean_D_minus_B": 0.161325,
+        "n": 90,
+        "sign_vs_clean": "same"
+      },
+      "0.75": {
+        "ci95": [
+          -0.017999,
+          0.10686
+        ],
+        "delta_vs_clean": -0.135862,
+        "mean_D_minus_B": 0.046308,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "missing_values": {
+      "0.2": {
+        "ci95": [
+          0.095248,
+          0.259348
+        ],
+        "delta_vs_clean": -0.003346,
+        "mean_D_minus_B": 0.178824,
+        "n": 90,
+        "sign_vs_clean": "same"
+      },
+      "0.4": {
+        "ci95": [
+          0.10538,
+          0.266043
+        ],
+        "delta_vs_clean": 0.005448,
+        "mean_D_minus_B": 0.187618,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    },
+    "uncertainty_inflation": {
+      "0.5": {
+        "ci95": [
+          0.061395,
+          0.205532
+        ],
+        "delta_vs_clean": -0.048014,
+        "mean_D_minus_B": 0.134156,
+        "n": 90,
+        "sign_vs_clean": "same"
+      },
+      "1.0": {
+        "ci95": [
+          0.124611,
+          0.276299
+        ],
+        "delta_vs_clean": 0.018714,
+        "mean_D_minus_B": 0.200884,
+        "n": 90,
+        "sign_vs_clean": "same"
+      }
+    }
+  },
+  "n_errors": 0,
+  "n_runs": 1620,
+  "perturbation_version": "eval_perturbations_v1",
+  "primary_conclusion_changes": false,
+  "scope": {
+    "n_scenarios": 30,
+    "partition": "locked_test",
+    "scenario_ids": [
+      "r1_asymmetric_risk__0000",
+      "r1_asymmetric_risk__0004",
+      "r1_asymmetric_risk__0008",
+      "r1_asymmetric_risk__0012",
+      "r1_asymmetric_risk__0016",
+      "r1_asymmetric_risk__0020",
+      "r1_asymmetric_risk__0024",
+      "r1_asymmetric_risk__0028",
+      "r1_asymmetric_risk__0032",
+      "r1_capacity_bound__0002",
+      "r1_capacity_bound__0006",
+      "r1_capacity_bound__0010",
+      "r1_capacity_bound__0014",
+      "r1_capacity_bound__0018",
+      "r1_capacity_bound__0022",
+      "r1_capacity_bound__0026",
+      "r1_capacity_bound__0030",
+      "r1_delayed_price__0000",
+      "r1_delayed_price__0004",
+      "r1_delayed_price__0008",
+      "r1_delayed_price__0012",
+      "r1_delayed_price__0016",
+      "r1_delayed_price__0020",
+      "r1_delayed_price__0024",
+      "r1_delayed_price__0028",
+      "r1_delayed_price__0032",
+      "r1_demand_saturation__0002",
+      "r1_demand_saturation__0006",
+      "r1_demand_saturation__0010",
+      "r1_demand_saturation__0014"
+    ],
+    "seeds": [
+      20260906,
+      20260907,
+      20260908
+    ]
+  },
+  "status": "complete"
+}

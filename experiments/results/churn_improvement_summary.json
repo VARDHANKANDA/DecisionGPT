@@ -1,0 +1,80 @@
+{
+  "summary_title": "Customer Churn Prediction & Probability Calibration Improvement Summary",
+  "timestamp_utc": "2026-10-23T15:25:00Z",
+  "dataset": {
+    "name": "churn_training_data.csv",
+    "provenance": "Synthetic platform customer transaction and engagement profiles",
+    "data_type": "SYNTHETIC_PLATFORM_DATA",
+    "total_accounts": 6000,
+    "feature_count": 15,
+    "base_churn_rate": 0.4547,
+    "caveat": "Evaluated on synthetic platform accounts. Results validate probability calibration methods but cannot be generalized as empirical customer behavior."
+  },
+  "experimental_protocol": {
+    "train_val_test_split": "60% train (3,600) / 20% validation (1,200) / 20% holdout test (1,200)",
+    "cross_validation_seeds": [42, 43, 44, 45, 46],
+    "selection_criterion": "Predefined validation ROC-AUC on development fold",
+    "calibration_protocol": "Platt sigmoid scaling fitted strictly on out-of-fold validation margins; zero leakage into test set",
+    "binning_method": "10-bin equal-width Expected Calibration Error (ECE) and Brier score"
+  },
+  "models_evaluated": [
+    {
+      "model": "Decision Tree (Uncalibrated Baseline)",
+      "test_roc_auc_mean": 0.7635,
+      "test_roc_auc_std": 0.0097,
+      "test_f1_mean": 0.6947,
+      "test_f1_std": 0.0136,
+      "test_ece_mean": 0.0590,
+      "test_ece_std": 0.0129,
+      "status": "Tree Baseline"
+    },
+    {
+      "model": "Random Forest (Uncalibrated)",
+      "test_roc_auc_mean": 0.8042,
+      "test_roc_auc_std": 0.0119,
+      "test_f1_mean": 0.7223,
+      "test_f1_std": 0.0086,
+      "test_ece_mean": 0.0434,
+      "test_ece_std": 0.0086,
+      "brier_score_seed42": 0.1770,
+      "status": "Ensemble Baseline"
+    },
+    {
+      "model": "Logistic Regression (L2 Regularized)",
+      "test_roc_auc_mean": 0.8167,
+      "test_roc_auc_std": 0.0103,
+      "test_f1_mean": 0.7259,
+      "test_f1_std": 0.0132,
+      "test_ece_mean": 0.0355,
+      "test_ece_std": 0.0042,
+      "brier_score_seed42": 0.1720,
+      "status": "Discrimination Winner (ROC-AUC 0.8167)"
+    },
+    {
+      "model": "Calibrated LinearSVC (Platt Sigmoid Scaling)",
+      "test_roc_auc_mean": 0.8169,
+      "test_roc_auc_std": 0.0103,
+      "test_f1_mean": 0.7254,
+      "test_f1_std": 0.0150,
+      "test_ece_mean": 0.0315,
+      "test_ece_std": 0.0032,
+      "brier_score_seed42": 0.1719,
+      "status": "Calibration Winner (Minimizes ECE to 0.0315)"
+    },
+    {
+      "model": "Voting Blend Top-3",
+      "test_roc_auc_mean": 0.8168,
+      "test_roc_auc_std": 0.0108,
+      "test_f1_mean": 0.7244,
+      "test_f1_std": 0.0116,
+      "test_ece_mean": 0.0331,
+      "test_ece_std": 0.0064,
+      "status": "Ensemble Comparison"
+    }
+  ],
+  "key_findings": [
+    "Calibrated LinearSVC reduces Expected Calibration Error (ECE) from 0.0434 (Random Forest) to 0.0315 (-27.4% relative error reduction) while achieving highest 5-seed ROC-AUC (0.8169).",
+    "Logistic Regression achieves robust linear discrimination (ROC-AUC 0.8167 +- 0.0103, F1 0.7259 +- 0.0132) with low computational training latency (0.188s vs 0.787s for Random Forest).",
+    "All churn results reflect synthetic platform customer records because Indian retail POS registers lack continuous customer tracking identifiers; claims of real customer retention remain unsupported."
+  ]
+}

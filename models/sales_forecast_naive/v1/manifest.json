@@ -1,0 +1,16 @@
+{
+  "model_name": "sales_forecast_naive",
+  "model_type": "forecasting_naive",
+  "version": "v1",
+  "dataset_version": "platform-forecasting-v1",
+  "feature_version": "forecasting_v1",
+  "parameters": {},
+  "metrics": {
+    "mae": 24.659669811320754,
+    "rmse": 38.27514896511687,
+    "mape": 15.464740828127482
+  },
+  "artifact_path": "models/sales_forecast_naive/v1/model.joblib",
+  "trained_at": "2026-08-30T14:09:03.628460+00:00",
+  "random_seed": 42
+}

@@ -1,0 +1,65 @@
+{
+  "system": "decisiongpt",
+  "question": "How many units did I sell in February 2025?",
+  "answer": "I don't have enough data to answer that reliably. Try asking why a number changed, whether to change price or marketing spend, what to focus on, or why a specific recommendation was made.",
+  "intent": "unrecognized",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "legacy_router",
+  "notice": "Advanced question understanding is temporarily unavailable, so this answer comes from the standard assistant.",
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.03914549993351102,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-jev",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791911508.377374,
+      "ok": true,
+      "latency_s": 0.0004977999487891793,
+      "model_returned": "mock-jev-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 0,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1100,
+    "output_tokens": 0,
+    "llm_latency_s": 0.0004977999487891793
+  },
+  "audit": {
+    "fallback_reason": "malformed_output",
+    "request_id": "0aac4a8fec044089ad17518a182827db",
+    "business_id": "bfa31274-f972-48dd-8f5b-f94da16d5874",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "typesafe-jev",
+      "model": "mock-jev",
+      "response_model": null,
+      "usage": null,
+      "attempts": 1,
+      "error": "malformed_output"
+    },
+    "interpreter_decisions": {},
+    "validation": {
+      "ok": false,
+      "errors": [],
+      "returned_fields": []
+    },
+    "outcome": "fallback",
+    "total_latency_s": 0.025
+  }
+}

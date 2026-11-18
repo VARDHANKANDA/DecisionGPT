@@ -1,0 +1,28 @@
+{
+  "experiment_type": "churn",
+  "dataset_version": "platform-churn-v1",
+  "random_seed": 42,
+  "train_rows": 4800,
+  "test_rows": 1200,
+  "results": {
+    "logistic_regression": {
+      "precision": 0.7075664621676891,
+      "recall": 0.6336996336996337,
+      "f1": 0.6685990338164252,
+      "roc_auc": 0.7977982771560754
+    },
+    "random_forest": {
+      "precision": 0.7124735729386892,
+      "recall": 0.6172161172161172,
+      "f1": 0.661432777232581,
+      "roc_auc": 0.792751845504139
+    },
+    "xgboost": {
+      "precision": 0.6989690721649484,
+      "recall": 0.6208791208791209,
+      "f1": 0.6576139670223085,
+      "roc_auc": 0.7921763506625892
+    }
+  },
+  "timestamp": "2026-08-29T07:25:08.908680+00:00"
+}

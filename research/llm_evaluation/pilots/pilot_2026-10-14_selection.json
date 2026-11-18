@@ -1,0 +1,24 @@
+{
+  "record_type": "pilot_selection",
+  "written_before_run": true,
+  "date": "2026-10-14",
+  "purpose": "First live measurement of the Jev analytics path on frozen tasks, kept deliberately small because the provider's credit unit is undefined and the account balance cannot be inspected.",
+  "frozen_spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "selection_rule": "For each of the six frozen task categories, take the first task in the frozen spec order (lowest task_id). The rule is applied to task metadata only; no model output was seen and none was used to choose.",
+  "task_ids": ["A01", "B01", "C01", "D01", "F01", "E01"],
+  "categories": {"A01": "aggregation", "B01": "time_comparison", "C01": "product", "D01": "calendar", "F01": "exact_numeric", "E01": "gst (supplementary track: refusal is the correct behaviour; excluded from accuracy)"},
+  "repeats": 1,
+  "condition": "asof",
+  "max_requests": 6,
+  "planned_requests": 6,
+  "budget_basis": {
+    "requests_already_made_before_this_run": 2,
+    "measured_input_tokens_per_request": 1345,
+    "estimated_input_tokens": 8070,
+    "estimated_usd_at_list_price": 0.00034,
+    "list_price_usd_per_million_input_tokens": 0.042,
+    "credit_unit": "not defined by the provider; balance not inspectable; no credit estimate is made"
+  },
+  "not_attempted": "the remaining 21 frozen tasks and repeats 2-5; the reference tool-use baseline B2 cannot run on Jev",
+  "interpretation_limits": "n=5 primary tasks, one repeat each: a pilot that shows whether the live path works end to end on each task family. It is not a benchmark result, not an accuracy estimate, and supports no comparison with any other model."
+}

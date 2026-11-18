@@ -1,0 +1,44 @@
+{
+  "record_type": "pilot_stage_execution",
+  "executed": "2026-10-14",
+  "proposal_file": "research/llm_evaluation/pilots/openai_smoke_PROPOSAL_not_executed.json",
+  "proposal_sha256_prefix": "4e5e99e75fcd799f",
+  "run_id": "run_20261014T172246Z_f320dc9f",
+  "provider": "openai",
+  "model_requested": "gpt-5-mini",
+  "model_served": "gpt-5-mini-2025-08-07",
+  "run_type": "partial_pilot",
+  "tasks_attempted": [
+    "A01",
+    "B01",
+    "C01",
+    "D01",
+    "F01",
+    "E01"
+  ],
+  "repeats": 1,
+  "request_cap": 12,
+  "provider_requests": 11,
+  "request_breakdown": {
+    "classification": 6,
+    "validated_explanation": 5
+  },
+  "attempt_errors": 0,
+  "primary": {
+    "correct": 5,
+    "attempts": 5
+  },
+  "supplementary_gst": {
+    "E01": "asked an unnecessary clarifying question ('Which product do you mean?'); outcome 'other'; no explanation requested"
+  },
+  "input_tokens": 8089,
+  "output_tokens": 3924,
+  "estimated_cost_usd_at_list_price": 0.00987,
+  "price_basis": "gpt-5-mini $0.25 / $2.00 per million input / output tokens (pricing.json, retrieved 2026-10-14); an estimate, not a billing record",
+  "separate_connectivity_check": "one request through scripts/verify_openai_live.py (1,214 in / 387 out) before this run; not part of the evaluation",
+  "findings": [
+    "The explanation step restated the verified fact and the caveat in near-identical words, so 5 of 5 shown answers repeat a sentence. It passed the number / causal-claim guard but is redundant: a duplicate-sentence guard or disabling ANALYTICS_EXPLAIN_ENABLED is the remedy. No code was changed after this run.",
+    "The GST question received a clarifying question rather than the 'unsupported' route, as one GST task did in the earlier Jev stage-2 run."
+  ],
+  "note": "Separate record from the Jev runs, which were not re-run or modified. One repeat per task is not the frozen five-repeat protocol and is not an accuracy estimate."
+}

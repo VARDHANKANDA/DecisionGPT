@@ -1,0 +1,197 @@
+{
+  "system": "decisiongpt",
+  "question": "By what percentage did sales change in March 2025 compared with February 2025?",
+  "answer": "Sales in March 2025 were ₹15,08,684, compared with ₹13,86,969 in February 2025 — 8.78% higher (a difference of ₹1,21,715). This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for March 2025 (19,907 records)"
+  ],
+  "details_keys": [
+    "change_percent",
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.3612144000362605,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-jev",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791911511.2697139,
+      "ok": true,
+      "latency_s": 0.0005276000592857599,
+      "model_returned": "mock-jev-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 0,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1100,
+    "output_tokens": 0,
+    "llm_latency_s": 0.0005276000592857599
+  },
+  "audit": {
+    "request_id": "a9892371b3344efd83c7d005c3e06bd7",
+    "business_id": "bfa31274-f972-48dd-8f5b-f94da16d5874",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "typesafe-jev",
+      "model": "mock-jev",
+      "response_model": "mock-jev-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "compare_periods",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "compare_periods",
+        "metric": "revenue",
+        "periods": [
+          {
+            "kind": "calendar",
+            "unit": "month",
+            "year": 2025,
+            "month": 3
+          },
+          {
+            "kind": "calendar",
+            "unit": "month",
+            "year": 2025,
+            "month": 2
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "compare_periods",
+        "metric": "revenue",
+        "period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 3,
+          "quarter": null
+        },
+        "comparison_period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 2,
+          "quarter": null
+        },
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.3,
+    "verified_result": {
+      "period": {
+        "start": "2025-03-01",
+        "end": "2025-03-31",
+        "label": "March 2025"
+      },
+      "n_records": 19907,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.336
+  }
+}

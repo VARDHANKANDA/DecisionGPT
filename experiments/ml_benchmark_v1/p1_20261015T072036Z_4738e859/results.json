@@ -1,0 +1,252 @@
+{
+  "m5_ca1_subset": {
+    "fixed_effects_all_days": {
+      "identified": true,
+      "coefficient_log_price": -0.8343179022645842,
+      "std_error_item_clustered": 0.15926120610198827,
+      "ci95": [
+        -1.1464698662244812,
+        -0.5221659383046873
+      ],
+      "n_obs": 584346,
+      "n_items": 350,
+      "within_item_sd_log_price": 0.0485010814805992,
+      "specification": "log(1+units) ~ log(price) + item FE + day-of-week + month dummies",
+      "reading": "association only: promotions, availability and seasonality are not randomised; not a causal elasticity"
+    },
+    "fixed_effects_positive_sales_days": {
+      "identified": true,
+      "coefficient_log_price": -1.2292234224629595,
+      "std_error_item_clustered": 0.21171183682232322,
+      "ci95": [
+        -1.644178622634713,
+        -0.8142682222912059
+      ],
+      "n_obs": 266022,
+      "n_items": 350,
+      "within_item_sd_log_price": 0.04596745595353148,
+      "specification": "log(units) on positive-sales days ~ log(price) + item FE + day-of-week + month dummies",
+      "reading": "association only: promotions, availability and seasonality are not randomised; not a causal elasticity"
+    },
+    "price_variation": {
+      "share_of_item_days_with_price_change": 0.0012552301255230125,
+      "items_with_any_price_change": 269,
+      "n_items": 350
+    },
+    "model_counterfactuals": {
+      "linear": {
+        "-10%": {
+          "price_change_pct": -10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5745680185126645,
+          "mean_predicted_units_cf": 1.7774679880483106,
+          "mean_change_pct_of_total": 12.886072062311118,
+          "share_rows_decrease": 0.0,
+          "share_rows_increase": 0.9996938775510205,
+          "share_rows_unchanged": 0.0003061224489795918,
+          "mean_row_pct_change_where_base_positive": 68.36557841994404
+        },
+        "+10%": {
+          "price_change_pct": 10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5745680185126645,
+          "mean_predicted_units_cf": 1.5897640637867818,
+          "mean_change_pct_of_total": 0.9650929712437324,
+          "share_rows_decrease": 0.1983673469387755,
+          "share_rows_increase": 0.7902040816326531,
+          "share_rows_unchanged": 0.011428571428571429,
+          "mean_row_pct_change_where_base_positive": 7.503497129952026
+        },
+        "+25%": {
+          "price_change_pct": 25,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5745680185126645,
+          "mean_predicted_units_cf": 1.4525732783787055,
+          "mean_change_pct_of_total": -7.747822812328867,
+          "share_rows_decrease": 0.9839795918367347,
+          "share_rows_increase": 0.0,
+          "share_rows_unchanged": 0.016020408163265307,
+          "mean_row_pct_change_where_base_positive": -22.090250234229536
+        }
+      },
+      "hist_gradient_boosting": {
+        "-10%": {
+          "price_change_pct": -10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.6055933208415794,
+          "mean_predicted_units_cf": 1.7653317851664883,
+          "mean_change_pct_of_total": 9.948874490906658,
+          "share_rows_decrease": 0.1273469387755102,
+          "share_rows_increase": 0.8712244897959184,
+          "share_rows_unchanged": 0.0014285714285714286,
+          "mean_row_pct_change_where_base_positive": 44.852725779893845
+        },
+        "+10%": {
+          "price_change_pct": 10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.6055933208415794,
+          "mean_predicted_units_cf": 1.6363194529533178,
+          "mean_change_pct_of_total": 1.9136933190300762,
+          "share_rows_decrease": 0.17408163265306123,
+          "share_rows_increase": 0.8235714285714286,
+          "share_rows_unchanged": 0.002346938775510204,
+          "mean_row_pct_change_where_base_positive": 34.53694822045749
+        },
+        "+25%": {
+          "price_change_pct": 25,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.6055933208415794,
+          "mean_predicted_units_cf": 1.666735468154147,
+          "mean_change_pct_of_total": 3.80807185224959,
+          "share_rows_decrease": 0.6980612244897959,
+          "share_rows_increase": 0.3019387755102041,
+          "share_rows_unchanged": 0.0,
+          "mean_row_pct_change_where_base_positive": 449.55215851750296
+        }
+      },
+      "xgboost": {
+        "-10%": {
+          "price_change_pct": -10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.6204616855796692,
+          "mean_predicted_units_cf": 1.7152708214620243,
+          "mean_change_pct_of_total": 5.850748383997736,
+          "share_rows_decrease": 0.1689795918367347,
+          "share_rows_increase": 0.8291836734693877,
+          "share_rows_unchanged": 0.001836734693877551,
+          "mean_row_pct_change_where_base_positive": 45.24995355163562
+        },
+        "+10%": {
+          "price_change_pct": 10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.6204616855796692,
+          "mean_predicted_units_cf": 1.7139442597131949,
+          "mean_change_pct_of_total": 5.768885186574781,
+          "share_rows_decrease": 0.15091836734693878,
+          "share_rows_increase": 0.8467346938775511,
+          "share_rows_unchanged": 0.002346938775510204,
+          "mean_row_pct_change_where_base_positive": 46.43351835410499
+        },
+        "+25%": {
+          "price_change_pct": 25,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.6204616855796692,
+          "mean_predicted_units_cf": 2.063766755942883,
+          "mean_change_pct_of_total": 27.35671409624445,
+          "share_rows_decrease": 0.5591836734693878,
+          "share_rows_increase": 0.44081632653061226,
+          "share_rows_unchanged": 0.0,
+          "mean_row_pct_change_where_base_positive": 496.8243377908344
+        }
+      },
+      "lightgbm": {
+        "-10%": {
+          "price_change_pct": -10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5864231477493012,
+          "mean_predicted_units_cf": 1.6263185959888504,
+          "mean_change_pct_of_total": 2.5148049747099304,
+          "share_rows_decrease": 0.32571428571428573,
+          "share_rows_increase": 0.6742857142857143,
+          "share_rows_unchanged": 0.0,
+          "mean_row_pct_change_where_base_positive": 38.69617860915862
+        },
+        "+10%": {
+          "price_change_pct": 10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5864231477493012,
+          "mean_predicted_units_cf": 1.5755462282722295,
+          "mean_change_pct_of_total": -0.6856253637311684,
+          "share_rows_decrease": 0.4269387755102041,
+          "share_rows_increase": 0.5730612244897959,
+          "share_rows_unchanged": 0.0,
+          "mean_row_pct_change_where_base_positive": 16.42314067102025
+        },
+        "+25%": {
+          "price_change_pct": 25,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5864231477493012,
+          "mean_predicted_units_cf": 1.119050356944933,
+          "mean_change_pct_of_total": -29.460789920232934,
+          "share_rows_decrease": 0.5459183673469388,
+          "share_rows_increase": 0.45408163265306123,
+          "share_rows_unchanged": 0.0,
+          "mean_row_pct_change_where_base_positive": 55.80834806632002
+        }
+      },
+      "catboost": {
+        "-10%": {
+          "price_change_pct": -10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5802701200341895,
+          "mean_predicted_units_cf": 1.7666237019809523,
+          "mean_change_pct_of_total": 11.792514430553878,
+          "share_rows_decrease": 0.13438775510204082,
+          "share_rows_increase": 0.8656122448979592,
+          "share_rows_unchanged": 0.0,
+          "mean_row_pct_change_where_base_positive": 77.1840499103787
+        },
+        "+10%": {
+          "price_change_pct": 10,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5802701200341895,
+          "mean_predicted_units_cf": 1.6609575481535388,
+          "mean_change_pct_of_total": 5.105926328443378,
+          "share_rows_decrease": 0.1836734693877551,
+          "share_rows_increase": 0.8163265306122449,
+          "share_rows_unchanged": 0.0,
+          "mean_row_pct_change_where_base_positive": 62.182728065047975
+        },
+        "+25%": {
+          "price_change_pct": 25,
+          "n_rows": 9800,
+          "mean_predicted_units_base": 1.5802701200341895,
+          "mean_predicted_units_cf": 1.6081372685928517,
+          "mean_change_pct_of_total": 1.7634420979913998,
+          "share_rows_decrease": 0.5753061224489796,
+          "share_rows_increase": 0.4246938775510204,
+          "share_rows_unchanged": 0.0,
+          "mean_row_pct_change_where_base_positive": 436.83950940831215
+        }
+      }
+    }
+  },
+  "platform_synthetic": {
+    "data": {
+      "rows": 29200,
+      "series": 40,
+      "within_series_price_cv_mean": 0.03339379213474575,
+      "distinct_prices_per_series_median": 2,
+      "pooled_corr_price_units": 0.10339593307921241,
+      "within_series_loglog_slope_ols": -1.339954873277611
+    },
+    "production_xgboost_v1_counterfactuals_on_training_file_rows": {
+      "-10%": {
+        "mean_change_pct_of_total": -0.044948665877893056,
+        "share_rows_decrease": 0.22111823361823363,
+        "share_rows_increase": 0.3647792022792023,
+        "share_rows_unchanged": 0.41410256410256413,
+        "n_rows": 28080
+      },
+      "+10%": {
+        "mean_change_pct_of_total": 0.039950851534671046,
+        "share_rows_decrease": 0.2676994301994302,
+        "share_rows_increase": 0.3014957264957265,
+        "share_rows_unchanged": 0.4308048433048433,
+        "n_rows": 28080
+      },
+      "+25%": {
+        "mean_change_pct_of_total": 0.2620381980064058,
+        "share_rows_decrease": 0.34074074074074073,
+        "share_rows_increase": 0.42443019943019944,
+        "share_rows_unchanged": 0.23482905982905983,
+        "n_rows": 28080
+      }
+    }
+  },
+  "reading": [
+    "Fixed-effects coefficients are associations (promotions, availability and seasonality are not randomised).",
+    "Model counterfactuals describe the fitted model; a model trained without identifying price variation has no reliable price response.",
+    "No elasticity is imposed and no sign is forced."
+  ]
+}

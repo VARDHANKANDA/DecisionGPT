@@ -1,0 +1,160 @@
+{
+  "system": "decisiongpt",
+  "question": "By what percentage did sales change in March 2025 compared with February 2025?",
+  "answer": "Sales in March 2025 were ₹15,08,684, compared with ₹13,86,969 in February 2025 — 8.78% higher (a difference of ₹1,21,715). This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for March 2025 (19,907 records)"
+  ],
+  "details_keys": [
+    "change_percent",
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.39078349999908824,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 700,
+      "temperature": 0,
+      "ts": 1791462463.2278056,
+      "ok": true,
+      "latency_s": 0.0005075999943073839,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 1200,
+      "output_tokens": 90,
+      "usage_raw": {
+        "prompt_tokens": 1200,
+        "completion_tokens": 90,
+        "total_tokens": 1290
+      },
+      "attempts": 1
+    },
+    {
+      "role": "explainer",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 300,
+      "temperature": 0,
+      "ts": 1791462463.5708969,
+      "ok": true,
+      "latency_s": 0.00035090000892523676,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 350,
+      "output_tokens": 40,
+      "usage_raw": {
+        "prompt_tokens": 350,
+        "completion_tokens": 40,
+        "total_tokens": 390
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 2,
+    "n_errors": 0,
+    "input_tokens": 1550,
+    "output_tokens": 130,
+    "llm_latency_s": 0.0008585000032326207
+  },
+  "audit": {
+    "request_id": "f4759835278f460dbaa110b9174a0d0a",
+    "business_id": "5712321a-0cc3-4249-8152-498cc3bc61d5",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 1200,
+        "output_tokens": 90
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "query",
+        "route"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "compare_periods",
+        "metric": "revenue",
+        "period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 3,
+          "quarter": null
+        },
+        "comparison_period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 2,
+          "quarter": null
+        },
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.343,
+    "verified_result": {
+      "period": {
+        "start": "2025-03-01",
+        "end": "2025-03-31",
+        "label": "March 2025"
+      },
+      "n_records": 19907,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_call": {
+      "latency_s": 0.0,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 350,
+        "output_tokens": 40
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "explanation_rejected": {},
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.373
+  }
+}

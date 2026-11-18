@@ -1,0 +1,183 @@
+{
+  "system": "decisiongpt",
+  "question": "Which three products sold the most units in March 2025?",
+  "answer": "For March 2025, ranked by units sold (highest first): 1. EGG (10,905), 2. KADA MUTTA (2,470), 3. MILK (1,997). This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for March 2025 (10,060 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.830099800019525,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "api.typesafe.ai",
+      "model_requested": "jev-latest",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791956628.3310442,
+      "ok": true,
+      "latency_s": 0.5944861999014392,
+      "model_returned": "jev-1.13.0",
+      "input_tokens": 1347,
+      "output_tokens": 451,
+      "usage_raw": {
+        "input_tokens": 1347,
+        "output_tokens": 451
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1347,
+    "output_tokens": 451,
+    "llm_latency_s": 0.5944861999014392
+  },
+  "audit": {
+    "request_id": "2a84f31018584b7682180f4dc153dbc9",
+    "business_id": "03f9a0fe-2d2b-49bb-b52d-77b2095d6b78",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.595,
+      "provider": "typesafe-jev",
+      "model": "jev-latest",
+      "response_model": "jev-1.13.0",
+      "usage": {
+        "input_tokens": 1347,
+        "output_tokens": 451
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 1.0
+        },
+        "operation": {
+          "value": "ranking",
+          "confidence": 1.0
+        },
+        "metric": {
+          "value": "units",
+          "confidence": 1.0
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 1.0
+        },
+        "group_by": {
+          "value": "product",
+          "confidence": 0.92
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 1.0
+        },
+        "named_products": {
+          "value": 0.32,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.02,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "other",
+          "confidence": 0.37
+        },
+        "missing_item": {
+          "value": "other",
+          "confidence": 0.76
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "ranking",
+        "metric": "units",
+        "periods": [
+          {
+            "kind": "calendar",
+            "unit": "month",
+            "year": 2025,
+            "month": 3
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "units",
+        "period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 3,
+          "quarter": null
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "product",
+        "direction": "desc",
+        "limit": 3,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.177,
+    "verified_result": {
+      "period": {
+        "start": "2025-03-01",
+        "end": "2025-03-31",
+        "label": "March 2025"
+      },
+      "n_records": 10060,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.805
+  }
+}

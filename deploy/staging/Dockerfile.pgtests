@@ -1,0 +1,12 @@
+# Test runner for the PostgreSQL-specific suite on LINUX, against the compose stack's postgres:15-alpine server (not part of any shipped image).
+#   docker build -f deploy/staging/Dockerfile.pgtests -t decisiongpt/pgtests:local .
+#   docker run --rm --network decisiongpt_db -v "$PWD":/repo -e DECISIONGPT_PG_ADMIN_URL=postgresql+psycopg://<superuser>:<password>@postgres:5432/postgres \
+#       decisiongpt/pgtests:local python -m pytest tests/postgres -q -rs
+# The suite creates and drops its own throwaway databases and roles; it never touches the application's database.
+FROM python:3.12-slim
+ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/repo/backend:/repo
+# psql applies deploy/postgres/app-role.sql exactly as a deployment would; libgomp is the OpenMP runtime xgboost / scikit-learn load
+RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client libgomp1 && rm -rf /var/lib/apt/lists/*
+COPY backend/requirements.txt /tmp/requirements.txt
+RUN pip install --only-binary=:all: -r /tmp/requirements.txt
+WORKDIR /repo

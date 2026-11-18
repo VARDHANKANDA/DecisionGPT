@@ -1,0 +1,32 @@
+# Example TLS-terminating reverse proxy for DecisionGPT (Caddy 2), derived from deploy/staging/Caddyfile.staging, which was exercised against a running
+# stack (docs/STAGING_VERIFICATION.md). Two things differ from that tested file and are NOT verified: this uses Caddy's automatic public
+# certificates (the staging file uses a local CA, `tls internal`), and ports 80/443 are assumed public. Adapt and verify it in your own environment.
+#
+# The application does not provide TLS. Whatever terminates it must:
+#   * serve the web application and the API over https only (HSTS is sent by the API and web server in hardened environments and is honoured only over https);
+#   * give the API the real client address: Caddy's reverse_proxy replaces X-Forwarded-For with the connecting client's address unless you configure
+#     `trusted_proxies` in Caddy; the API must list THIS proxy's address (exactly) in TRUSTED_PROXIES, otherwise sign-in rate limits apply to all clients
+#     together. Do not publish the backend port: a direct connection from an address that is not the proxy cannot choose its own rate-limit bucket;
+#   * limit request size (below) because the API only bounds uploads and individual fields.
+#
+# FRONTEND_ORIGIN must equal the https origin served here, and NEXT_PUBLIC_API_BASE_URL (a build argument) must be that origin plus /api/v1.
+
+app.example.com {
+	encode zstd gzip
+	request_body {
+		max_size 30MB
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		-Server
+		-Via
+	}
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+	handle {
+		reverse_proxy frontend:3000
+	}
+}

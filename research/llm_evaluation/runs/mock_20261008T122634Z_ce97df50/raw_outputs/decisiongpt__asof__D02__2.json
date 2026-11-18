@@ -1,0 +1,147 @@
+{
+  "system": "decisiongpt",
+  "question": "Which day of the week is my weakest for sales?",
+  "answer": "For all your recorded sales (1 January 2025 to 31 March 2025), Sunday had the lowest sales: ₹3,19,445. These are totals per weekday across the whole period, so a weekday that occurs more often has more days adding up. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for all your recorded sales (1 January 2025 to 31 March 2025) (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.535037800000282,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 700,
+      "temperature": 0,
+      "ts": 1791462490.9991848,
+      "ok": true,
+      "latency_s": 0.00042889999167528003,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 1200,
+      "output_tokens": 90,
+      "usage_raw": {
+        "prompt_tokens": 1200,
+        "completion_tokens": 90,
+        "total_tokens": 1290
+      },
+      "attempts": 1
+    },
+    {
+      "role": "explainer",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 300,
+      "temperature": 0,
+      "ts": 1791462491.4882443,
+      "ok": true,
+      "latency_s": 0.0006196999893290922,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 350,
+      "output_tokens": 40,
+      "usage_raw": {
+        "prompt_tokens": 350,
+        "completion_tokens": 40,
+        "total_tokens": 390
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 2,
+    "n_errors": 0,
+    "input_tokens": 1550,
+    "output_tokens": 130,
+    "llm_latency_s": 0.0010485999810043722
+  },
+  "audit": {
+    "request_id": "c0efe7462c484d55bbf3899856cbdcf2",
+    "business_id": "5712321a-0cc3-4249-8152-498cc3bc61d5",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.0,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 1200,
+        "output_tokens": 90
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "query",
+        "route"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "revenue",
+        "period": {
+          "kind": "all_time"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "weekday",
+        "direction": "asc",
+        "limit": 1,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.489,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "all your recorded sales (1 January 2025 to 31 March 2025)"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_call": {
+      "latency_s": 0.001,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 350,
+        "output_tokens": 40
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "explanation_rejected": {},
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.516
+  }
+}

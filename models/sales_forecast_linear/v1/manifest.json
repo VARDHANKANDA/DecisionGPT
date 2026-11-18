@@ -1,0 +1,16 @@
+{
+  "model_name": "sales_forecast_linear",
+  "model_type": "forecasting_linear",
+  "version": "v1",
+  "dataset_version": "platform-forecasting-v1",
+  "feature_version": "forecasting_v1",
+  "parameters": {},
+  "metrics": {
+    "mae": 17.29126388372856,
+    "rmse": 25.51122770712597,
+    "mape": 12.489406914138296
+  },
+  "artifact_path": "models/sales_forecast_linear/v1/model.joblib",
+  "trained_at": "2026-08-30T14:09:03.647907+00:00",
+  "random_seed": 42
+}

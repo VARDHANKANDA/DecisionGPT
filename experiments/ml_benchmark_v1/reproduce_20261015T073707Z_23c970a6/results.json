@@ -1,0 +1,179 @@
+{
+  "forecasting_platform_synthetic": {
+    "naive": {
+      "recomputed": {
+        "mae": 24.659669811320754,
+        "rmse": 38.27514896511687,
+        "mape": 15.464740828127482
+      },
+      "stored": {
+        "mae": 24.659669811320754,
+        "rmse": 38.27514896511687,
+        "mape": 15.464740828127482
+      },
+      "max_abs_diff": 0.0
+    },
+    "linear": {
+      "recomputed": {
+        "mae": 17.29126388372856,
+        "rmse": 25.51122770712597,
+        "mape": 12.489406914138296
+      },
+      "stored": {
+        "mae": 17.29126388372856,
+        "rmse": 25.51122770712597,
+        "mape": 12.489406914138296
+      },
+      "max_abs_diff": 0.0
+    },
+    "xgboost": {
+      "recomputed": {
+        "mae": 15.13885516603038,
+        "rmse": 21.863057200107395,
+        "mape": 10.296922032515052
+      },
+      "stored": {
+        "mae": 15.13885516603038,
+        "rmse": 21.863057200107395,
+        "mape": 10.296922032515052
+      },
+      "max_abs_diff": 0.0
+    }
+  },
+  "churn_platform_synthetic": {
+    "logistic_regression": {
+      "recomputed": {
+        "precision": 0.7075664621676891,
+        "recall": 0.6336996336996337,
+        "f1": 0.6685990338164252,
+        "roc_auc": 0.7977982771560754
+      },
+      "stored": {
+        "precision": 0.7075664621676891,
+        "recall": 0.6336996336996337,
+        "f1": 0.6685990338164252,
+        "roc_auc": 0.7977982771560754
+      },
+      "max_abs_diff": 0.0
+    },
+    "random_forest": {
+      "recomputed": {
+        "precision": 0.7124735729386892,
+        "recall": 0.6172161172161172,
+        "f1": 0.661432777232581,
+        "roc_auc": 0.792751845504139
+      },
+      "stored": {
+        "precision": 0.7124735729386892,
+        "recall": 0.6172161172161172,
+        "f1": 0.661432777232581,
+        "roc_auc": 0.792751845504139
+      },
+      "max_abs_diff": 0.0
+    },
+    "xgboost": {
+      "recomputed": {
+        "precision": 0.6989690721649484,
+        "recall": 0.6208791208791209,
+        "f1": 0.6576139670223085,
+        "roc_auc": 0.7921763506625892
+      },
+      "stored": {
+        "precision": 0.6989690721649484,
+        "recall": 0.6208791208791209,
+        "f1": 0.6576139670223085,
+        "roc_auc": 0.7921763506625892
+      },
+      "max_abs_diff": 0.0
+    }
+  },
+  "model_comparison": {
+    "pos_daily_revenue": {
+      "stored_run": "mc_20261014T070438Z_pos_daily_revenue_ac8b32c9",
+      "models": {
+        "linear_regression": {
+          "recomputed_test_rmse": 22137.641572124874,
+          "stored_test_rmse": 22137.641572124874,
+          "recomputed_cv_rmse": 9979.009152429528,
+          "stored_cv_rmse": 9979.009152429528,
+          "max_abs_diff": 0.0
+        },
+        "ridge_regression": {
+          "recomputed_test_rmse": 21902.400660972038,
+          "stored_test_rmse": 21902.400660972038,
+          "recomputed_cv_rmse": 9364.842296641438,
+          "stored_cv_rmse": 9364.842296641438,
+          "max_abs_diff": 0.0
+        },
+        "random_forest": {
+          "recomputed_test_rmse": 21599.497231476966,
+          "stored_test_rmse": 21599.497231476966,
+          "recomputed_cv_rmse": 10243.603275990452,
+          "stored_cv_rmse": 10243.603275990452,
+          "max_abs_diff": 0.0
+        },
+        "hist_gradient_boosting": {
+          "recomputed_test_rmse": 18428.298273878227,
+          "stored_test_rmse": 18428.298273878227,
+          "recomputed_cv_rmse": 15112.731050203487,
+          "stored_cv_rmse": 15112.731050203487,
+          "max_abs_diff": 0.0
+        },
+        "seasonal_naive_7": {
+          "recomputed_test_rmse": 23768.00175710876,
+          "stored_test_rmse": 23768.00175710876,
+          "recomputed_cv_rmse": 11429.795959787205,
+          "stored_cv_rmse": 11429.795959787205,
+          "max_abs_diff": 0.0
+        }
+      },
+      "recomputed_selected": "ridge_regression"
+    },
+    "platform_units": {
+      "stored_run": "mc_20261014T070547Z_platform_units_891db345",
+      "models": {
+        "linear_regression": {
+          "recomputed_test_rmse": 25.402591042917845,
+          "stored_test_rmse": 25.402591042917845,
+          "recomputed_cv_rmse": 18.097702917516596,
+          "stored_cv_rmse": 18.097702917516596,
+          "max_abs_diff": 0.0
+        },
+        "ridge_regression": {
+          "recomputed_test_rmse": 25.403500584354035,
+          "stored_test_rmse": 25.403500584354035,
+          "recomputed_cv_rmse": 18.016871685241046,
+          "stored_cv_rmse": 18.016871685241046,
+          "max_abs_diff": 0.0
+        },
+        "random_forest": {
+          "recomputed_test_rmse": 24.5234297041573,
+          "stored_test_rmse": 24.5234297041573,
+          "recomputed_cv_rmse": 18.323477722703554,
+          "stored_cv_rmse": 18.323477722703554,
+          "max_abs_diff": 0.0
+        },
+        "hist_gradient_boosting": {
+          "recomputed_test_rmse": 23.68429127820993,
+          "stored_test_rmse": 23.68429127820993,
+          "recomputed_cv_rmse": 18.094448930238425,
+          "stored_cv_rmse": 18.094448930238425,
+          "max_abs_diff": 0.0
+        },
+        "seasonal_naive_7": {
+          "recomputed_test_rmse": 33.25520829140412,
+          "stored_test_rmse": 33.25520829140412,
+          "recomputed_cv_rmse": 21.908161036155622,
+          "stored_cv_rmse": 21.908161036155622,
+          "max_abs_diff": 0.0
+        }
+      },
+      "recomputed_selected": "ridge_regression"
+    }
+  },
+  "summary": {
+    "max_abs_diff_registry_metrics": 0.0,
+    "max_abs_diff_model_comparison": 0.0,
+    "note": "installed scikit-learn / pandas / xgboost differ from the versions the stored values were produced under; any non-zero difference is reported as is"
+  }
+}

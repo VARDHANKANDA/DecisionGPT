@@ -1,0 +1,114 @@
+{
+  "timestamp": "2026-10-23T07:08:57.949265+00:00",
+  "mode": "live_openai",
+  "model_id": "gpt-5-mini",
+  "goal_evaluations": [
+    {
+      "case_id": "goal_01_revenue_growth",
+      "input_text": "I want to increase our sales revenue by 15% over the next two weeks without raising price.",
+      "expected_objective": "increase_revenue",
+      "parsed_objective": "increase_revenue",
+      "parsed_kpi": "revenue",
+      "parsed_target": 15.0,
+      "parsed_constraints": [
+        "no_price_increase"
+      ],
+      "decision_source": "ai",
+      "passed": true,
+      "latency_seconds": 10.799
+    },
+    {
+      "case_id": "goal_02_margin_protection",
+      "input_text": "We need to grow net profit by 10% this month without extra marketing budget.",
+      "expected_objective": "increase_profit",
+      "parsed_objective": "increase_profit",
+      "parsed_kpi": "profit",
+      "parsed_target": 10.0,
+      "parsed_constraints": [
+        "no_marketing_increase"
+      ],
+      "decision_source": "ai",
+      "passed": true,
+      "latency_seconds": 3.787
+    },
+    {
+      "case_id": "goal_03_inventory_clearance",
+      "input_text": "Boost order volume and sales by 20% over 1 month without changing price.",
+      "expected_objective": "increase_sales",
+      "parsed_objective": "increase_sales",
+      "parsed_kpi": "orders",
+      "parsed_target": 20.0,
+      "parsed_constraints": [
+        "no_price_change",
+        "no_price_decrease",
+        "no_price_increase"
+      ],
+      "decision_source": "ai",
+      "passed": true,
+      "latency_seconds": 4.478
+    },
+    {
+      "case_id": "goal_04_churn_reduction",
+      "input_text": "Cut customer churn by 8% over the next 3 months.",
+      "expected_objective": "reduce_churn",
+      "parsed_objective": "reduce_churn",
+      "parsed_kpi": "churn_rate",
+      "parsed_target": 8.0,
+      "parsed_constraints": [],
+      "decision_source": "ai",
+      "passed": true,
+      "latency_seconds": 4.16
+    },
+    {
+      "case_id": "goal_05_marketing_efficiency",
+      "input_text": "Improve marketing ROI by 25% over 2 months without cutting marketing budget.",
+      "expected_objective": "improve_marketing_roi",
+      "parsed_objective": "improve_marketing_roi",
+      "parsed_kpi": "marketing_roi",
+      "parsed_target": 25.0,
+      "parsed_constraints": [
+        "no_marketing_decrease"
+      ],
+      "decision_source": "ai",
+      "passed": true,
+      "latency_seconds": 5.076
+    }
+  ],
+  "explanation_evaluations": [
+    {
+      "case_id": "explain_01_revenue_trend",
+      "question": "What was our revenue trajectory over the past quarter?",
+      "generated_text": "NONE",
+      "guardrail_ok": false,
+      "guardrail_reason": "no_additional_context",
+      "latency_seconds": 6.657,
+      "prompt_tokens": 217,
+      "completion_tokens": 650,
+      "cost_usd": 0.00135425
+    },
+    {
+      "case_id": "explain_02_price_sensitivity",
+      "question": "How did changing the price affect our sales volume?",
+      "generated_text": "Baseline sales were 120 units at INR 50.00 and the simulation at INR 55.00 showed 108 units. This represents a -10.0% change.",
+      "guardrail_ok": false,
+      "guardrail_reason": "unsupported_term",
+      "latency_seconds": 5.469,
+      "prompt_tokens": 214,
+      "completion_tokens": 543,
+      "cost_usd": 0.0011394999999999999
+    }
+  ],
+  "metrics": {
+    "total_requests": 7,
+    "successful_requests": 7,
+    "failed_requests": 0,
+    "total_prompt_tokens": 431,
+    "total_completion_tokens": 1193,
+    "total_tokens": 1624,
+    "total_cost_usd": 0.002494,
+    "mean_latency_seconds": 5.775,
+    "goal_parsing_accuracy": 1.0,
+    "explanation_guardrail_pass_rate": 0.0,
+    "decision_parity_preserved": true
+  }
+}

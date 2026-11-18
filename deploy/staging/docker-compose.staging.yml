@@ -1,0 +1,48 @@
+# Disposable STAGING overlay: the real compose file plus a TLS-terminating reverse proxy, as an internet-facing deployment would have.
+#
+#   docker compose -f docker-compose.yml -f deploy/staging/docker-compose.staging.yml --profile tools run --rm migrate
+#   docker compose -f docker-compose.yml -f deploy/staging/docker-compose.staging.yml up -d
+#
+# Differences from the base file, and why:
+#  * Caddy terminates TLS with its own local CA (`tls internal`): there is no public domain or ACME here, so certificates are trusted only by a
+#    client that is given Caddy's root certificate. This tests the proxy path, redirects, headers and client addressing - NOT public-CA issuance.
+#  * The backend and frontend ports are NOT published at all: the only way in is through the proxy.
+#  * Caddy has a fixed address on the web network and TRUSTED_PROXIES lists exactly that one address (/32), so only it may supply X-Forwarded-For.
+#    The Docker gateway (what a direct connection would appear as) is deliberately not trusted.
+#  * Ports 80/443 are published on 127.0.0.1 only.
+services:
+  caddy:
+    image: caddy:2-alpine
+    volumes:
+      - ./deploy/staging/Caddyfile.staging:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:443:443"
+    networks:
+      web:
+        ipv4_address: 172.30.0.10
+    depends_on:
+      - backend
+      - frontend
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    restart: unless-stopped
+
+  backend:
+    ports: !reset []
+  frontend:
+    ports: !reset []
+
+networks:
+  web:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+volumes:
+  caddy-data:

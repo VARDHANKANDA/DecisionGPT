@@ -1,0 +1,4 @@
+# Extra packages for ml/benchmark (research side). Not required by the API. Installed 2026-10-15; pip check clean with the existing numpy/pandas/scikit-learn.
+lightgbm==4.7.0
+catboost==1.2.10
+openpyxl>=3.1  # reading the UCI workbooks (already present)

@@ -1,0 +1,218 @@
+{
+  "system": "decisiongpt",
+  "question": "How did sales from 1 to 15 March 2025 compare with 1 to 15 February 2025, as a percentage change?",
+  "answer": "Sales in 1 March 2025 to 15 March 2025 were ₹7,60,958, compared with ₹7,54,578 in 1 February 2025 to 15 February 2025 — 0.85% higher (a difference of ₹6,380). This restates the verified figure above without adding any new figure. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for 1 March 2025 to 15 March 2025 (10,513 records)"
+  ],
+  "details_keys": [
+    "change_percent",
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.23187679999682587,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 700,
+      "temperature": null,
+      "ts": 1791994495.6553607,
+      "ok": true,
+      "latency_s": 0.0005508999965968542,
+      "model_returned": "mock-openai-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 120,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1
+    },
+    {
+      "role": "explainer",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 300,
+      "temperature": null,
+      "ts": 1791994495.8383973,
+      "ok": true,
+      "latency_s": 0.00019109999993816018,
+      "model_returned": "mock-openai-2026-01-01",
+      "input_tokens": 300,
+      "output_tokens": 40,
+      "usage_raw": {
+        "input_tokens": 300,
+        "output_tokens": 40
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 2,
+    "n_errors": 0,
+    "input_tokens": 1400,
+    "output_tokens": 160,
+    "llm_latency_s": 0.0007419999965350144
+  },
+  "audit": {
+    "request_id": "79a968a3de284e8daec68ba42128c465",
+    "business_id": "84899537-07f3-4439-ab31-d7e57fe30048",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai",
+      "model": "mock-openai",
+      "response_model": "mock-openai-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "ai": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "compare_periods",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "compare_periods",
+        "metric": "revenue",
+        "periods": [
+          {
+            "kind": "absolute",
+            "start": "2025-03-01",
+            "end": "2025-03-15"
+          },
+          {
+            "kind": "absolute",
+            "start": "2025-02-01",
+            "end": "2025-02-15"
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "compare_periods",
+        "metric": "revenue",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-03-01",
+          "end": "2025-03-15"
+        },
+        "comparison_period": {
+          "kind": "absolute",
+          "start": "2025-02-01",
+          "end": "2025-02-15"
+        },
+        "statistic": "total",
+        "group_by": null,
+        "direction": "desc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.167,
+    "verified_result": {
+      "period": {
+        "start": "2025-03-01",
+        "end": "2025-03-15",
+        "label": "1 March 2025 to 15 March 2025"
+      },
+      "n_records": 10513,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "openai",
+    "explanation_call": {
+      "ok": true,
+      "error": null,
+      "latency_s": 0.0,
+      "usage": {
+        "input_tokens": 300,
+        "output_tokens": 40
+      },
+      "model": "mock-openai-2026-01-01"
+    },
+    "outcome": "answered",
+    "total_latency_s": 0.209
+  }
+}

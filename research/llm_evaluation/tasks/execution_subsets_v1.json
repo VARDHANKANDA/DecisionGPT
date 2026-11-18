@@ -1,0 +1,53 @@
+{
+  "derived_from": "tasks/tasks_v1.json (frozen, unchanged)",
+  "frozen_spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "audit_date": "2026-10-13",
+  "note": "These lists classify frozen tasks by what the CURRENT production chat path can do. They are not a new task set and are too small to evaluate anything on their own; no evaluation is planned on them. Task wording, tolerances and ground truth are untouched.",
+  "answerable_through_production_chat": {
+    "asof_clock": [],
+    "real_clock": [
+      "C02"
+    ]
+  },
+  "single_existing_production_call_not_reachable_via_chat_B1": [
+    "A03",
+    "C02",
+    "C04"
+  ],
+  "existing_building_block_plus_trivial_arithmetic_not_reachable_via_chat_B2": [
+    "A01",
+    "A02",
+    "A04",
+    "A05",
+    "B01",
+    "B02",
+    "B03",
+    "B04",
+    "B05",
+    "C01",
+    "C03",
+    "C05",
+    "C06",
+    "D01",
+    "D02",
+    "D03",
+    "D04",
+    "F01",
+    "F03"
+  ],
+  "missing_field_or_aggregation_C": [
+    "F02",
+    "E01",
+    "E02",
+    "E03",
+    "E04"
+  ],
+  "invalid_or_ambiguous_D": [],
+  "supplementary_gst_track": [
+    "E01",
+    "E02",
+    "E03",
+    "E04"
+  ],
+  "gst_track_rule": "GST questions are never mixed into the primary production-path evaluation; they would need the approved source dataset with their own, separately named system path."
+}

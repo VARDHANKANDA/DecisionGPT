@@ -1,0 +1,32 @@
+{
+  "record_type": "pilot_selection_proposal",
+  "status": "PROPOSED - NOT EXECUTED. No OpenAI request has been made for this smoke run; OPENAI_API_KEY was not configured when it was written.",
+  "date": "2026-10-14",
+  "provider": "openai",
+  "frozen_spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "purpose": "Bounded smoke evaluation of the new provider on the frozen benchmark: confirm the live path works on each task family before any larger run.",
+  "selection_rule": "For each of the six frozen task categories, the first task in frozen spec order (the same rule used for the earlier pilot). Applied to task metadata only.",
+  "task_ids": [
+    "A01",
+    "B01",
+    "C01",
+    "D01",
+    "F01",
+    "E01"
+  ],
+  "repeats": 1,
+  "condition": "asof",
+  "max_requests": 12,
+  "planned_requests": "6 classification + up to 6 explanation requests = up to 12 (one bounded retry per request is possible on rate-limit / connection errors)",
+  "budget_basis": {
+    "price_source": "https://developers.openai.com/api/docs/pricing (Standard tier), retrieved 2026-10-14; stored in research/llm_evaluation/pricing.json",
+    "default_model": "gpt-4.1-mini: $0.40 / 1M input tokens, $1.60 / 1M output tokens",
+    "token_measurement": "none yet for this provider; the first run's provider-reported usage replaces any estimate"
+  },
+  "command": "python -m research.llm_evaluation.run_evaluation run --selection-file research/llm_evaluation/pilots/openai_smoke_PROPOSAL_not_executed.json --repeats 1 --max-requests 12",
+  "not_proposed": [
+    "the full 27 x 5 protocol",
+    "pooling with the earlier Jev runs"
+  ],
+  "interpretation_limits": "n=5 scored tasks, one repeat: shows whether the path works per task family; not an accuracy estimate and no comparison with any other provider."
+}

@@ -1,0 +1,60 @@
+{
+  "env_version": "system_A_action_responsive_v1",
+  "evaluation_layer_version": "upgraded_controlled_v2",
+  "frozen_manifest_sha256": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+  "generator_version": "upgraded_eval_scenarios_v3",
+  "locked_test_family_checksum": "60e08b3e75967a66812fdfeecbbb0c799196fb3f184ab0652c3fa6cf9370e939",
+  "locked_test_run": false,
+  "master_seed": 20260906,
+  "n_families": 22,
+  "n_scenarios": 132,
+  "notes": [
+    "Action-responsive V2 environment (System A power-law demand response).",
+    "System B objective = ground_truth.exogenous_objective_v1, UNCHANGED from V1.",
+    "V1 (upgraded_controlled_v1) is frozen and untouched; the two are never pooled."
+  ],
+  "partitions": {
+    "development": [
+      "asymmetric_risk",
+      "fat_margin_profit",
+      "high_marketing_response",
+      "inelastic_demand",
+      "inventory_bound",
+      "low_data",
+      "low_volatility",
+      "noisy_observations",
+      "promotion_decision",
+      "supplier_shock",
+      "thin_margin_profit",
+      "unit_elastic"
+    ],
+    "locked_test": [
+      "capacity_bound",
+      "conflicting_signals",
+      "delayed_effects",
+      "low_marketing_response",
+      "seasonal_strong"
+    ],
+    "validation": [
+      "cash_constrained",
+      "competing_objectives",
+      "elastic_demand",
+      "high_volatility",
+      "missing_observations"
+    ]
+  },
+  "prelock_gate": {
+    "B_price_pick_vs_true_elasticity_corr": 0.031,
+    "B_unique_actions_dev": 2,
+    "candidate_identity_ok": true,
+    "decision": "Do NOT proceed to the V2 locked test (Phase 16 mandate).",
+    "environment_action_responsive": true,
+    "oracle_correct": true,
+    "passed": false,
+    "reason": "Phase-16 check #1 failed: condition B is trivially constant (selects price_change=+10 on ~100% of development executions) and this is unavoidable without modifying production Decision Simulation.",
+    "response_identifiable_median_err": 0.097
+  },
+  "prereg_frozen": false,
+  "status": "STOPPED_AT_PRELOCK_GATE",
+  "suite_checksum": "d28d521fa32509647dc6fd0aa8bd43a0b82ce131c92c74e14c32423d2b83e6f5"
+}

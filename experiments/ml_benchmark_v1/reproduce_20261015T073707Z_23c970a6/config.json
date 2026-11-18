@@ -1,0 +1,4 @@
+{
+  "task": "reproduce_baselines",
+  "seed": 42
+}

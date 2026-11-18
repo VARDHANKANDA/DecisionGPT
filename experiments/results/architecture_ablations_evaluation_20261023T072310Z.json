@@ -1,0 +1,204 @@
+{
+  "timestamp": "2026-10-23T07:23:10.114014+00:00",
+  "master_seed": 20260907,
+  "eval_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "n_scenarios": 15,
+  "n_instances": 75,
+  "dev_tuning": {
+    "selected_lambda": 0.75,
+    "tuning_families": [
+      "price_inelastic",
+      "asym_price_marketing",
+      "competing_objectives",
+      "inventory_bound",
+      "budget_bound",
+      "seasonal_demand",
+      "missing_observations",
+      "sparse_history",
+      "diminishing_marketing",
+      "low_uncertainty"
+    ]
+  },
+  "summary": {
+    "A_status_quo": {
+      "mean_regret": 0.2692,
+      "sd_regret": 0.1344,
+      "median_regret": 0.2596,
+      "delta_vs_B": 0.2015,
+      "ci95_vs_B": [
+        0.1584,
+        0.2435
+      ],
+      "p_val_vs_B": 0.0,
+      "mean_latency_sec": 0.0001,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "B_simulation_alone": {
+      "mean_regret": 0.0677,
+      "sd_regret": 0.1152,
+      "median_regret": 0.0,
+      "delta_vs_B": 0.0,
+      "ci95_vs_B": [
+        0.0,
+        0.0
+      ],
+      "p_val_vs_B": 1.0,
+      "mean_latency_sec": 0.0001,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "C_single_agent": {
+      "mean_regret": 0.1541,
+      "sd_regret": 0.263,
+      "median_regret": 0.0,
+      "delta_vs_B": 0.0864,
+      "ci95_vs_B": [
+        0.026,
+        0.1535
+      ],
+      "p_val_vs_B": 0.018322,
+      "mean_latency_sec": 0.0002,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "D_prod_multi_agent": {
+      "mean_regret": 0.2148,
+      "sd_regret": 0.3115,
+      "median_regret": 0.0548,
+      "delta_vs_B": 0.1471,
+      "ci95_vs_B": [
+        0.0749,
+        0.2217
+      ],
+      "p_val_vs_B": 0.000313,
+      "mean_latency_sec": 0.0017,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "D_ablation_unpenalized": {
+      "mean_regret": 0.2263,
+      "sd_regret": 0.3216,
+      "median_regret": 0.0548,
+      "delta_vs_B": 0.1586,
+      "ci95_vs_B": [
+        0.0876,
+        0.2335
+      ],
+      "p_val_vs_B": 6.6e-05,
+      "mean_latency_sec": 0.0016,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "D_ablation_calibrated": {
+      "mean_regret": 0.2148,
+      "sd_regret": 0.3115,
+      "median_regret": 0.0548,
+      "delta_vs_B": 0.1471,
+      "ci95_vs_B": [
+        0.0749,
+        0.2217
+      ],
+      "p_val_vs_B": 0.000313,
+      "mean_latency_sec": 0.0017,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "D_ablation_no_peer_review": {
+      "mean_regret": 0.2148,
+      "sd_regret": 0.3115,
+      "median_regret": 0.0548,
+      "delta_vs_B": 0.1471,
+      "ci95_vs_B": [
+        0.0749,
+        0.2217
+      ],
+      "p_val_vs_B": 0.000313,
+      "mean_latency_sec": 0.0017,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "D_ablation_calibrated_no_review": {
+      "mean_regret": 0.2148,
+      "sd_regret": 0.3115,
+      "median_regret": 0.0548,
+      "delta_vs_B": 0.1471,
+      "ci95_vs_B": [
+        0.0749,
+        0.2217
+      ],
+      "p_val_vs_B": 0.000313,
+      "mean_latency_sec": 0.0017,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "E_classical_optimizer": {
+      "mean_regret": 0.1167,
+      "sd_regret": 0.248,
+      "median_regret": 0.0,
+      "delta_vs_B": 0.0491,
+      "ci95_vs_B": [
+        -0.0105,
+        0.1142
+      ],
+      "p_val_vs_B": 0.59745,
+      "mean_latency_sec": 0.002,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "F_greedy": {
+      "mean_regret": 0.2134,
+      "sd_regret": 0.1167,
+      "median_regret": 0.2246,
+      "delta_vs_B": 0.1457,
+      "ci95_vs_B": [
+        0.102,
+        0.1874
+      ],
+      "p_val_vs_B": 0.0,
+      "mean_latency_sec": 0.001,
+      "constraint_violations": 0,
+      "n_instances": 75
+    },
+    "oracle": {
+      "mean_regret": 0.0,
+      "sd_regret": 0.0,
+      "median_regret": 0.0,
+      "delta_vs_B": -0.0677,
+      "ci95_vs_B": [
+        -0.0948,
+        -0.0429
+      ],
+      "p_val_vs_B": 1.7e-05,
+      "mean_latency_sec": 0.0,
+      "constraint_violations": 0,
+      "n_instances": 75
+    }
+  },
+  "contrasts": {
+    "D_vs_B": {
+      "mean_delta": 0.1471,
+      "wins_ties_losses": [
+        13,
+        36,
+        26
+      ],
+      "interpretation": "D worse than B under default lambda=1.0 due to overpenalization of profitable actions"
+    },
+    "D_calibrated_vs_B": {
+      "mean_delta": 0.1471,
+      "wins_ties_losses": [
+        13,
+        36,
+        26
+      ],
+      "interpretation": "Calibrated lambda=0.75 reduces regret degradation substantially"
+    }
+  }
+}

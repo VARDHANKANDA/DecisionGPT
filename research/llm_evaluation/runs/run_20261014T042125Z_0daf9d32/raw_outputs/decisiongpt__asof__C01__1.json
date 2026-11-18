@@ -1,0 +1,183 @@
+{
+  "system": "decisiongpt",
+  "question": "Which product sold the most units in February 2025?",
+  "answer": "For February 2025, EGG had the highest units sold: 9,414. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for February 2025 (9,847 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.8554622000083327,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "api.typesafe.ai",
+      "model_requested": "jev-latest",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791951805.7572951,
+      "ok": true,
+      "latency_s": 0.5535239999881014,
+      "model_returned": "jev-1.13.0",
+      "input_tokens": 1346,
+      "output_tokens": 451,
+      "usage_raw": {
+        "input_tokens": 1346,
+        "output_tokens": 451
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1346,
+    "output_tokens": 451,
+    "llm_latency_s": 0.5535239999881014
+  },
+  "audit": {
+    "request_id": "ae07f31f11ed49e6b1bf35bb87122fe0",
+    "business_id": "4bc2a264-3c24-40fb-89d5-925cc1f26129",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.554,
+      "provider": "typesafe-jev",
+      "model": "jev-latest",
+      "response_model": "jev-1.13.0",
+      "usage": {
+        "input_tokens": 1346,
+        "output_tokens": 451
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 1.0
+        },
+        "operation": {
+          "value": "ranking",
+          "confidence": 1.0
+        },
+        "metric": {
+          "value": "units",
+          "confidence": 1.0
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 1.0
+        },
+        "group_by": {
+          "value": "product",
+          "confidence": 0.82
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 1.0
+        },
+        "named_products": {
+          "value": 0.2,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.03,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "product",
+          "confidence": 0.28
+        },
+        "missing_item": {
+          "value": "other",
+          "confidence": 0.76
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "ranking",
+        "metric": "units",
+        "periods": [
+          {
+            "kind": "calendar",
+            "unit": "month",
+            "year": 2025,
+            "month": 2
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "units",
+        "period": {
+          "kind": "calendar",
+          "unit": "month",
+          "offset": null,
+          "year": 2025,
+          "month": 2,
+          "quarter": null
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "product",
+        "direction": "desc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.207,
+    "verified_result": {
+      "period": {
+        "start": "2025-02-01",
+        "end": "2025-02-28",
+        "label": "February 2025"
+      },
+      "n_records": 9847,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.831
+  }
+}

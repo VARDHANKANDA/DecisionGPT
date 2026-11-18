@@ -1,0 +1,51 @@
+{
+  "summary_title": "Digital Twin & Risk Validation Summary",
+  "timestamp_utc": "2026-10-23T15:45:00Z",
+  "components_audited": {
+    "digital_twin_simulator": "backend/app/analytics/digital_twin_service.py",
+    "strategy_optimizer": "backend/app/agents/strategy_optimizer.py",
+    "risk_manager": "backend/app/agents/risk_manager.py",
+    "causal_graph_engine": "backend/app/analytics/causal_discovery.py"
+  },
+  "safeguards_and_improvements": {
+    "price_response_safeguard_gate": {
+      "status": "Operational in Production (PipelineOptions.price_response_gate = True)",
+      "mechanism": "Checks historical price variance (coefficient of variation CV_p). If CV_p < 0.05, price changes are prohibited and price elasticity is withheld to prevent ungrounded demand extrapolation."
+    },
+    "risk_penalty_monotonicity": {
+      "status": "Verified (11/11 Unit Tests Passing)",
+      "test_file": "tests/unit/test_priority1_optimizer_and_monotonicity.py",
+      "mechanism": "Strict monotonicity: For any two identical actions i and j where Risk(i) > Risk(j), S(i) < S(j). Negative gross margin triggers explicit -0.20 penalty."
+    },
+    "working_capital_constraints": {
+      "status": "Enforced in DecisionService",
+      "mechanism": "Actions requiring procurement budget exceeding available cash reserves are marked infeasible and filtered prior to optimizer resolution."
+    },
+    "causal_discovery_precision": {
+      "status": "Rule-Gated Directed Acyclic Graph (DAG)",
+      "mechanism": "Granger causality tests are supplemented with domain priors (marketing affects demand, price affects volume; volume cannot cause past price) to eliminate spurious reverse causality."
+    }
+  },
+  "real_world_validation_status": {
+    "real_world_outcomes_recorded": 0,
+    "table_vii_b_status": "Honestly preserved as empty in manuscript",
+    "rationale": "No SME has completed a full 90-day post-decision execution cycle with telemetry ingested into the database. Fabricating simulated numbers as real-world outcomes is strictly prohibited by AGENTS.md.",
+    "future_logging_schema": {
+      "table_name": "decision_outcomes",
+      "fields": [
+        "outcome_id (UUID PRIMARY KEY)",
+        "decision_id (UUID REFERENCES decisions.id)",
+        "business_id (VARCHAR REFERENCES businesses.id)",
+        "implementation_date (TIMESTAMP)",
+        "evaluation_date (TIMESTAMP)",
+        "horizon_days (INTEGER)",
+        "actual_revenue (NUMERIC)",
+        "actual_units_sold (INTEGER)",
+        "actual_profit (NUMERIC)",
+        "simulated_predicted_kpi (NUMERIC)",
+        "realized_error (NUMERIC)",
+        "realized_regret (NUMERIC)"
+      ]
+    }
+  }
+}

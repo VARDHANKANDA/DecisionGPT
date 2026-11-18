@@ -1,0 +1,734 @@
+{
+  "db_url": "sqlite:///./_eval_dryrun.db",
+  "frozen_manifest_sha256": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+  "generator_version": "upgraded_eval_scenarios_v2",
+  "instances": [
+    {
+      "agent_diagnostics": {
+        "assessable": true,
+        "changed_selection_vs_C": false,
+        "contribution_note": "agent scores vary meaningfully across actions",
+        "score_range": {
+          "BA": 0.0,
+          "FA": 0.7626,
+          "RM": 0.9204
+        }
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0003,
+          "primary_normalized": 0.962078,
+          "primary_regret": 0.037922,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.0,
+          "primary_regret": 1.0,
+          "secondary_goal_achievement": 0.833333,
+          "selected_action_key": "price_change=+10",
+          "status": "ok"
+        },
+        "C": {
+          "latency_seconds": 0.0003,
+          "primary_normalized": 0.883306,
+          "primary_regret": 0.116694,
+          "secondary_goal_achievement": 0.0,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        },
+        "D": {
+          "latency_seconds": 1.9673,
+          "primary_normalized": 0.883306,
+          "primary_regret": 0.116694,
+          "secondary_goal_achievement": 0.0,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        }
+      },
+      "dt_executed": true,
+      "exclude_from_primary": false,
+      "exclude_reason": null,
+      "family_id": "demand_uncertainty",
+      "history_days": 90,
+      "invariant_detail": {
+        "declared_count": 8,
+        "identical": true,
+        "resolved_count": 8
+      },
+      "invariant_ok": true,
+      "partition": "development",
+      "scenario_id": "demand_uncertainty__0000",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": true,
+        "changed_selection_vs_C": false,
+        "contribution_note": "agent scores vary meaningfully across actions",
+        "score_range": {
+          "BA": 0.0063,
+          "FA": 1.0,
+          "RM": 0.4863
+        }
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.519936,
+          "primary_regret": 0.480064,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 1.0,
+          "primary_regret": 0.0,
+          "secondary_goal_achievement": 0.833392,
+          "selected_action_key": "price_change=+10",
+          "status": "ok"
+        },
+        "C": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 1.0,
+          "primary_regret": 0.0,
+          "secondary_goal_achievement": 0.833392,
+          "selected_action_key": "price_change=+10",
+          "status": "ok"
+        },
+        "D": {
+          "latency_seconds": 2.0504,
+          "primary_normalized": 1.0,
+          "primary_regret": 0.0,
+          "secondary_goal_achievement": 0.833392,
+          "selected_action_key": "price_change=+10",
+          "status": "ok"
+        }
+      },
+      "dt_executed": true,
+      "exclude_from_primary": false,
+      "exclude_reason": null,
+      "family_id": "price_uncertainty",
+      "history_days": 90,
+      "invariant_detail": {
+        "declared_count": 8,
+        "identical": true,
+        "resolved_count": 8
+      },
+      "invariant_ok": true,
+      "partition": "development",
+      "scenario_id": "price_uncertainty__0000",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": true,
+        "changed_selection_vs_C": false,
+        "contribution_note": "agent scores vary meaningfully across actions",
+        "score_range": {
+          "BA": 0.1423,
+          "FA": 0.1423,
+          "RM": 0.7848
+        }
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.848611,
+          "primary_regret": 0.151389,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "inventory_change=+10",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 1.0,
+          "primary_regret": 0.0,
+          "secondary_goal_achievement": 0.0,
+          "selected_action_key": "inventory_change=+20",
+          "status": "ok"
+        },
+        "C": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 1.0,
+          "primary_regret": 0.0,
+          "secondary_goal_achievement": 0.0,
+          "selected_action_key": "inventory_change=+20",
+          "status": "ok"
+        },
+        "D": {
+          "latency_seconds": 1.2455,
+          "primary_normalized": 1.0,
+          "primary_regret": 0.0,
+          "secondary_goal_achievement": 0.0,
+          "selected_action_key": "inventory_change=+20",
+          "status": "ok"
+        }
+      },
+      "dt_executed": true,
+      "exclude_from_primary": false,
+      "exclude_reason": null,
+      "family_id": "inventory_constraint",
+      "history_days": 90,
+      "invariant_detail": {
+        "declared_count": 5,
+        "identical": true,
+        "resolved_count": 5
+      },
+      "invariant_ok": true,
+      "partition": "development",
+      "scenario_id": "inventory_constraint__0000",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": true,
+        "changed_selection_vs_C": false,
+        "contribution_note": "agent scores vary meaningfully across actions",
+        "score_range": {
+          "BA": 0.0079,
+          "FA": 0.4343,
+          "RM": 0.9584
+        }
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.770632,
+          "primary_regret": 0.229368,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.0,
+          "primary_regret": 1.0,
+          "secondary_goal_achievement": 0.88987,
+          "selected_action_key": "price_change=+10",
+          "status": "ok"
+        },
+        "C": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.63471,
+          "primary_regret": 0.36529,
+          "secondary_goal_achievement": 0.023388,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        },
+        "D": {
+          "latency_seconds": 1.9353,
+          "primary_normalized": 0.63471,
+          "primary_regret": 0.36529,
+          "secondary_goal_achievement": 0.023388,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        }
+      },
+      "dt_executed": true,
+      "exclude_from_primary": false,
+      "exclude_reason": null,
+      "family_id": "cash_constraint",
+      "history_days": 90,
+      "invariant_detail": {
+        "declared_count": 8,
+        "identical": true,
+        "resolved_count": 8
+      },
+      "invariant_ok": true,
+      "partition": "development",
+      "scenario_id": "cash_constraint__0000",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": false,
+        "changed_selection_vs_C": null,
+        "contribution_note": "no successful simulations to score",
+        "score_range": {}
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.787292,
+          "primary_regret": 0.212708,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.787292,
+          "primary_regret": 0.212708,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "insufficient_data"
+        },
+        "C": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.787292,
+          "primary_regret": 0.212708,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "insufficient_data"
+        },
+        "D": {
+          "latency_seconds": 0.0133,
+          "primary_normalized": null,
+          "primary_regret": null,
+          "secondary_goal_achievement": null,
+          "selected_action_key": null,
+          "status": "insufficient_data"
+        }
+      },
+      "dt_executed": false,
+      "exclude_from_primary": true,
+      "exclude_reason": "insufficient_data",
+      "family_id": "low_data",
+      "history_days": 30,
+      "invariant_detail": {
+        "declared_count": 8,
+        "identical": true,
+        "resolved_count": 8
+      },
+      "invariant_ok": true,
+      "partition": "validation",
+      "scenario_id": "low_data__0000",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": true,
+        "changed_selection_vs_C": true,
+        "contribution_note": "agent scores vary meaningfully across actions",
+        "score_range": {
+          "BA": 0.0109,
+          "FA": 0.4701,
+          "RM": 0.9581
+        }
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.818539,
+          "primary_regret": 0.181461,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.0,
+          "primary_regret": 1.0,
+          "secondary_goal_achievement": 0.861229,
+          "selected_action_key": "price_change=+10",
+          "status": "ok"
+        },
+        "C": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.68581,
+          "primary_regret": 0.31419,
+          "secondary_goal_achievement": 0.0,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        },
+        "D": {
+          "latency_seconds": 1.9296,
+          "primary_normalized": 0.818539,
+          "primary_regret": 0.181461,
+          "secondary_goal_achievement": 0.0,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        }
+      },
+      "dt_executed": true,
+      "exclude_from_primary": false,
+      "exclude_reason": null,
+      "family_id": "low_data",
+      "history_days": 48,
+      "invariant_detail": {
+        "declared_count": 8,
+        "identical": true,
+        "resolved_count": 8
+      },
+      "invariant_ok": true,
+      "partition": "validation",
+      "scenario_id": "low_data__0001",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": true,
+        "changed_selection_vs_C": false,
+        "contribution_note": "agent scores vary meaningfully across actions",
+        "score_range": {
+          "BA": 0.0684,
+          "FA": 0.5198,
+          "RM": 0.7304
+        }
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.583195,
+          "primary_regret": 0.416805,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.0,
+          "primary_regret": 1.0,
+          "secondary_goal_achievement": 1.0,
+          "selected_action_key": "price_change=+10",
+          "status": "ok"
+        },
+        "C": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.782923,
+          "primary_regret": 0.217077,
+          "secondary_goal_achievement": 0.0181,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        },
+        "D": {
+          "latency_seconds": 1.7931,
+          "primary_normalized": 0.782923,
+          "primary_regret": 0.217077,
+          "secondary_goal_achievement": 0.0181,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        }
+      },
+      "dt_executed": true,
+      "exclude_from_primary": false,
+      "exclude_reason": null,
+      "family_id": "low_data",
+      "history_days": 44,
+      "invariant_detail": {
+        "declared_count": 8,
+        "identical": true,
+        "resolved_count": 8
+      },
+      "invariant_ok": true,
+      "partition": "validation",
+      "scenario_id": "low_data__0002",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": false,
+        "changed_selection_vs_C": null,
+        "contribution_note": "no successful simulations to score",
+        "score_range": {}
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.398334,
+          "primary_regret": 0.601666,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.398334,
+          "primary_regret": 0.601666,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "insufficient_data"
+        },
+        "C": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.398334,
+          "primary_regret": 0.601666,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "insufficient_data"
+        },
+        "D": {
+          "latency_seconds": 0.0132,
+          "primary_normalized": null,
+          "primary_regret": null,
+          "secondary_goal_achievement": null,
+          "selected_action_key": null,
+          "status": "insufficient_data"
+        }
+      },
+      "dt_executed": false,
+      "exclude_from_primary": true,
+      "exclude_reason": "insufficient_data",
+      "family_id": "low_data",
+      "history_days": 30,
+      "invariant_detail": {
+        "declared_count": 8,
+        "identical": true,
+        "resolved_count": 8
+      },
+      "invariant_ok": true,
+      "partition": "validation",
+      "scenario_id": "low_data__0003",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": false,
+        "changed_selection_vs_C": null,
+        "contribution_note": "no successful simulations to score",
+        "score_range": {}
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.626055,
+          "primary_regret": 0.373945,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.626055,
+          "primary_regret": 0.373945,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "insufficient_data"
+        },
+        "C": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 0.626055,
+          "primary_regret": 0.373945,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=-3",
+          "status": "insufficient_data"
+        },
+        "D": {
+          "latency_seconds": 0.0122,
+          "primary_normalized": null,
+          "primary_regret": null,
+          "secondary_goal_achievement": null,
+          "selected_action_key": null,
+          "status": "insufficient_data"
+        }
+      },
+      "dt_executed": false,
+      "exclude_from_primary": true,
+      "exclude_reason": "insufficient_data",
+      "family_id": "low_data",
+      "history_days": 33,
+      "invariant_detail": {
+        "declared_count": 8,
+        "identical": true,
+        "resolved_count": 8
+      },
+      "invariant_ok": true,
+      "partition": "validation",
+      "scenario_id": "low_data__0004",
+      "seed": 20260906
+    },
+    {
+      "agent_diagnostics": {
+        "assessable": true,
+        "changed_selection_vs_C": false,
+        "contribution_note": "agent scores vary meaningfully across actions",
+        "score_range": {
+          "BA": 0.1189,
+          "FA": 0.5,
+          "RM": 0.7616
+        }
+      },
+      "baselines": {
+        "classical_optimizer": "ok",
+        "greedy": "ok",
+        "naive": "ok",
+        "oracle": "ok"
+      },
+      "conditions": {
+        "A": {
+          "latency_seconds": 0.0003,
+          "primary_normalized": 0.595519,
+          "primary_regret": 0.404481,
+          "secondary_goal_achievement": null,
+          "selected_action_key": "price_change=+5",
+          "status": "ok"
+        },
+        "B": {
+          "latency_seconds": 0.0001,
+          "primary_normalized": 1.0,
+          "primary_regret": 0.0,
+          "secondary_goal_achievement": 1.0,
+          "selected_action_key": "price_change=+10",
+          "status": "ok"
+        },
+        "C": {
+          "latency_seconds": 0.0002,
+          "primary_normalized": 0.0,
+          "primary_regret": 1.0,
+          "secondary_goal_achievement": 0.990703,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        },
+        "D": {
+          "latency_seconds": 1.4692,
+          "primary_normalized": 0.0,
+          "primary_regret": 1.0,
+          "secondary_goal_achievement": 0.990703,
+          "selected_action_key": "marketing_change=+10",
+          "status": "ok"
+        }
+      },
+      "dt_executed": true,
+      "exclude_from_primary": false,
+      "exclude_reason": null,
+      "family_id": "supplier_uncertainty",
+      "history_days": 90,
+      "invariant_detail": {
+        "declared_count": 6,
+        "identical": true,
+        "resolved_count": 6
+      },
+      "invariant_ok": true,
+      "partition": "validation",
+      "scenario_id": "supplier_uncertainty__0000",
+      "seed": 20260906
+    }
+  ],
+  "models_synced": [
+    "sales_forecast_naive:v1",
+    "sales_forecast_linear:v1",
+    "sales_forecast_xgboost:v1",
+    "churn_logistic_regression:v1",
+    "churn_random_forest:v1",
+    "churn_xgboost:v1"
+  ],
+  "partitions": {
+    "development": [
+      "adversarial_risk_trap",
+      "capacity_constraint",
+      "cash_constraint",
+      "delayed_effects",
+      "demand_uncertainty",
+      "high_volatility",
+      "inventory_constraint",
+      "noisy_observations",
+      "price_uncertainty",
+      "resource_allocation"
+    ],
+    "locked_test": [
+      "asymmetric_risk",
+      "competing_objectives",
+      "missing_observations",
+      "promotion_decision"
+    ],
+    "validation": [
+      "conflicting_signals",
+      "low_data",
+      "supplier_uncertainty"
+    ]
+  },
+  "phase": "3_dry_run",
+  "summary": {
+    "D_latency_seconds": {
+      "max": 2.0504,
+      "mean": 1.77,
+      "min": 1.2455
+    },
+    "checks": {
+      "ABCD_execution": true,
+      "action_space_identity_on_eligible": true,
+      "agent_diagnostics_present": true,
+      "candidate_generation": true,
+      "digital_twin_execution_on_eligible": true,
+      "insufficient_data_exclusion_fires": true,
+      "low_data_boundary_exercised": true,
+      "optimizer_execution": true
+    },
+    "instances_eligible_for_primary": 7,
+    "instances_excluded": [
+      [
+        "low_data__0000",
+        "insufficient_data"
+      ],
+      [
+        "low_data__0003",
+        "insufficient_data"
+      ],
+      [
+        "low_data__0004",
+        "insufficient_data"
+      ]
+    ],
+    "instances_ok": 10,
+    "instances_raised": 0,
+    "instances_run": 10,
+    "invariant_held_on_eligible": true,
+    "low_data_excluded_insufficient_data": [
+      "low_data__0000",
+      "low_data__0003",
+      "low_data__0004"
+    ],
+    "low_data_ran_in_primary": [
+      "low_data__0001",
+      "low_data__0002"
+    ]
+  }
+}

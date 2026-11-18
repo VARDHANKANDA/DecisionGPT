@@ -1,0 +1,88 @@
+{
+  "run_id": "smoke_20261007T162421Z_5b37b1b1",
+  "mode": "smoke",
+  "research_result": false,
+  "status": "COMPLETED",
+  "created_utc": "2026-10-07T16:24:21+00:00",
+  "python": "3.12.0",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "ground_truth_version": "gt-1.0",
+  "scorer_version": "score-1.0",
+  "prompt_version": "b2-prompts-1",
+  "llm": {
+    "enabled": false,
+    "provider": null,
+    "model_configured": null,
+    "model_code_default_if_unset": null,
+    "base_url": null,
+    "api_key_present": false,
+    "timeout_s": 30,
+    "temperature": 0,
+    "temperature_note": "hard-coded to 0 in backend/app/services/llm_provider.py; the provider calls carry no seed parameter"
+  },
+  "systems": [
+    "decisiongpt"
+  ],
+  "conditions": [
+    "asof"
+  ],
+  "repeats": 1,
+  "n_tasks": 27,
+  "view": {
+    "raw_zip_sha256": "2ee177e85839ba6a235b6a92cf667bbb51d7b2364e6e79fdaf513e57b810bd59",
+    "processed_rows": 94290,
+    "after_whole_quantity": 60245,
+    "after_amount_agreement": 60244,
+    "after_merge": 30293,
+    "lines_merged_away": 29951,
+    "gst_mixed_groups": 16,
+    "revenue_processed": 5567256.65,
+    "revenue_view": 4354736.16,
+    "date_min": "2025-01-01",
+    "date_max": "2025-03-31",
+    "days_with_sales": 89,
+    "distinct_products": 1645,
+    "view_sha256": "65e06599613ab6b0655114d2ba3fa00dc02e1f8481a28b165bc10eba00f7cef2",
+    "rules": "1) keep lines whose quantity is a whole number > 0 (sales.quantity is an integer column); 2) keep lines whose recomputed amount (qty*rate) agrees with a printed amount column; 3) merge lines that share (date, product, unit price) by summing quantity (the production upload validator rejects duplicate rows; merging preserves total sales and total units exactly; when a merged group mixed GST slabs, the slab with the largest revenue in the group is kept). Consequence: 'one row' no longer means 'one bill line', so no task asks about individual sale entries."
+  },
+  "dataset_disclosure": {
+    "path": "data/external/india_pos_register/",
+    "description": "Indian POS retail register, 1 Jan-31 Mar 2025",
+    "provenance_limitation": "Appears to be real Indian POS data from its structure and content; uploader/store provenance is NOT independently verified.",
+    "license": "CC BY-NC-SA 4.0 (as recorded in the repository)",
+    "representativeness": "NOT representative of Indian SMEs or Indian retail generally."
+  },
+  "pricing_supplied": false,
+  "planned_attempts": 27,
+  "completed_attempts": 27,
+  "errors": [],
+  "note": "PLUMBING CHECK ONLY (LLM disabled, DecisionGPT in deterministic template mode). Not a research result; metrics must not be reported.",
+  "decisiongpt_ingestion": {
+    "uploads": {
+      "products": {
+        "status": "completed",
+        "rows_ingested": {
+          "products": 1645
+        },
+        "error": null
+      },
+      "sales": {
+        "status": "completed",
+        "rows_ingested": {
+          "sales": 30293
+        },
+        "error": null
+      }
+    },
+    "stored_sales_rows": 30293,
+    "stored_units": 131545,
+    "stored_revenue": 4354736.16,
+    "view_rows": 30293,
+    "view_units": 131545,
+    "view_revenue": 4354736.16,
+    "matches_view": true
+  },
+  "finished_utc": "2026-10-07T16:25:13+00:00",
+  "n_attempt_errors": 0
+}

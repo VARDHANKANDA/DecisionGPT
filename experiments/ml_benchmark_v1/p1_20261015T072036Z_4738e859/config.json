@@ -1,0 +1,13 @@
+{
+  "task": "p1_price_identification",
+  "seed": 42,
+  "H": 28,
+  "scenario": "price x(1+pct) on every scored day of the final window, all price-derived features recomputed",
+  "model_variants": {
+    "linear": "linear:ols",
+    "hist_gradient_boosting": "hist_gradient_boosting:depth6",
+    "xgboost": "xgboost:depth6",
+    "lightgbm": "lightgbm:tweedie",
+    "catboost": "catboost:depth6"
+  }
+}

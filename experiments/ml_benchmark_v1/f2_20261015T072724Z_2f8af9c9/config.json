@@ -1,0 +1,36 @@
+{
+  "task": "f2_online_retail_ii_direct_h28",
+  "H": 28,
+  "seed": 42,
+  "families": {
+    "linear": [
+      "ols"
+    ],
+    "ridge": [
+      "alpha1",
+      "alpha100"
+    ],
+    "random_forest": [
+      "leaf5",
+      "leaf20"
+    ],
+    "hist_gradient_boosting": [
+      "depth4",
+      "depth6"
+    ],
+    "xgboost": [
+      "depth4",
+      "depth6"
+    ],
+    "lightgbm": [
+      "l2",
+      "tweedie"
+    ],
+    "catboost": [
+      "depth6",
+      "depth8"
+    ]
+  },
+  "quick": false,
+  "train_span_days": 730
+}

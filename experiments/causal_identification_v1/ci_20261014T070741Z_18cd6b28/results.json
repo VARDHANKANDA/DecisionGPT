@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "run_id": "ci_20261014T070741Z_18cd6b28",
+  "created_utc": "2026-10-14T07:07:41+00:00",
+  "evidence_type": "simulated",
+  "known_truth_simulation": {
+    "estimand": "ATE_ratio = E[units | promotion] / E[units | no promotion] - 1 (multiplicative effect of a promotion day)",
+    "estimator": "OLS on log(1+units) with promotion, marketing, weekday, series effects and series-specific linear trends; cluster bootstrap over series",
+    "n_rows": 29200,
+    "n_series": 40,
+    "n_treated_days": 1511,
+    "treated_share": 0.05174657534246575,
+    "estimate_pct": 24.293026517606226,
+    "ci95_pct": [
+      23.687574116864198,
+      24.93870353518022
+    ],
+    "bootstrap_draws": 200,
+    "seed": 42,
+    "documented_truth_pct": 25.0,
+    "truth_inside_ci": false,
+    "balance_standardised_mean_differences": {
+      "marketing_spend": -0.010836238166873787,
+      "price": -0.3823971116104481,
+      "weekend_share": 0.003069930624682804
+    },
+    "reading": "Because promotion days are assigned by an independent coin flip in the generator, the effect is identified. The estimate is compared with the generator's documented +25%; log(1+units) and rounding make a small bias plausible. This checks the estimator, not any real business."
+  }
+}

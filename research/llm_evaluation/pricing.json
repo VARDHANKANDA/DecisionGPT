@@ -1,0 +1,40 @@
+{
+  "note": "Published list prices used only to turn provider-reported token counts into an ESTIMATED USD figure. Not a billing record. Each entry records its source and retrieval date.",
+  "source": "https://docs.typesafe.ai/models and https://typesafe.ai/ (retrieved 2026-10-14): jev-latest = jev-1.13.0, $42 per billion input tokens ($0.042 per million), 'Charged per input token. Output tokens are free.'",
+  "models": {
+    "jev-1.13.0": {
+      "input_per_million_usd": 0.042,
+      "output_per_million_usd": 0.0,
+      "provider": "typesafe-jev",
+      "note": "historical: the provider used by the earlier pilot and stage-2 runs"
+    },
+    "gpt-4.1-mini": {
+      "input_per_million_usd": 0.4,
+      "output_per_million_usd": 1.6,
+      "provider": "openai",
+      "source": "https://developers.openai.com/api/docs/pricing (Standard tier, short context)",
+      "retrieved": "2026-10-14"
+    },
+    "gpt-4o-mini": {
+      "input_per_million_usd": 0.15,
+      "output_per_million_usd": 0.6,
+      "provider": "openai",
+      "source": "https://developers.openai.com/api/docs/pricing (Standard tier, short context)",
+      "retrieved": "2026-10-14"
+    },
+    "gpt-5-mini": {
+      "input_per_million_usd": 0.25,
+      "output_per_million_usd": 2.0,
+      "provider": "openai",
+      "source": "https://developers.openai.com/api/docs/pricing (Standard tier, short context)",
+      "retrieved": "2026-10-14"
+    },
+    "gpt-4.1": {
+      "input_per_million_usd": 2.0,
+      "output_per_million_usd": 8.0,
+      "provider": "openai",
+      "source": "https://developers.openai.com/api/docs/pricing (Standard tier, short context)",
+      "retrieved": "2026-10-14"
+    }
+  }
+}

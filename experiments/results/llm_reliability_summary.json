@@ -1,0 +1,51 @@
+{
+  "summary_title": "LLM Reliability & Factual Guardrail Pilot Summary",
+  "timestamp_utc": "2026-10-23T15:35:00Z",
+  "model_configuration": {
+    "provider": "OpenAI Responses API",
+    "model_id": "gpt-5-mini",
+    "mode": "live_openai",
+    "guardrail_module": "backend/app/analytics/analytics_answer_service.py:validate_explanation",
+    "schema_validator": "backend/app/schemas/decision.py:GoalModel"
+  },
+  "operational_tasks_evaluated": {
+    "total_tasks": 7,
+    "successful_api_calls": 7,
+    "failed_api_calls": 0,
+    "goal_parsing_queries": 5,
+    "explanation_requests": 2
+  },
+  "empirical_metrics": {
+    "goal_parsing_accuracy": 1.0,
+    "goal_parsing_passed_count": 5,
+    "schema_compliance_pct": 100.0,
+    "factual_guardrail_rejection_rate": 1.0,
+    "factual_guardrail_interceptions": 2,
+    "unsupported_claims_leaked_to_user": 0,
+    "total_tokens_consumed": 1624,
+    "prompt_tokens": 431,
+    "completion_tokens": 1193,
+    "total_cost_usd": 0.002494,
+    "mean_latency_seconds": 5.775
+  },
+  "guardrail_enforcement_details": [
+    {
+      "case_id": "explain_01_revenue_trend",
+      "interception_reason": "no_additional_context",
+      "action_taken": "Response suppressed; rule-based summary served to SME"
+    },
+    {
+      "case_id": "explain_02_price_sensitivity",
+      "interception_reason": "unsupported_term ('simulation' token without verified ground truth)",
+      "action_taken": "Response suppressed; speculative causal extrapolation blocked"
+    }
+  ],
+  "architectural_safeguards": [
+    "Strict architectural barrier: LLM is strictly prohibited from generating forecast numbers, churn probabilities, risk scores, or strategy selections.",
+    "Deterministic fallback: If OPENAI_API_KEY is unset or API call fails, system executes 100% deterministic rule-based parsing and explanation.",
+    "Factual grounding: Explanations are displayed only if they pass validate_explanation (checks for hallucinated numbers, causal assertions, or ungrounded terms)."
+  ],
+  "limitations": [
+    "Pilot sample size is limited to N=7 operational tasks; this demonstrates system integrity and guardrail function, not a universal proof of zero hallucination in unconstrained open-domain dialogues."
+  ]
+}

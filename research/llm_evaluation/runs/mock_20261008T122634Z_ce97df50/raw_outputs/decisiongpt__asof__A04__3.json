@@ -1,0 +1,68 @@
+{
+  "system": "decisiongpt",
+  "question": "How many units did I sell in March 2025?",
+  "answer": "I don't have enough data to answer that reliably. Try asking why a number changed, whether to change price or marketing spend, what to focus on, or why a specific recommendation was made.",
+  "intent": "unrecognized",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "legacy_router",
+  "notice": "Advanced question understanding is temporarily unavailable, so this answer comes from the standard assistant.",
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.04451210000843275,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 700,
+      "temperature": 0,
+      "ts": 1791462458.2438471,
+      "ok": true,
+      "latency_s": 0.00040809999336488545,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 1200,
+      "output_tokens": 90,
+      "usage_raw": {
+        "prompt_tokens": 1200,
+        "completion_tokens": 90,
+        "total_tokens": 1290
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1200,
+    "output_tokens": 90,
+    "llm_latency_s": 0.00040809999336488545
+  },
+  "audit": {
+    "fallback_reason": "malformed_output",
+    "request_id": "e116a3625d5c454e9109f35dff1d9906",
+    "business_id": "5712321a-0cc3-4249-8152-498cc3bc61d5",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.0,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 1200,
+        "output_tokens": 90
+      },
+      "attempts": 1,
+      "error": "malformed_output"
+    },
+    "validation": {
+      "ok": false,
+      "errors": [],
+      "returned_fields": []
+    },
+    "outcome": "fallback",
+    "total_latency_s": 0.029
+  }
+}

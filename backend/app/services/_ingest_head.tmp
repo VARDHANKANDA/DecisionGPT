@@ -1,0 +1,224 @@
+"""Orchestrates the business data upload pipeline:
+
+    Upload -> Read & clean (app/services/upload_preprocessing.py) -> Detect the kind of data -> Schema mapping -> Typed conversion
+    -> Validation -> Confirmation (only when something is genuinely ambiguous) -> Store -> Report
+
+(docs/PRD.md §5). Runs synchronously within the request per docs/BACKEND_SPECIFICATION.md §6. The DataIngestionJob row exists so the result can be
+read back and so an ambiguous mapping or date order can be confirmed and resumed from the ORIGINAL file, which is kept unchanged.
+
+Guarantees: all or nothing (every table of one upload is stored in a single transaction); the original is never altered; rows that cannot be
+read are reported, not repaired; nothing is imputed; a failure is a clear message on the job, never a server error with half the data saved.
+"""
+from dataclasses import asdict
+from datetime import datetime, timezone
+
+import math
+
+import pandas as pd
+from sqlalchemy import update
+from sqlalchemy.orm import Session
+
+from app.core.config import get_settings
+from app.core.errors import NotFoundError, ValidationFailedError
+from app.models.business import Business
+from app.models.customer import Customer
+from app.models.finance import FinanceRecord
+from app.models.ingestion_job import DataIngestionJob
+from app.models.inventory import InventoryRecord
+from app.models.marketing import MarketingCampaign
+from app.models.product import Product
+from app.models.sale import Sale
+from app.services import upload_preprocessing as prep
+from app.services import upload_storage
+from app.services.canonical_schema import CANONICAL_TYPES, detect_canonical_type
+from app.services.column_mapping import apply_mapping, suggest_mapping
+from app.services.data_validation import validate_mapped_dataframe
+
+
+def _get_or_create_product(db: Session, business_id: str, external_product_id: str) -> Product:
+    product = (
+        db.query(Product)
+        .filter(Product.business_id == business_id, Product.external_product_id == external_product_id)
+        .one_or_none()
+    )
+    if product is None:
+        product = Product(
+            business_id=business_id, external_product_id=external_product_id, name=external_product_id
+        )
+        db.add(product)
+        db.flush()
+    return product
+
+
+def _get_or_create_customer(db: Session, business_id: str, external_customer_id: str) -> Customer:
+    customer = (
+        db.query(Customer)
+        .filter(Customer.business_id == business_id, Customer.external_customer_id == external_customer_id)
+        .one_or_none()
+    )
+    if customer is None:
+        customer = Customer(business_id=business_id, external_customer_id=external_customer_id)
+        db.add(customer)
+        db.flush()
+    return customer
+
+
+def _ingest_products(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    count = 0
+    for _, row in df.iterrows():
+        product = _get_or_create_product(db, business_id, str(row["external_product_id"]))
+        product.name = row.get("name") or product.name
+        if "category" in df.columns:
+            product.category = row.get("category")
+        if "unit_cost" in df.columns and pd.notna(row.get("unit_cost")):
+            product.unit_cost = float(row["unit_cost"])
+        if "selling_price" in df.columns and pd.notna(row.get("selling_price")):
+            product.selling_price = float(row["selling_price"])
+        if "stock_quantity" in df.columns and pd.notna(row.get("stock_quantity")):
+            product.stock_quantity = int(row["stock_quantity"])
+        count += 1
+    return count
+
+
+def _ingest_customers(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    count = 0
+    for _, row in df.iterrows():
+        customer = _get_or_create_customer(db, business_id, str(row["external_customer_id"]))
+        for field_name in ["segment", "first_purchase_date", "last_purchase_date", "purchase_frequency", "monetary_value"]:
+            if field_name in df.columns and pd.notna(row.get(field_name)):
+                value = row[field_name]
+                if field_name.endswith("_date"):
+                    value = pd.to_datetime(value).date()
+                setattr(customer, field_name, value)
+        count += 1
+    return count
+
+
+def _ingest_sales(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    count = 0
+    for _, row in df.iterrows():
+        customer_id = None
+        product_id = None
+        if "external_customer_id" in df.columns and pd.notna(row.get("external_customer_id")):
+            customer_id = _get_or_create_customer(db, business_id, str(row["external_customer_id"])).id
+        if "external_product_id" in df.columns and pd.notna(row.get("external_product_id")):
+            product_id = _get_or_create_product(db, business_id, str(row["external_product_id"])).id
+
+        quantity = int(row["quantity"])
+        unit_price = float(row["unit_price"])
+        discount = float(row["discount"]) if "discount" in df.columns and pd.notna(row.get("discount")) else 0.0
+        revenue = (
+            float(row["revenue"])
+            if "revenue" in df.columns and pd.notna(row.get("revenue"))
+            else round(quantity * unit_price - discount, 2)
+        )
+
+        db.add(
+            Sale(
+                business_id=business_id,
+                customer_id=customer_id,
+                product_id=product_id,
+                sale_date=pd.to_datetime(row["sale_date"]).date(),
+                quantity=quantity,
+                unit_price=unit_price,
+                discount=discount,
+                revenue=revenue,
+            )
+        )
+        count += 1
+    return count
+
+
+def _ingest_marketing(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    count = 0
+    for _, row in df.iterrows():
+        db.add(
+            MarketingCampaign(
+                business_id=business_id,
+                campaign_date=pd.to_datetime(row["campaign_date"]).date(),
+                channel=str(row["channel"]),
+                campaign_name=row.get("campaign_name"),
+                spend=float(row["spend"]),
+                impressions=int(row["impressions"]) if pd.notna(row.get("impressions")) else None,
+                clicks=int(row["clicks"]) if pd.notna(row.get("clicks")) else None,
+                conversions=int(row["conversions"]) if pd.notna(row.get("conversions")) else None,
+                attributed_revenue=float(row["attributed_revenue"]) if pd.notna(row.get("attributed_revenue")) else None,
+            )
+        )
+        count += 1
+    return count
+
+
+def _ingest_inventory(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    count = 0
+    for _, row in df.iterrows():
+        product_id = _get_or_create_product(db, business_id, str(row["external_product_id"])).id
+        db.add(
+            InventoryRecord(
+                business_id=business_id,
+                product_id=product_id,
+                date=pd.to_datetime(row["date"]).date(),
+                stock_level=int(row["stock_level"]),
+                reorder_level=int(row["reorder_level"]) if pd.notna(row.get("reorder_level")) else None,
+            )
+        )
+        count += 1
+    return count
+
+
+_FINANCE_NUMERIC_FIELDS = [
+    "revenue", "cogs", "gross_profit", "operating_expenses", "net_profit",
+    "cash_balance", "accounts_receivable", "accounts_payable", "inventory_value",
+    "loan_amount", "interest_rate", "emi",
+]
+
+
+def _ingest_finance(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    count = 0
+    for _, row in df.iterrows():
+        record = FinanceRecord(
+            business_id=business_id,
+            period_date=pd.to_datetime(row["period_date"]).date(),
+        )
+        for field_name in _FINANCE_NUMERIC_FIELDS:
+            if field_name in df.columns and pd.notna(row.get(field_name)):
+                setattr(record, field_name, float(row[field_name]))
+        db.add(record)
+        count += 1
+    return count
+
+
+_BUSINESS_PROFILE_FIELDS = [
+    "state", "district", "city", "enterprise_type", "organisation_type",
+    "major_activity", "nic_code",
+]
+
+
+def _ingest_business_profile(db: Session, business_id: str, df: pd.DataFrame) -> int:
+    """Business profile is one row describing the SME itself — it updates the
+    Business record rather than creating child rows."""
+    business = db.get(Business, business_id)
+    if business is None:
+        raise NotFoundError(f"Business {business_id} not found.")
+    row = df.iloc[0]
+    for field_name in _BUSINESS_PROFILE_FIELDS:
+        if field_name in df.columns and pd.notna(row.get(field_name)):
+            setattr(business, field_name, str(row[field_name]))
+    if "registration_date" in df.columns and pd.notna(row.get("registration_date")):
+        reg = pd.to_datetime(row["registration_date"])
+        business.registration_date = reg.date()
+        business.business_age_years = max(0, int((pd.Timestamp.utcnow().tz_localize(None) - reg).days // 365))
+    return 1
+
+
+_INGESTORS = {
+    "products": _ingest_products,
+    "customers": _ingest_customers,
+    "sales": _ingest_sales,
+    "marketing_campaigns": _ingest_marketing,
+    "inventory": _ingest_inventory,
+    "finance": _ingest_finance,
+    "business_profile": _ingest_business_profile,
+}
+
+

@@ -1,0 +1,28 @@
+{
+  "dataset_id": "platform-churn-v1",
+  "name": "Synthetic Customer Churn Dataset",
+  "source": "synthetic (scripts/generate_platform_data.py)",
+  "license": "N/A - synthetically generated, no third-party data",
+  "date_range": null,
+  "preprocessing": [
+    "none (raw generator output)"
+  ],
+  "limitations": [
+    "Churn label produced by a known synthetic logistic mechanism over recency/frequency/tenure/support-ticket features \u2014 useful for validating model *mechanics*, not for claiming real-world churn accuracy.",
+    "Intended for offline model training/evaluation only \u2014 never surfaced to SME users (see AGENTS.md)."
+  ],
+  "evidence_level": "SYNTHETIC",
+  "rows": 6000,
+  "columns": [
+    "customer_id",
+    "tenure_days",
+    "recency_days",
+    "frequency",
+    "avg_order_value",
+    "monetary_value",
+    "support_tickets",
+    "discount_usage_rate",
+    "churned"
+  ],
+  "generated_with_seed": 42
+}

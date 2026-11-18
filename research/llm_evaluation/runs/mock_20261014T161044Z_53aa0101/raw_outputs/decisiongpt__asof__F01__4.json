@@ -1,0 +1,133 @@
+{
+  "system": "decisiongpt",
+  "question": "How many different products did I sell in January 2025?",
+  "answer": "I don't have enough data to answer that reliably. Try asking why a number changed, whether to change price or marketing spend, what to focus on, or why a specific recommendation was made.",
+  "intent": "unrecognized",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "legacy_router",
+  "notice": null,
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.06159339999794611,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 700,
+      "temperature": null,
+      "ts": 1791994332.101798,
+      "ok": true,
+      "latency_s": 0.0006032999990566168,
+      "model_returned": "mock-openai-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 120,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1100,
+    "output_tokens": 120,
+    "llm_latency_s": 0.0006032999990566168
+  },
+  "audit": {
+    "fallback_reason": "interpreter_routed_legacy",
+    "request_id": "2e2df2112e9f44d29c9da5ac0330f2c3",
+    "business_id": "af5a8cf7-337a-4fa0-a296-ce88c2b102fb",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai",
+      "model": "mock-openai",
+      "response_model": "mock-openai-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "ai": {
+        "route": {
+          "value": "other_tool",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "aggregate",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "other_tool"
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "legacy",
+    "structured_request": {
+      "route": "legacy",
+      "query": null,
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "outcome": "routed_to_legacy",
+    "total_latency_s": 0.04
+  }
+}

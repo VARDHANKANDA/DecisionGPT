@@ -1,0 +1,133 @@
+{
+  "system": "decisiongpt",
+  "question": "Which GST rate brought in the most sales between January and March 2025?",
+  "answer": "I can calculate sales, units, orders and product performance from your current data, but it doesn't contain GST or tax information.",
+  "intent": "analytics_unsupported",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.0409968999447301,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-jev",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791911539.6317909,
+      "ok": true,
+      "latency_s": 0.000505700008943677,
+      "model_returned": "mock-jev-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 0,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1100,
+    "output_tokens": 0,
+    "llm_latency_s": 0.000505700008943677
+  },
+  "audit": {
+    "request_id": "b5f61d2282264eb385ec4184ed4f29d8",
+    "business_id": "bfa31274-f972-48dd-8f5b-f94da16d5874",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "typesafe-jev",
+      "model": "mock-jev",
+      "response_model": "mock-jev-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 0
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "missing_data",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "aggregate",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "missing_data"
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "unsupported",
+    "structured_request": {
+      "route": "unsupported",
+      "query": null,
+      "clarification_question": null,
+      "unsupported_reason": "missing_field",
+      "unsupported_item": "GST or tax information"
+    },
+    "outcome": "unsupported",
+    "unsupported_reason": "missing_field",
+    "total_latency_s": 0.025
+  }
+}

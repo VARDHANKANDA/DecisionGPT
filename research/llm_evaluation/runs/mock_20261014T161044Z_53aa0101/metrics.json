@@ -1,0 +1,623 @@
+{
+  "run_id": "mock_20261014T161044Z_53aa0101",
+  "metrics": {
+    "decisiongpt|asof": {
+      "primary": {
+        "quality": {
+          "n_attempts": 115,
+          "n_tasks": 23,
+          "accuracy_primary_pct": 93.91,
+          "n_correct": 108,
+          "accuracy_first_number_pct": 79.71,
+          "truth_mentioned_lenient_pct": 97.5,
+          "outcomes": {
+            "correct": 108,
+            "numerically_incorrect": 0,
+            "correct_number_wrong_interpretation": 0,
+            "partially_correct": 0,
+            "unsupported_claim": 0,
+            "unable_to_answer": 0,
+            "tool_data_access_failure": 0,
+            "other": 0,
+            "legacy_fallback": 7,
+            "unsupported_by_design": 0
+          },
+          "failure_rates_pct": {
+            "unable_to_answer": 0.0,
+            "invalid_answer": 0.0,
+            "tool_or_system_failure": 0.0
+          },
+          "numeric_error": {
+            "n_numeric_attempts": 69,
+            "mean_abs_error_first_number": 244870.4903,
+            "median_abs_error_first_number": 0.09,
+            "mean_abs_error_nearest_number": 0.0901,
+            "median_rel_error_first_number": 0.0,
+            "median_rel_error_nearest_number": 0.0,
+            "note": "absolute errors mix units (rupees, units, percentage points) - read per category, not overall"
+          },
+          "ranking": {
+            "n_attempts": 15,
+            "top1_correct_pct": 100.0,
+            "mean_overlap_at_k": 0.9778
+          },
+          "repeat_consistency": {
+            "tasks_with_identical_verdict_across_repeats": 16,
+            "of_tasks": 23
+          },
+          "n_attempts_total": 115,
+          "n_excluded_unsupported_by_design": 0,
+          "path_accounting": {
+            "n_attempts": 115,
+            "path_groups": {
+              "llm_path": 108,
+              "unsupported": 0,
+              "legacy_fallback": 7,
+              "infrastructure_failure": 0
+            },
+            "path_classes": {
+              "legacy_fallback": 7,
+              "llm_answered": 108
+            },
+            "failure_categories": {
+              "interpreter_routed_legacy": 1,
+              "invalid_output": 2,
+              "low_confidence": 1,
+              "provider_failure": 3
+            },
+            "llm_path_success_pct_of_all_attempts": 93.91,
+            "accuracy_among_attempts_answered_by_llm_path_pct": 100.0,
+            "n_answered_by_llm_path": 108,
+            "fallback_rate_pct": 6.09,
+            "unsupported_rate_pct": 0.0,
+            "infrastructure_failure_rate_pct": 0.0,
+            "legacy_fallback_attempts_whose_text_would_have_scored_correct": 0,
+            "note": "a legacy-router answer is never counted as an LLM-path success, even if its text happens to match the truth"
+          }
+        },
+        "by_category": {
+          "aggregation": {
+            "n_attempts": 25,
+            "n_tasks": 5,
+            "accuracy_primary_pct": 88.0,
+            "n_correct": 22,
+            "accuracy_first_number_pct": 100.0,
+            "truth_mentioned_lenient_pct": null,
+            "outcomes": {
+              "correct": 22,
+              "numerically_incorrect": 0,
+              "correct_number_wrong_interpretation": 0,
+              "partially_correct": 0,
+              "unsupported_claim": 0,
+              "unable_to_answer": 0,
+              "tool_data_access_failure": 0,
+              "other": 0,
+              "legacy_fallback": 3,
+              "unsupported_by_design": 0
+            },
+            "failure_rates_pct": {
+              "unable_to_answer": 0.0,
+              "invalid_answer": 0.0,
+              "tool_or_system_failure": 0.0
+            },
+            "numeric_error": {
+              "n_numeric_attempts": 22,
+              "mean_abs_error_first_number": 0.0605,
+              "median_abs_error_first_number": 0.02,
+              "mean_abs_error_nearest_number": 0.0605,
+              "median_rel_error_first_number": 0.0,
+              "median_rel_error_nearest_number": 0.0,
+              "note": "absolute errors mix units (rupees, units, percentage points) - read per category, not overall"
+            },
+            "ranking": {
+              "n_attempts": 0,
+              "top1_correct_pct": null,
+              "mean_overlap_at_k": null
+            },
+            "repeat_consistency": {
+              "tasks_with_identical_verdict_across_repeats": 2,
+              "of_tasks": 5
+            },
+            "n_attempts_total": 25,
+            "n_excluded_unsupported_by_design": 0,
+            "path_accounting": {
+              "n_attempts": 25,
+              "path_groups": {
+                "llm_path": 22,
+                "unsupported": 0,
+                "legacy_fallback": 3,
+                "infrastructure_failure": 0
+              },
+              "path_classes": {
+                "legacy_fallback": 3,
+                "llm_answered": 22
+              },
+              "failure_categories": {
+                "invalid_output": 2,
+                "low_confidence": 1
+              },
+              "llm_path_success_pct_of_all_attempts": 88.0,
+              "accuracy_among_attempts_answered_by_llm_path_pct": 100.0,
+              "n_answered_by_llm_path": 22,
+              "fallback_rate_pct": 12.0,
+              "unsupported_rate_pct": 0.0,
+              "infrastructure_failure_rate_pct": 0.0,
+              "legacy_fallback_attempts_whose_text_would_have_scored_correct": 0,
+              "note": "a legacy-router answer is never counted as an LLM-path success, even if its text happens to match the truth"
+            }
+          },
+          "calendar": {
+            "n_attempts": 20,
+            "n_tasks": 4,
+            "accuracy_primary_pct": 95.0,
+            "n_correct": 19,
+            "accuracy_first_number_pct": 100.0,
+            "truth_mentioned_lenient_pct": 100.0,
+            "outcomes": {
+              "correct": 19,
+              "numerically_incorrect": 0,
+              "correct_number_wrong_interpretation": 0,
+              "partially_correct": 0,
+              "unsupported_claim": 0,
+              "unable_to_answer": 0,
+              "tool_data_access_failure": 0,
+              "other": 0,
+              "legacy_fallback": 1,
+              "unsupported_by_design": 0
+            },
+            "failure_rates_pct": {
+              "unable_to_answer": 0.0,
+              "invalid_answer": 0.0,
+              "tool_or_system_failure": 0.0
+            },
+            "numeric_error": {
+              "n_numeric_attempts": 9,
+              "mean_abs_error_first_number": 0.2733,
+              "median_abs_error_first_number": 0.38,
+              "mean_abs_error_nearest_number": 0.2733,
+              "median_rel_error_first_number": 8e-06,
+              "median_rel_error_nearest_number": 8e-06,
+              "note": "absolute errors mix units (rupees, units, percentage points) - read per category, not overall"
+            },
+            "ranking": {
+              "n_attempts": 0,
+              "top1_correct_pct": null,
+              "mean_overlap_at_k": null
+            },
+            "repeat_consistency": {
+              "tasks_with_identical_verdict_across_repeats": 3,
+              "of_tasks": 4
+            },
+            "n_attempts_total": 20,
+            "n_excluded_unsupported_by_design": 0,
+            "path_accounting": {
+              "n_attempts": 20,
+              "path_groups": {
+                "llm_path": 19,
+                "unsupported": 0,
+                "legacy_fallback": 1,
+                "infrastructure_failure": 0
+              },
+              "path_classes": {
+                "legacy_fallback": 1,
+                "llm_answered": 19
+              },
+              "failure_categories": {
+                "provider_failure": 1
+              },
+              "llm_path_success_pct_of_all_attempts": 95.0,
+              "accuracy_among_attempts_answered_by_llm_path_pct": 100.0,
+              "n_answered_by_llm_path": 19,
+              "fallback_rate_pct": 5.0,
+              "unsupported_rate_pct": 0.0,
+              "infrastructure_failure_rate_pct": 0.0,
+              "legacy_fallback_attempts_whose_text_would_have_scored_correct": 0,
+              "note": "a legacy-router answer is never counted as an LLM-path success, even if its text happens to match the truth"
+            }
+          },
+          "exact_numeric": {
+            "n_attempts": 15,
+            "n_tasks": 3,
+            "accuracy_primary_pct": 93.33,
+            "n_correct": 14,
+            "accuracy_first_number_pct": 100.0,
+            "truth_mentioned_lenient_pct": null,
+            "outcomes": {
+              "correct": 14,
+              "numerically_incorrect": 0,
+              "correct_number_wrong_interpretation": 0,
+              "partially_correct": 0,
+              "unsupported_claim": 0,
+              "unable_to_answer": 0,
+              "tool_data_access_failure": 0,
+              "other": 0,
+              "legacy_fallback": 1,
+              "unsupported_by_design": 0
+            },
+            "failure_rates_pct": {
+              "unable_to_answer": 0.0,
+              "invalid_answer": 0.0,
+              "tool_or_system_failure": 0.0
+            },
+            "numeric_error": {
+              "n_numeric_attempts": 14,
+              "mean_abs_error_first_number": 0.169,
+              "median_abs_error_first_number": 0.0033,
+              "mean_abs_error_nearest_number": 0.169,
+              "median_rel_error_first_number": 2e-06,
+              "median_rel_error_nearest_number": 2e-06,
+              "note": "absolute errors mix units (rupees, units, percentage points) - read per category, not overall"
+            },
+            "ranking": {
+              "n_attempts": 0,
+              "top1_correct_pct": null,
+              "mean_overlap_at_k": null
+            },
+            "repeat_consistency": {
+              "tasks_with_identical_verdict_across_repeats": 2,
+              "of_tasks": 3
+            },
+            "n_attempts_total": 15,
+            "n_excluded_unsupported_by_design": 0,
+            "path_accounting": {
+              "n_attempts": 15,
+              "path_groups": {
+                "llm_path": 14,
+                "unsupported": 0,
+                "legacy_fallback": 1,
+                "infrastructure_failure": 0
+              },
+              "path_classes": {
+                "legacy_fallback": 1,
+                "llm_answered": 14
+              },
+              "failure_categories": {
+                "interpreter_routed_legacy": 1
+              },
+              "llm_path_success_pct_of_all_attempts": 93.33,
+              "accuracy_among_attempts_answered_by_llm_path_pct": 100.0,
+              "n_answered_by_llm_path": 14,
+              "fallback_rate_pct": 6.67,
+              "unsupported_rate_pct": 0.0,
+              "infrastructure_failure_rate_pct": 0.0,
+              "legacy_fallback_attempts_whose_text_would_have_scored_correct": 0,
+              "note": "a legacy-router answer is never counted as an LLM-path success, even if its text happens to match the truth"
+            }
+          },
+          "product": {
+            "n_attempts": 30,
+            "n_tasks": 6,
+            "accuracy_primary_pct": 96.67,
+            "n_correct": 29,
+            "accuracy_first_number_pct": 100.0,
+            "truth_mentioned_lenient_pct": 95.0,
+            "outcomes": {
+              "correct": 29,
+              "numerically_incorrect": 0,
+              "correct_number_wrong_interpretation": 0,
+              "partially_correct": 0,
+              "unsupported_claim": 0,
+              "unable_to_answer": 0,
+              "tool_data_access_failure": 0,
+              "other": 0,
+              "legacy_fallback": 1,
+              "unsupported_by_design": 0
+            },
+            "failure_rates_pct": {
+              "unable_to_answer": 0.0,
+              "invalid_answer": 0.0,
+              "tool_or_system_failure": 0.0
+            },
+            "numeric_error": {
+              "n_numeric_attempts": 10,
+              "mean_abs_error_first_number": 0.0008,
+              "median_abs_error_first_number": 0.0008,
+              "mean_abs_error_nearest_number": 0.0008,
+              "median_rel_error_first_number": 0.000198,
+              "median_rel_error_nearest_number": 0.0,
+              "note": "absolute errors mix units (rupees, units, percentage points) - read per category, not overall"
+            },
+            "ranking": {
+              "n_attempts": 15,
+              "top1_correct_pct": 100.0,
+              "mean_overlap_at_k": 0.9778
+            },
+            "repeat_consistency": {
+              "tasks_with_identical_verdict_across_repeats": 5,
+              "of_tasks": 6
+            },
+            "n_attempts_total": 30,
+            "n_excluded_unsupported_by_design": 0,
+            "path_accounting": {
+              "n_attempts": 30,
+              "path_groups": {
+                "llm_path": 29,
+                "unsupported": 0,
+                "legacy_fallback": 1,
+                "infrastructure_failure": 0
+              },
+              "path_classes": {
+                "legacy_fallback": 1,
+                "llm_answered": 29
+              },
+              "failure_categories": {
+                "provider_failure": 1
+              },
+              "llm_path_success_pct_of_all_attempts": 96.67,
+              "accuracy_among_attempts_answered_by_llm_path_pct": 100.0,
+              "n_answered_by_llm_path": 29,
+              "fallback_rate_pct": 3.33,
+              "unsupported_rate_pct": 0.0,
+              "infrastructure_failure_rate_pct": 0.0,
+              "legacy_fallback_attempts_whose_text_would_have_scored_correct": 0,
+              "note": "a legacy-router answer is never counted as an LLM-path success, even if its text happens to match the truth"
+            }
+          },
+          "time_comparison": {
+            "n_attempts": 25,
+            "n_tasks": 5,
+            "accuracy_primary_pct": 96.0,
+            "n_correct": 24,
+            "accuracy_first_number_pct": 0.0,
+            "truth_mentioned_lenient_pct": 100.0,
+            "outcomes": {
+              "correct": 24,
+              "numerically_incorrect": 0,
+              "correct_number_wrong_interpretation": 0,
+              "partially_correct": 0,
+              "unsupported_claim": 0,
+              "unable_to_answer": 0,
+              "tool_data_access_failure": 0,
+              "other": 0,
+              "legacy_fallback": 1,
+              "unsupported_by_design": 0
+            },
+            "failure_rates_pct": {
+              "unable_to_answer": 0.0,
+              "invalid_answer": 0.0,
+              "tool_or_system_failure": 0.0
+            },
+            "numeric_error": {
+              "n_numeric_attempts": 14,
+              "mean_abs_error_first_number": 1206861.2617,
+              "median_abs_error_first_number": 1386973.9424,
+              "mean_abs_error_nearest_number": 0.0038,
+              "median_rel_error_first_number": 280627.618647,
+              "median_rel_error_nearest_number": null,
+              "note": "absolute errors mix units (rupees, units, percentage points) - read per category, not overall"
+            },
+            "ranking": {
+              "n_attempts": 0,
+              "top1_correct_pct": null,
+              "mean_overlap_at_k": null
+            },
+            "repeat_consistency": {
+              "tasks_with_identical_verdict_across_repeats": 4,
+              "of_tasks": 5
+            },
+            "n_attempts_total": 25,
+            "n_excluded_unsupported_by_design": 0,
+            "path_accounting": {
+              "n_attempts": 25,
+              "path_groups": {
+                "llm_path": 24,
+                "unsupported": 0,
+                "legacy_fallback": 1,
+                "infrastructure_failure": 0
+              },
+              "path_classes": {
+                "legacy_fallback": 1,
+                "llm_answered": 24
+              },
+              "failure_categories": {
+                "provider_failure": 1
+              },
+              "llm_path_success_pct_of_all_attempts": 96.0,
+              "accuracy_among_attempts_answered_by_llm_path_pct": 100.0,
+              "n_answered_by_llm_path": 24,
+              "fallback_rate_pct": 4.0,
+              "unsupported_rate_pct": 0.0,
+              "infrastructure_failure_rate_pct": 0.0,
+              "legacy_fallback_attempts_whose_text_would_have_scored_correct": 0,
+              "note": "a legacy-router answer is never counted as an LLM-path success, even if its text happens to match the truth"
+            }
+          }
+        },
+        "efficiency": {
+          "n_attempts": 115,
+          "latency_end_to_end_s": {
+            "n": 115,
+            "mean": 0.36,
+            "median": 0.3379,
+            "p95": 0.5924,
+            "max": 1.621,
+            "p95_note": "reported only with at least 20 observations"
+          },
+          "llm_calls_per_attempt_mean": 1.939,
+          "llm_calls_total": 223,
+          "tokens": {
+            "input_total": 155600,
+            "output_total": 17760,
+            "total": 173360,
+            "calls_total": 223,
+            "calls_with_provider_usage": 220,
+            "calls_without_usage": 3,
+            "complete": false,
+            "note": "sum over calls for which the provider returned usage (failed calls return none); nothing is estimated"
+          },
+          "cost_usd_total": 0.1556,
+          "cost_attempts_priced": 112,
+          "cost_attempts_not_priced": 3,
+          "cost_is_lower_bound": true,
+          "by_llm_call_role": {
+            "explainer": {
+              "n_calls": 108,
+              "n_failed_calls": 0,
+              "n_calls_with_retries": 0,
+              "retry_attempts_total": 0,
+              "n_calls_attempts_unknown": 0,
+              "latency_s_including_retries": {
+                "n": 108,
+                "mean": 0.0002,
+                "median": 0.0002,
+                "p95": 0.0003,
+                "max": 0.0007,
+                "p95_note": "reported only with at least 20 observations"
+              },
+              "n_calls_with_provider_usage": 108,
+              "n_calls_without_usage": 0,
+              "input_tokens_total": 32400,
+              "output_tokens_total": 4320,
+              "total_tokens": 36720,
+              "token_note": "totals cover the calls for which the provider returned usage (failed calls return none); nothing is estimated. Totals are complete only when n_calls_without_usage = 0"
+            },
+            "interpreter": {
+              "n_calls": 115,
+              "n_failed_calls": 3,
+              "n_calls_with_retries": 0,
+              "retry_attempts_total": 0,
+              "n_calls_attempts_unknown": 0,
+              "latency_s_including_retries": {
+                "n": 115,
+                "mean": 0.0115,
+                "median": 0.0005,
+                "p95": 0.0012,
+                "max": 1.2463,
+                "p95_note": "reported only with at least 20 observations"
+              },
+              "n_calls_with_provider_usage": 112,
+              "n_calls_without_usage": 3,
+              "input_tokens_total": 123200,
+              "output_tokens_total": 13440,
+              "total_tokens": 136640,
+              "token_note": "totals cover the calls for which the provider returned usage (failed calls return none); nothing is estimated. Totals are complete only when n_calls_without_usage = 0"
+            }
+          },
+          "llm_calls_per_attempt_by_role": {
+            "explainer": 0.939,
+            "interpreter": 1.0
+          },
+          "engine_latency_s": {
+            "n": 108,
+            "mean": 0.2939,
+            "median": 0.287,
+            "p95": 0.515,
+            "max": 0.624
+          },
+          "cost_note": "Only from provider-reported token usage and a verified price for the exact model (pricing.json); failed calls return no usage and are excluded, so a total with failures is a lower bound; None when no price is supplied. Never estimated."
+        }
+      },
+      "supplementary": {
+        "quality": {
+          "n_attempts": 0,
+          "n_attempts_total": 20,
+          "n_excluded_unsupported_by_design": 20,
+          "path_accounting": {
+            "n_attempts": 20,
+            "path_groups": {
+              "llm_path": 0,
+              "unsupported": 20,
+              "legacy_fallback": 0,
+              "infrastructure_failure": 0
+            },
+            "path_classes": {
+              "llm_unsupported": 20
+            },
+            "failure_categories": {},
+            "llm_path_success_pct_of_all_attempts": 0.0,
+            "accuracy_among_attempts_answered_by_llm_path_pct": null,
+            "n_answered_by_llm_path": 0,
+            "fallback_rate_pct": 0.0,
+            "unsupported_rate_pct": 100.0,
+            "infrastructure_failure_rate_pct": 0.0,
+            "legacy_fallback_attempts_whose_text_would_have_scored_correct": 0,
+            "note": "a legacy-router answer is never counted as an LLM-path success, even if its text happens to match the truth"
+          }
+        },
+        "by_category": {
+          "gst": {
+            "n_attempts": 0,
+            "n_attempts_total": 20,
+            "n_excluded_unsupported_by_design": 20,
+            "path_accounting": {
+              "n_attempts": 20,
+              "path_groups": {
+                "llm_path": 0,
+                "unsupported": 20,
+                "legacy_fallback": 0,
+                "infrastructure_failure": 0
+              },
+              "path_classes": {
+                "llm_unsupported": 20
+              },
+              "failure_categories": {},
+              "llm_path_success_pct_of_all_attempts": 0.0,
+              "accuracy_among_attempts_answered_by_llm_path_pct": null,
+              "n_answered_by_llm_path": 0,
+              "fallback_rate_pct": 0.0,
+              "unsupported_rate_pct": 100.0,
+              "infrastructure_failure_rate_pct": 0.0,
+              "legacy_fallback_attempts_whose_text_would_have_scored_correct": 0,
+              "note": "a legacy-router answer is never counted as an LLM-path success, even if its text happens to match the truth"
+            }
+          }
+        },
+        "efficiency": {
+          "n_attempts": 20,
+          "latency_end_to_end_s": {
+            "n": 20,
+            "mean": 0.0551,
+            "median": 0.0594,
+            "p95": 0.0679,
+            "max": 0.0706,
+            "p95_note": "reported only with at least 20 observations"
+          },
+          "llm_calls_per_attempt_mean": 1.0,
+          "llm_calls_total": 20,
+          "tokens": {
+            "input_total": 22000,
+            "output_total": 2400,
+            "total": 24400,
+            "calls_total": 20,
+            "calls_with_provider_usage": 20,
+            "calls_without_usage": 0,
+            "complete": true,
+            "note": "sum over calls for which the provider returned usage (failed calls return none); nothing is estimated"
+          },
+          "cost_usd_total": 0.022,
+          "cost_attempts_priced": 20,
+          "cost_attempts_not_priced": 0,
+          "cost_is_lower_bound": false,
+          "by_llm_call_role": {
+            "interpreter": {
+              "n_calls": 20,
+              "n_failed_calls": 0,
+              "n_calls_with_retries": 0,
+              "retry_attempts_total": 0,
+              "n_calls_attempts_unknown": 0,
+              "latency_s_including_retries": {
+                "n": 20,
+                "mean": 0.0008,
+                "median": 0.0007,
+                "p95": 0.0012,
+                "max": 0.0019,
+                "p95_note": "reported only with at least 20 observations"
+              },
+              "n_calls_with_provider_usage": 20,
+              "n_calls_without_usage": 0,
+              "input_tokens_total": 22000,
+              "output_tokens_total": 2400,
+              "total_tokens": 24400,
+              "token_note": "totals cover the calls for which the provider returned usage (failed calls return none); nothing is estimated. Totals are complete only when n_calls_without_usage = 0"
+            }
+          },
+          "llm_calls_per_attempt_by_role": {
+            "interpreter": 1.0
+          },
+          "engine_latency_s": null,
+          "cost_note": "Only from provider-reported token usage and a verified price for the exact model (pricing.json); failed calls return no usage and are excluded, so a total with failures is a lower bound; None when no price is supplied. Never estimated."
+        }
+      }
+    }
+  }
+}

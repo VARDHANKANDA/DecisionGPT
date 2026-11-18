@@ -1,0 +1,133 @@
+{
+  "system": "decisiongpt",
+  "question": "How much of my sales between January and March 2025 came from items with 5% GST?",
+  "answer": "I can calculate sales, units, orders and product performance from your current data, but it doesn't contain GST or tax information.",
+  "intent": "analytics_unsupported",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.0376442999986466,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "mock-openai",
+      "max_tokens": 700,
+      "temperature": null,
+      "ts": 1791994335.8829432,
+      "ok": true,
+      "latency_s": 0.0011741999987862073,
+      "model_returned": "mock-openai-2026-01-01",
+      "input_tokens": 1100,
+      "output_tokens": 120,
+      "usage_raw": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1100,
+    "output_tokens": 120,
+    "llm_latency_s": 0.0011741999987862073
+  },
+  "audit": {
+    "request_id": "f44ac3cd4dcb42bbbf62adc0aa45a2c8",
+    "business_id": "af5a8cf7-337a-4fa0-a296-ce88c2b102fb",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai",
+      "model": "mock-openai",
+      "response_model": "mock-openai-2026-01-01",
+      "usage": {
+        "input_tokens": 1100,
+        "output_tokens": 120
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "ai": {
+        "route": {
+          "value": "missing_data",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "aggregate",
+          "confidence": 0.9
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.9
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "none",
+          "confidence": 0.9
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 0.9
+        },
+        "named_products": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.05,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "gst_or_tax",
+          "confidence": 0.9
+        }
+      },
+      "extracted": {
+        "route": "missing_data"
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "unsupported",
+    "structured_request": {
+      "route": "unsupported",
+      "query": null,
+      "clarification_question": null,
+      "unsupported_reason": "missing_field",
+      "unsupported_item": "GST or tax information"
+    },
+    "outcome": "unsupported",
+    "unsupported_reason": "missing_field",
+    "total_latency_s": 0.022
+  }
+}

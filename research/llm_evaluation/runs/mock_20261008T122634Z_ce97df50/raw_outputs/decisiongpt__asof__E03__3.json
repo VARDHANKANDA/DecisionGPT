@@ -1,0 +1,80 @@
+{
+  "system": "decisiongpt",
+  "question": "What percentage of my sales came from items with 0% GST?",
+  "answer": "I can calculate sales, units, orders and product performance from your current data, but it doesn't contain GST rate information.",
+  "intent": "analytics_unsupported",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.03809839999303222,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 700,
+      "temperature": 0,
+      "ts": 1791462504.7181392,
+      "ok": true,
+      "latency_s": 0.00047899999481160194,
+      "model_returned": "mock-model-2026-01-01",
+      "input_tokens": 1200,
+      "output_tokens": 90,
+      "usage_raw": {
+        "prompt_tokens": 1200,
+        "completion_tokens": 90,
+        "total_tokens": 1290
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1200,
+    "output_tokens": 90,
+    "llm_latency_s": 0.00047899999481160194
+  },
+  "audit": {
+    "request_id": "753a0bcdd3b0414781c1b77af33d19f2",
+    "business_id": "5712321a-0cc3-4249-8152-498cc3bc61d5",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.001,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": "mock-model-2026-01-01",
+      "usage": {
+        "input_tokens": 1200,
+        "output_tokens": 90
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "route",
+        "unsupported_item",
+        "unsupported_reason"
+      ]
+    },
+    "route": "unsupported",
+    "structured_request": {
+      "route": "unsupported",
+      "query": null,
+      "clarification_question": null,
+      "unsupported_reason": "missing_field",
+      "unsupported_item": "GST rate information"
+    },
+    "outcome": "unsupported",
+    "unsupported_reason": "missing_field",
+    "total_latency_s": 0.022
+  }
+}

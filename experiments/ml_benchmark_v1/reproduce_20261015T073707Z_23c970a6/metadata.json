@@ -1,0 +1,21 @@
+{
+  "run_id": "reproduce_20261015T073707Z_23c970a6",
+  "created_utc": "2026-10-15T07:39:06.537099+00:00",
+  "git_revision": "41c1d14",
+  "versions": {
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "scipy": "1.18.0",
+    "scikit-learn": "1.9.0",
+    "xgboost": "3.4.0",
+    "lightgbm": "4.7.0",
+    "catboost": "1.2.10"
+  },
+  "runtime_seconds_total": 119,
+  "quick": false,
+  "evidence_type": "recomputation_of_stored_baselines",
+  "dataset": null,
+  "seed": 42
+}

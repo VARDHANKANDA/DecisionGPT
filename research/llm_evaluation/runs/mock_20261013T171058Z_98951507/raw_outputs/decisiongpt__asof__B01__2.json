@@ -1,0 +1,59 @@
+{
+  "system": "decisiongpt",
+  "question": "How did February 2025 sales compare with January? Tell me the percentage change.",
+  "answer": "I don't have enough data to answer that reliably. Try asking why a number changed, whether to change price or marketing spend, what to focus on, or why a specific recommendation was made.",
+  "intent": "unrecognized",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "legacy_router",
+  "notice": "Advanced question understanding is temporarily unavailable, so this answer comes from the standard assistant.",
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 0.03723859996534884,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-jev",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791911508.7697713,
+      "ok": false,
+      "error": "HTTPStatusError: Server error '529 ' for url 'http://mock-provider.invalid/v1/systemone'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/529",
+      "latency_s": 0.0004171000327914953,
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 1,
+    "input_tokens": null,
+    "output_tokens": null,
+    "llm_latency_s": 0.0004171000327914953
+  },
+  "audit": {
+    "fallback_reason": "overloaded",
+    "request_id": "2a6f2ff306c34fba9aeb4a584def0e8b",
+    "business_id": "bfa31274-f972-48dd-8f5b-f94da16d5874",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.0,
+      "provider": "typesafe-jev",
+      "model": "mock-jev",
+      "response_model": null,
+      "usage": null,
+      "attempts": 1,
+      "error": "overloaded"
+    },
+    "interpreter_decisions": {},
+    "validation": {
+      "ok": false,
+      "errors": [],
+      "returned_fields": []
+    },
+    "outcome": "fallback",
+    "total_latency_s": 0.025
+  }
+}

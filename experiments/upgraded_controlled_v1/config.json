@@ -1,0 +1,79 @@
+{
+  "_locked_run_incomplete": false,
+  "analysis": {
+    "D_vs_A": "D worse than A (Holm p=0.00255, 95% CI [+0.0585,+0.1607], mean +0.1088)",
+    "primary_contrast": "D_vs_B",
+    "primary_result": "null (Holm p=1.0, 95% CI [-0.0776,+0.1428] includes 0, |mean|=0.0337 < MEI 0.10)",
+    "robustness": "robustness_results.json",
+    "statistical_results": "statistical_results.json",
+    "supplement": "analysis_supplement.json"
+  },
+  "audit": "REPRODUCIBILITY_AUDIT.md (14/14 pass)",
+  "evaluation_layer_version": "upgraded_controlled_v1",
+  "forbidden_claim_scan": "forbidden_claim_scan.json (0 prohibited)",
+  "frozen_manifest_sha256": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+  "generator_version": "upgraded_eval_scenarios_v2",
+  "locked_test_family_checksum": "47f0afd643b72211b1a3423c99f186bc38f7776d8e68342ba00b67186da5ea95",
+  "master_seed": 20260906,
+  "n_scenarios": 340,
+  "notes": [
+    "Additive to the frozen study; the 16 frozen experiments are never modified.",
+    "Production architecture (R0/D0) is invoked read-only via PipelineOptions defaults.",
+    "locked_test runs are blocked until prereg_frozen == true."
+  ],
+  "partition_seed": 20260906,
+  "partitions": {
+    "development": [
+      "adversarial_risk_trap",
+      "capacity_constraint",
+      "cash_constraint",
+      "delayed_effects",
+      "demand_uncertainty",
+      "high_volatility",
+      "inventory_constraint",
+      "noisy_observations",
+      "price_uncertainty",
+      "resource_allocation"
+    ],
+    "locked_test": [
+      "asymmetric_risk",
+      "competing_objectives",
+      "missing_observations",
+      "promotion_decision"
+    ],
+    "validation": [
+      "conflicting_signals",
+      "low_data",
+      "supplier_uncertainty"
+    ]
+  },
+  "power_analysis": {
+    "assumptions_file": "power_assumptions.json",
+    "estimated_power": 0.8601,
+    "meets_target": true
+  },
+  "prereg": {
+    "doc": "docs\\UPGRADED_EVALUATION_PREREGISTRATION.md",
+    "doc_sha256": "72c99bcf7a0a99185678625b085a93b527aa699b61f63a4e15eac646c0bfd7dd",
+    "frozen_date": "2026-09-05",
+    "locked_test_family_checksum": "47f0afd643b72211b1a3423c99f186bc38f7776d8e68342ba00b67186da5ea95",
+    "power": {
+      "assumptions_file": "power_assumptions.json",
+      "estimated_power": 0.8601
+    },
+    "scenario_manifest_sha256": "12ad770791720992db3e8008e78d258bc73788a72669315286797ece18d74c06",
+    "suite_checksum": "2215a1bdde0294a08d5ea786f2c657f8b15b5e9ba6e37e82329df68a39629697"
+  },
+  "prereg_frozen": true,
+  "runs": {
+    "locked_test": {
+      "n_error": 0,
+      "n_instances": 800,
+      "n_ok": 800,
+      "results_file": "results.json"
+    }
+  },
+  "scratch_db": "sqlite:///./_eval_scratch.db",
+  "status": "evaluation_complete",
+  "suite_checksum": "2215a1bdde0294a08d5ea786f2c657f8b15b5e9ba6e37e82329df68a39629697"
+}

@@ -1,0 +1,372 @@
+{
+  "ground_truth_version": "gt-1.0",
+  "spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "view": {
+    "raw_zip_sha256": "2ee177e85839ba6a235b6a92cf667bbb51d7b2364e6e79fdaf513e57b810bd59",
+    "processed_rows": 94290,
+    "after_whole_quantity": 60245,
+    "after_amount_agreement": 60244,
+    "after_merge": 30293,
+    "lines_merged_away": 29951,
+    "gst_mixed_groups": 16,
+    "revenue_processed": 5567256.65,
+    "revenue_view": 4354736.16,
+    "date_min": "2025-01-01",
+    "date_max": "2025-03-31",
+    "days_with_sales": 89,
+    "distinct_products": 1645,
+    "view_sha256": "65e06599613ab6b0655114d2ba3fa00dc02e1f8481a28b165bc10eba00f7cef2",
+    "rules": "1) keep lines whose quantity is a whole number > 0 (sales.quantity is an integer column); 2) keep lines whose recomputed amount (qty*rate) agrees with a printed amount column; 3) merge lines that share (date, product, unit price) by summing quantity (the production upload validator rejects duplicate rows; merging preserves total sales and total units exactly; when a merged group mixed GST slabs, the slab with the largest revenue in the group is kept). Consequence: 'one row' no longer means 'one bill line', so no task asks about individual sale entries."
+  },
+  "computed_at_utc": "2026-10-07T16:20:03+00:00",
+  "rounding": "revenue 2 dp, percentages 4 dp; scoring tolerances come from the spec, not from here",
+  "answers": {
+    "A01": {
+      "answer": 1459082.91,
+      "calculation": "sum(quantity*unit_price) over window",
+      "op": "sum_revenue",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-01-31"
+      }
+    },
+    "A02": {
+      "answer": 1386969.02,
+      "calculation": "sum(quantity*unit_price) over window",
+      "op": "sum_revenue",
+      "params": {
+        "start": "2025-02-01",
+        "end": "2025-02-28"
+      }
+    },
+    "A03": {
+      "answer": 4354736.16,
+      "calculation": "sum(quantity*unit_price) over window",
+      "op": "sum_revenue",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    "A04": {
+      "answer": 47651,
+      "calculation": "sum(quantity) over window",
+      "op": "sum_quantity",
+      "params": {
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      }
+    },
+    "A05": {
+      "answer": 41387,
+      "calculation": "sum(quantity) over window",
+      "op": "sum_quantity",
+      "params": {
+        "start": "2025-02-01",
+        "end": "2025-02-28"
+      }
+    },
+    "B01": {
+      "answer": -4.9424,
+      "calculation": "(sum(new window) - sum(base window)) / sum(base window) * 100",
+      "detail": {
+        "new_total": 1386969.02,
+        "base_total": 1459082.91
+      },
+      "op": "pct_change_revenue",
+      "params": {
+        "new": {
+          "start": "2025-02-01",
+          "end": "2025-02-28"
+        },
+        "base": {
+          "start": "2025-01-01",
+          "end": "2025-01-31"
+        }
+      }
+    },
+    "B02": {
+      "answer": 8.7756,
+      "calculation": "(sum(new window) - sum(base window)) / sum(base window) * 100",
+      "detail": {
+        "new_total": 1508684.23,
+        "base_total": 1386969.02
+      },
+      "op": "pct_change_revenue",
+      "params": {
+        "new": {
+          "start": "2025-03-01",
+          "end": "2025-03-31"
+        },
+        "base": {
+          "start": "2025-02-01",
+          "end": "2025-02-28"
+        }
+      }
+    },
+    "B03": {
+      "answer": "2025-03-30",
+      "calculation": "day with the extreme total revenue among days that have >=1 sale",
+      "detail": {
+        "revenue": 85772.53
+      },
+      "op": "argmax_day_revenue",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    "B04": {
+      "answer": "2025-02-09",
+      "calculation": "day with the extreme total revenue among days that have >=1 sale",
+      "detail": {
+        "revenue": 5679.6
+      },
+      "op": "argmin_day_revenue",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    "B05": {
+      "answer": 0.8456,
+      "calculation": "(sum(new window) - sum(base window)) / sum(base window) * 100",
+      "detail": {
+        "new_total": 760958.44,
+        "base_total": 754578.06
+      },
+      "op": "pct_change_revenue",
+      "params": {
+        "new": {
+          "start": "2025-03-01",
+          "end": "2025-03-15"
+        },
+        "base": {
+          "start": "2025-02-01",
+          "end": "2025-02-15"
+        }
+      }
+    },
+    "C01": {
+      "answer": [
+        "EGG"
+      ],
+      "calculation": "products ranked by sum(quantity) over window, top 1",
+      "op": "top_products",
+      "params": {
+        "start": "2025-02-01",
+        "end": "2025-02-28",
+        "metric": "quantity",
+        "k": 1
+      }
+    },
+    "C02": {
+      "answer": [
+        "EGG",
+        "BIG ONION",
+        "MILK"
+      ],
+      "calculation": "products ranked by sum(revenue) over window, top 3",
+      "op": "top_products",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "metric": "revenue",
+        "k": 3
+      }
+    },
+    "C03": {
+      "answer": [
+        "EGG",
+        "KADA MUTTA",
+        "MILK"
+      ],
+      "calculation": "products ranked by sum(quantity) over window, top 3",
+      "op": "top_products",
+      "params": {
+        "start": "2025-03-01",
+        "end": "2025-03-31",
+        "metric": "quantity",
+        "k": 3
+      }
+    },
+    "C04": {
+      "answer": 4556,
+      "calculation": "sum(quantity) for one product",
+      "op": "product_quantity",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "product": "BIG ONION"
+      }
+    },
+    "C05": {
+      "answer": "MILK",
+      "calculation": "product with the larger sum(quantity)",
+      "detail": {
+        "BIG ONION": 4556,
+        "MILK": 5282
+      },
+      "op": "compare_products_quantity",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "products": [
+          "BIG ONION",
+          "MILK"
+        ]
+      }
+    },
+    "C06": {
+      "answer": 4.0384,
+      "calculation": "product revenue / total revenue * 100",
+      "detail": {
+        "product_revenue": 175862.5,
+        "total_revenue": 4354736.16
+      },
+      "op": "product_revenue_share",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "product": "EGG"
+      }
+    },
+    "D01": {
+      "answer": "Monday",
+      "calculation": "weekday with the max total revenue",
+      "detail": {
+        "Friday": 623387.09,
+        "Monday": 788958.67,
+        "Saturday": 715672.6,
+        "Sunday": 319444.86,
+        "Thursday": 673527.96,
+        "Tuesday": 543584.89,
+        "Wednesday": 690160.09
+      },
+      "op": "weekday_extreme",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "which": "max"
+      }
+    },
+    "D02": {
+      "answer": "Sunday",
+      "calculation": "weekday with the min total revenue",
+      "detail": {
+        "Friday": 623387.09,
+        "Monday": 788958.67,
+        "Saturday": 715672.6,
+        "Sunday": 319444.86,
+        "Thursday": 673527.96,
+        "Tuesday": 543584.89,
+        "Wednesday": 690160.09
+      },
+      "op": "weekday_extreme",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "which": "min"
+      }
+    },
+    "D03": {
+      "answer": 319444.86,
+      "calculation": "sum(revenue) on all Sundays in window",
+      "op": "sum_revenue_weekday",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "weekday": "Sunday"
+      }
+    },
+    "D04": {
+      "answer": 48929.62,
+      "calculation": "mean of daily revenue over days with >=1 sale",
+      "detail": {
+        "days": 89
+      },
+      "op": "mean_daily_revenue",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    "F01": {
+      "answer": 1287,
+      "calculation": "count of distinct product names in window",
+      "op": "distinct_products",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-01-31"
+      }
+    },
+    "F02": {
+      "answer": 1588.3667,
+      "calculation": "mean of daily unit totals over days with >=1 sale",
+      "detail": {
+        "days": 30
+      },
+      "op": "mean_daily_quantity",
+      "params": {
+        "start": "2025-03-01",
+        "end": "2025-03-31"
+      }
+    },
+    "F03": {
+      "answer": 85772.53,
+      "calculation": "largest daily revenue total in window",
+      "op": "max_day_revenue",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    "E01": {
+      "answer": 1647923.52,
+      "calculation": "sum(revenue) where gst_pct == slab",
+      "op": "gst_revenue",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "gst": 5.0
+      }
+    },
+    "E02": {
+      "answer": 7.7875,
+      "calculation": "slab revenue / total revenue * 100",
+      "op": "gst_share",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "gst": 18.0
+      }
+    },
+    "E03": {
+      "answer": 54.1471,
+      "calculation": "slab revenue / total revenue * 100",
+      "op": "gst_share",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "gst": 0.0
+      }
+    },
+    "E04": {
+      "answer": "0%",
+      "calculation": "GST slab with the largest total revenue",
+      "detail": {
+        "0%": 2357963.75,
+        "5%": 1647923.52,
+        "18%": 339126.89,
+        "28%": 2715.0,
+        "40%": 6878.0,
+        "121%": 129.0
+      },
+      "op": "gst_argmax",
+      "params": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    }
+  }
+}

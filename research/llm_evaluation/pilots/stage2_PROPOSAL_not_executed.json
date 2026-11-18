@@ -1,0 +1,26 @@
+{
+  "record_type": "pilot_selection_proposal",
+  "status": "PROPOSED - NOT EXECUTED. No live request has been made for this stage.",
+  "date": "2026-10-14",
+  "frozen_spec_sha256": "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146",
+  "builds_on": "run_20261014T042125Z_0daf9d32 (pilot, 6 of 27 tasks x 1 repeat; kept unchanged)",
+  "selection_rule": "Every frozen task not attempted in the pilot, in frozen spec order. No task is chosen or dropped on the basis of any model output.",
+  "task_ids": ["A02", "A03", "A04", "A05", "B02", "B03", "B04", "B05", "C02", "C03", "C04", "C05", "C06", "D02", "D03", "D04", "F02", "F03", "E02", "E03", "E04"],
+  "composition": {"primary_scored": 18, "supplementary_gst_not_scored_for_accuracy": 3},
+  "repeats": 1,
+  "condition": "asof",
+  "max_requests": 21,
+  "planned_requests": 21,
+  "budget_basis": {
+    "requests_made_so_far_against_the_account": 8,
+    "measured_mean_input_tokens_per_request": 1348.2,
+    "estimated_input_tokens": 28312,
+    "estimated_usd_at_list_price": 0.0012,
+    "list_price_usd_per_million_input_tokens": 0.042,
+    "credit_unit": "not defined by the provider; account balance not observable; no credit estimate is made"
+  },
+  "precondition": "Do not run until the account owner confirms the remaining balance covers 21 requests. If it does not, run nothing.",
+  "command": "python -m research.llm_evaluation.run_evaluation run --selection-file research/llm_evaluation/pilots/stage2_PROPOSAL_not_executed.json --repeats 1 --max-requests 21",
+  "after_running": "Pilot and stage 2 together would cover 27 of 27 tasks at 1 repeat (23 primary scored). That is still NOT the frozen protocol (5 repeats) and the two runs are separate records, not a merged result.",
+  "not_proposed": ["the full 27 x 5 = 135-request protocol", "the non-reproducible realclock condition", "B2 (cannot run on Jev)"]
+}

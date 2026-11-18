@@ -1,0 +1,62 @@
+{
+  "system": "decisiongpt",
+  "question": "Which three products sold the most units in March 2025?",
+  "answer": "EGG brought in the most money in the last 30 days: ₹57,646 from 10,905 units sold. Next were MILK (₹55,916), BIG ONION (₹54,282). Compared with the 30 days before, EGG sales were about 3% lower.",
+  "intent": "top_products",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "legacy_router",
+  "notice": "Advanced question understanding is temporarily unavailable, so this answer comes from the standard assistant.",
+  "sources": [
+    "Sales in the last 30 days, grouped by product"
+  ],
+  "details_keys": [
+    "table"
+  ],
+  "latency_s": 1.65372539999953,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai_compatible",
+      "url_host": "mock-provider.invalid",
+      "model_requested": "mock-model",
+      "max_tokens": 700,
+      "temperature": 0,
+      "ts": 1791462480.6370986,
+      "ok": false,
+      "error": "ReadTimeout: mock read timeout",
+      "latency_s": 1.5022482999920612,
+      "attempts": 3
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 1,
+    "input_tokens": null,
+    "output_tokens": null,
+    "llm_latency_s": 1.5022482999920612
+  },
+  "audit": {
+    "fallback_reason": "timeout",
+    "request_id": "e33a5bbf98274da396cfab17a9157bd6",
+    "business_id": "5712321a-0cc3-4249-8152-498cc3bc61d5",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 1.502,
+      "provider": "openai_compatible",
+      "model": "mock-model",
+      "response_model": null,
+      "usage": null,
+      "attempts": 3,
+      "error": "timeout"
+    },
+    "validation": {
+      "ok": false,
+      "errors": [],
+      "returned_fields": []
+    },
+    "outcome": "fallback",
+    "total_latency_s": 1.538
+  }
+}

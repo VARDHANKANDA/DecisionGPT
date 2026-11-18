@@ -1,0 +1,24 @@
+# Backend build context is the repo root (docker-compose.yml). ALLOWLIST: nothing is sent to the Docker daemon unless it is named here.
+# backend/Dockerfile copies exactly backend/, ml/ and data/platform/ - the research data, experiments, papers, notebooks, tests, git history and
+# every local file (virtualenvs, node_modules, databases, env files) stay out of the context and therefore out of the image.
+*
+!backend
+!ml
+!data/platform
+
+# never, even inside the allowed folders
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+backend/.venv
+**/.venv
+backend/dev.db
+**/*.db
+**/*.sqlite3
+# env files hold local secrets (backend/.env is picked up by `COPY backend`); only the example (placeholders) is allowed
+**/.env
+**/.env.*
+!**/.env.example
+backend/tests

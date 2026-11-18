@@ -1,0 +1,684 @@
+{
+  "audit_date": "2026-10-13",
+  "generated_utc": "2026-10-14T16:09:06+00:00",
+  "chat_path_llm_analytics": [
+    "assistant_service.answer_question -> analytics_chat_service.try_answer (only when a provider is configured and ANALYTICS_LLM_ENABLED)",
+    "analytics_interpreter_service.interpret: LLMService.call_json -> strict Interpretation schema (extra fields rejected)",
+    "analytics_chat_service: route = analytics_query | clarification | unsupported | legacy",
+    "analytics_query: query_engine.run_query (resolves dates from app.core.clock, matches products within the business, ORM queries filtered by business_id)",
+    "query_presenter.facts: deterministic FACT text; analytics_answer_service.explain: LLM interpretation/suggestion kept only if numbers are grounded and no causal claim",
+    "response carries path=llm_analytics; failure of any LLM step falls back to the legacy router (path=legacy_router, flagged)"
+  ],
+  "chat_path": [
+    "LEGACY router path (fallback): frontend chat page -> api.chat() -> POST /api/v1/businesses/{id}/chat",
+    "api/v1/endpoints/assistant.py: chat() -> assistant_service.answer_question(db, business_id, message)",
+    "assistant_service.classify_intent(text): keyword rules (no LLM, no date parsing)",
+    "per-intent handler queries the business tables via SQLAlchemy / analytics services and builds the answer text (f-strings or LLMService template)",
+    "response + memory log row"
+  ],
+  "components": {
+    "receives_question": "api/v1/endpoints/assistant.py::chat -> assistant_service.answer_question",
+    "determines_intent": "assistant_service.classify_intent (substring keyword rules)",
+    "determines_date_ranges": "nobody parses dates from the question; handlers use fixed trailing windows relative to date.today()",
+    "queries_business_data": "handlers: _product_revenue, kpi_service.*, forecast/churn/digital_twin services",
+    "constructs_answer": "handler f-strings, or LLMService.generate_business_response (template; LLM rephrase only if configured)"
+  },
+  "llm_call_sites_in_production_code": [
+    {
+      "file": "backend/app/services/analytics_interpreter_service.py",
+      "function": "interpret",
+      "method": "decide",
+      "line": 473
+    },
+    {
+      "file": "backend/app/services/goal_service.py",
+      "function": "parse_and_validate_goal",
+      "method": "parse_goal",
+      "line": 56
+    }
+  ],
+  "chat_intents": {
+    "why_kpi_fell": {
+      "handler": "_why_kpi_fell",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "price_change_advice": {
+      "handler": "_simulation_advice",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "marketing_change_advice": {
+      "handler": "_simulation_advice",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "why_recommend": {
+      "handler": "_why_recommend",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "what_focus": {
+      "handler": "_what_focus",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "top_products": {
+      "handler": "_top_products",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "improving_worsening": {
+      "handler": "_improving_worsening",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "sales_forecast": {
+      "handler": "_sales_forecast",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "customer_churn": {
+      "handler": "_customer_churn",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "valuable_customers": {
+      "handler": "_valuable_customers",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    },
+    "unrecognized": {
+      "handler": "(fixed refusal text)",
+      "invokes_llm_when_configured": false,
+      "llm_role": null
+    }
+  },
+  "frozen_question_routing": {
+    "scope": "legacy fixed-intent router (fallback path)",
+    "counts": {
+      "unrecognized": 24,
+      "top_products": 3
+    },
+    "n_unrecognized": 24,
+    "n_total": 27,
+    "questions_that_can_reach_an_llm_call_even_if_configured": 0
+  },
+  "llm_in_evaluated_chat_path": {
+    "scope": "LEGACY fixed-intent router only (the fallback path); the LLM analytics path is described under llm_analytics_path",
+    "invoked_for_any_frozen_question": false,
+    "invoked_for_business_analytics_intents": false,
+    "intents_where_llm_rephrases_when_configured": [],
+    "llm_never_does": [
+      "intent routing",
+      "date interpretation",
+      "data retrieval",
+      "numeric computation"
+    ]
+  },
+  "other_llm_paths": [
+    "goal parsing: POST goals -> goal_service -> LLMService.parse_goal (objective / constraint labels via the model; rule-based fallback)",
+    "decision analysis: decision_service -> LLMService.evaluate_agent / generate_strategy_explanation are deterministic templates since 2026-10-13 (no provider call)"
+  ],
+  "llm_facade": {
+    "swallows_llm_failures": "no: OpenAIClient.decide never raises and returns DecisionResult(ok=False, error=<kind>); callers fall back to rules and record the fallback path/reason",
+    "temperature": "not set (no sampling parameter is sent)",
+    "seed_supported": false,
+    "retry": "bounded (<= openai_max_retries) for rate-limit / connection errors only; timeouts are never retried",
+    "timeout_s_default": 15,
+    "token_accounting": "provider-reported usage.input_tokens / output_tokens is kept on DecisionResult.usage"
+  },
+  "llm_analytics_path": {
+    "implemented": true,
+    "checks": {
+      "answer_question_calls_analytics_path_first": true,
+      "answer_question_keeps_legacy_router_as_fallback": true,
+      "interpreter_calls_llm": true,
+      "orchestrator_runs_interpreter": true,
+      "orchestrator_executes_deterministic_engine": true,
+      "orchestrator_composes_a_templated_answer": true,
+      "answer_composition_has_no_llm_call": true,
+      "engine_has_no_llm_call": true
+    },
+    "needs": "OPENAI_API_KEY configured (OpenAI); without it the legacy router answers and is labelled path=legacy_router",
+    "kill_switch": "ANALYTICS_LLM_ENABLED=false"
+  },
+  "frozen_questions_that_reach_the_llm_interpreter_when_configured": 27,
+  "date_today_call_sites": [
+    {
+      "file": "backend/app/core/clock.py",
+      "function": "today",
+      "line": 25
+    },
+    {
+      "file": "backend/app/evaluation/harness.py",
+      "function": "_seed_eval_business",
+      "line": 127
+    },
+    {
+      "file": "backend/app/services/business_service.py",
+      "function": "_age_years",
+      "line": 13
+    },
+    {
+      "file": "backend/app/services/decision_architecture_service.py",
+      "function": "_seed_synthetic_business",
+      "line": 127
+    },
+    {
+      "file": "backend/app/services/demo_business_service.py",
+      "function": "create_demo_business",
+      "line": 71
+    }
+  ],
+  "chat_reachable_modules_with_date_today": [],
+  "task_compatibility": {
+    "table_asof": [
+      {
+        "task_id": "A01",
+        "track": "primary",
+        "question": "What were my total sales in January 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "revenue sum, absolute window 1-31 Jan",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "A02",
+        "track": "primary",
+        "question": "How much did I sell in February 2025 in total?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "revenue sum, absolute window 1-28 Feb",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "A03",
+        "track": "primary",
+        "question": "What were my total sales for the three months from January to March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "revenue sum over the whole data span",
+        "nearest_existing_block": "analytics/kpi_service.compute_kpis(period_days) — trailing window [today-N, today]; revenue + line count",
+        "class": "B1",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D"
+        ],
+        "note": "kpis(period_days=89) equals Jan 1-Mar 31 only under the evaluation clock 2025-03-31"
+      },
+      {
+        "task_id": "A04",
+        "track": "primary",
+        "question": "How many units did I sell in March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "unit sum, absolute window March",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "A05",
+        "track": "primary",
+        "question": "How many units did I sell in February 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "unit sum, absolute window February",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "B01",
+        "track": "primary",
+        "question": "How did February 2025 sales compare with January? Tell me the percentage change.",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "% change between two absolute windows (Feb vs Jan)",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "B02",
+        "track": "primary",
+        "question": "By what percentage did sales change in March 2025 compared with February 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "% change between two absolute windows (Mar vs Feb)",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D",
+          "F"
+        ],
+        "note": "period_over_period uses equal-length trailing windows, which do not align with calendar months"
+      },
+      {
+        "task_id": "B03",
+        "track": "primary",
+        "question": "Which day had the highest total sales between January and March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "argmax of daily revenue",
+        "nearest_existing_block": "analytics/kpi_service.revenue_trend(days) — daily revenue for trailing days (days with sales only)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "B04",
+        "track": "primary",
+        "question": "Which day had the lowest total sales between January and March 2025, counting only days that have any sales recorded?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "argmin of daily revenue over days with sales",
+        "nearest_existing_block": "analytics/kpi_service.revenue_trend(days) — daily revenue for trailing days (days with sales only)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "B05",
+        "track": "primary",
+        "question": "How did sales from 1 to 15 March 2025 compare with 1 to 15 February 2025, as a percentage change?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "% change between two absolute half-month windows",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "C01",
+        "track": "primary",
+        "question": "Which product sold the most units in February 2025?",
+        "router_recognizes": true,
+        "router_intent": "top_products",
+        "required_capability": "argmax units by product, absolute window Feb",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "G",
+          "D",
+          "F"
+        ],
+        "note": "router -> top_products, but that handler ranks by REVENUE over a fixed trailing 30-day window and ignores the dates/metric in the question"
+      },
+      {
+        "task_id": "C02",
+        "track": "primary",
+        "question": "What were my top 3 products by sales value from January to March 2025?",
+        "router_recognizes": true,
+        "router_intent": "top_products",
+        "required_capability": "top-3 products by revenue over the whole data span",
+        "nearest_existing_block": "analytics/breakdown_service.top_products(limit) — all-time units+revenue per product, ranked by revenue (GET /analytics/products)",
+        "class": "B1",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "G"
+        ],
+        "note": "router -> top_products. Under the evaluation clock the handler answers for March only; under the real clock its 'no sales in the last 30 days' fallback ranks ALL sales by revenue, which coincidentally equals the task because the data span is exactly the asked window"
+      },
+      {
+        "task_id": "C03",
+        "track": "primary",
+        "question": "Which three products sold the most units in March 2025?",
+        "router_recognizes": true,
+        "router_intent": "top_products",
+        "required_capability": "top-3 products by UNITS, absolute window March",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "G",
+          "F"
+        ],
+        "note": "router -> top_products, but the handler ranks by revenue, not units"
+      },
+      {
+        "task_id": "C04",
+        "track": "primary",
+        "question": "How many units of BIG ONION did I sell between January and March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "units of one product over the whole data span",
+        "nearest_existing_block": "analytics/breakdown_service.top_products(limit) — all-time units+revenue per product, ranked by revenue (GET /analytics/products)",
+        "class": "B1",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B"
+        ],
+        "note": "single call of GET /analytics/products?limit>=2 returns units_sold; equals the asked window because the data span is exactly Jan-Mar"
+      },
+      {
+        "task_id": "C05",
+        "track": "primary",
+        "question": "Which sold more units between January and March 2025, BIG ONION or MILK?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "compare units of two products",
+        "nearest_existing_block": "analytics/breakdown_service.top_products(limit) — all-time units+revenue per product, ranked by revenue (GET /analytics/products)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "C06",
+        "track": "primary",
+        "question": "What share of my total sales came from EGG from January to March 2025? Give a percentage.",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "one product's revenue / total revenue",
+        "nearest_existing_block": "analytics/breakdown_service.top_products(limit) — all-time units+revenue per product, ranked by revenue (GET /analytics/products)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "D01",
+        "track": "primary",
+        "question": "Which day of the week brings in the most sales for me?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "weekday with the largest revenue",
+        "nearest_existing_block": "analytics/kpi_service.revenue_trend(days) — daily revenue for trailing days (days with sales only)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "D02",
+        "track": "primary",
+        "question": "Which day of the week is my weakest for sales?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "weekday with the smallest revenue",
+        "nearest_existing_block": "analytics/kpi_service.revenue_trend(days) — daily revenue for trailing days (days with sales only)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "D03",
+        "track": "primary",
+        "question": "How much did I sell on Sundays in total between January and March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "revenue summed over Sundays",
+        "nearest_existing_block": "analytics/kpi_service.revenue_trend(days) — daily revenue for trailing days (days with sales only)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "D04",
+        "track": "primary",
+        "question": "On an average day that I had sales, how much did I sell between January and March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "mean daily revenue over days with sales",
+        "nearest_existing_block": "analytics/kpi_service.revenue_trend(days) — daily revenue for trailing days (days with sales only)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "F01",
+        "track": "primary",
+        "question": "How many different products did I sell in January 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "count of distinct products sold in January",
+        "nearest_existing_block": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "D",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "F02",
+        "track": "primary",
+        "question": "On an average day that I had sales, how many units did I sell in March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "mean DAILY UNITS in March",
+        "nearest_existing_block": null,
+        "class": "C",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "C",
+          "F"
+        ],
+        "note": "no production function returns daily unit totals (revenue_trend returns revenue only)"
+      },
+      {
+        "task_id": "F03",
+        "track": "primary",
+        "question": "What was the highest total sales I made on any single day between January and March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "largest daily revenue",
+        "nearest_existing_block": "analytics/kpi_service.revenue_trend(days) — daily revenue for trailing days (days with sales only)",
+        "class": "B2",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "B",
+          "F"
+        ],
+        "note": null
+      },
+      {
+        "task_id": "E01",
+        "track": "supplementary",
+        "question": "How much of my sales between January and March 2025 came from items with 5% GST?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "revenue by GST slab",
+        "nearest_existing_block": null,
+        "class": "C",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "E"
+        ],
+        "note": "the production sales schema has no GST column"
+      },
+      {
+        "task_id": "E02",
+        "track": "supplementary",
+        "question": "What percentage of my sales came from items with 18% GST?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "share of revenue by GST slab",
+        "nearest_existing_block": null,
+        "class": "C",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "E"
+        ],
+        "note": "same"
+      },
+      {
+        "task_id": "E03",
+        "track": "supplementary",
+        "question": "What percentage of my sales came from items with 0% GST?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "share of revenue by GST slab",
+        "nearest_existing_block": null,
+        "class": "C",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "E"
+        ],
+        "note": "same"
+      },
+      {
+        "task_id": "E04",
+        "track": "supplementary",
+        "question": "Which GST rate brought in the most sales between January and March 2025?",
+        "router_recognizes": false,
+        "router_intent": "unrecognized",
+        "required_capability": "GST slab with the most revenue",
+        "nearest_existing_block": null,
+        "class": "C",
+        "runnable_through_production_chat_with_correct_semantics": false,
+        "causes": [
+          "E"
+        ],
+        "note": "same"
+      }
+    ],
+    "class_counts": {
+      "asof": {
+        "B1": 3,
+        "B2": 19,
+        "C": 5
+      },
+      "realclock": {
+        "A": 1,
+        "B1": 2,
+        "B2": 19,
+        "C": 5
+      }
+    },
+    "cause_legend": {
+      "A": "unsupported natural-language phrasing",
+      "B": "missing intent",
+      "C": "missing backend capability",
+      "D": "missing date handling",
+      "E": "missing data field",
+      "F": "unsupported aggregation",
+      "G": "production architecture limitation (handler semantics fixed)",
+      "H": "evaluation task incompatible with current production behaviour",
+      "I": "other"
+    },
+    "building_blocks": {
+      "kpis": "analytics/kpi_service.compute_kpis(period_days) — trailing window [today-N, today]; revenue + line count",
+      "pop": "analytics/kpi_service.period_over_period(days) — trailing vs preceding window",
+      "trend": "analytics/kpi_service.revenue_trend(days) — daily revenue for trailing days (days with sales only)",
+      "top": "analytics/breakdown_service.top_products(limit) — all-time units+revenue per product, ranked by revenue (GET /analytics/products)",
+      "prodrev": "services/assistant_service._product_revenue(start,end) — per-product units+revenue for an ABSOLUTE window (internal helper)"
+    },
+    "class_definitions": {
+      "A": "answerable through the current production chat path with correct semantics",
+      "B1": "ONE existing production call, parameters only, returns the quantity (not reachable via chat)",
+      "B2": "existing building block + trivial arithmetic (sum/count/argmax/mean/%/share/weekday); not reachable via chat",
+      "C": "no existing building block can supply it (missing field or aggregation)",
+      "D": "invalid/ambiguous for the dataset (none: the ground-truth engine refuses tie-ambiguous tasks)"
+    }
+  },
+  "data_view": {
+    "original_processed_lines": 94290,
+    "original_revenue_inr": 5567256.65,
+    "original_quantity_mixed_units": 151377.4,
+    "rejected_fractional_quantity": {
+      "lines": 34045,
+      "pct_of_lines": 36.11,
+      "revenue_inr": 1212310.49,
+      "pct_of_revenue": 21.78,
+      "quantity": 19829.4
+    },
+    "rejected_amount_disagreement": {
+      "lines": 1,
+      "revenue_inr": 210.0
+    },
+    "whole_quantity_lines_retained": 60244,
+    "whole_quantity_revenue_inr": 4354736.16,
+    "view_rows_after_merge": 30293,
+    "lines_merged_away": 29951,
+    "view_revenue_inr": 4354736.16,
+    "view_quantity": 131545,
+    "whole_quantity_lines_quantity": 131545,
+    "revenue_conserved_by_merge": true,
+    "quantity_conserved_by_merge": true,
+    "max_abs_difference_per_merged_group_inr": 0.0,
+    "pct_original_rows_in_view": 32.13,
+    "pct_original_lines_represented": 63.89,
+    "pct_original_revenue_retained": 78.22,
+    "identity": "for lines sharing (date, product, unit price p): sum(q_i * p) = p * sum(q_i), so merging by summing quantity conserves revenue; verified numerically above",
+    "label": "evaluation-compatible view derived from the approved Indian POS dataset (NOT the original dataset)",
+    "view_sha256": "65e06599613ab6b0655114d2ba3fa00dc02e1f8481a28b165bc10eba00f7cef2"
+  }
+}

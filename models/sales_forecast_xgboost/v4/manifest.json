@@ -1,0 +1,43 @@
+{
+  "model_name": "sales_forecast_xgboost",
+  "model_type": "forecasting_xgboost",
+  "version": "v4",
+  "dataset_version": "upload:ae9dfb0f-e2e4-4c13-8536-290ea6ced0cb:v1",
+  "feature_version": "forecasting_v1",
+  "parameters": {
+    "n_estimators": 200,
+    "max_depth": 4,
+    "learning_rate": 0.05
+  },
+  "metrics": {
+    "mae": 0.00029144287109375,
+    "rmse": 0.0003801202747429623,
+    "mape": 0.0008501351686059211,
+    "wape": 8.362779658357246e-06,
+    "n_eval": 20,
+    "n_invalid": 0,
+    "n_zero_actual": 0,
+    "bias": 1.94549560546875e-05,
+    "val_mae": 0.0002773284912109375,
+    "val_rmse": 0.00037348155886891203,
+    "val_mape": 0.0008158526460023954,
+    "val_wape": 8.003708260055916e-06,
+    "val_baseline_mae": 1.9,
+    "baseline_mae": 1.9,
+    "shap_global_importance": {
+      "lag_1": 0.54086,
+      "lag_7": 2.481147,
+      "rolling_mean_7": 5.7e-05,
+      "rolling_mean_28": 0.0,
+      "day_of_week": 0.0,
+      "is_weekend": 0.0,
+      "month": 0.0,
+      "price": 0.0,
+      "marketing_spend": 0.0,
+      "promotion_flag": 0.0
+    }
+  },
+  "artifact_path": "models/sales_forecast_xgboost/v4/model.joblib",
+  "trained_at": "2026-11-16T12:42:55.869066+00:00",
+  "random_seed": 7
+}

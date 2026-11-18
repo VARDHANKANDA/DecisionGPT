@@ -1,0 +1,142 @@
+{
+  "status": "completed",
+  "evidence_type": "measured_on_synthetic_data",
+  "run_id": "rc_20261014T070950Z_4dbaf788",
+  "created_utc": "2026-10-14T07:09:50+00:00",
+  "seed": 42,
+  "event": "churned = 1 (customer left), the label recorded in the synthetic platform churn dataset",
+  "model": "StandardScaler + LogisticRegression (the production churn model family)",
+  "features": [
+    "tenure_days",
+    "recency_days",
+    "frequency",
+    "avg_order_value",
+    "monetary_value",
+    "purchase_rate_per_year",
+    "recency_ratio"
+  ],
+  "excluded_features": [
+    "support_tickets",
+    "discount_usage_rate"
+  ],
+  "split": {
+    "scheme": "stratified random 80/20 (the dataset has no time dimension)",
+    "train_rows": 4800,
+    "test_rows": 1200
+  },
+  "baseline": "constant prediction equal to the training-set prevalence",
+  "metrics": {
+    "n": 1200,
+    "positives": 546,
+    "prevalence": 0.455,
+    "brier": 0.18279659139291898,
+    "brier_baseline_prevalence": 0.24797500000000003,
+    "brier_skill_score": 0.2628426599741145,
+    "log_loss": 0.5427721469599095,
+    "log_loss_baseline_prevalence": 0.6890916952679866,
+    "roc_auc": 0.7977982771560754,
+    "ece": 0.03648249643128591,
+    "reliability_table": [
+      {
+        "bin": [
+          0.0,
+          0.1
+        ],
+        "n": 81,
+        "mean_predicted": 0.06599953768495233,
+        "observed_rate": 0.06172839506172839
+      },
+      {
+        "bin": [
+          0.1,
+          0.2
+        ],
+        "n": 142,
+        "mean_predicted": 0.1509595625663524,
+        "observed_rate": 0.15492957746478872
+      },
+      {
+        "bin": [
+          0.2,
+          0.30000000000000004
+        ],
+        "n": 182,
+        "mean_predicted": 0.2531693862832459,
+        "observed_rate": 0.22527472527472528
+      },
+      {
+        "bin": [
+          0.30000000000000004,
+          0.4
+        ],
+        "n": 151,
+        "mean_predicted": 0.3467727698550068,
+        "observed_rate": 0.2980132450331126
+      },
+      {
+        "bin": [
+          0.4,
+          0.5
+        ],
+        "n": 155,
+        "mean_predicted": 0.4545201031668618,
+        "observed_rate": 0.5612903225806452
+      },
+      {
+        "bin": [
+          0.5,
+          0.6000000000000001
+        ],
+        "n": 157,
+        "mean_predicted": 0.5469374722625429,
+        "observed_rate": 0.5668789808917197
+      },
+      {
+        "bin": [
+          0.6000000000000001,
+          0.7000000000000001
+        ],
+        "n": 135,
+        "mean_predicted": 0.6484087402595793,
+        "observed_rate": 0.674074074074074
+      },
+      {
+        "bin": [
+          0.7000000000000001,
+          0.8
+        ],
+        "n": 99,
+        "mean_predicted": 0.7499586870503178,
+        "observed_rate": 0.7777777777777778
+      },
+      {
+        "bin": [
+          0.8,
+          0.9
+        ],
+        "n": 76,
+        "mean_predicted": 0.8448235531442975,
+        "observed_rate": 0.8947368421052632
+      },
+      {
+        "bin": [
+          0.9,
+          1.0
+        ],
+        "n": 22,
+        "mean_predicted": 0.9210339260953956,
+        "observed_rate": 0.9545454545454546
+      }
+    ],
+    "ece_definition": "10 equal-width probability bins; sum of (n_bin / n) x |observed rate - mean predicted|",
+    "brier_ci95": [
+      0.17282056497990134,
+      0.19351211136466667
+    ]
+  },
+  "limitations": [
+    "Labels come from a documented generator, so good calibration here mainly shows the pipeline is sound; it is not evidence about real customers.",
+    "A random split on cross-sectional data cannot detect drift over time.",
+    "No real churn outcomes have been recorded, so calibration on real businesses is not evaluated."
+  ]
+}

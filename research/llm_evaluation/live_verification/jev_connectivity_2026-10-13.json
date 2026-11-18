@@ -1,0 +1,43 @@
+{
+  "record_type": "connectivity_verification",
+  "is_evaluation": false,
+  "research_result": false,
+  "provider": "typesafe-jev",
+  "endpoint": "https://api.typesafe.ai/v1/systemone",
+  "date": "2026-10-13",
+  "summary": "Two live requests were made to confirm authentication and that the production client accepts real Jev responses. This is a connectivity check, not an evaluation: no frozen task was run and no accuracy is implied.",
+  "requests": [
+    {
+      "step": "standalone_noul_probe",
+      "through_production_client": false,
+      "question_types": ["noul"],
+      "http_status": 200,
+      "model_reported": "jev-1.13.0",
+      "input_tokens": 294,
+      "output_tokens": 22,
+      "latency_s": 0.91,
+      "answers_accepted": 1,
+      "note": "One yes/no question, sent by a standalone script to verify the key and the documented request/response contract."
+    },
+    {
+      "step": "production_client_interpreter_question_set",
+      "through_production_client": true,
+      "question_types": ["choice", "noul"],
+      "http_status": 200,
+      "model_reported": "jev-1.13.0",
+      "input_tokens": 1345,
+      "output_tokens": 452,
+      "latency_s": null,
+      "answers_accepted": 10,
+      "assembled_request_valid": true,
+      "decided": {"route": "calculate", "operation": "aggregate", "metric": "revenue", "period": "calendar month 2025-02"},
+      "note": "The production LLMService/JevClient sent the 10 typed interpreter questions for one sample question; every answer passed the production parser and the assembled structured request passed the closed schema. Latency was not captured."
+    }
+  ],
+  "requests_total": 2,
+  "does_not_show": [
+    "classification accuracy on the frozen tasks",
+    "behaviour under repeated runs or load",
+    "the provider's credit accounting (the console is the billing record)"
+  ]
+}

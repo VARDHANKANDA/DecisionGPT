@@ -1,0 +1,186 @@
+{
+  "system": "decisiongpt",
+  "question": "Which sold more units between January and March 2025, BIG ONION or MILK?",
+  "answer": "For Q1 2025, ranked by units sold (highest first): 1. MILK (5,282), 2. BIG ONION (4,556). This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for Q1 2025 (260 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 0.5777326999232173,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "typesafe-jev",
+      "url_host": "api.typesafe.ai",
+      "model_requested": "jev-latest",
+      "max_tokens": null,
+      "temperature": null,
+      "ts": 1791956629.7383056,
+      "ok": true,
+      "latency_s": 0.45948560000397265,
+      "model_returned": "jev-1.13.0",
+      "input_tokens": 1353,
+      "output_tokens": 451,
+      "usage_raw": {
+        "input_tokens": 1353,
+        "output_tokens": 451
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1353,
+    "output_tokens": 451,
+    "llm_latency_s": 0.45948560000397265
+  },
+  "audit": {
+    "request_id": "a7215d5aa9a44e16b873c06ac1362d7b",
+    "business_id": "03f9a0fe-2d2b-49bb-b52d-77b2095d6b78",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 0.46,
+      "provider": "typesafe-jev",
+      "model": "jev-latest",
+      "response_model": "jev-1.13.0",
+      "usage": {
+        "input_tokens": 1353,
+        "output_tokens": 451
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "jev": {
+        "route": {
+          "value": "calculate",
+          "confidence": 1.0
+        },
+        "operation": {
+          "value": "ranking",
+          "confidence": 1.0
+        },
+        "metric": {
+          "value": "units",
+          "confidence": 1.0
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 1.0
+        },
+        "group_by": {
+          "value": "product",
+          "confidence": 0.82
+        },
+        "direction": {
+          "value": "desc",
+          "confidence": 1.0
+        },
+        "named_products": {
+          "value": 0.91,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.03,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "other",
+          "confidence": 0.36
+        },
+        "missing_item": {
+          "value": "other",
+          "confidence": 0.76
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "ranking",
+        "metric": "units",
+        "periods": [
+          {
+            "kind": "absolute",
+            "start": "2025-01-01",
+            "end": "2025-03-31"
+          }
+        ],
+        "products": [
+          "BIG ONION",
+          "MILK"
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "units",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "product",
+        "direction": "desc",
+        "limit": 2,
+        "products": [
+          "BIG ONION",
+          "MILK"
+        ],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.06,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "Q1 2025"
+      },
+      "n_records": 260,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "template",
+    "outcome": "answered",
+    "total_latency_s": 0.555
+  }
+}

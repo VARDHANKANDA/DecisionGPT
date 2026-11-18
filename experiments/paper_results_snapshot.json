@@ -1,0 +1,422 @@
+{
+  "summary": {
+    "tables_total": 5,
+    "tables_ready": 4,
+    "tables_missing": 1
+  },
+  "tables": [
+    {
+      "key": "predictive_model_performance",
+      "title": "Table 1 \u2014 Predictive Model Performance",
+      "export_tables": [
+        "forecasting_performance",
+        "churn_performance"
+      ],
+      "available": true,
+      "missing_reason": null,
+      "sections": [
+        {
+          "name": "Forecasting",
+          "headers": [
+            "Model",
+            "Version",
+            "Status",
+            "Data category",
+            "MAE",
+            "RMSE",
+            "MAPE",
+            "Dataset version"
+          ],
+          "rows": [
+            [
+              "sales_forecast_linear",
+              "v1",
+              "active",
+              "SYNTHETIC_CONTROLLED",
+              17.29126388372856,
+              25.51122770712597,
+              12.489406914138296,
+              "platform-forecasting-v1"
+            ],
+            [
+              "sales_forecast_linear",
+              "v2",
+              "archived",
+              "INDIA_REAL_BUSINESS",
+              18.469340305777237,
+              28.512180591223785,
+              110.46791416047415,
+              "upload:6fe4489e-a056-4bab-86be-c951c23504e8:v1"
+            ],
+            [
+              "sales_forecast_naive",
+              "v1",
+              "active",
+              "SYNTHETIC_CONTROLLED",
+              24.659669811320754,
+              38.27514896511687,
+              15.464740828127482,
+              "platform-forecasting-v1"
+            ],
+            [
+              "sales_forecast_naive",
+              "v2",
+              "archived",
+              "INDIA_REAL_BUSINESS",
+              19.92156862745098,
+              31.249784312981156,
+              276.2717905127891,
+              "upload:6fe4489e-a056-4bab-86be-c951c23504e8:v1"
+            ],
+            [
+              "sales_forecast_xgboost",
+              "v1",
+              "active",
+              "SYNTHETIC_CONTROLLED",
+              15.13885516603038,
+              21.863057200107395,
+              10.296922032515052,
+              "platform-forecasting-v1"
+            ],
+            [
+              "sales_forecast_xgboost",
+              "v2",
+              "archived",
+              "INDIA_REAL_BUSINESS",
+              15.268979480161386,
+              23.892719229281997,
+              152.6225390298733,
+              "upload:6fe4489e-a056-4bab-86be-c951c23504e8:v1"
+            ]
+          ],
+          "row_count": 6
+        },
+        {
+          "name": "Classification (churn)",
+          "headers": [
+            "Model",
+            "Version",
+            "Status",
+            "Data category",
+            "Precision",
+            "Recall",
+            "F1",
+            "ROC-AUC",
+            "Dataset version"
+          ],
+          "rows": [
+            [
+              "churn_logistic_regression",
+              "v1",
+              "active",
+              "SYNTHETIC_CONTROLLED",
+              0.7075664621676891,
+              0.6336996336996337,
+              0.6685990338164252,
+              0.7977982771560754,
+              "platform-churn-v1"
+            ],
+            [
+              "churn_random_forest",
+              "v1",
+              "active",
+              "SYNTHETIC_CONTROLLED",
+              0.7124735729386892,
+              0.6172161172161172,
+              0.661432777232581,
+              0.792751845504139,
+              "platform-churn-v1"
+            ],
+            [
+              "churn_xgboost",
+              "v1",
+              "active",
+              "SYNTHETIC_CONTROLLED",
+              0.6989690721649484,
+              0.6208791208791209,
+              0.6576139670223085,
+              0.7921763506625892,
+              "platform-churn-v1"
+            ]
+          ],
+          "row_count": 3
+        }
+      ],
+      "source_refs": {
+        "model_versions": [
+          "sales_forecast_linear v1",
+          "sales_forecast_linear v2",
+          "sales_forecast_naive v1",
+          "sales_forecast_naive v2",
+          "sales_forecast_xgboost v1",
+          "sales_forecast_xgboost v2",
+          "churn_logistic_regression v1",
+          "churn_random_forest v1",
+          "churn_xgboost v1"
+        ]
+      }
+    },
+    {
+      "key": "digital_twin_evaluation",
+      "title": "Table 2 \u2014 Digital Twin Prediction Evaluation",
+      "export_tables": [
+        "digital_twin_evaluation"
+      ],
+      "available": false,
+      "missing_reason": "0/5 genuine REAL_INDIAN_SME_OUTCOME records with a matched predicted/actual outcome \u2014 Table 2 stays NOT READY until >= 5. Synthetic / demo-recorded outcomes never count.",
+      "data_category": "REAL_INDIAN_SME_OUTCOME",
+      "sections": [
+        {
+          "name": "Prediction vs actual (real Indian SME only)",
+          "headers": [
+            "Decision ID",
+            "Strategy",
+            "Predicted change",
+            "Actual change",
+            "Error",
+            "% error"
+          ],
+          "rows": [],
+          "row_count": 0
+        }
+      ],
+      "source_refs": {
+        "decision_ids": [],
+        "real_matched": 0,
+        "min_required": 5
+      }
+    },
+    {
+      "key": "causal_graph_evaluation",
+      "title": "Table 3 \u2014 Causal Graph Evaluation (synthetic method validation)",
+      "export_tables": [
+        "causal_evaluation"
+      ],
+      "available": true,
+      "missing_reason": null,
+      "sections": [
+        {
+          "name": "Table 3 \u2014 Causal Graph Evaluation (synthetic method validation)",
+          "headers": [
+            "Metric",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Precision",
+              0.4
+            ],
+            [
+              "Recall",
+              1.0
+            ],
+            [
+              "Structural Hamming Distance",
+              3
+            ],
+            [
+              "True positives",
+              2
+            ],
+            [
+              "False positives",
+              3
+            ],
+            [
+              "False negatives",
+              0
+            ]
+          ],
+          "row_count": 6
+        }
+      ],
+      "source_refs": {
+        "experiment_id": "36d0d404-dc0b-4f24-9a33-3ce938ffe36b",
+        "seed": 42,
+        "created_at": "2026-08-29T10:11:40.851255"
+      }
+    },
+    {
+      "key": "decision_architecture",
+      "title": "Table 4 \u2014 Decision Architecture Comparison",
+      "export_tables": [
+        "decision_architecture"
+      ],
+      "available": true,
+      "missing_reason": null,
+      "sections": [
+        {
+          "name": "Table 4 \u2014 Decision Architecture Comparison",
+          "headers": [
+            "Architecture",
+            "Mean goal achievement",
+            "Std",
+            "95% CI",
+            "Mean risk-adjusted score",
+            "Std",
+            "Mean confidence",
+            "Mean latency (s)",
+            "N"
+          ],
+          "rows": [
+            [
+              "A \u2014 Prediction only",
+              0.0,
+              0.0,
+              "[0.0, 0.0]",
+              0.0,
+              0.0,
+              "n/a",
+              0.1508,
+              60
+            ],
+            [
+              "B \u2014 Prediction + Digital Twin",
+              0.4856,
+              0.3138,
+              "[0.4045, 0.5666]",
+              2508.4022,
+              2249.8338,
+              "n/a",
+              1.4078,
+              60
+            ],
+            [
+              "C \u2014 Prediction + Digital Twin + Single Agent",
+              0.0025,
+              0.0057,
+              "[0.001, 0.004]",
+              190.94,
+              536.2041,
+              "n/a",
+              1.392,
+              60
+            ],
+            [
+              "D \u2014 Full DecisionGPT",
+              0.0844,
+              0.2784,
+              "[0.0125, 0.1564]",
+              -2614.833,
+              8847.4577,
+              0.139,
+              1.68,
+              60
+            ]
+          ],
+          "row_count": 4
+        }
+      ],
+      "source_refs": {
+        "experiment_id": "0e1bd8dc-bc51-44ea-8e58-08a054201b85",
+        "seed": 42,
+        "created_at": "2026-08-29T11:52:52.802434"
+      }
+    },
+    {
+      "key": "ablation_study",
+      "title": "Table 5 \u2014 Ablation Study",
+      "export_tables": [
+        "ablation"
+      ],
+      "available": true,
+      "missing_reason": null,
+      "sections": [
+        {
+          "name": "Table 5 \u2014 Ablation Study",
+          "headers": [
+            "Configuration",
+            "Component removed",
+            "Mean goal achievement",
+            "\u0394 vs Full (mean)",
+            "95% CI of \u0394",
+            "Mean risk-adjusted score",
+            "\u0394 vs Full (mean)",
+            "Mean confidence",
+            "N"
+          ],
+          "rows": [
+            [
+              "A \u2014 Full DecisionGPT",
+              "(none)",
+              0.0844,
+              0.0,
+              "[0.0, 0.0]",
+              -2614.833,
+              0.0,
+              0.139,
+              60
+            ],
+            [
+              "B \u2014 Without Digital Twin",
+              "digital_twin",
+              0.0,
+              0.0844,
+              "[0.0125, 0.1564]",
+              0.0,
+              -2614.833,
+              "n/a",
+              60
+            ],
+            [
+              "C \u2014 Without Causal Graph",
+              "causal_graph",
+              0.0844,
+              0.0,
+              "[0.0, 0.0]",
+              -2614.833,
+              0.0,
+              0.2512,
+              60
+            ],
+            [
+              "D \u2014 Without Multi-Agent",
+              "multi_agent",
+              0.0844,
+              0.0,
+              "[0.0, 0.0]",
+              -2614.833,
+              0.0,
+              0.1321,
+              60
+            ],
+            [
+              "E \u2014 Without Explainability",
+              "explainability",
+              0.0844,
+              0.0,
+              "[0.0, 0.0]",
+              -2614.833,
+              0.0,
+              0.139,
+              60
+            ],
+            [
+              "F \u2014 Without Memory",
+              "memory",
+              0.0844,
+              0.0,
+              "[0.0, 0.0]",
+              -2614.833,
+              0.0,
+              0.139,
+              60
+            ]
+          ],
+          "row_count": 6
+        }
+      ],
+      "source_refs": {
+        "experiment_id": "db58455b-138b-4054-b1ac-e4b315d2edfc",
+        "seed": 42,
+        "created_at": "2026-08-29T12:07:59.631625"
+      }
+    }
+  ],
+  "export_formats": [
+    "csv",
+    "json",
+    "latex",
+    "markdown"
+  ]
+}
