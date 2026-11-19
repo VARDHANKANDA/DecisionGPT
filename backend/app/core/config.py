@@ -100,12 +100,10 @@ class Settings(BaseSettings):
     # Research platform: where uploaded research datasets are stored
     research_data_path: str = "./data/research_uploads"
 
-    # Cloud Object Storage (S3 / Cloudflare R2 / MinIO) for zero-data-loss cloud hosting
-    s3_bucket: Optional[str] = None
-    s3_region: str = "us-east-1"
-    s3_endpoint_url: Optional[str] = None
-    s3_access_key_id: Optional[str] = Field(default=None, repr=False)
-    s3_secret_access_key: Optional[str] = Field(default=None, repr=False)
+    # Cloud Object Storage (Supabase Storage) for zero-data-loss cloud hosting
+    supabase_url: Optional[str] = None
+    supabase_service_role_key: Optional[str] = Field(default=None, repr=False)
+    supabase_storage_bucket: str = "decisiongpt-storage"
 
     # Auth (Phase 4). When auth_enabled is False the API runs open (local
     # dev / tests); when True every SME + research route requires a bearer

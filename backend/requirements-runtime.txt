@@ -25,4 +25,4 @@ holidays==0.103  # reliable India festival/holiday calendar (docs/INDIAN_DATASET
 httpx==0.28.1  # the version the suite runs on
 openai==2.54.0  # official OpenAI SDK (Responses API); the only AI provider
 tenacity==9.0.0
-boto3==1.37.1
+supabase==2.34.1

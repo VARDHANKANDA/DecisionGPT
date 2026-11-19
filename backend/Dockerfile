@@ -54,8 +54,9 @@ EXPOSE 8000
 
 # Liveness only: /api/v1/health returns {"status", "dependencies"} and discloses no configuration, version or host detail.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
-    CMD ["python", "-c", "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health', timeout=4).status == 200 else 1)"]
+    CMD ["python", "-c", "import os, sys, urllib.request; port = os.environ.get('PORT', '8000'); sys.exit(0 if urllib.request.urlopen(f'http://127.0.0.1:{port}/api/v1/health', timeout=4).status == 200 else 1)"]
 
 # --no-proxy-headers: uvicorn must not rewrite the client address from X-Forwarded-For by itself. The application decides, and only for the
 # proxies listed in TRUSTED_PROXIES (app/core/client_ip.py). --no-server-header: do not advertise the server software.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-proxy-headers", "--no-server-header"]
+# Binds to ${PORT:-8000} to support Render's dynamically assigned PORT while defaulting to 8000 locally.
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --no-proxy-headers --no-server-header"]

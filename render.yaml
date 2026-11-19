@@ -5,7 +5,7 @@ services:
   - type: web
     name: decisiongpt-api
     runtime: docker
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./Dockerfile
     dockerContext: .
     plan: free
     region: oregon
@@ -21,7 +21,7 @@ services:
       - key: RATE_LIMIT_ENABLED
         value: "true"
       - key: DATABASE_URL
-        sync: false  # Paste your Neon Free PostgreSQL URL (postgresql+psycopg://...)
+        sync: false  # Paste your Neon Free PostgreSQL URL (postgresql+psycopg://decisiongpt_app:...)
       - key: FRONTEND_ORIGIN
         sync: false  # Set in Render dashboard to your Vercel URL, e.g. https://your-app.vercel.app
       - key: SECRET_KEY
@@ -39,21 +39,17 @@ services:
       - key: RESEARCH_CONSOLE_TOKEN
         generateValue: true
       - key: OPENAI_API_KEY
-        sync: false  # Optional: set in dashboard for GPT-5 mini / AI capabilities
+        sync: false  # Optional: set in dashboard for OpenAI capabilities
       - key: OPENAI_MODEL
         value: gpt-4.1-mini
       - key: ANALYTICS_LLM_ENABLED
         value: "true"
       - key: ANALYTICS_EXPLAIN_ENABLED
         value: "true"
-      # Cloudflare R2 Persistent Object Storage (Free Allowance)
-      - key: S3_BUCKET
-        sync: false  # Cloudflare R2 bucket name
-      - key: S3_ENDPOINT_URL
-        sync: false  # https://<account_id>.r2.cloudflarestorage.com
-      - key: S3_ACCESS_KEY_ID
-        sync: false  # Cloudflare R2 Access Key ID
-      - key: S3_SECRET_ACCESS_KEY
-        sync: false  # Cloudflare R2 Secret Access Key
-      - key: S3_REGION
-        value: auto
+      # Supabase Persistent Object Storage (Free Tier)
+      - key: SUPABASE_URL
+        sync: false  # https://<project-ref>.supabase.co
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false  # Supabase Service Role Key (secret)
+      - key: SUPABASE_STORAGE_BUCKET
+        value: decisiongpt-storage

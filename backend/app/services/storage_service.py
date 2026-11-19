@@ -1,12 +1,12 @@
-"""Storage service abstraction supporting both local filesystem and cloud object storage (S3 / Cloudflare R2 / MinIO).
+"""Storage service abstraction supporting both local filesystem and Supabase Object Storage.
 
-For local development or environments without cloud object storage credentials, all operations fall back cleanly
-to local filesystem paths. In cloud deployments (Render, Railway, AWS, etc.), setting S3_BUCKET and AWS credentials
-routes uploads and persistent artifacts to object storage so that ephemeral container restarts never lose data.
+For local development or environments without cloud storage credentials, all operations fall back cleanly
+to local filesystem paths. In cloud deployments (Render, Railway, etc.), setting SUPABASE_URL and
+SUPABASE_SERVICE_ROLE_KEY routes uploads and persistent artifacts to Supabase Storage so that ephemeral
+container restarts never lose data.
 """
 from __future__ import annotations
 
-import io
 import logging
 import os
 from pathlib import Path
@@ -91,82 +91,76 @@ class LocalStorageBackend:
             return False
 
 
-class S3StorageBackend:
-    """Stores files in an S3-compatible bucket (AWS S3, Cloudflare R2, MinIO, Wasabi)."""
+class SupabaseStorageBackend:
+    """Stores files in a private Supabase Storage bucket."""
 
     def __init__(
         self,
-        bucket: str,
-        region: str = "us-east-1",
-        endpoint_url: Optional[str] = None,
-        access_key_id: Optional[str] = None,
-        secret_access_key: Optional[str] = None,
+        url: str,
+        service_role_key: str,
+        bucket: str = "decisiongpt-storage",
         prefix: str = "",
     ):
         self.bucket = bucket
         self.prefix = prefix.strip("/")
-        self._endpoint_url = endpoint_url
+        self._url = url.rstrip("/")
+        self._key = service_role_key
 
         try:
-            import boto3
-            from botocore.config import Config
+            from supabase import Client, create_client
 
-            session_kwargs = {}
-            if access_key_id and secret_access_key:
-                session_kwargs["aws_access_key_id"] = access_key_id
-                session_kwargs["aws_secret_access_key"] = secret_access_key
-
-            session = boto3.Session(region_name=region, **session_kwargs)
-            client_kwargs = {
-                "config": Config(signature_version="s3v4", retries={"max_attempts": 3, "mode": "standard"})
-            }
-            if endpoint_url:
-                client_kwargs["endpoint_url"] = endpoint_url
-
-            self.client = session.client("s3", **client_kwargs)
+            self.client: Client = create_client(self._url, self._key)
             self._available = True
         except Exception as exc:
-            logger.warning("S3 client initialization failed: %s; S3 storage will be unavailable", exc)
+            logger.warning("Supabase client initialization failed: %s; storage will be unavailable", exc)
             self.client = None
             self._available = False
 
     def _full_key(self, key: str) -> str:
-        clean_key = key.lstrip("/")
+        clean_key = key.lstrip("/\\").replace("\\", "/")
         return f"{self.prefix}/{clean_key}" if self.prefix else clean_key
 
     def save(self, key: str, data: bytes, content_type: Optional[str] = None) -> bool:
         if not self._available or not self.client:
             return False
         full_key = self._full_key(key)
-        kwargs = {"Bucket": self.bucket, "Key": full_key, "Body": io.BytesIO(data)}
+        file_options: dict[str, str] = {"upsert": "true"}
         if content_type:
-            kwargs["ContentType"] = content_type
+            file_options["content-type"] = content_type
         try:
-            self.client.put_object(**kwargs)
+            self.client.storage.from_(self.bucket).upload(
+                path=full_key,
+                file=data,
+                file_options=file_options,
+            )
             return True
         except Exception as exc:
-            logger.warning("S3 put_object failed for %s: %s", full_key, exc)
+            logger.warning("Supabase storage upload failed for %s: %s", full_key, exc)
             return False
 
     def load(self, key: str) -> bytes:
         if not self._available or not self.client:
-            raise FileNotFoundError("S3 client not available")
+            raise FileNotFoundError("Supabase client not available")
         full_key = self._full_key(key)
         try:
-            response = self.client.get_object(Bucket=self.bucket, Key=full_key)
-            return response["Body"].read()
+            data = self.client.storage.from_(self.bucket).download(full_key)
+            if data is None:
+                raise FileNotFoundError(f"Supabase key returned empty or not found: {full_key}")
+            return data
         except Exception as exc:
-            raise FileNotFoundError(f"S3 key not found {full_key}: {exc}") from exc
+            if isinstance(exc, FileNotFoundError):
+                raise
+            raise FileNotFoundError(f"Supabase key not found {full_key}: {exc}") from exc
 
     def delete(self, key: str) -> bool:
         if not self._available or not self.client:
             return False
         full_key = self._full_key(key)
         try:
-            self.client.delete_object(Bucket=self.bucket, Key=full_key)
+            self.client.storage.from_(self.bucket).remove([full_key])
             return True
         except Exception as exc:
-            logger.warning("S3 delete_object failed for %s: %s", full_key, exc)
+            logger.warning("Supabase storage delete failed for %s: %s", full_key, exc)
             return False
 
     def exists(self, key: str) -> bool:
@@ -174,37 +168,60 @@ class S3StorageBackend:
             return False
         full_key = self._full_key(key)
         try:
-            self.client.head_object(Bucket=self.bucket, Key=full_key)
+            parts = full_key.rsplit("/", 1)
+            parent = parts[0] if len(parts) > 1 else ""
+            filename = parts[-1]
+            files = self.client.storage.from_(self.bucket).list(path=parent or None, options={"search": filename})
+            if any(isinstance(f, dict) and f.get("name") == filename for f in files):
+                return True
+        except Exception:
+            pass
+        try:
+            self.load(key)
             return True
         except Exception:
             return False
 
 
-def get_storage(namespace: str = "business_uploads") -> StorageBackend:
-    """Return configured storage backend. Falls back to LocalStorageBackend if S3 is unconfigured."""
-    settings = get_settings()
-    s3_bucket = getattr(settings, "s3_bucket", None)
+# Backward compatibility alias
+S3StorageBackend = SupabaseStorageBackend
 
-    if s3_bucket:
+
+def get_storage(namespace: str = "business_uploads") -> StorageBackend:
+    """Return configured storage backend. Uses SupabaseStorageBackend if configured.
+    Falls back to LocalStorageBackend for local dev/testing."""
+    settings = get_settings()
+    supabase_url = getattr(settings, "supabase_url", None)
+    supabase_key = getattr(settings, "supabase_service_role_key", None)
+    bucket = getattr(settings, "supabase_storage_bucket", "decisiongpt-storage")
+
+    if supabase_url and supabase_key:
         try:
-            backend = S3StorageBackend(
-                bucket=s3_bucket,
-                region=getattr(settings, "s3_region", "us-east-1"),
-                endpoint_url=getattr(settings, "s3_endpoint_url", None),
-                access_key_id=getattr(settings, "s3_access_key_id", None),
-                secret_access_key=getattr(settings, "s3_secret_access_key", None),
+            backend = SupabaseStorageBackend(
+                url=supabase_url,
+                service_role_key=supabase_key,
+                bucket=bucket,
                 prefix=namespace,
             )
             if backend._available:
                 return backend
         except Exception as exc:
-            logger.warning("Failed to initialize S3 storage for namespace '%s': %s. Falling back to local disk.", namespace, exc)
+            logger.error("Failed to initialize Supabase storage for namespace '%s': %s.", namespace, exc)
+            if settings.is_production:
+                raise RuntimeError(
+                    f"Production environment requires persistent cloud storage, but Supabase initialization failed for namespace '{namespace}': {exc}"
+                ) from exc
 
-    # Local fallback
+    if settings.is_production:
+        logger.error(
+            "CRITICAL: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are unset in production. "
+            "Render has an ephemeral filesystem; uploaded data will be lost on container restart."
+        )
+
+    # Local fallback for dev/testing
     if namespace == "research_uploads":
         base_path = getattr(settings, "research_data_path", "./data/research_uploads")
     else:
         base_path = getattr(settings, "business_upload_path", "./data/business_uploads")
 
     return LocalStorageBackend(base_path=base_path)
-
