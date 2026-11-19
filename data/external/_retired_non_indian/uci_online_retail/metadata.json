@@ -1,0 +1,72 @@
+{
+  "dataset_id": "external-uci-online-retail-v1",
+  "dataset_name": "UCI Online Retail",
+  "source": "UCI Machine Learning Repository (Dataset 352)",
+  "source_url": "https://archive.ics.uci.edu/dataset/352/online+retail",
+  "download_url_used": "https://archive.ics.uci.edu/static/public/352/online+retail.zip",
+  "license": "CC BY 4.0 (UCI Machine Learning Repository)",
+  "citation": "Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33",
+  "download_date": "2026-08-28",
+  "raw_files": [
+    "raw/Online Retail.xlsx",
+    "raw/online_retail.zip"
+  ],
+  "raw_checksums_md5": {
+    "online_retail.zip": "333d81b51e52a6f7a20540a2f0f092bf",
+    "Online Retail.xlsx": "8f8e6d94ba88f976f4d8290cb2dea7fd"
+  },
+  "country_context": "United Kingdom (UK-based online retailer; ~91% of rows United Kingdom)",
+  "business_domain": "Online retail / e-commerce, giftware and homeware",
+  "data_type": "real",
+  "row_count_raw": 541909,
+  "date_range": [
+    "2010-12-01",
+    "2011-12-09"
+  ],
+  "original_columns": [
+    "InvoiceNo",
+    "StockCode",
+    "Description",
+    "Quantity",
+    "InvoiceDate",
+    "UnitPrice",
+    "CustomerID",
+    "Country"
+  ],
+  "distinct_customers": 4372,
+  "distinct_products": 4070,
+  "data_quality_raw": {
+    "null_customer_id_rows": 135080,
+    "cancellation_rows_invoiceno_starts_C": 9288,
+    "quantity_le_0_rows": 10624,
+    "unitprice_le_0_rows": 2517,
+    "duplicate_rows": "checked in adapter"
+  },
+  "supported_tasks": [
+    "forecasting",
+    "customer_analytics_rfm",
+    "churn_derived_optional"
+  ],
+  "unsupported_tasks": [
+    "causal_graph_evaluation (no controlled ground truth)",
+    "digital_twin_wiring (benchmark only; never becomes an active SME model)",
+    "multi_agent_evaluation",
+    "ablation_study",
+    "indian_context_validation (dataset is UK, not India)"
+  ],
+  "preprocessing_required": true,
+  "processed_files": [
+    "processed/uci_forecasting.csv",
+    "processed/uci_churn_derived.csv",
+    "processed/uci_customer_rfm.csv"
+  ],
+  "evidence_level": "REAL_EXTERNAL_BENCHMARK",
+  "known_limitations": [
+    "UK online retailer only - not representative of Indian SMEs or of retail generally.",
+    "No marketing-spend or promotion field; the forecasting adapter holds marketing_spend and promotion_flag at 0 (not invented).",
+    "Churn is a DERIVED label from purchase inactivity, not a ground-truth churn flag (see metadata.md).",
+    "Heavy right-skew: a handful of wholesale-style customers dominate revenue.",
+    "Returns/cancellations and non-product stock codes (POSTAGE, MANUAL, etc.) are filtered by the adapter.",
+    "MAPE is inflated: many product-days have near-zero units, making percentage error unstable. Treat MAE/RMSE as the primary forecasting metrics."
+  ]
+}

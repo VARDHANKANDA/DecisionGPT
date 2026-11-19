@@ -73,6 +73,11 @@ data/external/india_agmarknet/processed/
 data/external/m5_forecasting/raw/*
 !data/external/m5_forecasting/raw/calendar.csv
 !data/external/m5_forecasting/raw/m5-forecasting-accuracy.zip
+!data/external/_retired_non_indian/
+!data/external/_retired_non_indian/README.md
+!data/external/_retired_non_indian/*/processed/
+!data/external/_retired_non_indian/*/processed/**
+data/external/_retired_non_indian/*/raw/
 
 # Python & Virtual Environments
 __pycache__/

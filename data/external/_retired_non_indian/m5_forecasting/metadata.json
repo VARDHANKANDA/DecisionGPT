@@ -1,0 +1,96 @@
+{
+  "dataset_id": "external-m5-forecasting-v1",
+  "dataset_name": "M5 Forecasting (Walmart hierarchical sales)",
+  "source": "M5 Forecasting competition (University of Nicosia / Makridakis Open Forecasting Center); data provided by Walmart",
+  "source_url": "https://www.kaggle.com/competitions/m5-forecasting-accuracy",
+  "download_url_used": "https://github.com/Nixtla/m5-forecasts/raw/main/datasets/m5.zip",
+  "download_note": "Original data is Kaggle-hosted and requires a Kaggle account + acceptance of the competition rules. This copy was obtained from Nixtla's public redistribution (github.com/Nixtla/m5-forecasts) used by their MIT-licensed open-source forecasting tooling. No authentication or access restriction was bypassed. Verify the M5 competition terms before any redistribution of your own.",
+  "license": "M5 competition data (Walmart). Use governed by the M5 Forecasting competition rules. Nixtla redistribution is under the Nixtla project's MIT license for tooling; the underlying data terms are unchanged.",
+  "citation": "Makridakis, S., Spiliotis, E., & Assimakopoulos, V. (2022). The M5 competition: Background, organization, and implementation. International Journal of Forecasting, 38(4), 1325-1336. https://doi.org/10.1016/j.ijforecast.2021.07.007",
+  "download_date": "2026-08-28",
+  "raw_files": [
+    "raw/m5.zip",
+    "raw/calendar.csv",
+    "raw/sales_train_validation.csv",
+    "raw/sales_train_evaluation.csv",
+    "raw/sales_test_validation.csv",
+    "raw/sales_test_evaluation.csv",
+    "raw/sell_prices.csv",
+    "raw/weights_validation.csv",
+    "raw/weights_evaluation.csv"
+  ],
+  "raw_checksums_md5": {
+    "m5.zip": "333d81b51e52a6f7a20540a2f0f092bf"
+  },
+  "country_context": "United States (Walmart stores in California, Texas, Wisconsin)",
+  "business_domain": "Big-box grocery/hobby/household retail; daily unit sales at item x store granularity",
+  "data_type": "real",
+  "row_count_raw_sales_train_evaluation": 30490,
+  "series_count_full": 30490,
+  "days_full": 1941,
+  "date_range": [
+    "2011-01-29",
+    "2016-05-22 (d_1941; exact range written to processed/ by the adapter)"
+  ],
+  "original_columns_sales": [
+    "item_id",
+    "dept_id",
+    "cat_id",
+    "store_id",
+    "state_id",
+    "d_1 ... d_1941"
+  ],
+  "original_columns_calendar": [
+    "date",
+    "wm_yr_wk",
+    "weekday",
+    "wday",
+    "month",
+    "year",
+    "event_name_1",
+    "event_type_1",
+    "event_name_2",
+    "event_type_2",
+    "snap_CA",
+    "snap_TX",
+    "snap_WI"
+  ],
+  "original_columns_sell_prices": [
+    "store_id",
+    "item_id",
+    "wm_yr_wk",
+    "sell_price"
+  ],
+  "supported_tasks": [
+    "forecasting",
+    "demand_prediction_benchmark"
+  ],
+  "unsupported_tasks": [
+    "churn (no customer-level data)",
+    "customer_analytics",
+    "causal_graph_evaluation",
+    "digital_twin_wiring (benchmark only; model stays experimental)",
+    "multi_agent_evaluation",
+    "ablation_study",
+    "indian_context_validation (US data)"
+  ],
+  "preprocessing_required": true,
+  "processed_files": [
+    "processed/m5_forecasting.csv"
+  ],
+  "processed_subsample": {
+    "series_selected": 40,
+    "selection": "deterministic: top-40 (item_id x store_id) by total units over the full training window; seed 42",
+    "days_per_series": "full training window (d_1 ... d_1941) after trimming each series' leading all-zero warm-up",
+    "reason": "raw is ~58M long rows / 237MB sell_prices; a 40-series slice keeps the processed CSV small and gives each series a long history for lag/rolling features"
+  },
+  "evidence_level": "REAL_EXTERNAL_BENCHMARK",
+  "known_limitations": [
+    "US big-box retail - not representative of Indian SMEs or of small-business retail.",
+    "No marketing-spend field; the adapter holds marketing_spend at 0 (not invented).",
+    "promotion_flag is held at 0. M5 has calendar events and SNAP flags, but neither is a promotion; mapping them to promotion_flag would be a fabricated relationship, so it is not done.",
+    "sell_prices are per wm_yr_wk (weekly); the adapter forward-fills weekly price to daily.",
+    "Only a 40-series deterministic subsample is materialised (full M5 is available in raw/ for anyone who wants it).",
+    "MAPE is unreliable for this dataset: many days have zero unit sales, so per-point percentage error is undefined/exploding. MAE and RMSE are the meaningful forecasting metrics here (both are recorded)."
+  ]
+}
