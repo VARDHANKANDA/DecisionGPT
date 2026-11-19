@@ -1,4 +1,4 @@
-# Render Blueprint for DecisionGPT Backend & Database
+# Render Blueprint for DecisionGPT Backend (Free Tier)
 # Deploy by linking your repository on https://dashboard.render.com/blueprints
 
 services:
@@ -7,14 +7,10 @@ services:
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
     dockerContext: .
-    plan: starter
+    plan: free
     region: oregon
     healthCheckPath: /api/v1/health
     numInstances: 1
-    disk:
-      name: decisiongpt-data
-      mountPath: /app/data
-      sizeGB: 10
     envVars:
       - key: ENVIRONMENT
         value: production
@@ -25,11 +21,9 @@ services:
       - key: RATE_LIMIT_ENABLED
         value: "true"
       - key: DATABASE_URL
-        fromDatabase:
-          name: decisiongpt-postgres
-          property: connectionString
+        sync: false  # Paste your Neon Free PostgreSQL URL (postgresql+psycopg://...)
       - key: FRONTEND_ORIGIN
-        sync: false  # Set in Render dashboard to your Vercel URL, e.g. https://decision-gpt.vercel.app
+        sync: false  # Set in Render dashboard to your Vercel URL, e.g. https://your-app.vercel.app
       - key: SECRET_KEY
         generateValue: true
       - key: JWT_SECRET
@@ -52,12 +46,14 @@ services:
         value: "true"
       - key: ANALYTICS_EXPLAIN_ENABLED
         value: "true"
-
-databases:
-  - name: decisiongpt-postgres
-    plan: starter
-    region: oregon
-    databaseName: decisiongpt
-    user: decisiongpt
-    postgresMajorVersion: 15
-
+      # Cloudflare R2 Persistent Object Storage (Free Allowance)
+      - key: S3_BUCKET
+        sync: false  # Cloudflare R2 bucket name
+      - key: S3_ENDPOINT_URL
+        sync: false  # https://<account_id>.r2.cloudflarestorage.com
+      - key: S3_ACCESS_KEY_ID
+        sync: false  # Cloudflare R2 Access Key ID
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false  # Cloudflare R2 Secret Access Key
+      - key: S3_REGION
+        value: auto

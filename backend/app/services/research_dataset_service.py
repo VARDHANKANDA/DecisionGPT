@@ -20,6 +20,7 @@ from app.core.config import get_settings
 from app.core.errors import NotFoundError, ValidationFailedError
 from app.models.research import ResearchDataset, ResearchDatasetVersion
 from app.services import dataset_category
+from app.services.storage_service import get_storage
 from ml.pipeline.validation import validate_dataframe
 
 SUPPORTED_EXTENSIONS = {"csv", "xlsx", "parquet"}
@@ -142,6 +143,10 @@ def upload_dataset(
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest_path = dest_dir / f"v{next_version}.{parsed.file_type}"
     dest_path.write_bytes(content)
+    try:
+        get_storage("research_uploads").save(f"{dataset_slug}/v{next_version}.{parsed.file_type}", content)
+    except Exception:
+        pass
 
     quality = _quality_report(df)
     version_row = ResearchDatasetVersion(
@@ -234,6 +239,16 @@ def version_dict(v: ResearchDatasetVersion) -> dict:
 
 def load_version_dataframe(v: ResearchDatasetVersion) -> pd.DataFrame:
     path = _storage_root().parent / v.storage_path
+    if not path.exists():
+        try:
+            rel_key = v.storage_path.replace("research_uploads/", "", 1).replace("research_uploads\\", "", 1).lstrip("/\\")
+            storage = get_storage("research_uploads")
+            if storage.exists(rel_key):
+                data = storage.load(rel_key)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+        except Exception:
+            pass
     if not path.exists():
         raise NotFoundError(f"Stored file for dataset version {v.id} is missing at {path}.")
     if v.file_type == "csv":
