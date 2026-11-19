@@ -283,9 +283,16 @@ def forecast_summary(models: list[MLModel]) -> list[dict[str, Any]]:
 
 
 def _models_section(db: Session) -> dict[str, Any]:
-    rows = db.query(MLModel).order_by(MLModel.model_name, MLModel.created_at.desc()).all()
-    fc = [_forecast_model(m) for m in rows if m.model_type.startswith("forecasting_")]
-    cl = [_classification_model(m) for m in rows if m.model_type.startswith("churn_")]
+    raw_rows = db.query(MLModel).order_by(MLModel.model_name, MLModel.created_at.desc()).all()
+    seen: set[tuple[str, str]] = set()
+    rows: list[MLModel] = []
+    for m in raw_rows:
+        key = (m.model_name, m.version)
+        if key not in seen:
+            seen.add(key)
+            rows.append(m)
+    fc = [_forecast_model(m) for m in rows if (m.model_type or "").startswith("forecasting_")]
+    cl = [_classification_model(m) for m in rows if (m.model_type or "").startswith("churn_")]
     return {
         "evidence": "training",
         "label": "Registered models on their own research dataset",

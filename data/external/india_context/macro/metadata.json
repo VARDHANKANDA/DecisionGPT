@@ -1,0 +1,31 @@
+{
+  "dataset_name": "India Macroeconomic Context (RBI Policy Repo Rate)",
+  "dataset_id": "external-india-macro-v1",
+  "registry_category": "INDIA_PUBLIC_CONTEXT",
+  "display_label": "India - Macroeconomic Context",
+  "status": "ACTIVE (repo rate); CPI/WPI/GDP PENDING",
+  "source_name": "Reserve Bank of India (RBI) - Monetary Policy Committee resolutions",
+  "source": "RBI MPC policy statements. Each entry is (effective_date, repo_rate_%) taken verbatim from the published resolution; the monthly series is a forward-fill.",
+  "source_url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx",
+  "geography": "India",
+  "country_context": "India - national monetary policy. The repo rate is the headline lending-rate anchor that flows into SME borrowing cost / EMI.",
+  "business_domain": "Macroeconomic context for SME finance and demand analysis",
+  "data_type": "real",
+  "license": "RBI content is Government of India public information (attribution expected).",
+  "citation": "Reserve Bank of India. Monetary Policy Committee resolutions, 2019-2025. https://www.rbi.org.in.",
+  "download_date": "2026-08-29 (repo-rate change points compiled from RBI MPC resolutions)",
+  "date_range": "2019-02 .. 2027-12 (monthly, forward-filled)",
+  "processed_files": [
+    {"file": "processed/india_macro_context.csv", "rows": 107, "columns": ["month", "repo_rate_pct", "repo_rate_change"], "grain": "one row per month"}
+  ],
+  "target_tasks": ["macro_context_feature", "finance_scenario_context"],
+  "unsupported_tasks": ["standalone forecasting target", "causal_graph_evaluation", "any SME-private analysis"],
+  "preprocessing": ["ml/preprocessing/india_macro_adapter.py: forward-fill repo rate from published change points; month-over-month change"],
+  "known_limitations": [
+    "Only the RBI policy repo rate is integrated. CPI, WPI, GDP growth, IIP, fuel price and exchange rate are available from MoSPI / data.gov.in but sit behind the same rate-limited public API as AGMARKNET - documented as PENDING, not fabricated.",
+    "Forward-filled monthly; intra-month changes are attributed to the month they take effect.",
+    "Context only - never joined into SME-private datasets in a way that blurs provenance."
+  ],
+  "paper_usage": "Optional macro-context covariate for the Indian evaluation; label INDIA_PUBLIC_CONTEXT. Observational only - not evidence of causality.",
+  "evidence_level": "INDIA_PUBLIC_CONTEXT"
+}

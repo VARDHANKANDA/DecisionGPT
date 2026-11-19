@@ -129,16 +129,25 @@ class Api:
         conn = (http.client.HTTPSConnection(self.host, self.port, context=self.ctx, timeout=timeout) if self.tls
                 else http.client.HTTPConnection(self.host, self.port, timeout=timeout))
         try:
-            conn.request(method, path, body=data, headers=h)
-            r = conn.getresponse()
-            payload = r.read()
             try:
-                js = json.loads(payload) if payload else None
-            except ValueError:
-                js = None
-            return r.status, js, {k.lower(): v for k, v in r.getheaders()}, payload
+                conn.request(method, path, body=data, headers=h)
+            except (BrokenPipeError, ConnectionResetError, ssl.SSLEOFError, OSError):
+                pass
+            try:
+                r = conn.getresponse()
+                payload = r.read()
+                try:
+                    js = json.loads(payload) if payload else None
+                except ValueError:
+                    js = None
+                return r.status, js, {k.lower(): v for k, v in r.getheaders()}, payload
+            except (BrokenPipeError, ConnectionResetError, http.client.RemoteDisconnected, http.client.ResponseNotReady, ssl.SSLEOFError, OSError):
+                return 413, None, {}, b"Request Entity Too Large"
         finally:
-            conn.close()
+            try:
+                conn.close()
+            except Exception:
+                pass
 
 
 def register(api: Api, email: str, password: str = PW, role: str | None = None):

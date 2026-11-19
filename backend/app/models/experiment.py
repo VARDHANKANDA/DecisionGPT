@@ -4,6 +4,7 @@ from sqlalchemy import JSON, DateTime, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
+from app.db.types import SafeJSON
 from app.models.common import TimestampMixin, UUIDPKMixin, utcnow
 
 # Lifecycle (docs/PRD.md §12 "Experiment Runner").
@@ -22,8 +23,8 @@ class ExperimentRun(UUIDPKMixin, TimestampMixin, Base):
     experiment_type: Mapped[str] = mapped_column(String(50), nullable=False, index=True)
     dataset_version: Mapped[str | None] = mapped_column(String(50))
     model_version: Mapped[str | None] = mapped_column(String(50))
-    configuration_json: Mapped[dict] = mapped_column(JSON, default=dict)
-    metrics_json: Mapped[dict] = mapped_column(JSON, default=dict)
+    configuration_json: Mapped[dict] = mapped_column(SafeJSON, default=dict)
+    metrics_json: Mapped[dict] = mapped_column(SafeJSON, default=dict)
     result_path: Mapped[str | None] = mapped_column(String(500))
     random_seed: Mapped[int | None] = mapped_column(Integer)
     status: Mapped[str] = mapped_column(String(30), default="completed", index=True)
@@ -32,7 +33,7 @@ class ExperimentRun(UUIDPKMixin, TimestampMixin, Base):
     started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     error_message: Mapped[str | None] = mapped_column(Text)
-    model_versions_json: Mapped[dict | None] = mapped_column(JSON)
+    model_versions_json: Mapped[dict | None] = mapped_column(SafeJSON)
 
     def mark_running(self) -> None:
         self.status = STATUS_RUNNING

@@ -47,7 +47,24 @@ backend/_eval_scratch*.db
 .local/
 data/business_uploads/
 data/research_uploads/
-data/external/
+data/external/*
+!data/external/DATASET_REGISTRY.json
+!data/external/india_context/
+!data/external/india_context/**
+!data/external/india_ecommerce/
+!data/external/india_ecommerce/raw/
+!data/external/india_ecommerce/raw/**
+!data/external/india_ecommerce/processed/
+!data/external/india_ecommerce/processed/**
+!data/external/india_agmarknet/
+!data/external/india_customer_synthetic/
+!data/external/**/metadata.json
+!data/external/**/metadata.md
+!data/external/**/benchmark_results.json
+data/external/india_customer_synthetic/raw/
+data/external/india_customer_synthetic/processed/
+data/external/india_agmarknet/raw/
+data/external/india_agmarknet/processed/
 
 # Python & Virtual Environments
 __pycache__/
@@ -82,6 +99,12 @@ frontend/tsconfig.tsbuildinfo
 # ML Binary Artifacts & Large Model Weights
 *.pkl
 *.joblib
+!models/sales_forecast_naive/v1/model.joblib
+!models/sales_forecast_linear/v1/model.joblib
+!models/sales_forecast_xgboost/v1/model.joblib
+!models/churn_logistic_regression/v1/model.joblib
+!models/churn_random_forest/v1/model.joblib
+!models/churn_xgboost/v1/model.joblib
 mlruns/
 wandb/
 

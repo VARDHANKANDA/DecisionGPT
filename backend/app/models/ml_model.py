@@ -4,6 +4,7 @@ from sqlalchemy import JSON, DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
+from app.db.types import SafeJSON
 from app.models.common import TimestampMixin, UUIDPKMixin
 
 # Lifecycle statuses (docs/PRD.md §17 "Model Registry"):
@@ -32,19 +33,19 @@ class MLModel(UUIDPKMixin, TimestampMixin, Base):
     version: Mapped[str] = mapped_column(String(50), nullable=False)
     dataset_version: Mapped[str] = mapped_column(String(50), nullable=False)
     feature_version: Mapped[str] = mapped_column(String(50), nullable=False)
-    parameters_json: Mapped[dict] = mapped_column(JSON, default=dict)
-    metrics_json: Mapped[dict] = mapped_column(JSON, default=dict)
+    parameters_json: Mapped[dict] = mapped_column(SafeJSON, default=dict)
+    metrics_json: Mapped[dict] = mapped_column(SafeJSON, default=dict)
     model_path: Mapped[str] = mapped_column(String(500), nullable=False)
     status: Mapped[str] = mapped_column(String(30), default="registered", index=True)
 
     # Research-platform provenance (nullable so file-registry-synced rows load).
     task: Mapped[str | None] = mapped_column(String(40))
-    features_json: Mapped[list | None] = mapped_column(JSON)
+    features_json: Mapped[list | None] = mapped_column(SafeJSON)
     training_run_id: Mapped[str | None] = mapped_column(String(36))
     source: Mapped[str | None] = mapped_column(String(40))  # cli | training_center
     promoted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     # Lifecycle detail: run metadata from the training sidecar, the latest validation result, the feature contract version.
-    lifecycle_json: Mapped[dict | None] = mapped_column(JSON)
+    lifecycle_json: Mapped[dict | None] = mapped_column(SafeJSON)
 
     @property
     def validation_status(self) -> str:
@@ -79,4 +80,4 @@ class ModelLifecycleEvent(UUIDPKMixin, TimestampMixin, Base):
     to_status: Mapped[str | None] = mapped_column(String(30))
     actor: Mapped[str] = mapped_column(String(120), nullable=False)  # a user id/email, "system:sync", "system:validation"
     reason: Mapped[str | None] = mapped_column(String(500))
-    details_json: Mapped[dict | None] = mapped_column(JSON)
+    details_json: Mapped[dict | None] = mapped_column(SafeJSON)

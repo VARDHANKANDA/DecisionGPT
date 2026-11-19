@@ -1,0 +1,58 @@
+category,State,orders,line_items,units,revenue,profit,margin_pct,avg_order_value
+Clothing,Andhra Pradesh,10,25,86,3244.0,596.0,0.1837,324.4
+Clothing,Bihar,10,37,120,2963.0,1.0,0.0003,296.3
+Clothing,Delhi,19,45,183,5884.0,822.0,0.1397,309.68
+Clothing,Goa,11,34,114,2385.0,67.0,0.0281,216.82
+Clothing,Gujarat,25,63,239,7759.0,362.0,0.0467,310.36
+Clothing,Haryana,9,14,54,2854.0,67.0,0.0235,317.11
+Clothing,Himachal Pradesh,11,16,65,1337.0,146.0,0.1092,121.55
+Clothing,Jammu and Kashmir,11,25,98,3483.0,-70.0,-0.0201,316.64
+Clothing,Karnataka,18,36,116,5073.0,-535.0,-0.1055,281.83
+Clothing,Kerala,13,26,94,6360.0,978.0,0.1538,489.23
+Clothing,Madhya Pradesh,79,214,857,30566.0,1061.0,0.0347,386.91
+Clothing,Maharashtra,68,178,595,28542.0,2516.0,0.0882,419.74
+Clothing,Nagaland,13,29,99,4050.0,237.0,0.0585,311.54
+Clothing,Punjab,17,40,151,8419.0,1452.0,0.1725,495.24
+Clothing,Rajasthan,24,43,166,6440.0,450.0,0.0699,268.33
+Clothing,Sikkim,8,17,73,3139.0,403.0,0.1284,392.38
+Clothing,Tamil Nadu,8,17,56,1956.0,-98.0,-0.0501,244.5
+Clothing,Uttar Pradesh,21,48,198,8208.0,1186.0,0.1445,390.86
+Clothing,West Bengal,18,42,152,6392.0,1522.0,0.2381,355.11
+Electronics,Andhra Pradesh,8,11,28,4505.0,476.0,0.1057,563.12
+Electronics,Bihar,12,18,67,7357.0,-814.0,-0.1106,613.08
+Electronics,Delhi,8,12,35,5111.0,1527.0,0.2988,638.88
+Electronics,Goa,4,6,24,2157.0,216.0,0.1001,539.25
+Electronics,Gujarat,8,10,31,4981.0,158.0,0.0317,622.62
+Electronics,Haryana,4,4,18,2584.0,492.0,0.1904,646.0
+Electronics,Himachal Pradesh,6,8,30,4675.0,473.0,0.1012,779.17
+Electronics,Jammu and Kashmir,7,12,43,3817.0,23.0,0.006,545.29
+Electronics,Karnataka,8,11,39,6049.0,514.0,0.085,756.12
+Electronics,Kerala,6,8,28,3029.0,536.0,0.177,504.83
+Electronics,Madhya Pradesh,38,60,247,40529.0,3799.0,0.0937,1066.55
+Electronics,Maharashtra,40,68,264,42493.0,2611.0,0.0614,1062.32
+Electronics,Nagaland,5,11,50,4069.0,-1033.0,-0.2539,813.8
+Electronics,Punjab,12,14,51,6129.0,-2132.0,-0.3479,510.75
+Electronics,Rajasthan,13,20,75,9443.0,202.0,0.0214,726.38
+Electronics,Sikkim,4,6,18,1527.0,64.0,0.0419,381.75
+Electronics,Tamil Nadu,3,3,11,1090.0,369.0,0.3385,363.33
+Electronics,Uttar Pradesh,10,12,57,10569.0,2311.0,0.2187,1056.9
+Electronics,West Bengal,8,14,38,5153.0,702.0,0.1362,644.12
+Furniture,Andhra Pradesh,6,6,32,5507.0,-1568.0,-0.2847,917.83
+Furniture,Bihar,7,7,19,2623.0,492.0,0.1876,374.71
+Furniture,Delhi,12,17,59,11536.0,638.0,0.0553,961.33
+Furniture,Goa,3,3,7,2163.0,87.0,0.0402,721.0
+Furniture,Gujarat,12,14,58,8318.0,-55.0,-0.0066,693.17
+Furniture,Haryana,7,8,39,3425.0,766.0,0.2236,489.29
+Furniture,Himachal Pradesh,5,5,18,2654.0,37.0,0.0139,530.8
+Furniture,Jammu and Kashmir,7,12,36,3529.0,55.0,0.0156,504.14
+Furniture,Karnataka,5,7,25,3936.0,666.0,0.1692,787.2
+Furniture,Kerala,6,11,35,4070.0,357.0,0.0877,678.33
+Furniture,Madhya Pradesh,46,66,256,34045.0,691.0,0.0203,740.11
+Furniture,Maharashtra,34,44,197,24313.0,1049.0,0.0431,715.09
+Furniture,Nagaland,4,5,24,3784.0,944.0,0.2495,946.0
+Furniture,Punjab,6,6,14,2238.0,71.0,0.0317,373.0
+Furniture,Rajasthan,8,11,41,5266.0,605.0,0.1149,658.25
+Furniture,Sikkim,1,1,2,610.0,-66.0,-0.1082,610.0
+Furniture,Tamil Nadu,4,5,24,3041.0,-2487.0,-0.8178,760.25
+Furniture,Uttar Pradesh,7,8,33,3582.0,-260.0,-0.0726,511.71
+Furniture,West Bengal,6,7,26,2541.0,276.0,0.1086,423.5

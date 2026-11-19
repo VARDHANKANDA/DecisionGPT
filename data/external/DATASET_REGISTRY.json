@@ -1,0 +1,163 @@
+{
+  "registry_version": 1,
+  "created": "2026-10-15",
+  "note": "Raw files are stored unchanged under <dataset>/raw (git-ignored: data/external/**/raw/). Processed outputs are derived and regenerable.",
+  "datasets": [
+    {
+      "id": "uci-online-retail-ii",
+      "name": "Online Retail II",
+      "evidence_class": "public_real_transactions",
+      "source_url": "https://archive.ics.uci.edu/dataset/502/online+retail+ii",
+      "download_url": "https://archive.ics.uci.edu/static/public/502/online+retail+ii.zip",
+      "creator": "Daqing Chen",
+      "year": 2012,
+      "doi": "10.24432/C5CG6D",
+      "citation": "Chen, D. (2012). Online Retail II [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5CG6D",
+      "license": "CC BY 4.0 (stated on the UCI dataset page; attribution required)",
+      "access_date": "2026-10-15",
+      "period": "2009-12-01 to 2011-12-09",
+      "rows": 1067371,
+      "expected_rows_from_source_metadata": 1067371,
+      "archive": {
+        "path": "data/external/uci_online_retail_ii/raw/online_retail_ii.zip",
+        "bytes": 45622418,
+        "sha256": "572e36277c2390fbfde10664750731e0a86f55e33470d91919085f0408e67bfb"
+      },
+      "files": [
+        {
+          "path": "data/external/uci_online_retail_ii/raw/online_retail_II.xlsx",
+          "bytes": 45622278,
+          "sha256": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980"
+        }
+      ],
+      "processed": [
+        {
+          "path": "data/external/uci_online_retail_ii/processed/online_retail_ii_raw_as_csv.csv",
+          "bytes": 110259378,
+          "sha256": "5f45b06f2a93191d96ca2aaa23e67e67be14df8a564178761e9afbd294710b78"
+        }
+      ],
+      "processing": "ml/benchmark/tools/xlsx_to_csv.py (streams every sheet to CSV, adds source_sheet; no row changed); cleaning rules are in ml.benchmark.datasets.load_online_retail_ii",
+      "usage_notes": [
+        "UK-based online gift retailer, many wholesale customers; currency not stated per line (assumed GBP).",
+        "No churn field. 243,007 rows have no Customer ID. 34,337 exact duplicate lines flagged.",
+        "Never trades on Saturdays; December closure period."
+      ]
+    },
+    {
+      "id": "uci-online-retail",
+      "name": "Online Retail",
+      "evidence_class": "public_real_transactions",
+      "source_url": "https://archive.ics.uci.edu/dataset/352/online+retail",
+      "download_url": "https://archive.ics.uci.edu/static/public/352/online+retail.zip",
+      "creator": "Daqing Chen",
+      "year": 2015,
+      "doi": "10.24432/C5BW33",
+      "citation": "Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33",
+      "license": "CC BY 4.0 (stated on the UCI dataset page; attribution required)",
+      "access_date": "2026-10-15",
+      "period": "2010-12-01 to 2011-12-09",
+      "rows": 541909,
+      "expected_rows_from_source_metadata": 541909,
+      "archive": {
+        "path": "data/external/uci_online_retail/raw/online_retail.zip",
+        "bytes": 23715478,
+        "sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b"
+      },
+      "files": [
+        {
+          "path": "data/external/uci_online_retail/raw/Online Retail.xlsx",
+          "bytes": 23715344,
+          "sha256": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d"
+        }
+      ],
+      "processed": [
+        {
+          "path": "data/external/uci_online_retail/processed/online_retail_raw_as_csv.csv",
+          "bytes": 55345711,
+          "sha256": "1ea9a8c3d7546297181a06c7e4b3d8c207bdcd299c760ae8cb6205c8b23530e8"
+        }
+      ],
+      "usage_notes": [
+        "100% of its invoice numbers occur in Online Retail II (same retailer, overlapping period): NOT an independent sample; used only as a consistency check."
+      ],
+      "processing": "ml/benchmark/tools/xlsx_to_csv.py"
+    },
+    {
+      "id": "m5-forecasting-accuracy",
+      "name": "M5 Forecasting - Accuracy (Walmart)",
+      "evidence_class": "public_benchmark_real_data",
+      "official_source": "https://www.kaggle.com/competitions/m5-forecasting-accuracy/data (requires Kaggle login and acceptance of competition rules; unauthenticated access returned HTTP 401 and no credentials are configured here)",
+      "source_url": "https://zenodo.org/records/12636070",
+      "download_url": "https://zenodo.org/api/records/12636070/files/m5-forecasting-accuracy.zip/content",
+      "creator": "Uploaded to Zenodo by 'Kaggle' (2024-07-03), described as 'taken over from Kaggle'; data produced by the M5 organisers (University of Nicosia / Makridakis Open Forecasting Center, with Walmart data)",
+      "doi": "10.5281/zenodo.12636070 (the Zenodo record)",
+      "license": "cc-by-4.0 as labelled on the Zenodo record by the uploader; NOT independently verified against the competition rules",
+      "access_date": "2026-10-15",
+      "period": "2011-01-29 to 2016-05-22 (1941 days)",
+      "zenodo_md5": "86f57416a314197f40a17cc6fc60cbb4",
+      "citation": "Makridakis, S., Spiliotis, E., Assimakopoulos, V. (2022). The M5 accuracy competition: Results, findings and conclusions. International Journal of Forecasting 38(4). DOI to be verified before citing.",
+      "archive": {
+        "path": "data/external/m5_forecasting/raw/m5-forecasting-accuracy.zip",
+        "bytes": 48009163,
+        "sha256": "0349ba38a2efd30d0f5acc6394c1110e140e1a990c650d7b5ca44c5b25dd12f5"
+      },
+      "files": [
+        {
+          "path": "data/external/m5_forecasting/raw/calendar.csv",
+          "bytes": 103469,
+          "sha256": "d12b5914ef03e66649adf5dd9e996e6602251c22b7a6af8f1f7e3aa12f8860f5"
+        },
+        {
+          "path": "data/external/m5_forecasting/raw/sales_train_evaluation.csv",
+          "bytes": 121736518,
+          "sha256": "4b4a47c44c38380d2a9168216fea8c9ff2f31b1ddb772f8a0995952a038b8aa0"
+        },
+        {
+          "path": "data/external/m5_forecasting/raw/sales_train_validation.csv",
+          "bytes": 120007726,
+          "sha256": "f368e66ed1dbecb48b2cc8fc589bf68b3deddbbb36bf5c88b4d6d0a09b9b6724"
+        },
+        {
+          "path": "data/external/m5_forecasting/raw/sell_prices.csv",
+          "bytes": 203395785,
+          "sha256": "9da3ad1f8b8ccacdbdc70612191dd375ec24a4ac6625c24b75b3bc60b0bed2ef"
+        },
+        {
+          "path": "data/external/m5_forecasting/raw/sample_submission.csv",
+          "bytes": 5228786,
+          "sha256": "eb7597afbec367475ef25dc6dbbc009b8faa47fa2107252c72a029e3cdf72343"
+        }
+      ],
+      "usage_notes": [
+        "Third-party re-upload: provenance and licence label cannot be confirmed against the official competition terms. If contested, remove M5-based results from any publication.",
+        "Only a seeded 350-series subset of store CA_1 is used (RAM limit); see ml.benchmark.datasets.load_m5_subset.",
+        "Selling price is absent for weeks before an item is on sale; such rows are excluded from training and scoring."
+      ]
+    },
+    {
+      "id": "platform-forecasting-v1",
+      "name": "Synthetic D2C platform forecasting series",
+      "evidence_class": "synthetic",
+      "source": "generated by scripts/generate_platform_data.py (in repository)",
+      "file": {
+        "path": "data/external/../platform/forecasting/sales_timeseries.csv",
+        "bytes": 1393181,
+        "sha256": "d498c728399fbc0b653f6a8b4a89a2082570aa2c172c23dff5b13ca27b802e88"
+      },
+      "license": "project-internal"
+    },
+    {
+      "id": "platform-churn-v1",
+      "name": "Synthetic platform churn snapshot",
+      "evidence_class": "synthetic_label",
+      "source": "generated by scripts/generate_platform_data.py; the label is drawn from a known logistic mechanism",
+      "file": {
+        "path": "data/external/../platform/churn/customers.csv",
+        "bytes": 266469,
+        "sha256": "c44c575681e9b3290d1877436604b0ae4aafc324470b2fa8b8b9eb2b01ee8ab9"
+      },
+      "license": "project-internal"
+    }
+  ]
+}

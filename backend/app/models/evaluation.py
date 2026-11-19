@@ -19,7 +19,7 @@ from sqlalchemy import JSON, DateTime, ForeignKey, Integer, Numeric, String, Tex
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
-from app.db.types import GUID
+from app.db.types import GUID, SafeJSON
 from app.models.common import TimestampMixin, UUIDPKMixin
 
 PREDICTION_EVAL_METHOD = "revenue_change_vs_recorded_outcome_v1"
@@ -42,7 +42,7 @@ class PredictionEvaluation(UUIDPKMixin, TimestampMixin, Base):
 
     method: Mapped[str] = mapped_column(String(80), nullable=False, default=PREDICTION_EVAL_METHOD)
     causal_graph_version: Mapped[str | None] = mapped_column(String(50))
-    model_versions_json: Mapped[dict] = mapped_column(JSON, default=dict)
+    model_versions_json: Mapped[dict] = mapped_column(SafeJSON, default=dict)
     dataset_version: Mapped[str | None] = mapped_column(String(120))
 
     # Denormalised primary error (revenue change) for cheap aggregation.
@@ -54,7 +54,7 @@ class PredictionEvaluation(UUIDPKMixin, TimestampMixin, Base):
     # Per-metric detail (revenue / profit / units): predicted_baseline,
     # predicted, actual, error, pct_error — whichever the decision + outcome
     # both support.
-    metrics_json: Mapped[dict] = mapped_column(JSON, default=dict)
+    metrics_json: Mapped[dict] = mapped_column(SafeJSON, default=dict)
     recorded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 

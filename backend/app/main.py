@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -43,6 +45,8 @@ def root() -> dict:
 
 @app.on_event("startup")
 def on_startup() -> None:
+    if os.environ.get("PYTEST_CURRENT_TEST"):
+        return
     from app.db.session import engine, Base, SessionLocal
     import app.models  # noqa: F401
     Base.metadata.create_all(bind=engine)

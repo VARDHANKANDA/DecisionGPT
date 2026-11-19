@@ -91,16 +91,23 @@ def _block_outbound_http(monkeypatch):
     monkeypatch.setattr(httpx.HTTPTransport, "handle_request", blocked)
     monkeypatch.setattr(httpx.AsyncHTTPTransport, "handle_async_request", blocked)
 
-_REGISTRY_INDEX = Path(__file__).resolve().parents[1] / "models" / "registry_index.jsonl"
+_MODELS_DIR = Path(__file__).resolve().parents[1] / "models"
+_REGISTRY_INDEX = _MODELS_DIR / "registry_index.jsonl"
 
 
 @pytest.fixture(scope="session", autouse=True)
 def _ensure_baseline_models():
     """Many tests sync the file model registry and then run forecasting /
-    churn / decision code. The trained artifacts are build products, not
-    source (``models/`` is gitignored), so on a fresh checkout train the
-    deterministic (seed=42) baselines once before the suite runs."""
-    if _REGISTRY_INDEX.exists():
+    churn / decision code. Ensure deterministic (seed=42) baselines exist."""
+    required = [
+        _MODELS_DIR / "sales_forecast_naive" / "v1" / "model.joblib",
+        _MODELS_DIR / "sales_forecast_linear" / "v1" / "model.joblib",
+        _MODELS_DIR / "sales_forecast_xgboost" / "v1" / "model.joblib",
+        _MODELS_DIR / "churn_logistic_regression" / "v1" / "model.joblib",
+        _MODELS_DIR / "churn_random_forest" / "v1" / "model.joblib",
+        _MODELS_DIR / "churn_xgboost" / "v1" / "model.joblib",
+    ]
+    if _REGISTRY_INDEX.exists() and all(p.exists() for p in required):
         return
     from ml.training.train_churn import run as train_churn
     from ml.training.train_forecasting import run as train_forecasting
