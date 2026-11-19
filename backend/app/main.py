@@ -57,4 +57,11 @@ def on_startup() -> None:
     except Exception as exc:
         import logging
         logging.getLogger(__name__).warning("Startup registry sync skipped or encountered error: %s", exc)
+    try:
+        with SessionLocal() as db:
+            from app.services.account_sync_service import sync_production_demo_accounts
+            sync_production_demo_accounts(db)
+    except Exception as exc:
+        import logging
+        logging.getLogger(__name__).warning("Startup account sync skipped or encountered error: %s", exc)
 
