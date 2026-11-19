@@ -5,7 +5,7 @@ configuration the same way instead of calling os.environ ad hoc.
 """
 from functools import lru_cache
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, DotEnvSettingsSource, PydanticBaseSettingsSource, SettingsConfigDict
@@ -47,6 +47,18 @@ class Settings(BaseSettings):
 
     # Database
     database_url: str = Field(default="postgresql+psycopg://decisiongpt:decisiongpt@localhost:5432/decisiongpt", repr=False)  # holds credentials
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def _normalize_database_url(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            s = v.strip()
+            if s.startswith("postgres://"):
+                return "postgresql+psycopg://" + s[len("postgres://"):]
+            if s.startswith("postgresql://") and not s.startswith("postgresql+"):
+                return "postgresql+psycopg://" + s[len("postgresql://"):]
+            return s
+        return v
 
     # Frontend / CORS
     frontend_origin: str = "http://localhost:3000"

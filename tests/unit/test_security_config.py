@@ -146,3 +146,13 @@ def test_the_process_starts_in_development_and_warns_when_authentication_is_off(
     r = _start({"ENVIRONMENT": "development", "AUTH_ENABLED": "false", "DATABASE_URL": f"sqlite:///{(tmp_path / 'd.db').as_posix()}"}, tmp_path)
     assert r.returncode == 0 and "STARTED" in r.stdout
     assert "AUTHENTICATION IS DISABLED" in (r.stdout + r.stderr)
+
+
+def test_postgres_url_scheme_is_normalized_to_psycopg():
+    from app.core.config import Settings
+    s = Settings(database_url="postgres://user:pass@ep-test.neon.tech/neondb")
+    assert s.database_url == "postgresql+psycopg://user:pass@ep-test.neon.tech/neondb"
+    s2 = Settings(database_url="postgresql://user:pass@ep-test.neon.tech/neondb")
+    assert s2.database_url == "postgresql+psycopg://user:pass@ep-test.neon.tech/neondb"
+    s3 = Settings(database_url="postgresql+psycopg://user:pass@ep-test.neon.tech/neondb")
+    assert s3.database_url == "postgresql+psycopg://user:pass@ep-test.neon.tech/neondb"
