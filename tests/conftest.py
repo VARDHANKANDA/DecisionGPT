@@ -157,3 +157,22 @@ def client(db_session):
     with TestClient(fastapi_app) as test_client:
         yield test_client
     fastapi_app.dependency_overrides.clear()
+
+
+_M5_RAW = Path(__file__).resolve().parents[1] / "data" / "external" / "m5_forecasting" / "raw"
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _ensure_m5_data():
+    """Unpack M5 Forecasting data from authentic Zenodo archive if not already extracted."""
+    zip_path = _M5_RAW / "m5-forecasting-accuracy.zip"
+    eval_csv = _M5_RAW / "sales_train_evaluation.csv"
+    prices_csv = _M5_RAW / "sell_prices.csv"
+    if zip_path.exists() and (not eval_csv.exists() or not prices_csv.exists()):
+        import zipfile
+        with zipfile.ZipFile(zip_path) as z:
+            if not eval_csv.exists():
+                z.extract("sales_train_evaluation.csv", _M5_RAW)
+            if not prices_csv.exists():
+                z.extract("sell_prices.csv", _M5_RAW)
+

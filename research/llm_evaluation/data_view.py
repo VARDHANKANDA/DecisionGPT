@@ -102,7 +102,7 @@ def build_view(processed: pd.DataFrame | None = None) -> tuple[pd.DataFrame, Vie
     if view.duplicated(["date", "product", "quantity", "unit_price"]).any():  # would be rejected by the upload validator
         raise RuntimeError("evaluation view still contains duplicate rows")
 
-    canonical = view.assign(date=view["date"].dt.strftime("%Y-%m-%d")).to_csv(index=False).encode()
+    canonical = view.assign(date=view["date"].dt.strftime("%Y-%m-%d")).to_csv(index=False, lineterminator="\r\n").encode()
     info = ViewInfo(
         raw_zip_sha256=sha256_file(RAW_ZIP) if RAW_ZIP.exists() else None,
         processed_rows=len(df),

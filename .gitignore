@@ -72,6 +72,7 @@ data/external/india_agmarknet/raw/
 data/external/india_agmarknet/processed/
 data/external/m5_forecasting/raw/*
 !data/external/m5_forecasting/raw/calendar.csv
+!data/external/m5_forecasting/raw/m5-forecasting-accuracy.zip
 
 # Python & Virtual Environments
 __pycache__/

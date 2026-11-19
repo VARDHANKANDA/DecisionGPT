@@ -1,0 +1,17 @@
+# Ensure deterministic line endings across platforms
+*.py text eol=lf
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+
+# Frozen historical artifacts and benchmark hashes generated on Windows
+experiments/** text eol=crlf
+models/registry_index.jsonl text eol=crlf
+data/platform/** text eol=crlf
+research/llm_evaluation/runs/** text eol=crlf
+research/llm_evaluation/tasks/** text eol=crlf
+research/llm_evaluation/ground_truth/** text eol=crlf
+research/llm_evaluation/audit/*.json text eol=crlf
