@@ -196,18 +196,26 @@ def list_datasets(db: Session) -> list[dict]:
 
 
 def _version_dict(v: ResearchDatasetVersion) -> dict:
+    cols = v.schema_json
+    if not isinstance(cols, list):
+        if isinstance(cols, dict):
+            cols = [{"name": str(k), "dtype": str(val)} for k, val in cols.items()]
+        else:
+            cols = []
+    cols = [c if isinstance(c, dict) else {"name": str(c), "dtype": "unknown"} for c in cols]
+
     return {
         "id": v.id,
         "dataset_id": v.dataset_id,
         "version": v.version,
-        "file_type": v.file_type,
-        "row_count": v.row_count,
-        "column_count": v.column_count,
-        "columns": v.schema_json,
-        "missing_summary": v.missing_summary_json,
-        "duplicates_summary": v.duplicates_summary_json,
-        "quality_report": v.quality_report_json,
-        "validation_ok": v.validation_ok,
+        "file_type": v.file_type or "csv",
+        "row_count": v.row_count or 0,
+        "column_count": v.column_count or len(cols),
+        "columns": cols,
+        "missing_summary": v.missing_summary_json or {},
+        "duplicates_summary": v.duplicates_summary_json or {"duplicate_row_count": 0},
+        "quality_report": v.quality_report_json or {"issues": []},
+        "validation_ok": bool(v.validation_ok),
         "created_at": v.created_at,
         "created_by": v.created_by,
     }

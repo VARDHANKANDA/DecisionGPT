@@ -88,6 +88,13 @@ class Settings(BaseSettings):
     # Research platform: where uploaded research datasets are stored
     research_data_path: str = "./data/research_uploads"
 
+    # Cloud Object Storage (S3 / Cloudflare R2 / MinIO) for zero-data-loss cloud hosting
+    s3_bucket: Optional[str] = None
+    s3_region: str = "us-east-1"
+    s3_endpoint_url: Optional[str] = None
+    s3_access_key_id: Optional[str] = Field(default=None, repr=False)
+    s3_secret_access_key: Optional[str] = Field(default=None, repr=False)
+
     # Auth (Phase 4). When auth_enabled is False the API runs open (local
     # dev / tests); when True every SME + research route requires a bearer
     # token issued by /api/v1/auth/login.
@@ -130,6 +137,10 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.environment.lower() == "production"
+
+    @property
+    def frontend_origins(self) -> list[str]:
+        return [o.strip() for o in self.frontend_origin.split(",") if o.strip()]
 
     @property
     def hardened(self) -> bool:

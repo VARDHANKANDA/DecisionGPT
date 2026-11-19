@@ -1,0 +1,184 @@
+{
+  "system": "decisiongpt",
+  "question": "Which day of the week is my weakest for sales?",
+  "answer": "For all your recorded sales (1 January 2025 to 31 March 2025), Sunday had the lowest sales: ₹3,19,445. These are totals per weekday across the whole period, so a weekday that occurs more often has more days adding up. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for all your recorded sales (1 January 2025 to 31 March 2025) (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 7.0963577999937115,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "gpt-5-mini",
+      "max_tokens": 1500,
+      "temperature": null,
+      "ts": 1794995328.09304,
+      "ok": true,
+      "latency_s": 6.371350599991274,
+      "model_returned": "gpt-5-mini-2025-08-07",
+      "input_tokens": 1214,
+      "output_tokens": 390,
+      "usage_raw": {
+        "input_tokens": 1214,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          }
+        },
+        "output_tokens": 390,
+        "output_tokens_details": {
+          "reasoning_tokens": 256
+        },
+        "total_tokens": 1604
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1214,
+    "output_tokens": 390,
+    "llm_latency_s": 6.371350599991274
+  },
+  "audit": {
+    "request_id": "e6b53aeda24e4821a587537f57da98a5",
+    "business_id": "fb995024-207e-42ae-bc01-0e59ac679443",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 6.372,
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "response_model": "gpt-5-mini-2025-08-07",
+      "usage": {
+        "input_tokens": 1214,
+        "output_tokens": 390
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "ai": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.9
+        },
+        "operation": {
+          "value": "ranking",
+          "confidence": 0.95
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.8
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.8
+        },
+        "group_by": {
+          "value": "weekday",
+          "confidence": 0.95
+        },
+        "direction": {
+          "value": "asc",
+          "confidence": 0.95
+        },
+        "named_products": {
+          "value": 0.0,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.2,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.9
+        },
+        "missing_item": {
+          "value": "other",
+          "confidence": 0.1
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "ranking",
+        "metric": "revenue",
+        "periods": []
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "revenue",
+        "period": {
+          "kind": "all_time"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "weekday",
+        "direction": "asc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.433,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "all your recorded sales (1 January 2025 to 31 March 2025)"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": []
+    },
+    "explanation_source": "template",
+    "explanation_skipped": "answer_already_clear",
+    "outcome": "answered",
+    "total_latency_s": 7.064
+  }
+}

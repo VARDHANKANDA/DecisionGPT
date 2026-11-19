@@ -202,28 +202,36 @@ def _classification_model(m: MLModel) -> dict[str, Any]:
     c_test = _ctx(block="test", target="churned (1 = customer left)", positive_class="churned = 1", dataset=m.dataset_version)
     out: dict[str, Any] = {**_identity(m), "task": "classification", "target": "churned (1 = customer left)", "positive_class": "churned = 1",
                            "setup": _setup(m, "stratified random 80/20 split of customers; the threshold is chosen on the training part (5-fold)")}
-    test_cards = [card("roc_auc", mj.get("roc_auc"), context=c_test), card("pr_auc", mj.get("pr_auc"), context=c_test)]
+    test_cards = []
     if conf is not None:
         n = sum(conf.values())
         c_thr = {**c_test, "n": n, "threshold": round(float(thr), 4) if _isnum(thr) else None, "threshold_source": "chosen on validation, never on test"}
         test_cards += [
+            card("accuracy", _rate(conf["tp"] + conf["tn"], n), context=c_thr,
+                 extra_caveat="Computed from the confusion matrix below."),
+            card("roc_auc", mj.get("roc_auc"), context=c_test),
+            card("pr_auc", mj.get("pr_auc"), context=c_test),
             card("precision", _rate(conf["tp"], conf["tp"] + conf["fp"]), context=c_thr, kind="not_applicable",
                  reason="No customer was flagged, so precision is undefined." if conf["tp"] + conf["fp"] == 0 else None),
             card("recall", _rate(conf["tp"], conf["tp"] + conf["fn"]), context=c_thr, kind="not_applicable",
                  reason="There were no positive customers, so recall is undefined." if conf["tp"] + conf["fn"] == 0 else None),
             card("f1", _rate(2 * conf["tp"], 2 * conf["tp"] + conf["fp"] + conf["fn"]), context=c_thr, kind="not_applicable",
                  reason="Undefined: nothing was flagged and there were no positives." if 2 * conf["tp"] + conf["fp"] + conf["fn"] == 0 else None),
-            card("accuracy", _rate(conf["tp"] + conf["tn"], n), context=c_thr,
-                 extra_caveat="Computed from the confusion matrix below."),
         ]
         out["confusion_matrix"] = {**conf, "n": n, "positive_class": "churned = 1", "threshold": c_thr["threshold"],
                                    "rows_are": "actual", "columns_are": "predicted at the threshold"}
         out["threshold_note"] = "Precision, recall, F1 and accuracy are all computed at one threshold chosen on validation data, so they agree with the confusion matrix."
     else:
         c_default = {**c_test, "threshold": 0.5, "threshold_source": "the model's default cut-off (0.5); this run did not record a validation-chosen threshold"}
-        test_cards += [card("precision", mj.get("precision"), context=c_default), card("recall", mj.get("recall"), context=c_default),
-                       card("f1", mj.get("f1"), context=c_default),
-                       card("accuracy", None, reason="Accuracy needs a confusion matrix, which this older run did not record.", context=c_default)]
+        test_cards += [
+            card("accuracy", mj.get("accuracy"), context=c_default,
+                 reason="Accuracy needs a confusion matrix, which this older run did not record." if mj.get("accuracy") is None else None),
+            card("roc_auc", mj.get("roc_auc"), context=c_test),
+            card("pr_auc", mj.get("pr_auc"), context=c_test),
+            card("precision", mj.get("precision"), context=c_default),
+            card("recall", mj.get("recall"), context=c_default),
+            card("f1", mj.get("f1"), context=c_default),
+        ]
         out["confusion_matrix"] = None
         out["threshold_note"] = "This run did not record a confusion matrix; precision, recall and F1 are at the default cut-off."
     shift = mj.get("prevalence_shift")

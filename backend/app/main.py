@@ -25,7 +25,7 @@ app.add_middleware(SecurityHeadersMiddleware, hsts=settings.hardened)
 app.add_middleware(RequestIDMiddleware)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_origin],
+    allow_origins=settings.frontend_origins,
     allow_credentials=False,   # the API authenticates with an Authorization header, never a cookie, so browsers need not send credentials
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type", "X-Request-ID", "X-Research-Token"],

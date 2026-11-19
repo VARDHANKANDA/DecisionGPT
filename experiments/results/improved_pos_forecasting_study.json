@@ -1,0 +1,298 @@
+{
+  "dataset": "india_pos_register",
+  "n_usable_observations": 80,
+  "split": {
+    "train_val_dates": 68,
+    "test_dates": 12,
+    "test_range": [
+      "2025-03-17",
+      "2025-03-31"
+    ]
+  },
+  "selected_model": "Historical Weekday Mean",
+  "selection_metric": "cv_mae_mean",
+  "cv_scores": {
+    "Historical Mean": {
+      "cv_mae_mean": 12279.282717632339,
+      "cv_mae_sd": 1184.5516159554181,
+      "cv_rmse_mean": 15988.953835130384
+    },
+    "Historical Weekday Mean": {
+      "cv_mae_mean": 7154.918365468408,
+      "cv_mae_sd": 890.4709477799637,
+      "cv_rmse_mean": 8801.426859058764
+    },
+    "Naive (Lag 1)": {
+      "cv_mae_mean": 19321.866666666665,
+      "cv_mae_sd": 2709.5176962408455,
+      "cv_rmse_mean": 25353.64574493919
+    },
+    "Seasonal Naive (Lag 7)": {
+      "cv_mae_mean": 9605.622745098039,
+      "cv_mae_sd": 1515.7878811744038,
+      "cv_rmse_mean": 11429.795959787205
+    },
+    "Moving Avg 7D": {
+      "cv_mae_mean": 11514.333529411764,
+      "cv_mae_sd": 1380.6856337171218,
+      "cv_rmse_mean": 15697.158884803246
+    },
+    "Ridge (Base Feats)": {
+      "cv_mae_mean": 8009.787244142511,
+      "cv_mae_sd": 1241.6212833969623,
+      "cv_rmse_mean": 9876.63324403165
+    },
+    "Ridge (Ext Feats)": {
+      "cv_mae_mean": 8187.221158196861,
+      "cv_mae_sd": 1467.0812365773693,
+      "cv_rmse_mean": 10339.304806497274
+    },
+    "Lasso (Ext Feats)": {
+      "cv_mae_mean": 11163.34466959266,
+      "cv_mae_sd": 6603.596219474471,
+      "cv_rmse_mean": 14237.395699234274
+    },
+    "ElasticNet (Ext Feats)": {
+      "cv_mae_mean": 10946.297776574167,
+      "cv_mae_sd": 1356.4923445149957,
+      "cv_rmse_mean": 13849.617673203526
+    },
+    "Random Forest (Base)": {
+      "cv_mae_mean": 8111.526792304455,
+      "cv_mae_sd": 2280.3458296855224,
+      "cv_rmse_mean": 10189.18173503953
+    },
+    "Random Forest (Ext)": {
+      "cv_mae_mean": 8299.287934662552,
+      "cv_mae_sd": 2472.3558392086748,
+      "cv_rmse_mean": 10740.678223733672
+    },
+    "HistGradientBoosting (Base)": {
+      "cv_mae_mean": 12163.401733727102,
+      "cv_mae_sd": 1505.8504865812508,
+      "cv_rmse_mean": 15276.887198516859
+    },
+    "HistGradientBoosting (Ext)": {
+      "cv_mae_mean": 12274.625536013482,
+      "cv_mae_sd": 1415.1021701501602,
+      "cv_rmse_mean": 15311.990158165214
+    },
+    "LightGBM (Ext)": {
+      "cv_mae_mean": 12250.178135233924,
+      "cv_mae_sd": 1434.0624668952146,
+      "cv_rmse_mean": 15380.316605726635
+    }
+  },
+  "test_results": {
+    "Historical Mean": {
+      "n": 12,
+      "mae": 10558.3025,
+      "rmse": 15517.307637111946,
+      "bias": -4613.113039215685,
+      "r2": -0.09694864626840216,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 21.444835756667093,
+      "mape_note": null,
+      "mase": 1.0589459119096047,
+      "smape": 20.407159801629074,
+      "wape": 20.09827147539494,
+      "cv_mae": 12279.282717632339,
+      "cv_rmse": 15988.953835130384
+    },
+    "Historical Weekday Mean": {
+      "n": 12,
+      "mae": 13593.452166666664,
+      "rmse": 21952.595809121914,
+      "bias": -2464.134574074076,
+      "r2": -1.1954589360045893,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 27.271291158166967,
+      "mape_note": null,
+      "mase": 1.3633565244631345,
+      "smape": 27.317490565852992,
+      "wape": 25.87583486393406,
+      "cv_mae": 7154.918365468408,
+      "cv_rmse": 8801.426859058764
+    },
+    "Naive (Lag 1)": {
+      "n": 12,
+      "mae": 19295.868333333336,
+      "rmse": 24647.73815019646,
+      "bias": 370.7416666666674,
+      "r2": -1.7676278935980876,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 41.279849781076976,
+      "mape_note": null,
+      "mase": 1.935280873826956,
+      "smape": 41.81741500976127,
+      "wape": 36.73067712511646,
+      "cv_mae": 19321.866666666665,
+      "cv_rmse": 25353.64574493919
+    },
+    "Seasonal Naive (Lag 7)": {
+      "n": 12,
+      "mae": 16106.915833333338,
+      "rmse": 23768.00175710876,
+      "bias": -6089.2058333333325,
+      "r2": -1.5735872584370956,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 30.46367816978864,
+      "mape_note": null,
+      "mase": 1.6154445920810114,
+      "smape": 33.72285339047444,
+      "wape": 30.660342138300216,
+      "cv_mae": 9605.622745098039,
+      "cv_rmse": 11429.795959787205
+    },
+    "Moving Avg 7D": {
+      "n": 12,
+      "mae": 13258.730773809526,
+      "rmse": 16850.645447630774,
+      "bias": -6690.48251984127,
+      "r2": -0.29356017807710444,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 26.06115142278523,
+      "mape_note": null,
+      "mase": 1.3297856118477065,
+      "smape": 26.05524069764444,
+      "wape": 25.238675488905255,
+      "cv_mae": 11514.333529411764,
+      "cv_rmse": 15697.158884803246
+    },
+    "Ridge (Base Feats)": {
+      "n": 12,
+      "mae": 13595.9056927219,
+      "rmse": 21159.67963925353,
+      "bias": -4022.366506402463,
+      "r2": -1.0397255322518095,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 26.781981324343217,
+      "mape_note": null,
+      "mase": 1.363602601082549,
+      "smape": 27.119919059604054,
+      "wape": 25.880505276884453,
+      "cv_mae": 8009.787244142511,
+      "cv_rmse": 9876.63324403165
+    },
+    "Ridge (Ext Feats)": {
+      "n": 12,
+      "mae": 13186.071280960918,
+      "rmse": 21470.366095924604,
+      "bias": -6544.972579488909,
+      "r2": -1.10006363866079,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 25.041592859428537,
+      "mape_note": null,
+      "mase": 1.322498221387596,
+      "smape": 26.731033682221554,
+      "wape": 25.10036440977716,
+      "cv_mae": 8187.221158196861,
+      "cv_rmse": 10339.304806497274
+    },
+    "Lasso (Ext Feats)": {
+      "n": 12,
+      "mae": 16298.024030619194,
+      "rmse": 23506.45545196197,
+      "bias": -6025.174341890724,
+      "r2": -1.5172586923073537,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 32.2687715587696,
+      "mape_note": null,
+      "mase": 1.6346118061524277,
+      "smape": 34.081371441421275,
+      "wape": 31.024126414250304,
+      "cv_mae": 11163.34466959266,
+      "cv_rmse": 14237.395699234274
+    },
+    "ElasticNet (Ext Feats)": {
+      "n": 12,
+      "mae": 10796.487187568979,
+      "rmse": 16743.047905862168,
+      "bias": -4927.894708099423,
+      "r2": -0.2770932094197611,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 21.44320258087913,
+      "mape_note": null,
+      "mase": 1.08283466686625,
+      "smape": 20.88880522662791,
+      "wape": 20.551668270196327,
+      "cv_mae": 10946.297776574167,
+      "cv_rmse": 13849.617673203526
+    },
+    "Random Forest (Base)": {
+      "n": 12,
+      "mae": 13689.849674029587,
+      "rmse": 21538.216196634283,
+      "bias": -6626.660923282744,
+      "r2": -1.1133577459547057,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 26.517508686718035,
+      "mape_note": null,
+      "mase": 1.3730247212533138,
+      "smape": 28.17545382934716,
+      "wape": 26.059332473756413,
+      "cv_mae": 8111.526792304455,
+      "cv_rmse": 10189.18173503953
+    },
+    "Random Forest (Ext)": {
+      "n": 12,
+      "mae": 13363.880899440637,
+      "rmse": 21841.843200863783,
+      "bias": -5692.4411291505285,
+      "r2": -1.173362283482236,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 26.36383371792042,
+      "mape_note": null,
+      "mase": 1.3403316532851295,
+      "smape": 27.8688033844859,
+      "wape": 25.438834157460732,
+      "cv_mae": 8299.287934662552,
+      "cv_rmse": 10740.678223733672
+    },
+    "HistGradientBoosting (Base)": {
+      "n": 12,
+      "mae": 11798.482833710666,
+      "rmse": 17661.70770666207,
+      "bias": -6801.32254460999,
+      "r2": -0.42108135746757935,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 20.66348610838177,
+      "mape_note": null,
+      "mase": 1.183329911554775,
+      "smape": 23.256371418672508,
+      "wape": 22.459018482346377,
+      "cv_mae": 12163.401733727102,
+      "cv_rmse": 15276.887198516859
+    },
+    "HistGradientBoosting (Ext)": {
+      "n": 12,
+      "mae": 13112.517465106292,
+      "rmse": 19200.152343335343,
+      "bias": -7431.641386856616,
+      "r2": -0.6794338607701575,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 26.037056766750045,
+      "mape_note": null,
+      "mase": 1.3151211347200558,
+      "smape": 26.741640290286213,
+      "wape": 24.96035094084146,
+      "cv_mae": 12274.625536013482,
+      "cv_rmse": 15311.990158165214
+    },
+    "LightGBM (Ext)": {
+      "n": 12,
+      "mae": 11958.461185555498,
+      "rmse": 17719.929750122756,
+      "bias": -6870.187864165014,
+      "r2": -0.43046602579011517,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 23.87770508515544,
+      "mape_note": null,
+      "mase": 1.1993749549393644,
+      "smape": 23.74774649870865,
+      "wape": 22.76354549751417,
+      "cv_mae": 12250.178135233924,
+      "cv_rmse": 15380.316605726635
+    }
+  }
+}

@@ -10,6 +10,7 @@ import uuid
 from pathlib import Path
 
 from app.core.config import get_settings
+from app.services.storage_service import get_storage
 
 _ALLOWED_EXT = (".csv", ".xlsx")
 
@@ -39,36 +40,19 @@ def save_original(business_id: str, job_id: str, filename: str, content: bytes) 
     if ext is None:
         return None
     key = _key(business_id, job_id, ext)
-    target = _root() / key
-    try:
-        target.parent.mkdir(parents=True, exist_ok=True)
-        tmp = target.with_suffix(target.suffix + ".part")
-        tmp.write_bytes(content)
-        os.replace(tmp, target)
-    except OSError:
-        return None
-    return key
+    storage = get_storage("business_uploads")
+    if storage.save(key, content):
+        return key
+    return None
 
 
 def load_original(key: str) -> bytes:
-    p = (_root() / key).resolve()
-    if _root().resolve() not in p.parents:                     # a key can never point outside the upload folder
-        raise FileNotFoundError(key)
-    return p.read_bytes()
+    storage = get_storage("business_uploads")
+    return storage.load(key)
 
 
 def delete_original(key: str | None) -> None:
     if not key:
         return
-    p = (_root() / key).resolve()
-    if _root().resolve() in p.parents:
-        try:
-            p.unlink(missing_ok=True)
-            for parent in (p.parent, p.parent.parent):
-                if parent != _root().resolve():
-                    try:
-                        parent.rmdir()
-                    except OSError:
-                        break
-        except OSError:
-            pass
+    storage = get_storage("business_uploads")
+    storage.delete(key)

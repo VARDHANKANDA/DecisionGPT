@@ -1,0 +1,59 @@
+{
+  "system": "decisiongpt",
+  "question": "How did sales from 1 to 15 March 2025 compare with 1 to 15 February 2025, as a percentage change?",
+  "answer": "I don't have enough data to answer that reliably. Try asking why a number changed, whether to change price or marketing spend, what to focus on, or why a specific recommendation was made.",
+  "intent": "unrecognized",
+  "sufficient_evidence": false,
+  "answer_type": "none",
+  "path": "legacy_router",
+  "notice": "Advanced question understanding is temporarily unavailable, so this answer comes from the standard assistant.",
+  "sources": [],
+  "details_keys": [],
+  "latency_s": 40.70718460000353,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "gpt-5-mini",
+      "max_tokens": 1500,
+      "temperature": null,
+      "ts": 1794995107.1036823,
+      "ok": false,
+      "error": "APITimeoutError",
+      "latency_s": 40.48485629999777,
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 1,
+    "input_tokens": null,
+    "output_tokens": null,
+    "llm_latency_s": 40.48485629999777
+  },
+  "audit": {
+    "fallback_reason": "timeout",
+    "request_id": "227d1dd7034247f88d05f703a793f24a",
+    "business_id": "fb995024-207e-42ae-bc01-0e59ac679443",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 40.485,
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "response_model": null,
+      "usage": null,
+      "attempts": 1,
+      "error": "timeout"
+    },
+    "interpreter_decisions": {},
+    "validation": {
+      "ok": false,
+      "errors": [],
+      "returned_fields": []
+    },
+    "outcome": "fallback",
+    "total_latency_s": 40.529
+  }
+}

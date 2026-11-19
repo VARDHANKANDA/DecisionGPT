@@ -1,0 +1,194 @@
+{
+  "system": "decisiongpt",
+  "question": "Which day had the lowest total sales between January and March 2025, counting only days that have any sales recorded?",
+  "answer": "For Q1 2025, Sunday 9 February 2025 (2025-02-09) had the lowest sales: ₹5,680. Only days that have at least one recorded sale are considered. This is based on the sales recorded in your uploaded data.",
+  "intent": "analytics_query",
+  "sufficient_evidence": true,
+  "answer_type": "known",
+  "path": "llm_analytics",
+  "notice": null,
+  "sources": [
+    "Your sales records for Q1 2025 (30,293 records)"
+  ],
+  "details_keys": [
+    "period_end",
+    "period_start",
+    "sales_records_used",
+    "sections",
+    "table"
+  ],
+  "latency_s": 5.237915799996699,
+  "llm_calls": [
+    {
+      "role": "interpreter",
+      "provider": "openai",
+      "url_host": "api.openai.com",
+      "model_requested": "gpt-5-mini",
+      "max_tokens": 1500,
+      "temperature": null,
+      "ts": 1794995101.9096448,
+      "ok": true,
+      "latency_s": 4.231352000002516,
+      "model_returned": "gpt-5-mini-2025-08-07",
+      "input_tokens": 1227,
+      "output_tokens": 314,
+      "usage_raw": {
+        "input_tokens": 1227,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          }
+        },
+        "output_tokens": 314,
+        "output_tokens_details": {
+          "reasoning_tokens": 128
+        },
+        "total_tokens": 1541
+      },
+      "attempts": 1
+    }
+  ],
+  "llm_summary": {
+    "n_calls": 1,
+    "n_errors": 0,
+    "input_tokens": 1227,
+    "output_tokens": 314,
+    "llm_latency_s": 4.231352000002516
+  },
+  "audit": {
+    "request_id": "91eea7e28c7248d18684feb39abc6164",
+    "business_id": "fb995024-207e-42ae-bc01-0e59ac679443",
+    "reference_date": "2025-03-31",
+    "clock_pinned": true,
+    "interpreter_call": {
+      "latency_s": 4.232,
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "response_model": "gpt-5-mini-2025-08-07",
+      "usage": {
+        "input_tokens": 1227,
+        "output_tokens": 314
+      },
+      "attempts": 1,
+      "error": null
+    },
+    "interpreter_decisions": {
+      "ai": {
+        "route": {
+          "value": "calculate",
+          "confidence": 0.97
+        },
+        "operation": {
+          "value": "ranking",
+          "confidence": 0.98
+        },
+        "metric": {
+          "value": "revenue",
+          "confidence": 0.95
+        },
+        "statistic": {
+          "value": "total",
+          "confidence": 0.9
+        },
+        "group_by": {
+          "value": "day",
+          "confidence": 0.98
+        },
+        "direction": {
+          "value": "asc",
+          "confidence": 0.98
+        },
+        "named_products": {
+          "value": 0.0,
+          "confidence": null
+        },
+        "include_empty_days": {
+          "value": 0.0,
+          "confidence": null
+        },
+        "clarify_about": {
+          "value": "period",
+          "confidence": 0.12
+        },
+        "missing_item": {
+          "value": "other",
+          "confidence": 0.05
+        }
+      },
+      "extracted": {
+        "route": "calculate",
+        "operation": "ranking",
+        "metric": "revenue",
+        "periods": [
+          {
+            "kind": "absolute",
+            "start": "2025-01-01",
+            "end": "2025-03-31"
+          }
+        ]
+      }
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "returned_fields": [
+        "clarify_about",
+        "direction",
+        "group_by",
+        "include_empty_days",
+        "metric",
+        "missing_item",
+        "named_products",
+        "operation",
+        "route",
+        "statistic"
+      ]
+    },
+    "route": "analytics_query",
+    "structured_request": {
+      "route": "analytics_query",
+      "query": {
+        "operation": "ranking",
+        "metric": "revenue",
+        "period": {
+          "kind": "absolute",
+          "start": "2025-01-01",
+          "end": "2025-03-31"
+        },
+        "comparison_period": null,
+        "statistic": "total",
+        "group_by": "day",
+        "direction": "asc",
+        "limit": null,
+        "products": [],
+        "weekdays": [],
+        "only_days_with_sales": true
+      },
+      "clarification_question": null,
+      "unsupported_reason": null,
+      "unsupported_item": null
+    },
+    "tool": "query_engine.run_query",
+    "tool_latency_s": 0.622,
+    "verified_result": {
+      "period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "label": "Q1 2025"
+      },
+      "n_records": 30293,
+      "no_data": false,
+      "coverage_status": "full",
+      "assumptions": [
+        "Only days that have at least one recorded sale are considered."
+      ]
+    },
+    "explanation_source": "template",
+    "explanation_skipped": "answer_already_clear",
+    "outcome": "answered",
+    "total_latency_s": 5.19
+  }
+}

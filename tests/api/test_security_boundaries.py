@@ -16,8 +16,10 @@ BIZ = re.compile(r"^/api/v1/businesses/\{business_id\}")
 # Routes that are public by design, or that need a signed-in user but no business. Everything else must be business-scoped or research-gated.
 # (logout is public by design: it ends the presented session if the token is genuine and answers 204 either way, so it reveals nothing)
 PUBLIC = {("GET", "/"), ("GET", "/api/v1/health"), ("POST", "/api/v1/auth/register"), ("POST", "/api/v1/auth/login"), ("POST", "/api/v1/auth/logout")}
-SIGNED_IN = {("GET", "/api/v1/auth/me"), ("POST", "/api/v1/businesses"), ("POST", "/api/v1/businesses/demo"), ("GET", "/api/v1/businesses/mine"),
-             ("POST", "/api/v1/auth/logout-all"), ("POST", "/api/v1/auth/change-password")}
+SIGNED_IN = {("GET", "/api/v1/auth/me"), ("PATCH", "/api/v1/auth/profile"), ("POST", "/api/v1/businesses"), ("POST", "/api/v1/businesses/demo"), ("GET", "/api/v1/businesses/mine"),
+             ("POST", "/api/v1/auth/logout-all"), ("POST", "/api/v1/auth/change-password"),
+             ("GET", "/api/v1/admin/users"), ("PATCH", "/api/v1/admin/users/{user_id}/status"),
+             ("GET", "/api/v1/admin/monitoring"), ("GET", "/api/v1/admin/settings")}
 
 
 def routes():
@@ -216,7 +218,7 @@ EXERCISED = {
 # keyed by a name or table type, not an object id: scoped only by the business in the path, so they are covered by the content test below
 NAME_KEYED = {
     "/data/tables/{table_type}", "/data/tables/{table_type}/rows", "/data/profile/{table}", "/data/preview/{table}", "/data/cleaning/{table}",
-    "/kpis/{key}/trend", "/kpis/{key}/target", "/alerts/rules/{rule_key}", "/explain/kpi/{key}",
+    "/kpis/{key}/trend", "/kpis/{key}/target", "/alerts/rules/{rule_key}", "/explain/kpi/{key}", "/agents/{agent_id}/consult",
 }
 
 

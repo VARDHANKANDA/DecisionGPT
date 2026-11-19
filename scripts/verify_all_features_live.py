@@ -121,8 +121,9 @@ print(f"  ✓ Research Overview: Datasets={len(res_overview.get('datasets', []))
 
 # 12. ADMIN DASHBOARD & SYSTEM MONITORING
 print("\n[12/12] Testing Admin Dashboard & System Overview...")
-admin_overview = get(f"{BASE_URL}/admin/overview", {"Authorization": f"Bearer {admin_token}"})
-print(f"  ✓ Admin Overview: Total users={admin_overview.get('users_count')}, Total businesses={admin_overview.get('businesses_count')}")
+admin_monitoring = get(f"{BASE_URL}/admin/monitoring", {"Authorization": f"Bearer {admin_token}"})
+counts = admin_monitoring.get("counts", {})
+print(f"  ✓ Admin Monitoring: Total users={counts.get('users')}, Total businesses={counts.get('businesses')}, Total sales={counts.get('sales')}")
 
 print("\n" + "=" * 75)
 print("ALL 12 CORE FUNCTIONAL DOMAINS VERIFIED SUCCESSFULLY IN REAL-TIME!")

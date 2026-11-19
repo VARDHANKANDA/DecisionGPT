@@ -80,3 +80,4 @@ if diffs:
     print("Differences between backend/dev.db and root dev.db:", diffs)
 else:
     print("PERFECT PARITY: Both databases have identical row counts across all 24 tables!")
+

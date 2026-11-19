@@ -78,7 +78,7 @@ export default function ModelPerformancePage() {
     <div>
       <PageIntro
         title="Model Performance"
-        subtitle="Aggregated from the real model registry and training history. Every figure is read from a recorded evaluation of a held-out test block, or from a verified re-scoring of the stored model — never from training rows and never typed in. Forecasting and classification metrics are kept separate so incompatible metrics are never compared."
+        subtitle="Evaluated strictly on held-out test blocks across registered demand forecasting and customer churn models. Metrics are read from stored evaluation records and never conflated across tasks."
       />
 
       {error ? <p className="text-sm text-danger">{error}</p> : null}
@@ -102,6 +102,11 @@ export default function ModelPerformancePage() {
               label="Best churn (ROC-AUC)"
               value={data.summary.best_churn ? fmt(data.summary.best_churn.value) : "—"}
               hint={data.summary.best_churn?.model}
+            />
+            <Metric
+              label="Best churn (Accuracy)"
+              value={data.summary.best_accuracy ? `${(data.summary.best_accuracy.value * (data.summary.best_accuracy.value <= 1.0 ? 100 : 1)).toFixed(2)}%` : "—"}
+              hint={data.summary.best_accuracy?.model}
             />
           </StatGrid>
 
@@ -150,18 +155,24 @@ export default function ModelPerformancePage() {
           </Panel>
 
           {data.forecasting.models.length > 0 ? (
-            <Panel title="Forecasting — MAE / RMSE (full metric set: Evaluation metrics)">
+            <Panel title="Forecasting — Accuracy / MAE / RMSE / R² (full metric set: Evaluation metrics)">
               <MetricChart data={data.forecasting.chart} keys={["mae", "rmse"]} />
               <div className="mt-4">
                 <DataTable
-                  headers={["Model", "Version", "Status", "Dataset", "MAE", "RMSE", "MAPE"]}
+                  headers={["Model", "Version", "Status", "Dataset", "Forecast Accuracy", "MAE", "RMSE", "R²", "MAPE"]}
                   rows={data.forecasting.models.map((m) => [
                     m.model_name,
                     m.version,
                     m.status,
                     m.dataset_version,
+                    m.metrics.forecast_accuracy !== undefined && m.metrics.forecast_accuracy !== null
+                      ? `${m.metrics.forecast_accuracy.toFixed(1)}%`
+                      : m.metrics.wape !== undefined && m.metrics.wape !== null
+                      ? `${((1 - m.metrics.wape) * 100).toFixed(1)}%`
+                      : "—",
                     fmt(m.metrics.mae),
                     fmt(m.metrics.rmse),
+                    m.metrics.r2 !== undefined && m.metrics.r2 !== null ? fmt(m.metrics.r2, 3) : "—",
                     displayMape(m.metrics.mape) !== null ? `${fmt(displayMape(m.metrics.mape), 2)}%` : "not reliable",
                   ])}
                 />
@@ -170,20 +181,27 @@ export default function ModelPerformancePage() {
           ) : null}
 
           {data.classification.models.length > 0 ? (
-            <Panel title="Churn / Classification — Precision / Recall / F1 / ROC-AUC">
-              <MetricChart data={data.classification.chart} keys={["precision", "recall", "f1", "roc_auc"]} />
+            <Panel title="Customer Churn Evaluation — Accuracy / Precision / Recall / F1 / ROC-AUC / PR-AUC / Positive Rate">
+              <MetricChart data={data.classification.chart} keys={["accuracy", "precision", "recall", "f1", "roc_auc"]} />
               <div className="mt-4">
                 <DataTable
-                  headers={["Model", "Version", "Status", "Dataset", "Precision", "Recall", "F1", "ROC-AUC"]}
+                  headers={["Model", "Version", "Status", "Dataset", "Accuracy", "Precision", "Recall", "F1", "ROC-AUC", "PR-AUC", "Test Positive Rate"]}
                   rows={data.classification.models.map((m) => [
                     m.model_name,
                     m.version,
                     m.status,
                     m.dataset_version,
+                    m.metrics.accuracy !== undefined && m.metrics.accuracy !== null
+                      ? `${(m.metrics.accuracy * (m.metrics.accuracy <= 1.0 ? 100 : 1)).toFixed(2)}%`
+                      : "—",
                     fmt(m.metrics.precision),
                     fmt(m.metrics.recall),
                     fmt(m.metrics.f1),
                     fmt(m.metrics.roc_auc),
+                    m.metrics.pr_auc !== undefined && m.metrics.pr_auc !== null ? fmt(m.metrics.pr_auc, 3) : "—",
+                    m.metrics.actual_positive_rate !== undefined && m.metrics.actual_positive_rate !== null
+                      ? `${(m.metrics.actual_positive_rate * 100).toFixed(1)}%`
+                      : "—",
                   ])}
                 />
               </div>

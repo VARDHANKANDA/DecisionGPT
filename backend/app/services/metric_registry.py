@@ -162,6 +162,10 @@ def _finite(v: Any) -> float | None:
 
 def _format(d: MetricDef, v: float, target_unit: str | None) -> tuple[str, str]:
     """(display text, unit label). Percent metrics are stored as fractions or percentages depending on the source; callers pass percent."""
+    if d.key == "accuracy":
+        # Format classification accuracy prominently as a percentage (e.g. 71.42%)
+        acc_pct = v * 100.0 if v <= 1.0 else v
+        return f"{acc_pct:.2f}%", "%"
     if d.unit == "percent":
         return f"{v:+.1f}%" if d.key in ("relative_bias", "mae_vs_baseline", "wape_vs_baseline", "brier_vs_baseline") else f"{v:.1f}%", "%"
     if d.unit == "multiple":

@@ -181,40 +181,27 @@ def consult_agent(db: Session, business_id: str, agent_id: str, task: str) -> di
             "Implement recommended inventory and pricing adjustments in structured milestones.",
         ]
 
-    # If LLM is available, enrich with AI narration while preserving strict factual bounds
+    # If LLM is available, consult GPT-5 mini with evidence grounding
     settings = get_settings()
+    llm_meta = None
     if settings.llm_enabled and settings.openai_api_key:
         try:
-            prompt = (
-                f"You are the {cfg['name']} ({cfg['role']}) in DecisionGPT.\n"
-                f"Your domain purpose: {cfg['purpose']}\n"
-                f"User task: {task}\n\n"
-                f"VERIFIED EVIDENCE FROM USER RECORDS:\n"
-                + "\n".join(f"- {f.get('text')} (Source: {f.get('source')})" for f in facts_list[:6])
-                + "\n\n"
-                f"Return a strict JSON object with these exact keys:\n"
-                f"- executive_summary (string, 2-3 sentences)\n"
-                f"- key_findings (array of 2-4 concise strings with facts)\n"
-                f"- business_implications (array of 2-3 strings)\n"
-                f"- recommended_actions (array of 2-3 actionable strings)\n"
-                f"- assumptions_and_limitations (array of 2 strings)\n"
-                f"Rule: Never invent new numbers or revenue percentages. Use only the verified evidence provided."
-            )
             llm = LLMService(settings)
-            resp = llm.generate_response(prompt)
-            if resp:
-                clean_json = resp.strip()
-                if clean_json.startswith("```json"):
-                    clean_json = clean_json.split("```json", 1)[1].split("```", 1)[0].strip()
-                elif clean_json.startswith("```"):
-                    clean_json = clean_json.split("```", 1)[1].split("```", 1)[0].strip()
-                parsed = json.loads(clean_json)
-                if isinstance(parsed, dict) and "executive_summary" in parsed:
-                    exec_summary = parsed.get("executive_summary", exec_summary)
-                    findings = parsed.get("key_findings", findings)
-                    implications = parsed.get("business_implications", implications)
-                    actions = parsed.get("recommended_actions", actions)
-                    assumptions = parsed.get("assumptions_and_limitations", assumptions)
+            res = llm.consult_agent(
+                agent_key=agent_key,
+                agent_name=cfg["name"],
+                agent_role=cfg["role"],
+                agent_purpose=cfg["purpose"],
+                task=task,
+                evidence_items=evidence_items,
+            )
+            if res and isinstance(res, dict):
+                exec_summary = res.get("executive_summary", exec_summary)
+                findings = res.get("key_findings", findings)
+                implications = res.get("business_implications", implications)
+                actions = res.get("recommended_actions", actions)
+                assumptions = res.get("assumptions_and_limitations", assumptions)
+                llm_meta = res.get("_llm_metadata")
         except Exception:
             # Deterministic fallback is always safe and guaranteed
             pass
@@ -232,5 +219,6 @@ def consult_agent(db: Session, business_id: str, agent_id: str, task: str) -> di
         "business_implications": implications,
         "recommended_actions": actions,
         "assumptions_and_limitations": assumptions,
+        "llm_metadata": llm_meta or {"model": "rules_fallback", "response_model": None, "usage": None, "estimated_cost_usd": 0.0},
     }
 

@@ -26,7 +26,9 @@ from app.core import clock
 from app.core.errors import AppError, ValidationFailedError
 from app.models.goal import Goal
 from app.models.platform import DataPrepRun
+from app.core.config import get_settings
 from app.services import alert_service, analysis_run_service as runs, health_service
+from app.services.llm_service import LLMService
 from app.services import kpi_monitor_service as kms
 
 VERSION = "debate-v1"
@@ -382,12 +384,17 @@ def run(db: Session, business_id: str, question: str, mode: str = "rule_based", 
         raise ValidationFailedError("Ask a question of up to 500 characters.")
     if mode not in ("rule_based", "ai_model"):
         raise ValidationFailedError("mode must be 'rule_based' or 'ai_model'.")
-    if mode == "ai_model":
-        return {"status": "ai_model_unavailable", "mode": mode, "message": AI_MODEL_UNAVAILABLE, "stages": STAGES}
+
+    settings = get_settings()
+    if mode == "ai_model" and not (settings.llm_enabled and settings.openai_api_key):
+        return {"status": "ai_model_unavailable", "mode": mode, "message": "OpenAI API is not configured. Set OPENAI_API_KEY in environment to run GPT-5 mini multi-agent debate.", "stages": STAGES}
+
     topic = detect_topic(question)
     facts = build_facts(db, business_id, anchor)
-    stages: dict[str, Any] = {"question": {"text": question, "topic": topic, "topic_note": "Topic is detected from keywords in the question; it only chooses which options are considered."},
-                              "shared_evidence": facts}
+    stages: dict[str, Any] = {
+        "question": {"text": question, "topic": topic, "topic_note": "Topic is detected from keywords in the question; it only chooses which options are considered."},
+        "shared_evidence": facts
+    }
     analyses = specialist_analyses(db, business_id, facts, topic)
     chs = challenges(db, business_id, anchor, facts, analyses)
     stages["specialist_analyses"] = analyses
@@ -395,10 +402,79 @@ def run(db: Session, business_id: str, question: str, mode: str = "rule_based", 
     stages["evidence_review"] = evidence_review(facts, analyses, chs)
     syn = synthesis(topic, facts, analyses, chs)
     stages["synthesis"] = syn
-    stages["decision_brief"] = brief(question, topic, facts, syn, chs, mode)
-    status, label = "completed", "Rule-based specialist review (no AI model was used)"
-    extra: dict[str, Any] = {}
-    result = {"status": status, "mode": mode, "label": label, "version": VERSION, "generated_on": clock.today().isoformat(), "stage_order": STAGES, "stages": stages,
-              "headline": stages["decision_brief"]["headline"], "no_automatic_action": True, **extra}
+    brief_data = brief(question, topic, facts, syn, chs, mode)
+
+    status = "completed"
+    label = "Rule-based specialist review (no AI model was used)"
+    llm_meta = None
+
+    if mode == "ai_model":
+        label = "Multi-Agent Debate powered by GPT-5 mini (grounded in verified business evidence)"
+        llm = LLMService(settings)
+        # Call GPT-5 mini for collaborative multi-agent debate synthesis
+        prompt_input = (
+            f"QUESTION: {question}\n"
+            f"TOPIC: {topic}\n\n"
+            f"VERIFIED EVIDENCE:\n"
+            + "\n".join(f"- [{f['id']}] {f['text']}" for f in facts.get("facts", [])[:8])
+            + "\n\n"
+            f"SPECIALIST FINDINGS:\n"
+            + "\n".join(f"- {AGENT_NAMES.get(k, k)}: " + "; ".join(c.get("text", "") for c in v.get("claims", [])[:2]) for k, v in analyses.items())
+            + "\n\n"
+            f"INTER-AGENT CHALLENGES:\n"
+            + "\n".join(f"- {AGENT_NAMES.get(c.get('from', ''), c.get('from', ''))} challenged: {c.get('text', '')}" for c in chs[:4])
+            + "\n\n"
+            f"TOP CANDIDATE OPTION: {brief_data.get('recommended_option', {}).get('title') if brief_data.get('recommended_option') else 'Hold Current Operations'}"
+        )
+
+        debate_schema = {
+            "type": "object",
+            "required": ["headline", "executive_synthesis", "trade_offs", "risk_mitigations"],
+            "additionalProperties": False,
+            "properties": {
+                "headline": {"type": "string", "description": "1-2 sentence decisive conclusion"},
+                "executive_synthesis": {"type": "string", "description": "Multi-perspective synthesis reconciling all specialist viewpoints"},
+                "trade_offs": {"type": "array", "items": {"type": "string"}, "description": "2-3 key strategic trade-offs"},
+                "risk_mitigations": {"type": "array", "items": {"type": "string"}, "description": "2 concrete mitigations for identified risks"},
+            }
+        }
+
+        gen = llm.generate(
+            instructions=(
+                "You are DecisionGPT's Multi-Agent Debate Synthesis Engine. "
+                "Synthesize the debate between the 5 specialist agents strictly based on the verified evidence. "
+                "Never invent external statistics, revenues, or percentages."
+            ),
+            input_text=prompt_input,
+            json_schema=debate_schema,
+            max_output_tokens=1500,
+        )
+
+        if gen.ok and isinstance(gen.parsed, dict):
+            brief_data["headline"] = gen.parsed.get("headline", brief_data["headline"])
+            brief_data["executive_synthesis"] = gen.parsed.get("executive_synthesis")
+            brief_data["trade_offs"] = gen.parsed.get("trade_offs")
+            brief_data["risk_mitigations"] = gen.parsed.get("risk_mitigations")
+            llm_meta = {
+                "model": gen.model,
+                "response_model": gen.response_model,
+                "usage": gen.usage,
+                "latency_s": round(gen.latency_s, 3),
+                "estimated_cost_usd": gen.estimated_cost_usd,
+            }
+
+    stages["decision_brief"] = brief_data
+    result = {
+        "status": status,
+        "mode": mode,
+        "label": label,
+        "version": VERSION,
+        "generated_on": clock.today().isoformat(),
+        "stage_order": STAGES,
+        "stages": stages,
+        "headline": stages["decision_brief"]["headline"],
+        "no_automatic_action": True,
+        "llm_metadata": llm_meta or {"model": "rules_only" if mode == "rule_based" else "fallback", "response_model": None, "usage": None, "estimated_cost_usd": 0.0},
+    }
     row = runs.save(db, business_id, "debate", mode, question, {"mode": mode, "anchor": anchor, "topic": topic}, result)
     return {"id": row.id, **result}

@@ -563,6 +563,12 @@ export interface ModelComparisonRun {
       params: Record<string, unknown>;
       cv_rmse_mean: number;
       cv_rmse_sd: number;
+      validation?: {
+        rmse: number;
+        mae: number;
+        r2: number | null;
+        r2_note?: string;
+      };
       test: ModelMetrics;
       paired_vs_baseline?: { mean_abs_error_diff_model_minus_baseline: number; ci95: number[]; reading: string; draws: number };
     }
@@ -671,8 +677,25 @@ export interface ArchitectureEvaluation {
 
 export interface CausalAssessment {
   assessment: {
-    pairs: Array<{ pair: string; treatment: string; outcome: string; status: "unsupported" | "identified_by_design"; reasons: string[]; needs: string[]; note?: string; n?: number }>;
+    pairs: Array<{
+      pair: string;
+      treatment: string;
+      outcome: string;
+      status: "unsupported" | "identified_by_design" | "identified_by_backdoor" | string;
+      status_label?: string;
+      ate_estimate?: string;
+      smd_balance?: Record<string, number>;
+      reasons: string[];
+      needs: string[];
+      note?: string;
+      n?: number;
+    }>;
     distinguish: Array<{ term: string; meaning: string }>;
+    multiple_testing?: {
+      fdr_benjamini_hochberg: Record<string, any>;
+      fwer_holm_bonferroni: Record<string, any>;
+      interpretation: string;
+    };
   };
   known_truth_simulation: null | {
     run_id: string;
@@ -740,8 +763,20 @@ export interface RiskAssessment {
   }>;
   decision_risk_score: {
     status: string;
+    is_calibrated?: boolean;
     recorded_real_outcomes: number;
     prerequisites: Array<{ need: string; met: boolean; observed?: number }>;
+    metrics?: {
+      brier: number;
+      brier_baseline_prevalence: number;
+      brier_skill_score: number | null;
+      brier_ci95: number[];
+      log_loss: number;
+      log_loss_baseline_prevalence: number;
+      ece: number;
+      reliability_table: Array<{ bin: number[]; n: number; mean_predicted: number | null; observed_rate: number | null }>;
+    };
+    risk_categories?: Array<{ range: string; title: string; description: string }>;
     next_step: string;
   };
   synthetic_variant_study: { evidence_type: EvidenceType; note: string; verdict: string; variants: Array<{ variant: string; mean_goal_achievement: number | null; verdict: string | null }> };
@@ -848,6 +883,7 @@ export const researchApi = {
     return response.blob();
   },
   llmEvaluation: () => researchGet<LlmEvaluationStatus>("/research/llm-evaluation"),
+  externalBenchmark: () => researchGet<ExternalBenchmarkReport>("/research/external-benchmark"),
   overview: () => researchGet<ResearchOverview>("/research/overview"),
 
   listDatasets: () => researchGet<DatasetsResponse>("/research/datasets"),
@@ -1010,6 +1046,7 @@ export interface ModelPerformance {
     best_forecasting: BestMetric | null;
     best_forecasting_note?: string | null;
     best_churn: BestMetric | null;
+    best_accuracy?: BestMetric | null;
   };
   forecasting: { metrics: string[]; models: PerfModelRow[]; chart: Record<string, number | string | null>[] };
   classification: { metrics: string[]; models: PerfModelRow[]; chart: Record<string, number | string | null>[] };
@@ -1477,6 +1514,7 @@ export interface MlBenchmarkSection {
 }
 export interface MlBenchmarkClassRow {
   method: string;
+  accuracy?: number | null;
   roc_auc: number | null;
   pr_auc: number | null;
   brier: number | null;
@@ -1911,5 +1949,40 @@ export interface VerifiedResearchResults {
   synthetic_forecasting: VerifiedSyntheticForecasting;
   classification: VerifiedClassification;
   decision_architecture: VerifiedDecisionArchitecture;
+}
+
+export interface ExternalBenchmarkSystem {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  architecture: string;
+  llm_powered: boolean;
+  causal_grounded: boolean;
+  simulation_enabled: boolean;
+}
+
+export interface ExternalBenchmarkMetrics {
+  decision_accuracy_pct: number;
+  evidence_groundedness_pct: number;
+  constraint_adherence_pct: number;
+  risk_identification_rate_pct: number;
+  hallucination_rate_pct: number;
+  avg_latency_s: number;
+  avg_cost_usd: number;
+  reproducibility_pct: number;
+  strengths: string[];
+  weaknesses: string[];
+}
+
+export interface ExternalBenchmarkReport {
+  benchmark_name: string;
+  protocol_version: string;
+  evaluation_date: string;
+  systems: ExternalBenchmarkSystem[];
+  tasks: Array<{ id: string; name: string; domain: string; complexity: string; ground_truth_optimal_action: string }>;
+  performance_matrix: Record<string, ExternalBenchmarkMetrics>;
+  summary: Record<string, string>;
+  conclusions: string[];
 }
 

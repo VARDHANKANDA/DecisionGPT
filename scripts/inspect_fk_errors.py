@@ -23,3 +23,4 @@ print(f"Missing strategies count: {len(missing)} (affects {sum(m[1] for m in mis
 print("Sample missing strategy IDs:", missing[:3])
 
 conn.close()
+

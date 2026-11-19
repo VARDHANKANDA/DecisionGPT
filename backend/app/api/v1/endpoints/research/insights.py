@@ -13,12 +13,14 @@ from sqlalchemy.orm import Session
 from app.api.deps import require_research_access
 from app.services.export_safety import safe_csv_stream
 from app.db.session import get_db
+from app.models.agent import AgentEvaluation
 from app.models.decision import DecisionOutcome
 from app.services import (
     agent_evaluation_service,
     architecture_evaluation_service,
     causal_graph_evaluation_service,
     causal_identification_service,
+    external_benchmark_service,
     llm_evaluation_status_service,
     ml_benchmark_service,
     model_comparison_service,
@@ -48,6 +50,12 @@ def ml_benchmark():
     return ml_benchmark_service.latest_results()
 
 
+@router.get("/external-benchmark")
+def external_benchmark():
+    """External system benchmark comparing DecisionGPT against Traditional Rule-Based DSS, ERP statistical forecasting, and single-agent raw GPT-5 mini."""
+    return external_benchmark_service.get_external_benchmark_report()
+
+
 @router.post("/model-comparison/run")
 def model_comparison_run():
     """Deterministic (seed 42), local, no provider call. Writes new versioned records; earlier records are kept."""
@@ -75,7 +83,9 @@ def causal_assessment(db: Session = Depends(get_db)):
 @router.get("/risk-assessment")
 def risk_assessment(db: Session = Depends(get_db)):
     n = db.query(DecisionOutcome).count()
-    return risk_assessment_service.get_risk_assessment(agent_evaluation_service.get_agent_evaluation(db), n)
+    n_eval = db.query(AgentEvaluation).count()
+    total_evaluated = n + n_eval
+    return risk_assessment_service.get_risk_assessment(agent_evaluation_service.get_agent_evaluation(db), total_evaluated)
 
 
 @router.get("/llm-evaluation/runs/{run_id}")

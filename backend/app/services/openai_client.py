@@ -124,6 +124,24 @@ class ExplainResult:
     usage: dict | None = None
 
 
+@dataclass
+class GenerationResult:
+    """Outcome of a general structured/unstructured LLM generation request."""
+
+    ok: bool
+    text: str | None = None
+    parsed: dict | list | None = None
+    error: str | None = None
+    latency_s: float = 0.0
+    provider: str = PROVIDER
+    model: str | None = None
+    response_model: str | None = None
+    usage: dict | None = None
+    estimated_cost_usd: float | None = None
+    attempts: int = 1
+
+
+
 # ------------------------------------------------------------------------------------------------ schema + parsing
 SYSTEM_DECIDE = (
     "You classify one short piece of text from a small-business owner into a fixed set of labels. "
@@ -358,3 +376,96 @@ class OpenAIClient:
         except LLMClientError as exc:
             return ExplainResult(False, error=exc.kind, latency_s=time.perf_counter() - t0, model=self.model)
         return ExplainResult(True, text.strip(), None, time.perf_counter() - t0, self.model, resp.get("model") if isinstance(resp.get("model"), str) else None, _usage(resp))
+
+    def generate(
+        self,
+        instructions: str,
+        input_text: str,
+        json_schema: dict[str, Any] | None = None,
+        max_output_tokens: int | None = None,
+    ) -> GenerationResult:
+        """General LLM generation with optional strict JSON schema enforcement, token & cost tracking."""
+        t0 = time.perf_counter()
+        self.last_attempts = 0
+
+        def fail(kind: str) -> GenerationResult:
+            return GenerationResult(
+                ok=False,
+                error=kind,
+                latency_s=time.perf_counter() - t0,
+                provider=self.provider,
+                model=self.model,
+                attempts=self.last_attempts,
+            )
+
+        if not self._api_key:
+            return fail("not_configured")
+
+        reasoning = is_reasoning_model(self.model)
+        limit = max_output_tokens or (2500 if reasoning else 1200)
+
+        payload: dict[str, Any] = {
+            "model": self.model,
+            "instructions": instructions,
+            "input": input_text,
+            "store": False,
+            "max_output_tokens": limit,
+        }
+        if reasoning:
+            payload["reasoning"] = {"effort": "low"}
+
+        if json_schema:
+            payload["text"] = {
+                "format": {
+                    "type": "json_schema",
+                    "name": "structured_output",
+                    "strict": True,
+                    "schema": json_schema,
+                }
+            }
+
+        try:
+            resp = self._call(payload)
+            text, refusal = extract_output(resp)
+            if refusal:
+                raise LLMClientError("refusal")
+            if not text or not text.strip():
+                raise LLMClientError("empty_response")
+
+            parsed = None
+            if json_schema or text.strip().startswith(("{", "[")):
+                try:
+                    clean = text.strip()
+                    if clean.startswith("```json"):
+                        clean = clean.split("```json", 1)[1].split("```", 1)[0].strip()
+                    elif clean.startswith("```"):
+                        clean = clean.split("```", 1)[1].split("```", 1)[0].strip()
+                    parsed = json.loads(clean)
+                except ValueError:
+                    if json_schema:
+                        raise LLMClientError("malformed_output", "expected valid JSON") from None
+
+        except LLMClientError as exc:
+            return fail(exc.kind)
+
+        u = _usage(resp)
+        cost = None
+        if u and "input_tokens" in u and "output_tokens" in u:
+            # GPT-5 mini: $0.25 / 1M input, $2.00 / 1M output
+            cost = (u["input_tokens"] * 0.25 + u["output_tokens"] * 2.00) / 1_000_000.0
+
+        rm = resp.get("model") if isinstance(resp.get("model"), str) else None
+        return GenerationResult(
+            ok=True,
+            text=text.strip(),
+            parsed=parsed,
+            error=None,
+            latency_s=time.perf_counter() - t0,
+            provider=self.provider,
+            model=self.model,
+            response_model=rm,
+            usage=u,
+            estimated_cost_usd=cost,
+            attempts=self.last_attempts,
+        )
+

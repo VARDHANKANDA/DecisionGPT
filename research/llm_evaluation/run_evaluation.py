@@ -37,6 +37,11 @@ RUNS_DIR = HERE / "runs"
 PRICING_PATH = HERE / "pricing.json"
 ASOF = date(2025, 3, 31)
 ROOT = HERE.parents[1]
+if str(ROOT / "backend") not in sys.path:
+    sys.path.insert(0, str(ROOT / "backend"))
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 
 # The frozen artefacts. If either differs the evaluation refuses to start (fail closed); nothing is "updated" to make it pass.
 FROZEN_SPEC_SHA256 = "98f370377280c730938ccfd2db2d848335e98ce3419f149f4769c0a638f30146"

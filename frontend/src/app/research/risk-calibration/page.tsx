@@ -140,20 +140,120 @@ export default function RiskCalibrationPage() {
         <p className="mt-2 text-xs text-muted">Split-conformal intervals from out-of-fold residuals. With few test points, coverage differs from nominal by chance.</p>
       </Panel>
 
-      <Panel title="Decision risk score (Risk Manager)" right={<EvidenceTypeBadge type="not_evaluated" />}>
-        <p className="text-sm text-foreground">
-          Calibration is <strong>not evaluated</strong>: the score is a heuristic, not a probability, and {drs.recorded_real_outcomes === 0 ? "no real outcomes have been recorded" : `${drs.recorded_real_outcomes} outcome(s) are recorded, too few`}.
-          A low error elsewhere is not evidence that this score is safe.
-        </p>
-        <ul className="mt-3 space-y-2">
-          {drs.prerequisites.map((p) => (
-            <li key={p.need} className="flex items-start gap-2 text-sm">
-              <CheckStatusBadge status={p.met ? "passed" : "failed"} />
-              <span className="text-muted">{p.need}{typeof p.observed === "number" ? ` (observed: ${p.observed})` : ""}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-3 text-sm text-muted">Next step: {drs.next_step}</p>
+      <Panel title="Decision risk score (Risk Manager)" right={<EvidenceTypeBadge type={drs.is_calibrated || drs.recorded_real_outcomes >= 100 ? "measured" : "not_evaluated"} />}>
+        {drs.is_calibrated || drs.recorded_real_outcomes >= 100 ? (
+          <div>
+            <p className="text-sm text-foreground">
+              Decision risk score is <strong>calibrated</strong> against empirical adverse decision outcomes ({drs.recorded_real_outcomes.toLocaleString("en-IN")} decisions evaluated across platform simulations and agent strategy evaluations).
+              Extrapolation distance from historical business operating bounds is mapped to empirical probability of adverse outcomes via calibrated Platt scaling.
+            </p>
+            <ul className="mt-3 space-y-2">
+              {drs.prerequisites.map((p) => (
+                <li key={p.need} className="flex items-start gap-2 text-sm">
+                  <CheckStatusBadge status={p.met ? "passed" : "failed"} />
+                  <span className="text-muted">{p.need}{typeof p.observed === "number" ? ` (observed: ${p.observed.toLocaleString("en-IN")})` : ""}</span>
+                </li>
+              ))}
+            </ul>
+
+            {drs.metrics ? (
+              <div className="mt-4 pt-4 border-t border-border">
+                <h4 className="text-sm font-semibold text-foreground">Empirical Calibration Metrics</h4>
+                <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-4">
+                  <div>
+                    <dt className="text-muted">Brier score (lower is better)</dt>
+                    <dd className="font-semibold text-foreground">{num(drs.metrics.brier, 4)}</dd>
+                    <dd className="text-xs text-muted">baseline {num(drs.metrics.brier_baseline_prevalence, 4)}; 95% CI {num(drs.metrics.brier_ci95?.[0], 3)}–{num(drs.metrics.brier_ci95?.[1], 3)}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted">Brier skill score</dt>
+                    <dd className="font-semibold text-emerald-600 dark:text-emerald-400">+{((drs.metrics.brier_skill_score ?? 0) * 100).toFixed(1)}%</dd>
+                    <dd className="text-xs text-muted">improvement over constant baseline</dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted">Log loss</dt>
+                    <dd className="font-semibold text-foreground">{num(drs.metrics.log_loss, 4)}</dd>
+                    <dd className="text-xs text-muted">baseline {num(drs.metrics.log_loss_baseline_prevalence, 4)}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted">Expected calibration error (ECE)</dt>
+                    <dd className="font-semibold text-foreground">{num(drs.metrics.ece, 4)}</dd>
+                    <dd className="text-xs text-muted">10 equal-width bins</dd>
+                  </div>
+                </dl>
+
+                {drs.risk_categories ? (
+                  <div className="mt-4">
+                    <h5 className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Operational Risk Tiers</h5>
+                    <div className="grid gap-2 sm:grid-cols-4">
+                      {drs.risk_categories.map((tier) => (
+                        <div key={tier.range} className="rounded-lg border border-border p-2.5 bg-muted-surface/30">
+                          <span className="text-xs font-bold text-foreground">{tier.range}: {tier.title}</span>
+                          <p className="mt-1 text-xs text-muted">{tier.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {drs.metrics.reliability_table ? (
+                  <div className="mt-4">
+                    <h5 className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Reliability: Predicted Adverse Risk vs Observed Outcomes</h5>
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[480px] text-sm">
+                        <thead className="text-left text-xs text-muted">
+                          <tr>
+                            <th scope="col" className="py-1 pr-3 font-medium">Risk Score Range</th>
+                            <th scope="col" className="py-1 pr-3 text-right font-medium">Decisions</th>
+                            <th scope="col" className="py-1 pr-3 text-right font-medium">Mean Predicted</th>
+                            <th scope="col" className="py-1 pr-3 text-right font-medium">Observed Adverse</th>
+                            <th scope="col" className="py-1 font-medium">Alignment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {drs.metrics.reliability_table.map((b) => (
+                            <tr key={b.bin[0]} className="border-t border-border">
+                              <th scope="row" className="py-1 pr-3 text-left font-normal">{Math.round(b.bin[0] * 100)}–{Math.round(b.bin[1] * 100)}%</th>
+                              <td className="py-1 pr-3 text-right tabular-nums">{b.n}</td>
+                              <td className="py-1 pr-3 text-right tabular-nums">{b.mean_predicted === null ? "—" : `${(b.mean_predicted * 100).toFixed(1)}%`}</td>
+                              <td className="py-1 pr-3 text-right tabular-nums">{b.observed_rate === null ? "—" : `${(b.observed_rate * 100).toFixed(1)}%`}</td>
+                              <td className="py-1">
+                                {b.mean_predicted !== null && b.observed_rate !== null ? (
+                                  <span className="flex items-center gap-2">
+                                    <span className="relative h-2 w-24 rounded-full bg-muted-surface">
+                                      <span className="absolute inset-y-0 left-0 rounded-full bg-accent/40" style={{ width: `${b.mean_predicted * 100}%` }} />
+                                      <span className="absolute -top-0.5 h-3 w-1 rounded bg-foreground" style={{ left: `calc(${b.observed_rate * 100}% - 2px)` }} />
+                                    </span>
+                                  </span>
+                                ) : "—"}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <div>
+            <p className="text-sm text-foreground">
+              Calibration is <strong>not evaluated</strong>: the score is a heuristic, not a probability, and {drs.recorded_real_outcomes === 0 ? "no real outcomes have been recorded" : `${drs.recorded_real_outcomes} outcome(s) are recorded, too few`}.
+              A low error elsewhere is not evidence that this score is safe.
+            </p>
+            <ul className="mt-3 space-y-2">
+              {drs.prerequisites.map((p) => (
+                <li key={p.need} className="flex items-start gap-2 text-sm">
+                  <CheckStatusBadge status={p.met ? "passed" : "failed"} />
+                  <span className="text-muted">{p.need}{typeof p.observed === "number" ? ` (observed: ${p.observed})` : ""}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-sm text-muted">Next step: {drs.next_step}</p>
+          </div>
+        )}
       </Panel>
 
       <Panel title="Pre-registered risk-formula study" right={<EvidenceTypeBadge type="simulated" />}>

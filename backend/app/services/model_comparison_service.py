@@ -222,20 +222,53 @@ def run_dataset(key: str, seed: int = SEED, df_override: pd.DataFrame | None = N
     results: dict[str, Any] = {}
     oof_resid: dict[str, list[float]] = {}
     for mk, spec in models.items():
-        fold_rmse, resid = [], []
+        fold_rmse, fold_mae, fold_r2, resid = [], [], [], []
         for tr_mask, va_mask, *_ in folds:
             est = spec["estimator"]()
             est.fit(X_tv[tr_mask], y_tv[tr_mask])
             p = est.predict(X_tv[va_mask])
-            fold_rmse.append(regression_metrics(y_tv[va_mask], p)["rmse"])
+            met = regression_metrics(y_tv[va_mask], p)
+            fold_rmse.append(met["rmse"])
+            fold_mae.append(met["mae"])
+            if met.get("r2") is not None:
+                fold_r2.append(met["r2"])
             resid += list(np.abs(y_tv[va_mask] - p))
         oof_resid[mk] = resid
-        results[mk] = {"label": spec["label"], "params": spec["params"], "cv_rmse_per_fold": fold_rmse, "cv_rmse_mean": float(np.mean(fold_rmse)),
-                       "cv_rmse_sd": float(np.std(fold_rmse))}
+        val_r2 = float(np.mean(fold_r2)) if fold_r2 else None
+        results[mk] = {
+            "label": spec["label"],
+            "params": spec["params"],
+            "cv_rmse_per_fold": fold_rmse,
+            "cv_rmse_mean": float(np.mean(fold_rmse)),
+            "cv_rmse_sd": float(np.std(fold_rmse)),
+            "validation": {
+                "rmse": float(np.mean(fold_rmse)),
+                "mae": float(np.mean(fold_mae)),
+                "r2": val_r2,
+                "r2_note": "mean R² over train+val expanding-window cross-validation folds",
+            },
+        }
     # baseline: the same weekday last week, taken from the observed series (lag_7)
-    base_rmse = [regression_metrics(y_tv[va], X_tv["lag_7"].to_numpy()[va])["rmse"] for _, va, *_ in folds]
-    results[BASELINE_KEY] = {"label": BASELINE_LABEL, "params": {"rule": "prediction = value 7 days earlier"}, "cv_rmse_per_fold": base_rmse,
-                             "cv_rmse_mean": float(np.mean(base_rmse)), "cv_rmse_sd": float(np.std(base_rmse))}
+    base_rmse, base_mae, base_r2 = [], [], []
+    for _, va, *_ in folds:
+        b_met = regression_metrics(y_tv[va], X_tv["lag_7"].to_numpy()[va])
+        base_rmse.append(b_met["rmse"])
+        base_mae.append(b_met["mae"])
+        if b_met.get("r2") is not None:
+            base_r2.append(b_met["r2"])
+    results[BASELINE_KEY] = {
+        "label": BASELINE_LABEL,
+        "params": {"rule": "prediction = value 7 days earlier"},
+        "cv_rmse_per_fold": base_rmse,
+        "cv_rmse_mean": float(np.mean(base_rmse)),
+        "cv_rmse_sd": float(np.std(base_rmse)),
+        "validation": {
+            "rmse": float(np.mean(base_rmse)),
+            "mae": float(np.mean(base_mae)),
+            "r2": float(np.mean(base_r2)) if base_r2 else None,
+            "r2_note": "mean R² over train+val expanding-window cross-validation folds",
+        },
+    }
 
     selected = min(models, key=lambda m: results[m]["cv_rmse_mean"])  # selection uses train+val CV only, never the test period
 

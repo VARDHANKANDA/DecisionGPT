@@ -54,9 +54,10 @@ export function OverviewPanel({ data, business }: { data: EvaluationOverview; bu
         <Block title="Results at a glance" tag="training" note="Recorded values only, from each model's held-out test block. Open a tab for every metric, its meaning and its limits.">
           {fm.length > 0 ? (
             <DataTable
-              headers={["Forecasting model", "Test MAE", "Baseline MAE", "Change in MAE", "Against the baseline"]}
+              headers={["Forecasting model", "Forecast Accuracy", "Test MAE", "Baseline MAE", "Change in MAE", "Against the baseline"]}
               rows={fm.map((m) => [
                 `${m.model_name} ${m.version}`,
+                <CardCell key="fa" card={find(m.test, "forecast_accuracy")} />,
                 <CardCell key="a" card={find(m.test, "mae")} />,
                 <CardCell key="b" card={find(m.baseline.test, "baseline_mae")} />,
                 <CardCell key="c" card={find(m.baseline.test, "mae_vs_baseline")} />,
@@ -67,9 +68,10 @@ export function OverviewPanel({ data, business }: { data: EvaluationOverview; bu
           {cm.length > 0 ? (
             <div className={fm.length > 0 ? "mt-4" : ""}>
               <DataTable
-                headers={["Customer model", "ROC-AUC", "PR-AUC", "Positive rate (test)"]}
+                headers={["Customer model", "Accuracy", "ROC-AUC", "PR-AUC", "Positive rate (test)"]}
                 rows={cm.map((m) => [
                   `${m.model_name} ${m.version}`,
+                  <CardCell key="acc" card={find(m.test, "accuracy")} />,
                   <CardCell key="a" card={find(m.test, "roc_auc")} />,
                   <CardCell key="b" card={find(m.test, "pr_auc")} />,
                   <CardCell key="c" card={m.class_balance?.test_positive_rate} />,
@@ -268,7 +270,7 @@ function ClassificationBlock({ m }: { m: EvalClassificationModel }) {
   );
 }
 
-const BENCH_CLASS_COLUMNS = ["roc_auc", "pr_auc", "brier", "brier_baseline", "brier_vs_baseline", "log_loss", "ece"];
+const BENCH_CLASS_COLUMNS = ["accuracy", "roc_auc", "pr_auc", "brier", "brier_baseline", "brier_vs_baseline", "log_loss", "ece"];
 
 function BenchmarkClassification({ run }: { run: BenchmarkRun }) {
   const first = run.rows?.[0] ? byKey(run.rows[0].cards) : {};

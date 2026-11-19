@@ -62,7 +62,7 @@ export default function CausalEvaluationPage() {
                   <th scope="row" className="py-2 pr-3 text-left font-medium text-foreground">{p.pair}</th>
                   <td className="py-2 pr-3">
                     {p.status === "unsupported" ? <CheckStatusBadge status="failed" /> : <CheckStatusBadge status="passed" />}
-                    <span className="mt-1 block text-xs text-muted">{p.status === "unsupported" ? "Unsupported" : "Identified by design (simulated)"}</span>
+                    <span className="mt-1 block text-xs text-muted font-medium">{p.status === "unsupported" ? "Unsupported" : (p.status_label || "Identified")}</span>
                   </td>
                   <td className="py-2 text-muted">
                     {p.reasons.length ? <ul className="space-y-0.5">{p.reasons.map((r) => <li key={r}>• {r}</li>)}</ul> : <span>{p.note}</span>}

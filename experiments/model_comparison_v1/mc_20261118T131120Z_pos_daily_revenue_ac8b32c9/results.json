@@ -1,0 +1,384 @@
+{
+  "dataset_key": "pos_daily_revenue",
+  "dataset": {
+    "name": "Indian POS register - daily revenue",
+    "provenance": "real",
+    "source": "data/external/india_pos_register (Kaggle retail-sales-register, CC BY-NC-SA 4.0; provenance not independently verified)",
+    "target": "daily revenue (INR) = sum of line_amount_inr over sales lines with qty > 0, whole-number qty and amount equal to the printed amount",
+    "unit": "INR per day"
+  },
+  "dataset_load": {
+    "rows_in": 94290,
+    "rows_with_invalid_date": 0,
+    "rows_kept": 60244,
+    "rows_excluded": 34046,
+    "exclusion_rule": "qty<=0, non-integer qty, or amount differs from the printed amount",
+    "calendar_days": 90,
+    "days_with_sales": 89,
+    "missing_dates": [
+      "2025-03-22"
+    ]
+  },
+  "seed": 42,
+  "status": "completed",
+  "run_id": "mc_20261118T131120Z_pos_daily_revenue_ac8b32c9",
+  "created_utc": "2026-11-18T13:11:20+00:00",
+  "evidence_type": "measured",
+  "task": "one-day-ahead forecast of the target",
+  "n_usable_observations": 80,
+  "n_dates": 80,
+  "period": {
+    "first": "2025-01-08",
+    "last": "2025-03-31"
+  },
+  "features": [
+    "lag_1",
+    "lag_7",
+    "rolling_mean_7",
+    "dow_0",
+    "dow_1",
+    "dow_2",
+    "dow_3",
+    "dow_4",
+    "dow_5",
+    "dow_6"
+  ],
+  "split": {
+    "train": {
+      "first": "2025-01-08",
+      "last": "2025-03-04",
+      "dates": 56,
+      "rows": 56
+    },
+    "val": {
+      "first": "2025-03-05",
+      "last": "2025-03-16",
+      "dates": 12,
+      "rows": 12
+    },
+    "test": {
+      "first": "2025-03-17",
+      "last": "2025-03-31",
+      "dates": 12,
+      "rows": 12
+    }
+  },
+  "cv": {
+    "scheme": "expanding-window TimeSeriesSplit(3) over train+val dates",
+    "folds": [
+      {
+        "train": [
+          "2025-01-08",
+          "2025-01-24"
+        ],
+        "validate": [
+          "2025-01-25",
+          "2025-02-10"
+        ]
+      },
+      {
+        "train": [
+          "2025-01-08",
+          "2025-02-10"
+        ],
+        "validate": [
+          "2025-02-11",
+          "2025-02-27"
+        ]
+      },
+      {
+        "train": [
+          "2025-01-08",
+          "2025-02-27"
+        ],
+        "validate": [
+          "2025-02-28",
+          "2025-03-16"
+        ]
+      }
+    ]
+  },
+  "baseline": {
+    "key": "seasonal_naive_7",
+    "label": "Seasonal naive (same weekday last week)"
+  },
+  "models": {
+    "linear_regression": {
+      "label": "Linear Regression",
+      "params": {
+        "scaler": "StandardScaler fitted on training rows only",
+        "fit_intercept": true
+      },
+      "cv_rmse_per_fold": [
+        12578.830289352803,
+        9026.726895972135,
+        8331.470271963646
+      ],
+      "cv_rmse_mean": 9979.009152429528,
+      "cv_rmse_sd": 1860.1340276624683,
+      "test": {
+        "n": 12,
+        "mae": 15778.960695655604,
+        "rmse": 22137.641572124874,
+        "bias": -2198.9405624693354,
+        "r2": -1.2326274448862287,
+        "r2_note": "negative values mean worse than predicting the test-period mean",
+        "mape_pct": 32.223423785910136,
+        "mape_note": null,
+        "rmse_change_vs_baseline_pct": -6.859475195453745,
+        "beats_baseline_on_test_rmse": true
+      },
+      "paired_vs_baseline": {
+        "mean_abs_error_diff_model_minus_baseline": -327.95513767773446,
+        "ci95": [
+          -4548.176534853931,
+          3672.5227479192063
+        ],
+        "resampling_unit": "test date",
+        "draws": 2000,
+        "seed": 42,
+        "reading": "negative = model has lower error than the baseline; an interval containing 0 means no reliable difference at this sample size"
+      }
+    },
+    "ridge_regression": {
+      "label": "Ridge Regression",
+      "params": {
+        "scaler": "StandardScaler fitted on training rows only",
+        "alpha": 1.0
+      },
+      "cv_rmse_per_fold": [
+        11005.1043560804,
+        8548.651553095728,
+        8540.770980748186
+      ],
+      "cv_rmse_mean": 9364.842296641438,
+      "cv_rmse_sd": 1159.8448872101644,
+      "test": {
+        "n": 12,
+        "mae": 15340.182468452142,
+        "rmse": 21902.400660972038,
+        "bias": -2582.8277041620954,
+        "r2": -1.1854304729998768,
+        "r2_note": "negative values mean worse than predicting the test-period mean",
+        "mape_pct": 31.113328454286332,
+        "mape_note": null,
+        "rmse_change_vs_baseline_pct": -7.849213052076365,
+        "beats_baseline_on_test_rmse": true
+      },
+      "paired_vs_baseline": {
+        "mean_abs_error_diff_model_minus_baseline": -766.7333648811964,
+        "ci95": [
+          -4766.2116368230845,
+          3158.7468556658264
+        ],
+        "resampling_unit": "test date",
+        "draws": 2000,
+        "seed": 42,
+        "reading": "negative = model has lower error than the baseline; an interval containing 0 means no reliable difference at this sample size"
+      }
+    },
+    "random_forest": {
+      "label": "Random Forest",
+      "params": {
+        "n_estimators": 300,
+        "min_samples_leaf": 2,
+        "random_state": 42
+      },
+      "cv_rmse_per_fold": [
+        12997.206200937346,
+        9054.445353748493,
+        8679.158273285517
+      ],
+      "cv_rmse_mean": 10243.603275990452,
+      "cv_rmse_sd": 1953.1098107714736,
+      "test": {
+        "n": 12,
+        "mae": 14135.924588246258,
+        "rmse": 21599.497231476966,
+        "bias": -7376.229571886021,
+        "r2": -1.125400803665498,
+        "r2_note": "negative values mean worse than predicting the test-period mean",
+        "mape_pct": 27.441383618941035,
+        "mape_note": null,
+        "rmse_change_vs_baseline_pct": -9.123629944966726,
+        "beats_baseline_on_test_rmse": true
+      },
+      "paired_vs_baseline": {
+        "mean_abs_error_diff_model_minus_baseline": -1970.9912450870797,
+        "ci95": [
+          -6304.12331429851,
+          2254.2011557368824
+        ],
+        "resampling_unit": "test date",
+        "draws": 2000,
+        "seed": 42,
+        "reading": "negative = model has lower error than the baseline; an interval containing 0 means no reliable difference at this sample size"
+      }
+    },
+    "hist_gradient_boosting": {
+      "label": "Gradient Boosting (HistGradientBoosting)",
+      "params": {
+        "max_iter": 200,
+        "learning_rate": 0.05,
+        "max_depth": 4,
+        "random_state": 42
+      },
+      "cv_rmse_per_fold": [
+        17441.343003291135,
+        14170.26474205342,
+        13726.585405265907
+      ],
+      "cv_rmse_mean": 15112.731050203487,
+      "cv_rmse_sd": 1656.5099978609753,
+      "test": {
+        "n": 12,
+        "mae": 11995.826704299448,
+        "rmse": 18428.298273878227,
+        "bias": -7837.001844643232,
+        "r2": -0.5471200765964248,
+        "r2_note": "negative values mean worse than predicting the test-period mean",
+        "mape_pct": 20.11788966251526,
+        "mape_note": null,
+        "rmse_change_vs_baseline_pct": -22.4659335597427,
+        "beats_baseline_on_test_rmse": true
+      },
+      "paired_vs_baseline": {
+        "mean_abs_error_diff_model_minus_baseline": -4111.08912903389,
+        "ci95": [
+          -8683.800521186828,
+          204.66432070327855
+        ],
+        "resampling_unit": "test date",
+        "draws": 2000,
+        "seed": 42,
+        "reading": "negative = model has lower error than the baseline; an interval containing 0 means no reliable difference at this sample size"
+      }
+    },
+    "seasonal_naive_7": {
+      "label": "Seasonal naive (same weekday last week)",
+      "params": {
+        "rule": "prediction = value 7 days earlier"
+      },
+      "cv_rmse_per_fold": [
+        11371.446141386457,
+        9343.944536786754,
+        13573.997201188404
+      ],
+      "cv_rmse_mean": 11429.795959787205,
+      "cv_rmse_sd": 1727.404587212354,
+      "test": {
+        "n": 12,
+        "mae": 16106.915833333338,
+        "rmse": 23768.00175710876,
+        "bias": -6089.2058333333325,
+        "r2": -1.5735872584370956,
+        "r2_note": "negative values mean worse than predicting the test-period mean",
+        "mape_pct": 30.46367816978864,
+        "mape_note": null
+      }
+    }
+  },
+  "selection": {
+    "rule": "lowest mean cross-validated RMSE over train+val folds among the four learned models (test period not used)",
+    "selected": "ridge_regression",
+    "selected_label": "Ridge Regression",
+    "test": {
+      "n": 12,
+      "mae": 15340.182468452142,
+      "rmse": 21902.400660972038,
+      "bias": -2582.8277041620954,
+      "r2": -1.1854304729998768,
+      "r2_note": "negative values mean worse than predicting the test-period mean",
+      "mape_pct": 31.113328454286332,
+      "mape_note": null,
+      "rmse_change_vs_baseline_pct": -7.849213052076365,
+      "beats_baseline_on_test_rmse": true
+    },
+    "beats_baseline_on_test_rmse": true
+  },
+  "uncertainty": {
+    "model": "ridge_regression",
+    "method": "split-conformal on out-of-fold absolute residuals (train+val)",
+    "nominal_coverage": 0.8,
+    "interval_half_width": 10917.458514284604,
+    "calibration_residuals": 51,
+    "test_points": 12,
+    "empirical_coverage_test": 0.5833333333333334,
+    "mean_interval_width": 21834.91702856921,
+    "reading": "with this few test points, coverage differs from nominal by chance; read it as indicative"
+  },
+  "test_error_by_date": [
+    {
+      "date": "2025-03-17",
+      "mean_abs_error": 12244.163690824491
+    },
+    {
+      "date": "2025-03-18",
+      "mean_abs_error": 8139.563764523249
+    },
+    {
+      "date": "2025-03-19",
+      "mean_abs_error": 9511.492615791365
+    },
+    {
+      "date": "2025-03-20",
+      "mean_abs_error": 4262.015401612356
+    },
+    {
+      "date": "2025-03-21",
+      "mean_abs_error": 25917.353578179536
+    },
+    {
+      "date": "2025-03-24",
+      "mean_abs_error": 9145.888809636424
+    },
+    {
+      "date": "2025-03-25",
+      "mean_abs_error": 3132.362491212938
+    },
+    {
+      "date": "2025-03-26",
+      "mean_abs_error": 11920.137914433217
+    },
+    {
+      "date": "2025-03-27",
+      "mean_abs_error": 3757.083667719766
+    },
+    {
+      "date": "2025-03-28",
+      "mean_abs_error": 10249.24711033902
+    },
+    {
+      "date": "2025-03-30",
+      "mean_abs_error": 61931.53177236846
+    },
+    {
+      "date": "2025-03-31",
+      "mean_abs_error": 23871.348804784866
+    }
+  ],
+  "checks": {
+    "train_before_val_before_test": true,
+    "target_not_in_features": true,
+    "features_use_only_past_values": "lag_1, lag_7 and rolling means are shifted by at least one day before use",
+    "duplicate_series_date_keys": 0,
+    "missing_values_in_target_before_feature_drop": 1,
+    "rows_dropped_for_missing_features_or_target": 10
+  },
+  "reproducibility": {
+    "seed": 42,
+    "python": "3.12.0",
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "scikit_learn": "1.9.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "config_sha256": "ac8b32c99e7da7aea18939f6b2421a2f5eff12ad9206f8d6ddf39bc98112dbe9"
+  },
+  "limitations": [
+    "Test period has 12 dates (of 80); error estimates are indicative, not precise.",
+    "Fixed model parameters were used (no tuning), so a different configuration could rank differently.",
+    "One chronological split; no repeated-origin backtest, so performance over other periods is unknown.",
+    "No claim of statistical superiority is made: the paired bootstrap interval is reported, and an interval containing 0 means no reliable difference.",
+    "Single store, 89 days, one missing date; not representative of Indian SMEs or Indian retail generally."
+  ]
+}

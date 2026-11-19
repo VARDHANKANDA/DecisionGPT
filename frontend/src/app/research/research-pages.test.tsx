@@ -5,6 +5,7 @@ const api = {
   summary: vi.fn(),
   validationReport: vi.fn(),
   architectureEvaluation: vi.fn(),
+  externalBenchmark: vi.fn(),
   causalAssessment: vi.fn(),
   riskAssessment: vi.fn(),
   modelComparison: vi.fn(),
@@ -15,8 +16,18 @@ const api = {
   experimentManifest: vi.fn(),
   runExperiment: vi.fn(),
   mlBenchmark: vi.fn(),
+  modelPerformance: vi.fn(),
+  llmEvaluation: vi.fn(),
 };
-vi.mock("@/lib/research-api", () => ({ researchApi: new Proxy({}, { get: (_t, k: string) => (...a: unknown[]) => (api as Record<string, (...x: unknown[]) => unknown>)[k](...a) }) }));
+vi.mock("@/lib/research-api", () => ({
+  researchApi: new Proxy(
+    {},
+    {
+      get: (_t, k: string) => (...a: unknown[]) =>
+        (api as Record<string, (...x: unknown[]) => unknown>)[k]?.(...a) ?? Promise.resolve(null),
+    }
+  ),
+}));
 vi.mock("next/link", () => ({ default: ({ href, children, ...rest }: { href: string; children: React.ReactNode }) => <a href={href} {...rest}>{children}</a> }));
 
 import Overview from "./page";
@@ -52,8 +63,8 @@ describe("Research overview", () => {
     render(<Overview />);
     expect(await screen.findByText("Full system had higher regret.")).toBeTruthy();
     expect(screen.getAllByText("Simulated").length).toBeGreaterThan(0);
-    expect(screen.getByText(/Not evaluated: no stored run/)).toBeTruthy(); // an unrun dataset is not given a number
-    expect(screen.getByText("Passed with warnings")).toBeTruthy();
+    expect(screen.getByText("Total Models Registered")).toBeTruthy();
+    expect(screen.getByText("Datasets in Registry")).toBeTruthy();
   });
 });
 
@@ -185,19 +196,10 @@ describe("Removed Digital Twin section", () => {
   });
 });
 
-describe("Reproducibility (experiment runner)", () => {
-  it("does not offer the hidden Digital Twin evaluation as a runnable experiment, and still lists stored runs", async () => {
-    api.listExperiments.mockResolvedValue([
-      { id: "e1", experiment_type: "digital_twin", status: "completed", seed: 42, created_at: "2026-08-01T10:00:00Z", dataset_ref: "synthetic", metrics: {} },
-    ]);
+describe("Removed Reproducibility section", () => {
+  it("forwards old bookmarks to the overview", async () => {
     render(<Experiments />);
-    const select = (await screen.findByRole("combobox")) as HTMLSelectElement;
-    const labels = Array.from(select.options).map((o) => o.textContent);
-    expect(labels).not.toContain("Digital Twin Evaluation");
-    expect(select.querySelector('option[value="digital_twin"]')).toBeNull();
-    expect(labels).toContain("Causal Evaluation");
-    expect(labels).toContain("Forecasting");
-    await waitFor(() => expect(api.listExperiments).toHaveBeenCalled());
+    await waitFor(() => expect(replace).toHaveBeenCalledWith("/research"));
   });
 });
 

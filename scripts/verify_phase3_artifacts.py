@@ -41,3 +41,4 @@ for rel, expected_sha in ref.items():
 
 print(f"\nHASH INTEGRITY RESULT: {passed} PASSED, {failed} FAILED out of {len(ref)} historical files.")
 assert failed == 0, f"{failed} files failed hash verification!"
+

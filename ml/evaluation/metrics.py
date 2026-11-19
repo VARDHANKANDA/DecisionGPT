@@ -2,10 +2,19 @@
 Research Console's Model Performance page. Kept in one place so a metric
 name always means the same computation everywhere it's displayed.
 """
+from __future__ import annotations
+
 import numpy as np
 from sklearn.metrics import (
+    accuracy_score,
+    average_precision_score,
+    balanced_accuracy_score,
+    brier_score_loss,
+    confusion_matrix,
     f1_score,
+    log_loss,
     precision_score,
+    r2_score,
     recall_score,
     roc_auc_score,
 )
@@ -26,6 +35,12 @@ def mape(y_true: np.ndarray, y_pred: np.ndarray, epsilon: float = 1e-6) -> float
     return float(np.mean(np.abs((y_true - y_pred) / denom)) * 100)
 
 
+def r2(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    y_true = np.asarray(y_true, dtype=float)
+    y_pred = np.asarray(y_pred, dtype=float)
+    return float(r2_score(y_true, y_pred))
+
+
 def wape(y_true: np.ndarray, y_pred: np.ndarray) -> float | None:
     """Weighted absolute percentage error = sum|e| / sum|y|. Scale-aware and stable for intermittent demand, unlike MAPE. Returns None
     (never 0) when the actuals sum to zero."""
@@ -39,6 +54,7 @@ def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
         "mae": mae(y_true, y_pred),
         "rmse": rmse(y_true, y_pred),
         "mape": mape(y_true, y_pred),
+        "r2": r2(y_true, y_pred),
     }
     w = wape(y_true, y_pred)
     if w is not None:  # omitted (not 0) when undefined, so consumers never display a fake perfect score
@@ -61,10 +77,52 @@ def regression_diagnostics(y_true: np.ndarray, y_pred: np.ndarray, zero_tol: flo
     return out
 
 
-def classification_metrics(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray) -> dict:
-    return {
-        "precision": float(precision_score(y_true, y_pred, zero_division=0)),
-        "recall": float(recall_score(y_true, y_pred, zero_division=0)),
-        "f1": float(f1_score(y_true, y_pred, zero_division=0)),
-        "roc_auc": float(roc_auc_score(y_true, y_proba)),
+def classification_metrics(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray | None = None) -> dict:
+    y_true = np.asarray(y_true, dtype=int)
+    y_pred = np.asarray(y_pred, dtype=int)
+
+    acc = float(accuracy_score(y_true, y_pred))
+    bal_acc = float(balanced_accuracy_score(y_true, y_pred))
+    prec = float(precision_score(y_true, y_pred, zero_division=0))
+    rec = float(recall_score(y_true, y_pred, zero_division=0))
+    f1 = float(f1_score(y_true, y_pred, zero_division=0))
+
+    out = {
+        "accuracy": acc,
+        "balanced_accuracy": bal_acc,
+        "precision": prec,
+        "recall": rec,
+        "f1": f1,
     }
+
+    if y_proba is not None:
+        y_proba = np.asarray(y_proba, dtype=float)
+        try:
+            out["roc_auc"] = float(roc_auc_score(y_true, y_proba))
+        except Exception:
+            out["roc_auc"] = 0.5
+        try:
+            out["pr_auc"] = float(average_precision_score(y_true, y_proba))
+        except Exception:
+            out["pr_auc"] = 0.0
+        try:
+            out["brier"] = float(brier_score_loss(y_true, y_proba))
+        except Exception:
+            pass
+        try:
+            out["log_loss"] = float(log_loss(y_true, y_proba, eps=1e-15))
+        except Exception:
+            pass
+
+    # Confusion matrix elements
+    try:
+        cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
+        tn, fp, fn, tp = cm.ravel()
+        out["confusion_tn"] = int(tn)
+        out["confusion_fp"] = int(fp)
+        out["confusion_fn"] = int(fn)
+        out["confusion_tp"] = int(tp)
+    except Exception:
+        pass
+
+    return out

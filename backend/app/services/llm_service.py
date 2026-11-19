@@ -9,7 +9,14 @@ import re
 from dataclasses import dataclass, field
 
 from app.core.config import get_settings
-from app.services.openai_client import Choice, DecisionResult, ExplainResult, Noul, OpenAIClient
+from app.services.openai_client import (
+    Choice,
+    DecisionResult,
+    ExplainResult,
+    GenerationResult,
+    Noul,
+    OpenAIClient,
+)
 
 # Constraint tokens strategy_generation_service understands.
 _CONSTRAINT_PATTERNS = {
@@ -88,15 +95,34 @@ CONSTRAINT_MIN_NOUL = 0.8  # a constraint narrows the action space, so only a cl
 class LLMService:
     """Thin façade over the AI provider (OpenAI). Every caller only ever sees this class; none talks to a provider directly."""
 
-    def __init__(self):
-        self.settings = get_settings()
+    def __init__(self, settings=None):
+        self.settings = settings or get_settings()
 
     @property
     def enabled(self) -> bool:
-        return self.settings.llm_enabled
+        return self.settings.llm_enabled and bool(self.settings.openai_api_key)
 
     def _client(self) -> OpenAIClient:
         return OpenAIClient()
+
+    def generate(
+        self,
+        instructions: str,
+        input_text: str,
+        json_schema: dict | None = None,
+        max_output_tokens: int | None = None,
+    ) -> GenerationResult:
+        if not self.enabled:
+            return GenerationResult(ok=False, error="not_configured", attempts=0)
+        return self._client().generate(instructions, input_text, json_schema, max_output_tokens)
+
+    def generate_response(self, prompt: str) -> str | None:
+        """General text generation utility with OpenAI GPT-5 mini."""
+        res = self.generate(
+            instructions="You are DecisionGPT, an intelligent business decision-support assistant. Answer accurately based on facts.",
+            input_text=prompt,
+        )
+        return res.text if res.ok else None
 
     def decide(self, state, questions) -> DecisionResult:
         """One request classifying ``state`` into the closed labels in ``questions``. Reports failures instead of raising or hiding them."""
@@ -178,8 +204,27 @@ class LLMService:
         )
 
     def generate_strategy_explanation(self, context: dict) -> str:
-        """Deterministic template rendered from structured context (docs/AI_MODULE_SPECIFICATION.md §7: explanations narrate results
-        that already exist). Deterministic by design: the model does not write strategy text."""
+        """Strategy narrative explaining results that already exist. If OpenAI is available, uses GPT-5 mini; otherwise falls back to template."""
+        if not self.enabled:
+            return self._default_strategy_explanation(context)
+
+        prompt = (
+            f"Explain the following evaluated business strategy concisely (1-2 sentences) for an executive:\n"
+            f"- Strategy Name: {context.get('strategy_name', 'Unnamed')}\n"
+            f"- Expected Revenue: {context.get('expected_revenue', 'N/A')}\n"
+            f"- Risk Level: {context.get('risk_level', 'N/A')}\n"
+            f"Rule: State verified expected outcomes clearly without fabricating extra numbers."
+        )
+        res = self.generate(
+            instructions="You are DecisionGPT's Strategy Synthesis Engine. Provide concise, grounded executive strategy explanations.",
+            input_text=prompt,
+            max_output_tokens=300,
+        )
+        if res.ok and res.text:
+            return res.text
+        return self._default_strategy_explanation(context)
+
+    def _default_strategy_explanation(self, context: dict) -> str:
         parts = [f"Strategy: {context.get('strategy_name', 'Unnamed strategy')}."]
         if "expected_revenue" in context:
             parts.append(f"Expected revenue: {context['expected_revenue']}.")
@@ -188,12 +233,113 @@ class LLMService:
         return " ".join(parts)
 
     def evaluate_agent(self, agent_name: str, evaluation: dict) -> str:
-        """One agent's structured evaluation (already computed by app.agents.*) rendered as a sentence list. Template only."""
+        """One agent's structured evaluation synthesized. Uses GPT-5 mini when configured, otherwise deterministic template."""
+        if not self.enabled:
+            return self._default_evaluate_agent(agent_name, evaluation)
+
+        label = agent_name.replace("_", " ").title()
+        prompt = (
+            f"Synthesize the following specialist evaluation into a concise executive finding (1-2 sentences):\n"
+            f"Specialist: {label}\n"
+            f"Key Points: {json.dumps(evaluation.get('key_points', []))}\n"
+            f"Risks: {json.dumps(evaluation.get('risks', []))}\n"
+            f"Assumptions: {json.dumps(evaluation.get('assumptions', []))}\n"
+        )
+        res = self.generate(
+            instructions="You are DecisionGPT's Agent Review Synthesizer. Synthesize findings faithfully without hallucinating new data.",
+            input_text=prompt,
+            max_output_tokens=350,
+        )
+        if res.ok and res.text:
+            return res.text
+        return self._default_evaluate_agent(agent_name, evaluation)
+
+    def _default_evaluate_agent(self, agent_name: str, evaluation: dict) -> str:
         label = agent_name.replace("_", " ").title()
         sentences = [f"{label}:"] + list(evaluation.get("key_points", []))
         if evaluation.get("risks"):
             sentences.append("Risks: " + " ".join(evaluation["risks"]))
         return " ".join(sentences)
+
+    def consult_agent(
+        self,
+        agent_key: str,
+        agent_name: str,
+        agent_role: str,
+        agent_purpose: str,
+        task: str,
+        evidence_items: list[dict],
+    ) -> dict | None:
+        """Call GPT-5 mini for an individual specialist agent consultation with strict structured output."""
+        if not self.enabled:
+            return None
+
+        schema = {
+            "type": "object",
+            "required": [
+                "executive_summary",
+                "key_findings",
+                "business_implications",
+                "recommended_actions",
+                "assumptions_and_limitations",
+            ],
+            "additionalProperties": False,
+            "properties": {
+                "executive_summary": {"type": "string", "description": "2-3 sentences summarizing the analysis"},
+                "key_findings": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "2-4 factual findings derived from verified evidence",
+                },
+                "business_implications": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "2-3 business impact points",
+                },
+                "recommended_actions": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "2-3 concrete actionable recommendations",
+                },
+                "assumptions_and_limitations": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "2 stated assumptions or boundaries",
+                },
+            },
+        }
+
+        instructions = (
+            f"You are the {agent_name} ({agent_role}) in DecisionGPT.\n"
+            f"Your domain purpose: {agent_purpose}\n"
+            f"Analyze the user's task strictly using the verified evidence provided.\n"
+            f"Never invent new numbers, revenues, or percentages. Cite or interpret only the verified evidence provided."
+        )
+
+        input_text = (
+            f"TASK: {task}\n\n"
+            f"VERIFIED EVIDENCE:\n"
+            + "\n".join(f"- [{e.get('id', 'F')}] {e.get('text')} (Source: {e.get('source')})" for e in evidence_items)
+        )
+
+        res = self.generate(
+            instructions=instructions,
+            input_text=input_text,
+            json_schema=schema,
+            max_output_tokens=1500,
+        )
+
+        if res.ok and isinstance(res.parsed, dict):
+            out = dict(res.parsed)
+            out["_llm_metadata"] = {
+                "model": res.model,
+                "response_model": res.response_model,
+                "usage": res.usage,
+                "latency_s": round(res.latency_s, 3),
+                "estimated_cost_usd": res.estimated_cost_usd,
+            }
+            return out
+        return None
 
     def generate_business_response(self, context: dict) -> str:
         """AI Assistant answers (docs/PRD.md §30). ``context`` always contains already-computed real numbers; the wording is the

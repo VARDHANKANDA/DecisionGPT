@@ -74,9 +74,13 @@ def security_problems(settings) -> list[str]:
         problems.append(f"RATE_LIMIT_ENABLED must be true when ENVIRONMENT={env}: sign-in and sign-up would be open to unlimited guessing.")
     if str(settings.trusted_proxies).strip() and not _valid_proxy_list(str(settings.trusted_proxies)):
         problems.append("TRUSTED_PROXIES contains an entry that is not an IP address or CIDR range.")
-    origin = str(settings.frontend_origin).strip().lower()
-    if not origin.startswith("https://") or any(x in origin for x in ("localhost", "127.0.0.1", "*")):
-        problems.append("FRONTEND_ORIGIN must be the https origin of the web application (not localhost, not a wildcard).")
+    origins = settings.frontend_origins if hasattr(settings, "frontend_origins") else [str(settings.frontend_origin).strip()]
+    if not origins:
+        problems.append("FRONTEND_ORIGIN must not be empty.")
+    for orig in origins:
+        orig_lower = orig.lower()
+        if not orig_lower.startswith("https://") or any(x in orig_lower for x in ("localhost", "127.0.0.1", "*")):
+            problems.append(f"FRONTEND_ORIGIN entry {orig!r} must be an https origin of the web application (not localhost, not a wildcard).")
     return problems
 
 

@@ -14,8 +14,8 @@ from app.models.research import ResearchDatasetVersion, TrainingRun
 from app.services import evaluation_console_service
 from app.services.metric_registry import metric_definitions
 
-_FORECAST_METRICS = ["mae", "rmse", "mape"]
-_CLASS_METRICS = ["precision", "recall", "f1", "roc_auc"]
+_FORECAST_METRICS = ["forecast_accuracy", "mae", "rmse", "wape", "mape", "r2"]
+_CLASS_METRICS = ["accuracy", "val_accuracy", "precision", "recall", "f1", "roc_auc", "pr_auc", "brier", "actual_positive_rate", "predicted_positive_rate"]
 
 
 def _num(v):
@@ -101,6 +101,7 @@ def get_model_performance(
             "best_forecasting_note": (None if len({m.dataset_version for m in forecasting}) <= 1 else
                                       "Forecasting models here were scored on different datasets, so no model is named best; compare them only within one dataset."),
             "best_churn": _best(churn, "roc_auc", minimize=False),
+            "best_accuracy": _best(churn, "accuracy", minimize=False),
         },
         "evaluation_summary": {
             "basis": "Held-out TEST block of each model's own dataset (chronological split by date). Training and validation figures are never shown here.",
