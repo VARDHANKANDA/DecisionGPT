@@ -692,8 +692,8 @@ export interface CausalAssessment {
     }>;
     distinguish: Array<{ term: string; meaning: string }>;
     multiple_testing?: {
-      fdr_benjamini_hochberg: Record<string, any>;
-      fwer_holm_bonferroni: Record<string, any>;
+      fdr_benjamini_hochberg: Record<string, unknown>;
+      fwer_holm_bonferroni: Record<string, unknown>;
       interpretation: string;
     };
   };

@@ -1,0 +1,82 @@
+{
+  "task": "f1_m5_ca1_direct_h28",
+  "H": 28,
+  "seed": 42,
+  "n_series": 350,
+  "store": "CA_1",
+  "quick": false,
+  "test_window_days": [
+    1914,
+    1941
+  ],
+  "validation_windows_days": [
+    [
+      1830,
+      1857
+    ],
+    [
+      1858,
+      1885
+    ],
+    [
+      1886,
+      1913
+    ]
+  ],
+  "train_span_days": 730,
+  "families": {
+    "linear": [
+      "ols"
+    ],
+    "ridge": [
+      "alpha1",
+      "alpha100"
+    ],
+    "random_forest": [
+      "leaf5",
+      "leaf20"
+    ],
+    "hist_gradient_boosting": [
+      "depth4",
+      "depth6"
+    ],
+    "xgboost": [
+      "depth4",
+      "depth6"
+    ],
+    "lightgbm": [
+      "l2",
+      "tweedie"
+    ],
+    "catboost": [
+      "depth6",
+      "depth8"
+    ]
+  },
+  "features": [
+    "lag_28",
+    "lag_35",
+    "lag_42",
+    "lag_49",
+    "lag_56",
+    "roll_mean_7",
+    "roll_mean_28",
+    "roll_mean_84",
+    "roll_std_28",
+    "nonzero_share_28",
+    "days_since_sale",
+    "same_weekday_mean4",
+    "dow",
+    "dom",
+    "month",
+    "event",
+    "snap",
+    "sell_price",
+    "rel_price_91",
+    "price_change_7",
+    "days_since_price_change",
+    "dept_code",
+    "cat_code",
+    "item_code"
+  ]
+}

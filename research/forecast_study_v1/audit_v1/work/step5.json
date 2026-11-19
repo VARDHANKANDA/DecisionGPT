@@ -1,0 +1,1022 @@
+{
+ "fs1_m5_ca1_H28": {
+  "n_calibration": 29400,
+  "n_test": 58800,
+  "calibration_blocks_are_before_test": true,
+  "model": {
+   "coverage_overall": 0.8021428571428572,
+   "mean_width": 2.5018830718170793,
+   "bin_quantiles": [
+    0.39694392681121826,
+    1.0286438465118408,
+    2.990288496017456
+   ],
+   "coverage_by_block": {
+    "1773": 0.8108163265306122,
+    "1801": 0.8083673469387755,
+    "1829": 0.7979591836734694,
+    "1857": 0.7940816326530612,
+    "1885": 0.8085714285714286,
+    "1913": 0.7930612244897959
+   },
+   "coverage_on_zero_demand_rows": 0.9376560968669976,
+   "coverage_on_positive_demand_rows": 0.6443741028377931,
+   "share_zero_demand_rows": 0.5379421768707483,
+   "by_frequency_segment": {
+    "frequent": 0.7246428571428571,
+    "intermittent_or_sparse": 0.8150595238095238
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 19531,
+     "coverage": 0.7816292048538221
+    },
+    "1": {
+     "n": 19754,
+     "coverage": 0.8074314062974588
+    },
+    "2": {
+     "n": 19515,
+     "coverage": 0.8173200102485267
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7704741379310345,
+    "low": 0.8156288156288156,
+    "mid": 0.820054945054945
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     0.3531590615751754,
+     0.38382250149005465
+    ],
+    "1": [
+     0.8637563913209098,
+     0.8257429468296216
+    ],
+    "2": [
+     2.315466703833366,
+     2.132872497574232
+    ]
+   }
+  },
+  "ref_any": {
+   "coverage_overall": 0.8621938775510204,
+   "mean_width": 2.309047619047619,
+   "bin_quantiles": [
+    NaN,
+    1.0,
+    2.5
+   ],
+   "coverage_by_block": {
+    "1773": 0.8779591836734694,
+    "1801": 0.8673469387755102,
+    "1829": 0.8646938775510205,
+    "1857": 0.8568367346938776,
+    "1885": 0.8457142857142858,
+    "1913": 0.8606122448979592
+   },
+   "coverage_on_zero_demand_rows": 0.9824855363409314,
+   "coverage_on_positive_demand_rows": 0.7221465640987891,
+   "share_zero_demand_rows": 0.5379421768707483,
+   "by_frequency_segment": {
+    "frequent": 0.6734523809523809,
+    "intermittent_or_sparse": 0.8936507936507937
+   },
+   "by_prediction_bin": {
+    "1": {
+     "n": 34468,
+     "coverage": 0.8876058953231983
+    },
+    "2": {
+     "n": 24332,
+     "coverage": 0.8261959559427914
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7461001642036125,
+    "low": 0.9438848188848189,
+    "mid": 0.8956043956043956
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     NaN,
+     null
+    ],
+    "1": [
+     0.6520341360766893,
+     0.5355402112103981
+    ],
+    "2": [
+     1.7709079075821672,
+     1.7587128061811605
+    ]
+   }
+  },
+  "ref_matched": {
+   "coverage_overall": 0.8537414965986394,
+   "mean_width": 2.294906462585034,
+   "bin_quantiles": [
+    NaN,
+    1.0,
+    2.5
+   ],
+   "coverage_by_block": {
+    "1773": 0.8676530612244898,
+    "1801": 0.8661224489795918,
+    "1829": 0.8559183673469388,
+    "1857": 0.846530612244898,
+    "1885": 0.8387755102040816,
+    "1913": 0.8474489795918367
+   },
+   "coverage_on_zero_demand_rows": 0.9785969460339541,
+   "coverage_on_positive_demand_rows": 0.7083808752622475,
+   "share_zero_demand_rows": 0.5379421768707483,
+   "by_frequency_segment": {
+    "frequent": 0.6580952380952381,
+    "intermittent_or_sparse": 0.8863492063492063
+   },
+   "by_prediction_bin": {
+    "1": {
+     "n": 34761,
+     "coverage": 0.8777940795719341
+    },
+    "2": {
+     "n": 24039,
+     "coverage": 0.8189608552768418
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7264470443349754,
+    "low": 0.9419515669515669,
+    "mid": 0.8917378917378918
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     NaN,
+     null
+    ],
+    "1": [
+     0.6912728527078302,
+     0.5872817237708927
+    ],
+    "2": [
+     1.830543061802432,
+     1.8030700112317484
+    ]
+   }
+  },
+  "study_overall_coverage_model": 0.8021428571428572,
+  "agrees_with_study_model_coverage": true
+ },
+ "fs1_m5_ca1_H7": {
+  "n_calibration": 29400,
+  "n_test": 58800,
+  "calibration_blocks_are_before_test": true,
+  "model": {
+   "coverage_overall": 0.8022278911564625,
+   "mean_width": 2.4165357317272327,
+   "bin_quantiles": [
+    0.33436939120292664,
+    1.0028607845306396,
+    2.7803657054901123
+   ],
+   "coverage_by_block": {
+    "1773": 0.8116326530612245,
+    "1801": 0.8161224489795919,
+    "1829": 0.8039795918367347,
+    "1857": 0.7928571428571428,
+    "1885": 0.7946938775510204,
+    "1913": 0.7940816326530612
+   },
+   "coverage_on_zero_demand_rows": 0.915051689797983,
+   "coverage_on_positive_demand_rows": 0.6708748941808679,
+   "share_zero_demand_rows": 0.5379421768707483,
+   "by_frequency_segment": {
+    "frequent": 0.7128571428571429,
+    "intermittent_or_sparse": 0.8171230158730158
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 18064,
+     "coverage": 0.7937333923826395
+    },
+    "1": {
+     "n": 20676,
+     "coverage": 0.8032501450957632
+    },
+    "2": {
+     "n": 20060,
+     "coverage": 0.8088235294117647
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7675492610837439,
+    "low": 0.8108465608465608,
+    "mid": 0.8279914529914529
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     0.3595900669207853,
+     0.3067388812118719
+    ],
+    "1": [
+     0.7954218565140452,
+     0.7909130612242312
+    ],
+    "2": [
+     2.0994498286563523,
+     2.011555735391016
+    ]
+   }
+  },
+  "ref_any": {
+   "coverage_overall": 0.8600340136054422,
+   "mean_width": 2.0623809523809524,
+   "bin_quantiles": [
+    NaN,
+    1.0,
+    2.0
+   ],
+   "coverage_by_block": {
+    "1773": 0.8742857142857143,
+    "1801": 0.8688775510204082,
+    "1829": 0.8646938775510205,
+    "1857": 0.8537755102040816,
+    "1885": 0.8445918367346938,
+    "1913": 0.8539795918367347
+   },
+   "coverage_on_zero_demand_rows": 0.9808731940185261,
+   "coverage_on_positive_demand_rows": 0.7193492583459089,
+   "share_zero_demand_rows": 0.5379421768707483,
+   "by_frequency_segment": {
+    "frequent": 0.6494047619047619,
+    "intermittent_or_sparse": 0.8951388888888889
+   },
+   "by_prediction_bin": {
+    "1": {
+     "n": 34048,
+     "coverage": 0.8969983552631579
+    },
+    "2": {
+     "n": 24752,
+     "coverage": 0.8091871363930188
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7349651067323482,
+    "low": 0.944953194953195,
+    "mid": 0.8991147741147741
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     NaN,
+     null
+    ],
+    "1": [
+     0.5601942305482128,
+     0.4916735197368421
+    ],
+    "2": [
+     1.7514585764294048,
+     1.727476567550097
+    ]
+   }
+  },
+  "ref_matched": {
+   "coverage_overall": 0.8663945578231292,
+   "mean_width": 2.326488095238095,
+   "bin_quantiles": [
+    NaN,
+    1.0,
+    2.5
+   ],
+   "coverage_by_block": {
+    "1773": 0.8805102040816326,
+    "1801": 0.8744897959183674,
+    "1829": 0.8707142857142857,
+    "1857": 0.8601020408163266,
+    "1885": 0.8518367346938776,
+    "1913": 0.8607142857142858
+   },
+   "coverage_on_zero_demand_rows": 0.982675223672979,
+   "coverage_on_positive_demand_rows": 0.7310169678677905,
+   "share_zero_demand_rows": 0.5379421768707483,
+   "by_frequency_segment": {
+    "frequent": 0.6814285714285714,
+    "intermittent_or_sparse": 0.8972222222222223
+   },
+   "by_prediction_bin": {
+    "1": {
+     "n": 34111,
+     "coverage": 0.8941397203248219
+    },
+    "2": {
+     "n": 24689,
+     "coverage": 0.828061079833124
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7544642857142857,
+    "low": 0.9441900691900692,
+    "mid": 0.8995726495726496
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     NaN,
+     null
+    ],
+    "1": [
+     0.5796269727403156,
+     0.5055407346603735
+    ],
+    "2": [
+     1.775365344467641,
+     1.7332617764996556
+    ]
+   }
+  },
+  "study_overall_coverage_model": 0.8022278911564625,
+  "agrees_with_study_model_coverage": true
+ },
+ "fs1_m5_tx1_H28": {
+  "n_calibration": 29400,
+  "n_test": 58800,
+  "calibration_blocks_are_before_test": true,
+  "model": {
+   "coverage_overall": 0.7938435374149659,
+   "mean_width": 1.8246021504996686,
+   "bin_quantiles": [
+    0.2251996099948883,
+    0.6325616240501404,
+    2.2695696353912354
+   ],
+   "coverage_by_block": {
+    "1773": 0.8156122448979591,
+    "1801": 0.8002040816326531,
+    "1829": 0.7988775510204081,
+    "1857": 0.7875510204081633,
+    "1885": 0.7821428571428571,
+    "1913": 0.7786734693877551
+   },
+   "coverage_on_zero_demand_rows": 0.9059801294025285,
+   "coverage_on_positive_demand_rows": 0.6043639357760395,
+   "share_zero_demand_rows": 0.6282142857142857,
+   "by_frequency_segment": {
+    "frequent": 0.6601037851037851,
+    "intermittent_or_sparse": 0.8106147603736028
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 18384,
+     "coverage": 0.8060813751087903
+    },
+    "1": {
+     "n": 19912,
+     "coverage": 0.7889714744877461
+    },
+    "2": {
+     "n": 20504,
+     "coverage": 0.7876024190401872
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7499491249491249,
+    "low": 0.8267195767195767,
+    "mid": 0.8049568965517241
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     0.2561237483099103,
+     0.2634317911299127
+    ],
+    "1": [
+     0.5879445403510211,
+     0.6109338154812003
+    ],
+    "2": [
+     1.6951566076035403,
+     1.8278442176957872
+    ]
+   }
+  },
+  "ref_any": {
+   "coverage_overall": 0.8344387755102041,
+   "mean_width": 1.3016666666666667,
+   "bin_quantiles": [
+    NaN,
+    NaN,
+    1.0
+   ],
+   "coverage_by_block": {
+    "1773": 0.8451020408163266,
+    "1801": 0.8383673469387755,
+    "1829": 0.8347959183673469,
+    "1857": 0.8295918367346938,
+    "1885": 0.828265306122449,
+    "1913": 0.8305102040816327
+   },
+   "coverage_on_zero_demand_rows": 0.9596632285660143,
+   "coverage_on_positive_demand_rows": 0.6228443346598966,
+   "share_zero_demand_rows": 0.6282142857142857,
+   "by_frequency_segment": {
+    "frequent": 0.4893162393162393,
+    "intermittent_or_sparse": 0.8777178073801868
+   },
+   "by_prediction_bin": {
+    "2": {
+     "n": 58800,
+     "coverage": 0.8344387755102041
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.6364977614977615,
+    "low": 0.9605718355718356,
+    "mid": 0.906865763546798
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     NaN,
+     null
+    ],
+    "1": [
+     NaN,
+     null
+    ],
+    "2": [
+     0.7446258503401361,
+     0.8056972789115646
+    ]
+   }
+  },
+  "ref_matched": {
+   "coverage_overall": 0.8300850340136054,
+   "mean_width": 1.2997534013605443,
+   "bin_quantiles": [
+    NaN,
+    NaN,
+    1.0
+   ],
+   "coverage_by_block": {
+    "1773": 0.8379591836734694,
+    "1801": 0.8261224489795919,
+    "1829": 0.8312244897959183,
+    "1857": 0.8303061224489796,
+    "1885": 0.8297959183673469,
+    "1913": 0.8251020408163265
+   },
+   "coverage_on_zero_demand_rows": 0.9557649097160184,
+   "coverage_on_positive_demand_rows": 0.6177210557614016,
+   "share_zero_demand_rows": 0.6282142857142857,
+   "by_frequency_segment": {
+    "frequent": 0.476953601953602,
+    "intermittent_or_sparse": 0.8743683968764354
+   },
+   "by_prediction_bin": {
+    "2": {
+     "n": 58800,
+     "coverage": 0.8300850340136054
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.6249491249491249,
+    "low": 0.9606227106227107,
+    "mid": 0.9053263546798029
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     NaN,
+     null
+    ],
+    "1": [
+     NaN,
+     null
+    ],
+    "2": [
+     0.766921768707483,
+     0.8319387755102041
+    ]
+   }
+  },
+  "study_overall_coverage_model": 0.7938435374149659,
+  "agrees_with_study_model_coverage": true
+ },
+ "fs1_m5_tx1_H7": {
+  "n_calibration": 29400,
+  "n_test": 58800,
+  "calibration_blocks_are_before_test": true,
+  "model": {
+   "coverage_overall": 0.792891156462585,
+   "mean_width": 1.7870561289853935,
+   "bin_quantiles": [
+    0.2038489580154419,
+    0.6280436515808105,
+    2.2114861011505127
+   ],
+   "coverage_by_block": {
+    "1773": 0.808265306122449,
+    "1801": 0.806734693877551,
+    "1829": 0.7916326530612245,
+    "1857": 0.7889795918367347,
+    "1885": 0.7863265306122449,
+    "1913": 0.7754081632653061
+   },
+   "coverage_on_zero_demand_rows": 0.8932835214813611,
+   "coverage_on_positive_demand_rows": 0.62325602671424,
+   "share_zero_demand_rows": 0.6282142857142857,
+   "by_frequency_segment": {
+    "frequent": 0.6771978021978022,
+    "intermittent_or_sparse": 0.8073993262900016
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 18555,
+     "coverage": 0.790784155214228
+    },
+    "1": {
+     "n": 19691,
+     "coverage": 0.7968107257122543
+    },
+    "2": {
+     "n": 20554,
+     "coverage": 0.791038240731731
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7600223850223851,
+    "low": 0.8056064306064306,
+    "mid": 0.8132183908045977
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     0.21459563158205425,
+     0.2272252194336845
+    ],
+    "1": [
+     0.5806413488698249,
+     0.5922067926627262
+    ],
+    "2": [
+     1.648592145400388,
+     1.7326763599945714
+    ]
+   }
+  },
+  "ref_any": {
+   "coverage_overall": 0.8398639455782313,
+   "mean_width": 1.3047619047619048,
+   "bin_quantiles": [
+    NaN,
+    NaN,
+    1.0
+   ],
+   "coverage_by_block": {
+    "1773": 0.8512244897959184,
+    "1801": 0.8436734693877551,
+    "1829": 0.8381632653061224,
+    "1857": 0.8375510204081633,
+    "1885": 0.8348979591836735,
+    "1913": 0.8336734693877551
+   },
+   "coverage_on_zero_demand_rows": 0.9630742575597607,
+   "coverage_on_positive_demand_rows": 0.6316728420474819,
+   "share_zero_demand_rows": 0.6282142857142857,
+   "by_frequency_segment": {
+    "frequent": 0.5,
+    "intermittent_or_sparse": 0.8824835400398101
+   },
+   "by_prediction_bin": {
+    "2": {
+     "n": 58800,
+     "coverage": 0.8398639455782313
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.6480463980463981,
+    "low": 0.9619454619454619,
+    "mid": 0.9102011494252874
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     NaN,
+     null
+    ],
+    "1": [
+     NaN,
+     null
+    ],
+    "2": [
+     0.723843537414966,
+     0.7807312925170068
+    ]
+   }
+  },
+  "ref_matched": {
+   "coverage_overall": 0.8387925170068027,
+   "mean_width": 1.3033078231292516,
+   "bin_quantiles": [
+    NaN,
+    NaN,
+    1.0
+   ],
+   "coverage_by_block": {
+    "1773": 0.8481632653061224,
+    "1801": 0.8398979591836735,
+    "1829": 0.841530612244898,
+    "1857": 0.835204081632653,
+    "1885": 0.8347959183673469,
+    "1913": 0.8331632653061225
+   },
+   "coverage_on_zero_demand_rows": 0.9628576842903165,
+   "coverage_on_positive_demand_rows": 0.629156946159828,
+   "share_zero_demand_rows": 0.6282142857142857,
+   "by_frequency_segment": {
+    "frequent": 0.49725274725274726,
+    "intermittent_or_sparse": 0.8816222630531312
+   },
+   "by_prediction_bin": {
+    "2": {
+     "n": 58800,
+     "coverage": 0.8387925170068027
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.6461131461131461,
+    "low": 0.9614875864875865,
+    "mid": 0.90938013136289
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     NaN,
+     null
+    ],
+    "1": [
+     NaN,
+     null
+    ],
+    "2": [
+     0.732687074829932,
+     0.7883588435374149
+    ]
+   }
+  },
+  "study_overall_coverage_model": 0.792891156462585,
+  "agrees_with_study_model_coverage": true
+ },
+ "fs1_or2_top100_H28": {
+  "n_calibration": 8400,
+  "n_test": 16800,
+  "calibration_blocks_are_before_test": true,
+  "model": {
+   "coverage_overall": 0.8068452380952381,
+   "mean_width": 53.51950085951215,
+   "bin_quantiles": [
+    3.1425914764404297,
+    14.54473876953125,
+    56.99702072143555
+   ],
+   "coverage_by_block": {
+    "571": 0.8010714285714285,
+    "599": 0.8075,
+    "627": 0.8160714285714286,
+    "655": 0.8203571428571429,
+    "683": 0.7971428571428572,
+    "711": 0.7989285714285714
+   },
+   "coverage_on_zero_demand_rows": 0.8499248685199099,
+   "coverage_on_positive_demand_rows": 0.786859532938306,
+   "share_zero_demand_rows": 0.3169047619047619,
+   "by_frequency_segment": {
+    "frequent": 0.7621428571428571,
+    "intermittent_or_sparse": 0.8217460317460318
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 3646,
+     "coverage": 0.8535381239714755
+    },
+    "1": {
+     "n": 5676,
+     "coverage": 0.7961592670894997
+    },
+    "2": {
+     "n": 7478,
+     "coverage": 0.7921904252473924
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7456709956709957,
+    "low": 0.8335084033613446,
+    "mid": 0.8405483405483406
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     2.445879997674243,
+     1.886002387854542
+    ],
+    "1": [
+     14.72663891690118,
+     14.29251777588103
+    ],
+    "2": [
+     46.944482006345474,
+     49.842169853479795
+    ]
+   }
+  },
+  "ref_any": {
+   "coverage_overall": 0.7705952380952381,
+   "mean_width": 35.561875,
+   "bin_quantiles": [
+    4.0,
+    10.0,
+    48.0
+   ],
+   "coverage_by_block": {
+    "571": 0.8128571428571428,
+    "599": 0.7814285714285715,
+    "627": 0.7725,
+    "655": 0.7296428571428571,
+    "683": 0.7764285714285715,
+    "711": 0.7507142857142857
+   },
+   "coverage_on_zero_demand_rows": 0.9750187828700225,
+   "coverage_on_positive_demand_rows": 0.6757581038689439,
+   "share_zero_demand_rows": 0.3169047619047619,
+   "by_frequency_segment": {
+    "frequent": 0.7569047619047619,
+    "intermittent_or_sparse": 0.7751587301587302
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 4377,
+     "coverage": 0.7432031071510167
+    },
+    "1": {
+     "n": 5555,
+     "coverage": 0.7755175517551756
+    },
+    "2": {
+     "n": 6868,
+     "coverage": 0.7840710541642399
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7144660894660895,
+    "low": 0.8256302521008403,
+    "mid": 0.770021645021645
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     7.718198198198198,
+     10.641192597669637
+    ],
+    "1": [
+     12.842413162705668,
+     14.808280828082808
+    ],
+    "2": [
+     38.405709342560556,
+     45.94751019219569
+    ]
+   }
+  },
+  "ref_matched": {
+   "coverage_overall": 0.7705952380952381,
+   "mean_width": 35.561875,
+   "bin_quantiles": [
+    4.0,
+    10.0,
+    48.0
+   ],
+   "coverage_by_block": {
+    "571": 0.8128571428571428,
+    "599": 0.7814285714285715,
+    "627": 0.7725,
+    "655": 0.7296428571428571,
+    "683": 0.7764285714285715,
+    "711": 0.7507142857142857
+   },
+   "coverage_on_zero_demand_rows": 0.9750187828700225,
+   "coverage_on_positive_demand_rows": 0.6757581038689439,
+   "share_zero_demand_rows": 0.3169047619047619,
+   "by_frequency_segment": {
+    "frequent": 0.7569047619047619,
+    "intermittent_or_sparse": 0.7751587301587302
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 4377,
+     "coverage": 0.7432031071510167
+    },
+    "1": {
+     "n": 5555,
+     "coverage": 0.7755175517551756
+    },
+    "2": {
+     "n": 6868,
+     "coverage": 0.7840710541642399
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7144660894660895,
+    "low": 0.8256302521008403,
+    "mid": 0.770021645021645
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     7.718198198198198,
+     10.641192597669637
+    ],
+    "1": [
+     12.842413162705668,
+     14.808280828082808
+    ],
+    "2": [
+     38.405709342560556,
+     45.94751019219569
+    ]
+   }
+  },
+  "study_overall_coverage_model": 0.8068452380952381,
+  "agrees_with_study_model_coverage": true
+ },
+ "fs1_or2_top100_H7": {
+  "n_calibration": 8400,
+  "n_test": 16800,
+  "calibration_blocks_are_before_test": true,
+  "model": {
+   "coverage_overall": 0.8098809523809524,
+   "mean_width": 53.64247129434686,
+   "bin_quantiles": [
+    2.421877384185791,
+    13.504594802856445,
+    59.273677825927734
+   ],
+   "coverage_by_block": {
+    "571": 0.8135714285714286,
+    "599": 0.8025,
+    "627": 0.8132142857142857,
+    "655": 0.8242857142857143,
+    "683": 0.785,
+    "711": 0.8207142857142857
+   },
+   "coverage_on_zero_demand_rows": 0.8551840721262209,
+   "coverage_on_positive_demand_rows": 0.7888637155803416,
+   "share_zero_demand_rows": 0.3169047619047619,
+   "by_frequency_segment": {
+    "frequent": 0.7769047619047619,
+    "intermittent_or_sparse": 0.8208730158730159
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 3679,
+     "coverage": 0.8657243816254417
+    },
+    "1": {
+     "n": 5695,
+     "coverage": 0.7731343283582089
+    },
+    "2": {
+     "n": 7426,
+     "coverage": 0.8103959062752492
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7555916305916306,
+    "low": 0.8408613445378151,
+    "mid": 0.8322510822510822
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     2.5198930521941345,
+     1.9721107707485723
+    ],
+    "1": [
+     13.258098340034485,
+     14.31837935209065
+    ],
+    "2": [
+     46.73601297106062,
+     48.21226614631799
+    ]
+   }
+  },
+  "ref_any": {
+   "coverage_overall": 0.7905357142857142,
+   "mean_width": 38.741458333333334,
+   "bin_quantiles": [
+    2.0,
+    10.0,
+    51.5
+   ],
+   "coverage_by_block": {
+    "571": 0.8039285714285714,
+    "599": 0.7964285714285714,
+    "627": 0.7689285714285714,
+    "655": 0.7889285714285714,
+    "683": 0.7907142857142857,
+    "711": 0.7942857142857143
+   },
+   "coverage_on_zero_demand_rows": 0.9768970698722765,
+   "coverage_on_positive_demand_rows": 0.7040780759846637,
+   "share_zero_demand_rows": 0.3169047619047619,
+   "by_frequency_segment": {
+    "frequent": 0.7742857142857142,
+    "intermittent_or_sparse": 0.795952380952381
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 2898,
+     "coverage": 0.7387853692201518
+    },
+    "1": {
+     "n": 6783,
+     "coverage": 0.7984667551231018
+    },
+    "2": {
+     "n": 7119,
+     "coverage": 0.8040455120101138
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7373737373737373,
+    "low": 0.8427871148459384,
+    "mid": 0.7898629148629148
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     6.0564012490242,
+     8.632850241545894
+    ],
+    "1": [
+     12.78038628038628,
+     13.136222910216718
+    ],
+    "2": [
+     39.870370370370374,
+     44.993889591234726
+    ]
+   }
+  },
+  "ref_matched": {
+   "coverage_overall": 0.7896428571428571,
+   "mean_width": 38.54351190476191,
+   "bin_quantiles": [
+    2.0,
+    10.0,
+    52.0
+   ],
+   "coverage_by_block": {
+    "571": 0.8071428571428572,
+    "599": 0.7978571428571428,
+    "627": 0.7621428571428571,
+    "655": 0.7846428571428572,
+    "683": 0.7935714285714286,
+    "711": 0.7925
+   },
+   "coverage_on_zero_demand_rows": 0.978587528174305,
+   "coverage_on_positive_demand_rows": 0.7019867549668874,
+   "share_zero_demand_rows": 0.3169047619047619,
+   "by_frequency_segment": {
+    "frequent": 0.7804761904761904,
+    "intermittent_or_sparse": 0.7926984126984127
+   },
+   "by_prediction_bin": {
+    "0": {
+     "n": 2969,
+     "coverage": 0.7356012125294712
+    },
+    "1": {
+     "n": 6804,
+     "coverage": 0.7964432686654909
+    },
+    "2": {
+     "n": 7027,
+     "coverage": 0.8058915611213889
+    }
+   },
+   "by_volume_segment": {
+    "high": 0.7413419913419913,
+    "low": 0.8392857142857143,
+    "mid": 0.7867965367965368
+   },
+   "mean_abs_residual_calibration_vs_test_by_bin": {
+    "0": [
+     6.408131352619233,
+     8.663186257999326
+    ],
+    "1": [
+     13.436092715231789,
+     13.295781893004115
+    ],
+    "2": [
+     39.2450389794472,
+     45.184289170342964
+    ]
+   }
+  },
+  "study_overall_coverage_model": 0.8098809523809524,
+  "agrees_with_study_model_coverage": true
+ }
+}

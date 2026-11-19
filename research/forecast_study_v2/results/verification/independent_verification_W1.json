@@ -1,0 +1,1496 @@
+{
+ "window": "W1",
+ "cells": {
+  "m5_ca1_H28": {
+   "cell": "W1/m5_ca1_H28",
+   "n_rows": 58800,
+   "checks": [
+    {
+     "check": "evaluation targets equal the raw data",
+     "passed": true,
+     "detail": "max diff 0.0"
+    },
+    {
+     "check": "no test day at or after the first unused day",
+     "passed": true,
+     "detail": "last test day 1940 < 1941"
+    },
+    {
+     "check": "stored row set: unique (series, day) pairs",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "six 28-day test blocks end at the last day of the truncated series",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation blocks end before the first test block",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "all 31 stored baselines equal the independent re-implementation (explicit cutoff access)",
+     "passed": true,
+     "detail": "{}"
+    },
+    {
+     "check": "every stored method's item-day, item-week, subset-day WAPE, bias, MAE, RMSE equals the independent value (max abs diff)",
+     "passed": true,
+     "detail": "0.0"
+    },
+    {
+     "check": "all-zero baseline has item-day WAPE 1",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "selection.json is older than every test fit file",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "config hash in selection equals the config hash of the run",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation-only selection re-derived: model_item_day and model_subset_day are the argmin of the stored validation means",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "leakage perturbation checks recorded in the validation stage all passed",
+     "passed": true,
+     "detail": ""
+    }
+   ],
+   "independent_estimates": {
+    "H1": {
+     "improvement": 0.022581138774053988,
+     "ci_pigeonhole": [
+      0.005891573869941133,
+      0.038244388982123796
+     ],
+     "p_pigeonhole": 0.011997000749812546,
+     "ci_cgm_t": [
+      0.009164980580848157,
+      0.03599729696725982
+     ],
+     "p_cgm_t": 0.002015374129550551,
+     "blocks_won": 6
+    },
+    "H1b": {
+     "improvement": -0.00782340848183849,
+     "ci_pigeonhole": [
+      -0.030192506413527137,
+      0.013292432261149368
+     ],
+     "p_pigeonhole": 0.4958760309922519,
+     "ci_cgm_t": [
+      -0.02736359253957932,
+      0.011716775575902342
+     ],
+     "p_cgm_t": 0.4160469401776985,
+     "blocks_won": 1
+    },
+    "H2": {
+     "improvement": 0.047567692334088196,
+     "ci_pigeonhole": [
+      0.024657216554991247,
+      0.07081451101714314
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.02663766379896807,
+      0.06849772086920833
+     ],
+     "p_cgm_t": 9.796571120057607e-05,
+     "blocks_won": 6
+    },
+    "H3": {
+     "improvement": 0.12197296804696678,
+     "ci_iid_week": [
+      -0.040861051554623634,
+      0.2603390152485922
+     ],
+     "p_iid_week": 0.15396150962259436,
+     "blocks_won": 4
+    }
+   },
+   "selection_before_test": {
+    "results_json_flag": true
+   },
+   "n_failed": 0
+  },
+  "m5_ca1_H7": {
+   "cell": "W1/m5_ca1_H7",
+   "n_rows": 58800,
+   "checks": [
+    {
+     "check": "evaluation targets equal the raw data",
+     "passed": true,
+     "detail": "max diff 0.0"
+    },
+    {
+     "check": "no test day at or after the first unused day",
+     "passed": true,
+     "detail": "last test day 1940 < 1941"
+    },
+    {
+     "check": "stored row set: unique (series, day) pairs",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "six 28-day test blocks end at the last day of the truncated series",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation blocks end before the first test block",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "all 31 stored baselines equal the independent re-implementation (explicit cutoff access)",
+     "passed": true,
+     "detail": "{}"
+    },
+    {
+     "check": "every stored method's item-day, item-week, subset-day WAPE, bias, MAE, RMSE equals the independent value (max abs diff)",
+     "passed": true,
+     "detail": "0.0"
+    },
+    {
+     "check": "all-zero baseline has item-day WAPE 1",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "selection.json is older than every test fit file",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "config hash in selection equals the config hash of the run",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation-only selection re-derived: model_item_day and model_subset_day are the argmin of the stored validation means",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "leakage perturbation checks recorded in the validation stage all passed",
+     "passed": true,
+     "detail": ""
+    }
+   ],
+   "independent_estimates": {
+    "H1": {
+     "improvement": 0.04328364937057505,
+     "ci_pigeonhole": [
+      0.029178842533643945,
+      0.05827775868822879
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.031249340192224258,
+      0.05531795854892584
+     ],
+     "p_cgm_t": 1.454587554849951e-07,
+     "blocks_won": 6
+    },
+    "H1b": {
+     "improvement": 0.03161783146523656,
+     "ci_pigeonhole": [
+      0.017132724463063218,
+      0.046578291139100544
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.019855641930407664,
+      0.04338002100006545
+     ],
+     "p_cgm_t": 1.1736684129237673e-05,
+     "blocks_won": 6
+    },
+    "H2": {
+     "improvement": 0.06415086046594543,
+     "ci_pigeonhole": [
+      0.047797018933690295,
+      0.08149945767376846
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.048612181395565085,
+      0.07968953953632577
+     ],
+     "p_cgm_t": 1.3725343972481596e-08,
+     "blocks_won": 6
+    },
+    "H3": {
+     "improvement": 0.18443453520868036,
+     "ci_iid_week": [
+      0.09105921116839077,
+      0.2680742894812747
+     ],
+     "p_iid_week": 0.000999750062484379,
+     "blocks_won": 6
+    }
+   },
+   "selection_before_test": {
+    "results_json_flag": true
+   },
+   "n_failed": 0
+  },
+  "m5_tx1_H28": {
+   "cell": "W1/m5_tx1_H28",
+   "n_rows": 58800,
+   "checks": [
+    {
+     "check": "evaluation targets equal the raw data",
+     "passed": true,
+     "detail": "max diff 0.0"
+    },
+    {
+     "check": "no test day at or after the first unused day",
+     "passed": true,
+     "detail": "last test day 1940 < 1941"
+    },
+    {
+     "check": "stored row set: unique (series, day) pairs",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "six 28-day test blocks end at the last day of the truncated series",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation blocks end before the first test block",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "all 31 stored baselines equal the independent re-implementation (explicit cutoff access)",
+     "passed": true,
+     "detail": "{}"
+    },
+    {
+     "check": "every stored method's item-day, item-week, subset-day WAPE, bias, MAE, RMSE equals the independent value (max abs diff)",
+     "passed": true,
+     "detail": "0.0"
+    },
+    {
+     "check": "all-zero baseline has item-day WAPE 1",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "selection.json is older than every test fit file",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "config hash in selection equals the config hash of the run",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation-only selection re-derived: model_item_day and model_subset_day are the argmin of the stored validation means",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "leakage perturbation checks recorded in the validation stage all passed",
+     "passed": true,
+     "detail": ""
+    }
+   ],
+   "independent_estimates": {
+    "H1": {
+     "improvement": 0.011406744257757007,
+     "ci_pigeonhole": [
+      -0.009901044001805364,
+      0.03287036222527033
+     ],
+     "p_pigeonhole": 0.26943264183954013,
+     "ci_cgm_t": [
+      -0.008342907092080624,
+      0.031156395607594638
+     ],
+     "p_cgm_t": 0.24434549005996953,
+     "blocks_won": 3
+    },
+    "H1b": {
+     "improvement": -0.015866220913740126,
+     "ci_pigeonhole": [
+      -0.04368440405356558,
+      0.008818078195891884
+     ],
+     "p_pigeonhole": 0.25293676580854785,
+     "ci_cgm_t": [
+      -0.04181221123245943,
+      0.010079769404979181
+     ],
+     "p_cgm_t": 0.2185371166641945,
+     "blocks_won": 2
+    },
+    "H2": {
+     "improvement": 0.1092566433003681,
+     "ci_pigeonhole": [
+      0.08275817242349295,
+      0.13721016713615766
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.08311528915600279,
+      0.1353979974447334
+     ],
+     "p_cgm_t": 1.1037861291640638e-08,
+     "blocks_won": 6
+    },
+    "H3": {
+     "improvement": 0.08281189858911575,
+     "ci_iid_week": [
+      -0.06295366859076816,
+      0.21329450346114193
+     ],
+     "p_iid_week": 0.2459385153711572,
+     "blocks_won": 3
+    }
+   },
+   "selection_before_test": {
+    "results_json_flag": true
+   },
+   "n_failed": 0
+  },
+  "m5_tx1_H7": {
+   "cell": "W1/m5_tx1_H7",
+   "n_rows": 58800,
+   "checks": [
+    {
+     "check": "evaluation targets equal the raw data",
+     "passed": true,
+     "detail": "max diff 0.0"
+    },
+    {
+     "check": "no test day at or after the first unused day",
+     "passed": true,
+     "detail": "last test day 1940 < 1941"
+    },
+    {
+     "check": "stored row set: unique (series, day) pairs",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "six 28-day test blocks end at the last day of the truncated series",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation blocks end before the first test block",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "all 31 stored baselines equal the independent re-implementation (explicit cutoff access)",
+     "passed": true,
+     "detail": "{}"
+    },
+    {
+     "check": "every stored method's item-day, item-week, subset-day WAPE, bias, MAE, RMSE equals the independent value (max abs diff)",
+     "passed": true,
+     "detail": "0.0"
+    },
+    {
+     "check": "all-zero baseline has item-day WAPE 1",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "selection.json is older than every test fit file",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "config hash in selection equals the config hash of the run",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation-only selection re-derived: model_item_day and model_subset_day are the argmin of the stored validation means",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "leakage perturbation checks recorded in the validation stage all passed",
+     "passed": true,
+     "detail": ""
+    }
+   ],
+   "independent_estimates": {
+    "H1": {
+     "improvement": 0.01907315018875899,
+     "ci_pigeonhole": [
+      0.005702348243995928,
+      0.03297479422106368
+     ],
+     "p_pigeonhole": 0.004498875281179705,
+     "ci_cgm_t": [
+      0.009521433301399946,
+      0.028624867076118037
+     ],
+     "p_cgm_t": 0.0004064051791798917,
+     "blocks_won": 6
+    },
+    "H1b": {
+     "improvement": 0.009489738244167878,
+     "ci_pigeonhole": [
+      -0.004499358951702259,
+      0.022746653789385545
+     ],
+     "p_pigeonhole": 0.15896025993501625,
+     "ci_cgm_t": [
+      9.445948736283571e-05,
+      0.01888501700097292
+     ],
+     "p_cgm_t": 0.0479214515521007,
+     "blocks_won": 5
+    },
+    "H2": {
+     "improvement": 0.11690225222061734,
+     "ci_pigeonhole": [
+      0.09559678694773906,
+      0.14016838407836726
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.09676529643927258,
+      0.13703920800196212
+     ],
+     "p_cgm_t": 2.1762813773307244e-11,
+     "blocks_won": 6
+    },
+    "H3": {
+     "improvement": 0.1266064919996034,
+     "ci_iid_week": [
+      -0.004079521543560887,
+      0.23264444848971472
+     ],
+     "p_iid_week": 0.058485378655336165,
+     "blocks_won": 4
+    }
+   },
+   "selection_before_test": {
+    "results_json_flag": true
+   },
+   "n_failed": 0
+  },
+  "m5_wi1_H28": {
+   "cell": "W1/m5_wi1_H28",
+   "n_rows": 58632,
+   "checks": [
+    {
+     "check": "evaluation targets equal the raw data",
+     "passed": true,
+     "detail": "max diff 0.0"
+    },
+    {
+     "check": "no test day at or after the first unused day",
+     "passed": true,
+     "detail": "last test day 1940 < 1941"
+    },
+    {
+     "check": "stored row set: unique (series, day) pairs",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "six 28-day test blocks end at the last day of the truncated series",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation blocks end before the first test block",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "all 31 stored baselines equal the independent re-implementation (explicit cutoff access)",
+     "passed": true,
+     "detail": "{}"
+    },
+    {
+     "check": "every stored method's item-day, item-week, subset-day WAPE, bias, MAE, RMSE equals the independent value (max abs diff)",
+     "passed": true,
+     "detail": "0.0"
+    },
+    {
+     "check": "all-zero baseline has item-day WAPE 1",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "selection.json is older than every test fit file",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "config hash in selection equals the config hash of the run",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation-only selection re-derived: model_item_day and model_subset_day are the argmin of the stored validation means",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "leakage perturbation checks recorded in the validation stage all passed",
+     "passed": true,
+     "detail": ""
+    }
+   ],
+   "independent_estimates": {
+    "H1": {
+     "improvement": 0.037984075073600354,
+     "ci_pigeonhole": [
+      0.02226496548702308,
+      0.054277762505605585
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.02411346010474872,
+      0.05185469004245199
+     ],
+     "p_cgm_t": 9.107258549523323e-06,
+     "blocks_won": 6
+    },
+    "H1b": {
+     "improvement": 0.011990119687094403,
+     "ci_pigeonhole": [
+      -0.005998101739139744,
+      0.029566712079639127
+     ],
+     "p_pigeonhole": 0.1754561359660085,
+     "ci_cgm_t": [
+      -0.0032313219853459044,
+      0.02721156135953471
+     ],
+     "p_cgm_t": 0.11682657140372266,
+     "blocks_won": 4
+    },
+    "H2": {
+     "improvement": 0.053361878238267435,
+     "ci_pigeonhole": [
+      0.0362178049749988,
+      0.07139511642491796
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.037595690377442176,
+      0.0691280660990927
+     ],
+     "p_cgm_t": 3.900565157533009e-07,
+     "blocks_won": 6
+    },
+    "H3": {
+     "improvement": 0.1353182086591712,
+     "ci_iid_week": [
+      0.06112739266658839,
+      0.20135975220678795
+     ],
+     "p_iid_week": 0.000999750062484379,
+     "blocks_won": 5
+    }
+   },
+   "selection_before_test": {
+    "results_json_flag": true
+   },
+   "n_failed": 0
+  },
+  "m5_wi1_H7": {
+   "cell": "W1/m5_wi1_H7",
+   "n_rows": 58632,
+   "checks": [
+    {
+     "check": "evaluation targets equal the raw data",
+     "passed": true,
+     "detail": "max diff 0.0"
+    },
+    {
+     "check": "no test day at or after the first unused day",
+     "passed": true,
+     "detail": "last test day 1940 < 1941"
+    },
+    {
+     "check": "stored row set: unique (series, day) pairs",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "six 28-day test blocks end at the last day of the truncated series",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation blocks end before the first test block",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "all 31 stored baselines equal the independent re-implementation (explicit cutoff access)",
+     "passed": true,
+     "detail": "{}"
+    },
+    {
+     "check": "every stored method's item-day, item-week, subset-day WAPE, bias, MAE, RMSE equals the independent value (max abs diff)",
+     "passed": true,
+     "detail": "0.0"
+    },
+    {
+     "check": "all-zero baseline has item-day WAPE 1",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "selection.json is older than every test fit file",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "config hash in selection equals the config hash of the run",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation-only selection re-derived: model_item_day and model_subset_day are the argmin of the stored validation means",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "leakage perturbation checks recorded in the validation stage all passed",
+     "passed": true,
+     "detail": ""
+    }
+   ],
+   "independent_estimates": {
+    "H1": {
+     "improvement": 0.044788065660805065,
+     "ci_pigeonhole": [
+      0.029283923854408953,
+      0.06221168779800725
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.03073050002164804,
+      0.05884563129996209
+     ],
+     "p_cgm_t": 1.0042230178530787e-06,
+     "blocks_won": 6
+    },
+    "H1b": {
+     "improvement": 0.046378251823183114,
+     "ci_pigeonhole": [
+      0.03489197483123321,
+      0.05796743078275753
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.038610555090974844,
+      0.054145948555391385
+     ],
+     "p_cgm_t": 1.2400303006643298e-11,
+     "blocks_won": 6
+    },
+    "H2": {
+     "improvement": 0.06220037081642582,
+     "ci_pigeonhole": [
+      0.04646331806742808,
+      0.07828747138670811
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.04772714071223875,
+      0.0766736009206129
+     ],
+     "p_cgm_t": 6.699369059504079e-09,
+     "blocks_won": 6
+    },
+    "H3": {
+     "improvement": 0.16437917309495254,
+     "ci_iid_week": [
+      0.08969036324637024,
+      0.23024301032220004
+     ],
+     "p_iid_week": 0.0004998750312421895,
+     "blocks_won": 6
+    }
+   },
+   "selection_before_test": {
+    "results_json_flag": true
+   },
+   "n_failed": 0
+  },
+  "or2_H28": {
+   "cell": "W1/or2_H28",
+   "n_rows": 16800,
+   "checks": [
+    {
+     "check": "Online Retail II SKU list rederived from raw transactions equals the stored list",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "evaluation targets equal the raw data",
+     "passed": true,
+     "detail": "max diff 0.0"
+    },
+    {
+     "check": "no test day at or after the first unused day",
+     "passed": true,
+     "detail": "last test day 738 < 739"
+    },
+    {
+     "check": "stored row set: unique (series, day) pairs",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "six 28-day test blocks end at the last day of the truncated series",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation blocks end before the first test block",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "all 31 stored baselines equal the independent re-implementation (explicit cutoff access)",
+     "passed": true,
+     "detail": "{}"
+    },
+    {
+     "check": "every stored method's item-day, item-week, subset-day WAPE, bias, MAE, RMSE equals the independent value (max abs diff)",
+     "passed": true,
+     "detail": "0.0"
+    },
+    {
+     "check": "all-zero baseline has item-day WAPE 1",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "selection.json is older than every test fit file",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "config hash in selection equals the config hash of the run",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation-only selection re-derived: model_item_day and model_subset_day are the argmin of the stored validation means",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "leakage perturbation checks recorded in the validation stage all passed",
+     "passed": true,
+     "detail": ""
+    }
+   ],
+   "independent_estimates": {
+    "H1": {
+     "improvement": 0.0334303848126698,
+     "ci_pigeonhole": [
+      0.016980965730746665,
+      0.05078082221311421
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.01987525745644843,
+      0.04698551216889117
+     ],
+     "p_cgm_t": 3.624743636887473e-05,
+     "blocks_won": 6
+    },
+    "H1b": {
+     "improvement": 0.01761349443609117,
+     "ci_pigeonhole": [
+      -0.0012401821554130718,
+      0.03489373461856227
+     ],
+     "p_pigeonhole": 0.060484878780304924,
+     "ci_cgm_t": [
+      0.003496707967642801,
+      0.03173028090453954
+     ],
+     "p_cgm_t": 0.016702279910958184,
+     "blocks_won": 5
+    },
+    "H2": {
+     "improvement": 0.12846331622332985,
+     "ci_pigeonhole": [
+      0.07624543160110263,
+      0.18085516892946138
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.08054176417908082,
+      0.17638486826757888
+     ],
+     "p_cgm_t": 1.2182730273258002e-05,
+     "blocks_won": 6
+    },
+    "H3": {
+     "improvement": 0.11953248453266752,
+     "ci_iid_week": [
+      0.043225854395860165,
+      0.19019259679575595
+     ],
+     "p_iid_week": 0.006498375406148463,
+     "blocks_won": 5
+    }
+   },
+   "selection_before_test": {
+    "results_json_flag": true
+   },
+   "n_failed": 0
+  },
+  "or2_H7": {
+   "cell": "W1/or2_H7",
+   "n_rows": 16800,
+   "checks": [
+    {
+     "check": "Online Retail II SKU list rederived from raw transactions equals the stored list",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "evaluation targets equal the raw data",
+     "passed": true,
+     "detail": "max diff 0.0"
+    },
+    {
+     "check": "no test day at or after the first unused day",
+     "passed": true,
+     "detail": "last test day 738 < 739"
+    },
+    {
+     "check": "stored row set: unique (series, day) pairs",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "six 28-day test blocks end at the last day of the truncated series",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation blocks end before the first test block",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "all 31 stored baselines equal the independent re-implementation (explicit cutoff access)",
+     "passed": true,
+     "detail": "{}"
+    },
+    {
+     "check": "every stored method's item-day, item-week, subset-day WAPE, bias, MAE, RMSE equals the independent value (max abs diff)",
+     "passed": true,
+     "detail": "0.0"
+    },
+    {
+     "check": "all-zero baseline has item-day WAPE 1",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "selection.json is older than every test fit file",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "config hash in selection equals the config hash of the run",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "validation-only selection re-derived: model_item_day and model_subset_day are the argmin of the stored validation means",
+     "passed": true,
+     "detail": ""
+    },
+    {
+     "check": "leakage perturbation checks recorded in the validation stage all passed",
+     "passed": true,
+     "detail": ""
+    }
+   ],
+   "independent_estimates": {
+    "H1": {
+     "improvement": 0.03130254723876824,
+     "ci_pigeonhole": [
+      0.013136246512119632,
+      0.04985425042830176
+     ],
+     "p_pigeonhole": 0.0024993751562109472,
+     "ci_cgm_t": [
+      0.016567003314782038,
+      0.046038091162754445
+     ],
+     "p_cgm_t": 0.00021064005089388438,
+     "blocks_won": 6
+    },
+    "H1b": {
+     "improvement": 0.03130254723876824,
+     "ci_pigeonhole": [
+      0.013136246512119632,
+      0.04985425042830176
+     ],
+     "p_pigeonhole": 0.0024993751562109472,
+     "ci_cgm_t": [
+      0.016567003314782038,
+      0.046038091162754445
+     ],
+     "p_cgm_t": 0.00021064005089388438,
+     "blocks_won": 6
+    },
+    "H2": {
+     "improvement": 0.13192194179058525,
+     "ci_pigeonhole": [
+      0.09072206508784073,
+      0.17210262885317468
+     ],
+     "p_pigeonhole": 0.0004998750312421895,
+     "ci_cgm_t": [
+      0.09523531577949162,
+      0.16860856780167888
+     ],
+     "p_cgm_t": 1.459764022992971e-07,
+     "blocks_won": 6
+    },
+    "H3": {
+     "improvement": 0.04917768693173585,
+     "ci_iid_week": [
+      -0.028828287279939177,
+      0.11714773263319854
+     ],
+     "p_iid_week": 0.2174456385903524,
+     "blocks_won": 5
+    }
+   },
+   "selection_before_test": {
+    "results_json_flag": true
+   },
+   "n_failed": 0
+  }
+ },
+ "families": {
+  "H1": {
+   "m5_ca1_H28": {
+    "improvement": 0.022581138774053988,
+    "holm_p": 0.023994001499625092,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_ca1_H7": {
+    "improvement": 0.04328364937057505,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_tx1_H28": {
+    "improvement": 0.011406744257757007,
+    "holm_p": 0.26943264183954013,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_tx1_H7": {
+    "improvement": 0.01907315018875899,
+    "holm_p": 0.013496625843539115,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_wi1_H28": {
+    "improvement": 0.037984075073600354,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_wi1_H7": {
+    "improvement": 0.044788065660805065,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "or2_H28": {
+    "improvement": 0.0334303848126698,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "or2_H7": {
+    "improvement": 0.03130254723876824,
+    "holm_p": 0.009997500624843789,
+    "verdict_independent_primary": "SUPPORTED"
+   }
+  },
+  "H1b": {
+   "m5_ca1_H28": {
+    "improvement": -0.00782340848183849,
+    "holm_p": 0.635841039740065,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_ca1_H7": {
+    "improvement": 0.03161783146523656,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_tx1_H28": {
+    "improvement": -0.015866220913740126,
+    "holm_p": 0.635841039740065,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_tx1_H7": {
+    "improvement": 0.009489738244167878,
+    "holm_p": 0.635841039740065,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_wi1_H28": {
+    "improvement": 0.011990119687094403,
+    "holm_p": 0.635841039740065,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_wi1_H7": {
+    "improvement": 0.046378251823183114,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "or2_H28": {
+    "improvement": 0.01761349443609117,
+    "holm_p": 0.30242439390152465,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "or2_H7": {
+    "improvement": 0.03130254723876824,
+    "holm_p": 0.014996250937265684,
+    "verdict_independent_primary": "SUPPORTED"
+   }
+  },
+  "H2": {
+   "m5_ca1_H28": {
+    "improvement": 0.047567692334088196,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_ca1_H7": {
+    "improvement": 0.06415086046594543,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_tx1_H28": {
+    "improvement": 0.1092566433003681,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_tx1_H7": {
+    "improvement": 0.11690225222061734,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_wi1_H28": {
+    "improvement": 0.053361878238267435,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_wi1_H7": {
+    "improvement": 0.06220037081642582,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "or2_H28": {
+    "improvement": 0.12846331622332985,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "or2_H7": {
+    "improvement": 0.13192194179058525,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   }
+  },
+  "H3": {
+   "m5_ca1_H28": {
+    "improvement": 0.12197296804696678,
+    "holm_p": 0.4618845288677831,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_ca1_H7": {
+    "improvement": 0.18443453520868036,
+    "holm_p": 0.0069982504373906525,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_tx1_H28": {
+    "improvement": 0.08281189858911575,
+    "holm_p": 0.4618845288677831,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_tx1_H7": {
+    "improvement": 0.1266064919996034,
+    "holm_p": 0.23394151462134466,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   },
+   "m5_wi1_H28": {
+    "improvement": 0.1353182086591712,
+    "holm_p": 0.0069982504373906525,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "m5_wi1_H7": {
+    "improvement": 0.16437917309495254,
+    "holm_p": 0.003999000249937516,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "or2_H28": {
+    "improvement": 0.11953248453266752,
+    "holm_p": 0.032491877030742314,
+    "verdict_independent_primary": "SUPPORTED"
+   },
+   "or2_H7": {
+    "improvement": 0.04917768693173585,
+    "holm_p": 0.4618845288677831,
+    "verdict_independent_primary": "INCONCLUSIVE"
+   }
+  }
+ },
+ "freeze": {
+  "files": 24,
+  "changed_since_freeze": []
+ },
+ "comparison_with_study_analysis": [
+  {
+   "cell": "m5_ca1_H28",
+   "hypothesis": "H1",
+   "study_improvement": 0.022581138774053988,
+   "independent_improvement": 0.022581138774053988,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_ca1_H7",
+   "hypothesis": "H1",
+   "study_improvement": 0.04328364937057505,
+   "independent_improvement": 0.04328364937057505,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_tx1_H28",
+   "hypothesis": "H1",
+   "study_improvement": 0.011406744257757007,
+   "independent_improvement": 0.011406744257757007,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_tx1_H7",
+   "hypothesis": "H1",
+   "study_improvement": 0.01907315018875899,
+   "independent_improvement": 0.01907315018875899,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_wi1_H28",
+   "hypothesis": "H1",
+   "study_improvement": 0.037984075073600354,
+   "independent_improvement": 0.037984075073600354,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_wi1_H7",
+   "hypothesis": "H1",
+   "study_improvement": 0.044788065660805065,
+   "independent_improvement": 0.044788065660805065,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "or2_H28",
+   "hypothesis": "H1",
+   "study_improvement": 0.0334303848126698,
+   "independent_improvement": 0.0334303848126698,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "or2_H7",
+   "hypothesis": "H1",
+   "study_improvement": 0.03130254723876824,
+   "independent_improvement": 0.03130254723876824,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_ca1_H28",
+   "hypothesis": "H1b",
+   "study_improvement": -0.00782340848183849,
+   "independent_improvement": -0.00782340848183849,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_ca1_H7",
+   "hypothesis": "H1b",
+   "study_improvement": 0.03161783146523656,
+   "independent_improvement": 0.03161783146523656,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_tx1_H28",
+   "hypothesis": "H1b",
+   "study_improvement": -0.015866220913740126,
+   "independent_improvement": -0.015866220913740126,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_tx1_H7",
+   "hypothesis": "H1b",
+   "study_improvement": 0.009489738244167878,
+   "independent_improvement": 0.009489738244167878,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_wi1_H28",
+   "hypothesis": "H1b",
+   "study_improvement": 0.011990119687094403,
+   "independent_improvement": 0.011990119687094403,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_wi1_H7",
+   "hypothesis": "H1b",
+   "study_improvement": 0.046378251823183114,
+   "independent_improvement": 0.046378251823183114,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "or2_H28",
+   "hypothesis": "H1b",
+   "study_improvement": 0.01761349443609117,
+   "independent_improvement": 0.01761349443609117,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "or2_H7",
+   "hypothesis": "H1b",
+   "study_improvement": 0.03130254723876824,
+   "independent_improvement": 0.03130254723876824,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_ca1_H28",
+   "hypothesis": "H2",
+   "study_improvement": 0.047567692334088196,
+   "independent_improvement": 0.047567692334088196,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_ca1_H7",
+   "hypothesis": "H2",
+   "study_improvement": 0.06415086046594543,
+   "independent_improvement": 0.06415086046594543,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_tx1_H28",
+   "hypothesis": "H2",
+   "study_improvement": 0.1092566433003681,
+   "independent_improvement": 0.1092566433003681,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_tx1_H7",
+   "hypothesis": "H2",
+   "study_improvement": 0.11690225222061734,
+   "independent_improvement": 0.11690225222061734,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_wi1_H28",
+   "hypothesis": "H2",
+   "study_improvement": 0.053361878238267435,
+   "independent_improvement": 0.053361878238267435,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_wi1_H7",
+   "hypothesis": "H2",
+   "study_improvement": 0.06220037081642582,
+   "independent_improvement": 0.06220037081642582,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "or2_H28",
+   "hypothesis": "H2",
+   "study_improvement": 0.12846331622332985,
+   "independent_improvement": 0.12846331622332985,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "or2_H7",
+   "hypothesis": "H2",
+   "study_improvement": 0.13192194179058525,
+   "independent_improvement": 0.13192194179058525,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_ca1_H28",
+   "hypothesis": "H3",
+   "study_improvement": 0.12197296804696678,
+   "independent_improvement": 0.12197296804696678,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_ca1_H7",
+   "hypothesis": "H3",
+   "study_improvement": 0.18443453520868036,
+   "independent_improvement": 0.18443453520868036,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_tx1_H28",
+   "hypothesis": "H3",
+   "study_improvement": 0.08281189858911575,
+   "independent_improvement": 0.08281189858911575,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_tx1_H7",
+   "hypothesis": "H3",
+   "study_improvement": 0.1266064919996034,
+   "independent_improvement": 0.1266064919996034,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_wi1_H28",
+   "hypothesis": "H3",
+   "study_improvement": 0.1353182086591712,
+   "independent_improvement": 0.1353182086591712,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "m5_wi1_H7",
+   "hypothesis": "H3",
+   "study_improvement": 0.16437917309495254,
+   "independent_improvement": 0.16437917309495254,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "or2_H28",
+   "hypothesis": "H3",
+   "study_improvement": 0.11953248453266752,
+   "independent_improvement": 0.11953248453266752,
+   "abs_diff": 0.0,
+   "study_verdict": "SUPPORTED",
+   "independent_primary_verdict": "SUPPORTED",
+   "verdict_agrees": true
+  },
+  {
+   "cell": "or2_H7",
+   "hypothesis": "H3",
+   "study_improvement": 0.04917768693173585,
+   "independent_improvement": 0.04917768693173585,
+   "abs_diff": 0.0,
+   "study_verdict": "INCONCLUSIVE",
+   "independent_primary_verdict": "INCONCLUSIVE",
+   "verdict_agrees": true
+  }
+ ],
+ "n_cell_checks_failed": 0
+}

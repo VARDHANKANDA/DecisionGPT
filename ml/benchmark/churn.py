@@ -87,17 +87,23 @@ def check_temporal_integrity(d: pd.DataFrame) -> dict[str, Any]:
 
 # ------------------------------------------------------------------------------------------------ models
 def base_models(seed: int, names: list[str] | None = None) -> dict[str, Any]:
-    from catboost import CatBoostClassifier
-    from xgboost import XGBClassifier
-
-    return {
+    models: dict[str, Any] = {
         "logistic_regression": make_pipeline(StandardScaler(), LogisticRegression(max_iter=2000, random_state=seed)),
         "random_forest": RandomForestClassifier(n_estimators=200, max_depth=8, min_samples_leaf=5, n_jobs=2, random_state=seed),
-        "xgboost": XGBClassifier(n_estimators=200, max_depth=4, learning_rate=0.05, subsample=0.8, colsample_bytree=0.8, eval_metric="logloss",
-                                 n_jobs=2, random_state=seed, verbosity=0),
-        "catboost": CatBoostClassifier(iterations=300, depth=6, learning_rate=0.05, random_seed=seed, thread_count=2, verbose=0,
-                                       allow_writing_files=False),
     }
+    try:
+        from xgboost import XGBClassifier
+        models["xgboost"] = XGBClassifier(n_estimators=200, max_depth=4, learning_rate=0.05, subsample=0.8, colsample_bytree=0.8, eval_metric="logloss",
+                                         n_jobs=2, random_state=seed, verbosity=0)
+    except ImportError:
+        pass
+    try:
+        from catboost import CatBoostClassifier
+        models["catboost"] = CatBoostClassifier(iterations=300, depth=6, learning_rate=0.05, random_seed=seed, thread_count=2, verbose=0,
+                                               allow_writing_files=False)
+    except ImportError:
+        pass
+    return models
 
 
 def ece(y: np.ndarray, p: np.ndarray, bins: int = 10) -> float:

@@ -1,0 +1,9 @@
+cell,validation-selected model,its test improvement,its test rank among 8 (item-day WAPE),best on test (hindsight),range over the three LightGBM median-type candidates,XGBoost absolute error,range over the four mean-type candidates
+CA_1 H28,absolute error,+4.6 %,1 / 8,absolute error,+4.1 % … +4.6 %,+0.8 %,−7.7 % … −2.8 %
+CA_1 H7,absolute error,+4.0 %,2 / 8,0.5 quantile,+3.6 % … +4.0 %,+0.7 %,−8.1 % … −3.4 %
+TX_1 H28,absolute error,+2.5 %,1 / 8,absolute error,+1.7 % … +2.5 %,−1.7 %,−12.8 % … −7.8 %
+TX_1 H7,absolute error,+4.5 %,1 / 8,absolute error,+3.9 % … +4.5 %,+0.6 %,−10.6 % … −6.0 %
+WI_1 H28,absolute error,+3.3 %,1 / 8,absolute error,+2.5 % … +3.3 %,+0.2 %,−9.0 % … −4.3 %
+WI_1 H7,absolute error,+6.0 %,1 / 8,absolute error,+5.4 % … +6.0 %,+2.9 %,−6.0 % … −1.5 %
+Online Retail II H28,absolute error (small),+5.8 %,1 / 8,absolute error (small),+5.4 % … +5.8 %,+3.9 %,−33.8 % … −7.4 %
+Online Retail II H7,absolute error (small),+4.0 %,1 / 8,absolute error (small),+3.6 % … +4.0 %,+2.1 %,−34.0 % … −11.3 %

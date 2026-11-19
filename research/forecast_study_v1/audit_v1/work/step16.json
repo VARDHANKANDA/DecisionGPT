@@ -1,0 +1,62 @@
+{
+ "fs1_m5_ca1_H28": {
+  "bias_median": -0.2985683794645898,
+  "bias_trailing_mean_same_window": -0.05305567514347154,
+  "bias_share_from_zero_forecast_rows": -0.2102245634749438,
+  "bias_share_from_positive_forecast_rows": -0.08834381598964601,
+  "zero_forecast_row_share": 0.5567006802721088,
+  "demand_share_in_zero_forecast_rows": 0.2102245634749438,
+  "sum_median_forecast_over_sum_demand_in_positive_forecast_rows": 0.8881405879393373,
+  "demand_weighted_mean_over_median_of_positive_days": 1.243837177107578
+ },
+ "fs1_m5_ca1_H7": {
+  "bias_median": -0.2802842805567539,
+  "bias_trailing_mean_same_window": -0.033717363758728636,
+  "bias_share_from_zero_forecast_rows": -0.17324765559365138,
+  "bias_share_from_positive_forecast_rows": -0.10703662496310257,
+  "zero_forecast_row_share": 0.54421768707483,
+  "demand_share_in_zero_forecast_rows": 0.17324765559365138,
+  "sum_median_forecast_over_sum_demand_in_positive_forecast_rows": 0.870533629946994,
+  "demand_weighted_mean_over_median_of_positive_days": 1.243837177107578
+ },
+ "fs1_m5_tx1_H28": {
+  "bias_median": -0.33880208333333334,
+  "bias_trailing_mean_same_window": -0.04646249079566641,
+  "bias_share_from_zero_forecast_rows": -0.23779105392156863,
+  "bias_share_from_positive_forecast_rows": -0.10101102941176471,
+  "zero_forecast_row_share": 0.6869727891156463,
+  "demand_share_in_zero_forecast_rows": 0.23779105392156863,
+  "sum_median_forecast_over_sum_demand_in_positive_forecast_rows": 0.867475933034548,
+  "demand_weighted_mean_over_median_of_positive_days": 1.2583083271035307
+ },
+ "fs1_m5_tx1_H7": {
+  "bias_median": -0.32105545343137254,
+  "bias_trailing_mean_same_window": -0.025563506136406396,
+  "bias_share_from_zero_forecast_rows": -0.21502757352941176,
+  "bias_share_from_positive_forecast_rows": -0.10602787990196079,
+  "zero_forecast_row_share": 0.6830442176870748,
+  "demand_share_in_zero_forecast_rows": 0.21502757352941176,
+  "sum_median_forecast_over_sum_demand_in_positive_forecast_rows": 0.8649278925902074,
+  "demand_weighted_mean_over_median_of_positive_days": 1.2583083271035307
+ },
+ "fs1_or2_top100_H28": {
+  "bias_median": -0.5830862226277372,
+  "bias_trailing_mean_same_window": -0.13079455376328533,
+  "bias_share_from_zero_forecast_rows": -0.06005576705260508,
+  "bias_share_from_positive_forecast_rows": -0.5230304555751322,
+  "zero_forecast_row_share": 0.17672619047619048,
+  "demand_share_in_zero_forecast_rows": 0.06005576705260508,
+  "sum_median_forecast_over_sum_demand_in_positive_forecast_rows": 0.4435516095087269,
+  "demand_weighted_mean_over_median_of_positive_days": 1.9975647600501079
+ },
+ "fs1_or2_top100_H7": {
+  "bias_median": -0.5459832384218475,
+  "bias_trailing_mean_same_window": -0.07746239376180451,
+  "bias_share_from_zero_forecast_rows": -0.04102299899320413,
+  "bias_share_from_positive_forecast_rows": -0.5049602394286433,
+  "zero_forecast_row_share": 0.15077380952380953,
+  "demand_share_in_zero_forecast_rows": 0.04102299899320413,
+  "sum_median_forecast_over_sum_demand_in_positive_forecast_rows": 0.473438634191953,
+  "demand_weighted_mean_over_median_of_positive_days": 1.9975647600501079
+ }
+}

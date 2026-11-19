@@ -118,6 +118,6 @@ def shared_urls() -> tuple[str, str] | None:
 if __name__ == "__main__":      # python -m tests.pg_support provision  -> shell exports for a throwaway database
     if sys.argv[1:] == ["provision"] and admin_url():
         pr = provision(admin_url())
-        print(f"export {APP_ENV}='{pr.app_url}'\nexport {OWNER_ENV}='{pr.owner_url}'")
+        print(f"export {APP_ENV}='{pr.app_url}'\nexport {OWNER_ENV}='{pr.owner_url}'\nexport DATABASE_URL='{pr.app_url}'\nexport MIGRATION_DATABASE_URL='{pr.owner_url}'")
     else:
         raise SystemExit(f"usage: {ADMIN_ENV}=... python -m tests.pg_support provision")

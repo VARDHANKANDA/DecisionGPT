@@ -1,0 +1,14 @@
+**Table 6. W2, TX_1, H = 28, subset-day (H3): frozen result and supplementary convergence check**
+
+| quantity | frozen run (B = 10,000) | supplementary (3 × 10^6 draws) |
+|---|---|---|
+| raw p, primary (iid-week bootstrap) | 0.0178 | 0.0129 (seed SD 0.0002) |
+| raw p, secondary (stationary bootstrap) | 0.0120 | 0.0108 (seed SD 0.0000) |
+| Holm p, primary | 0.0712 | 0.0514 |
+| Holm p, secondary | 0.0480 | 0.0433 |
+| verdict under the frozen dual-method rule | inconclusive | inconclusive |
+| exact sign-flip test (unadjusted p; different statistic) | – | 0.0339 |
+| weeks in which the model has the smaller absolute total error | – | 15/24 |
+| lag-1 autocorrelation of the weekly differences / AR(1) effective weeks | – | +0.36 / 11.3 |
+
+*Source: `results/analysis/analysis_W2.json`; `results/supplementary/h3_convergence.json`; CSV: `tables/table6_tx1_h28_h3.csv`.*

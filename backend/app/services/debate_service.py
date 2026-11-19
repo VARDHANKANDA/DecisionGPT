@@ -387,7 +387,15 @@ def run(db: Session, business_id: str, question: str, mode: str = "rule_based", 
 
     settings = get_settings()
     if mode == "ai_model" and not (settings.llm_enabled and settings.openai_api_key):
-        return {"status": "ai_model_unavailable", "mode": mode, "message": "OpenAI API is not configured. Set OPENAI_API_KEY in environment to run GPT-5 mini multi-agent debate.", "stages": STAGES}
+        return {
+            "status": "ai_model_unavailable",
+            "mode": mode,
+            "message": (
+                "The AI-model debate is not implemented without an active OpenAI configuration: "
+                "nothing was run and nothing was fabricated. The rule-based review is fully available."
+            ),
+            "stages": STAGES,
+        }
 
     topic = detect_topic(question)
     facts = build_facts(db, business_id, anchor)

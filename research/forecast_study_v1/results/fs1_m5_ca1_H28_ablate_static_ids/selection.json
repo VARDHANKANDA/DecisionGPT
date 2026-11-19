@@ -1,0 +1,14 @@
+{
+  "chosen_variant_per_family": {
+    "ridge": "ridge:alpha1",
+    "hist_gradient_boosting": "hist_gradient_boosting:depth6",
+    "xgboost": "xgboost:depth6",
+    "lightgbm": "lightgbm:tweedie",
+    "catboost": "catboost:depth6"
+  },
+  "primary_learned_family": "lightgbm",
+  "primary_learned_config": "lightgbm:tweedie",
+  "reference_baseline_any_information": "fresh__trailing_median28",
+  "reference_baseline_matched_information": "matched__trailing_median28",
+  "note": "ablation: variants, family and reference baselines taken unchanged from the main run's selection (no re-tuning, no validation fits)"
+}

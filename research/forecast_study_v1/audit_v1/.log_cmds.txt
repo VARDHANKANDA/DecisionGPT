@@ -1,0 +1,6 @@
+[start] audit started (read-only mode); audit_v1/ created
+[cmd] ls/stat of required inventory files (all present; no separate deviation-log file: deviations are in EXPERIMENT_PLAN.md section 11)
+[cmd] python audit_v1/snapshot_hashes.py before  (hash all protected files)
+[cmd] python audit_v1/step1_targets_baselines.py (independent raw-data targets + 16 baselines x 6 cells)
+[cmd] step2_metrics.py, step3_inference.py, step4_aggregation.py (independent metrics, inference, aggregation decomposition)
+[cmd] step4,5,6 (aggregation, conformal, inactivity audits) and step7_repro.py (cheap reproducibility checks; regen in temp dir)

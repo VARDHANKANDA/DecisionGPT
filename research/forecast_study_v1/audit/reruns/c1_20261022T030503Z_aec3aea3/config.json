@@ -1,0 +1,31 @@
+{
+  "task": "c1_online_retail_ii_inactivity_90d",
+  "seed": 42,
+  "label": "no purchase in the 90 days after cutoff (PROXY, not churn)",
+  "cutoffs": {
+    "train": [
+      "2010-06-01",
+      "2010-09-01",
+      "2010-12-01",
+      "2011-03-14"
+    ],
+    "validation": "2011-06-12",
+    "test": "2011-09-10"
+  },
+  "window_days": 90,
+  "features": [
+    "recency_days",
+    "tenure_days",
+    "frequency",
+    "monetary",
+    "avg_order_value",
+    "distinct_skus",
+    "invoices_last_90d",
+    "invoices_last_180d",
+    "revenue_last_90d",
+    "mean_gap_days",
+    "recency_ratio"
+  ],
+  "cost_fp": 1.0,
+  "cost_fn": 3.0
+}

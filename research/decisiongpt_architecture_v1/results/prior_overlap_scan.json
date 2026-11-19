@@ -1,0 +1,40 @@
+{
+ "current_words": 5466,
+ "current_numeric_tokens": 338,
+ "priors": {
+  "docs/ieee_paper (original 60-pair paper)": {
+   "prior_words": 7351,
+   "share_of_current_6word_shingles_found_in_prior": 0.002,
+   "share_of_current_10word_shingles_found_in_prior": 0.0004,
+   "longest_verbatim_run_words": 11,
+   "share_of_current_numeric_tokens_found_in_prior": 0.0178
+  },
+  "docs/ieee_paper_r1 (R1 paper, same title)": {
+   "prior_words": 5894,
+   "share_of_current_6word_shingles_found_in_prior": 0.0017,
+   "share_of_current_10word_shingles_found_in_prior": 0.0002,
+   "longest_verbatim_run_words": 10,
+   "share_of_current_numeric_tokens_found_in_prior": 0.1953
+  },
+  "docs/ieee_paper_r2 (component composition)": {
+   "prior_words": 3529,
+   "share_of_current_6word_shingles_found_in_prior": 0.0,
+   "share_of_current_10word_shingles_found_in_prior": 0.0,
+   "longest_verbatim_run_words": 0,
+   "share_of_current_numeric_tokens_found_in_prior": 0.0976
+  },
+  "overleaf/main.tex (broad system paper = DecisionGPT (1).pdf)": {
+   "prior_words": 6819,
+   "share_of_current_6word_shingles_found_in_prior": 0.0007,
+   "share_of_current_10word_shingles_found_in_prior": 0.0,
+   "longest_verbatim_run_words": 7,
+   "share_of_current_numeric_tokens_found_in_prior": 0.0385
+  },
+  "DecisionGPT (1).pdf (compiled previous paper, text only)": {
+   "prior_words": 7953,
+   "share_of_current_6word_shingles_found_in_prior": 0.0007,
+   "share_of_current_10word_shingles_found_in_prior": 0.0,
+   "share_of_current_numeric_tokens_found_in_prior": 0.1598
+  }
+ }
+}

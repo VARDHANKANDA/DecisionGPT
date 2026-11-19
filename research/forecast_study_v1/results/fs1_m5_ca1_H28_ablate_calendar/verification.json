@@ -1,0 +1,102 @@
+{
+  "cell": "fs1_m5_ca1_H28_ablate_calendar",
+  "n_checks": 19,
+  "n_failed": 0,
+  "checks": [
+    {
+      "check": "all method arrays have one value per evaluated row",
+      "passed": true,
+      "detail": "58800 rows, 17 methods"
+    },
+    {
+      "check": "all stored values finite and non-negative baselines/predictions finite",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "no (series, day) row repeated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "every row lies in its declared 28-day test block",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "validation blocks end before the first test block",
+      "passed": true,
+      "detail": "val_end=1772 test_start=1773"
+    },
+    {
+      "check": "selected primary and reference arrays exist",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "primary: pooled WAPE recomputed == results.json",
+      "passed": true,
+      "detail": "0.7623694049 vs 0.7623694049"
+    },
+    {
+      "check": "primary: relative bias recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "primary: aggregate WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "primary: by-block WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_matched: pooled WAPE recomputed == results.json",
+      "passed": true,
+      "detail": "0.7238539089 vs 0.7238539089"
+    },
+    {
+      "check": "ref_matched: relative bias recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_matched: aggregate WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_matched: by-block WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_any: pooled WAPE recomputed == results.json",
+      "passed": true,
+      "detail": "0.6953974705 vs 0.6953974705"
+    },
+    {
+      "check": "ref_any: relative bias recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_any: aggregate WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_any: by-block WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ablation: selection file is the main run's copy, test fits exist",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

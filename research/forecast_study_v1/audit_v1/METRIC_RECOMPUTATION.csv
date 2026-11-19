@@ -1,0 +1,461 @@
+cell,quantity,manuscript_value,independent_value,abs_difference,rounding_tolerance,verdict,note
+fs1_m5_ca1_H28,H1_improvement vs study analysis.json (unrounded),-0.02623446659560268,-0.02623446659560268,0.0,1e-09,PASS,internal consistency
+fs1_m5_ca1_H28,H2_improvement vs study analysis.json (unrounded),-0.0682291229418751,-0.0682291229418751,0.0,1e-09,PASS,internal consistency
+fs1_m5_ca1_H28,pooled WAPE pred__ridge__alpha1 vs study analysis.json,0.7824548033486108,0.7824548033486108,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE pred__ridge__alpha1 vs study analysis.json,0.11309466203117544,0.11309466203117544,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE pred__hist_gradient_boosting__depth6 vs study analysis.json,0.7566254924171409,0.7566254924171409,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE pred__hist_gradient_boosting__depth6 vs study analysis.json,0.10065325865538104,0.10065325865538104,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE pred__xgboost__depth6 vs study analysis.json,0.7584394104965122,0.7584394104965122,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE pred__xgboost__depth6 vs study analysis.json,0.1005069270340163,0.1005069270340163,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE pred__lightgbm__tweedie vs study analysis.json,0.7428438300496779,0.7428438300496779,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE pred__lightgbm__tweedie vs study analysis.json,0.10529007657641645,0.10529007657641645,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE pred__catboost__depth6 vs study analysis.json,0.7444099321221794,0.7444099321221794,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE pred__catboost__depth6 vs study analysis.json,0.09861873256604459,0.09861873256604459,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__matched__naive vs study analysis.json,0.8943598010944347,0.8943598010944347,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__matched__naive vs study analysis.json,0.12310120115347063,0.12310120115347063,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__matched__seasonal_naive vs study analysis.json,0.8943598010944347,0.8943598010944347,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__matched__seasonal_naive vs study analysis.json,0.12310120115347063,0.12310120115347063,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__matched__weekday_mean4 vs study analysis.json,0.7889182806929906,0.7889182806929906,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__matched__weekday_mean4 vs study analysis.json,0.11329783610726368,0.11329783610726368,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__matched__weekday_mean8 vs study analysis.json,0.7891027678753888,0.7891027678753888,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__matched__weekday_mean8 vs study analysis.json,0.11991666855884289,0.11991666855884289,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__matched__trailing_mean28 vs study analysis.json,0.7763557175885266,0.7763557175885266,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__matched__trailing_mean28 vs study analysis.json,0.1606583314098553,0.1606583314098553,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__matched__trailing_median28 vs study analysis.json,0.7238539088576553,0.7238539088576553,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__matched__trailing_median28 vs study analysis.json,0.306379282940896,0.306379282940896,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__matched__croston_sba vs study analysis.json,0.8202849783859815,0.8202849783859815,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__matched__croston_sba vs study analysis.json,0.16677748421143418,0.16677748421143418,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__matched__tsb vs study analysis.json,0.7659631290689445,0.7659631290689445,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__matched__tsb vs study analysis.json,0.15384540417227707,0.15384540417227707,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__fresh__naive vs study analysis.json,1.0265888603801003,1.0265888603801003,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__fresh__naive vs study analysis.json,0.26645625666992123,0.26645625666992123,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__fresh__seasonal_naive vs study analysis.json,0.8824277377897868,0.8824277377897868,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__fresh__seasonal_naive vs study analysis.json,0.12399809268636043,0.12399809268636043,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__fresh__weekday_mean4 vs study analysis.json,0.7674326196044595,0.7674326196044595,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__fresh__weekday_mean4 vs study analysis.json,0.1100338321109875,0.1100338321109875,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__fresh__weekday_mean8 vs study analysis.json,0.7673134125019868,0.7673134125019868,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__fresh__weekday_mean8 vs study analysis.json,0.11229309052927954,0.11229309052927954,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__fresh__trailing_mean28 vs study analysis.json,0.7448246280030281,0.7448246280030281,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__fresh__trailing_mean28 vs study analysis.json,0.15905471197916177,0.15905471197916177,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__fresh__trailing_median28 vs study analysis.json,0.6953974705388161,0.6953974705388161,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__fresh__trailing_median28 vs study analysis.json,0.29775663586203766,0.29775663586203766,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__fresh__croston_sba vs study analysis.json,0.8061422431793575,0.8061422431793575,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__fresh__croston_sba vs study analysis.json,0.17066859452385527,0.17066859452385527,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,pooled WAPE base__fresh__tsb vs study analysis.json,0.7451103940221447,0.7451103940221447,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,aggregate WAPE base__fresh__tsb vs study analysis.json,0.15960768796785987,0.1596076879678599,2.7755575615628914e-17,1e-09,PASS,
+fs1_m5_ca1_H7,H1_improvement vs study analysis.json (unrounded),-0.03678827483097484,-0.03678827483097484,0.0,1e-09,PASS,internal consistency
+fs1_m5_ca1_H7,H2_improvement vs study analysis.json (unrounded),-0.046163089396918176,-0.046163089396918176,0.0,1e-09,PASS,internal consistency
+fs1_m5_ca1_H7,pooled WAPE pred__ridge__alpha1 vs study analysis.json,0.7347663654381681,0.7347663654381681,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE pred__ridge__alpha1 vs study analysis.json,0.1005945277538148,0.1005945277538148,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE pred__hist_gradient_boosting__depth6 vs study analysis.json,0.7217031309662839,0.7217031309662839,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE pred__hist_gradient_boosting__depth6 vs study analysis.json,0.08570358337514813,0.08570358337514813,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE pred__xgboost__depth6 vs study analysis.json,0.7225279376001259,0.7225279376001259,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE pred__xgboost__depth6 vs study analysis.json,0.08398518849436791,0.08398518849436791,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE pred__lightgbm__tweedie vs study analysis.json,0.7066785229221321,0.7066785229221321,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE pred__lightgbm__tweedie vs study analysis.json,0.0817815441040091,0.0817815441040091,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE pred__catboost__depth6 vs study analysis.json,0.7152743702182965,0.7152743702182965,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE pred__catboost__depth6 vs study analysis.json,0.08637721112400583,0.08637721112400583,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__matched__naive vs study analysis.json,0.8780000454122295,0.8780000454122295,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__matched__naive vs study analysis.json,0.11648236870189142,0.11648236870189142,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__matched__seasonal_naive vs study analysis.json,0.8780000454122295,0.8780000454122295,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__matched__seasonal_naive vs study analysis.json,0.11648236870189142,0.11648236870189142,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__matched__weekday_mean4 vs study analysis.json,0.7486546627006653,0.7486546627006653,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__matched__weekday_mean4 vs study analysis.json,0.10027587929429395,0.10027587929429395,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__matched__weekday_mean8 vs study analysis.json,0.7452757089984333,0.7452757089984333,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__matched__weekday_mean8 vs study analysis.json,0.10301906178333825,0.10301906178333825,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__matched__trailing_mean28 vs study analysis.json,0.7309710594644706,0.7309710594644706,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__matched__trailing_mean28 vs study analysis.json,0.15873317711055449,0.15873317711055449,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__matched__trailing_median28 vs study analysis.json,0.6816035058241184,0.6816035058241184,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__matched__trailing_median28 vs study analysis.json,0.28806112486092506,0.28806112486092506,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__matched__croston_sba vs study analysis.json,0.7989489606498458,0.7989489606498458,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__matched__croston_sba vs study analysis.json,0.16743214849923319,0.16743214849923319,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__matched__tsb vs study analysis.json,0.7258413577418502,0.7258413577418502,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__matched__tsb vs study analysis.json,0.15743072227168275,0.15743072227168275,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__fresh__naive vs study analysis.json,0.9961399604913603,0.9961399604913603,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__fresh__naive vs study analysis.json,0.2920687541154833,0.2920687541154833,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__fresh__seasonal_naive vs study analysis.json,0.8780000454122295,0.8780000454122295,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__fresh__seasonal_naive vs study analysis.json,0.11648236870189142,0.11648236870189142,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__fresh__weekday_mean4 vs study analysis.json,0.7486546627006653,0.7486546627006653,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__fresh__weekday_mean4 vs study analysis.json,0.10027587929429395,0.10027587929429395,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__fresh__weekday_mean8 vs study analysis.json,0.7452757089984333,0.7452757089984333,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__fresh__weekday_mean8 vs study analysis.json,0.10301906178333825,0.10301906178333825,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__fresh__trailing_mean28 vs study analysis.json,0.7244069650921067,0.7244069650921067,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__fresh__trailing_mean28 vs study analysis.json,0.16188567797181488,0.16188567797181488,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__fresh__trailing_median28 vs study analysis.json,0.6754955609545651,0.6754955609545651,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__fresh__trailing_median28 vs study analysis.json,0.28593810313117324,0.28593810313117324,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__fresh__croston_sba vs study analysis.json,0.7987454620697105,0.7987454620697105,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__fresh__croston_sba vs study analysis.json,0.17489346063678657,0.17489346063678657,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,pooled WAPE base__fresh__tsb vs study analysis.json,0.726133400382645,0.726133400382645,0.0,1e-09,PASS,
+fs1_m5_ca1_H7,aggregate WAPE base__fresh__tsb vs study analysis.json,0.16777356960746467,0.16777356960746467,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,H1_improvement vs study analysis.json (unrounded),-0.11382235622119455,-0.11382235622119455,0.0,1e-09,PASS,internal consistency
+fs1_m5_tx1_H28,H2_improvement vs study analysis.json (unrounded),-0.15009946219796091,-0.15009946219796091,0.0,1e-09,PASS,internal consistency
+fs1_m5_tx1_H28,pooled WAPE pred__ridge__alpha100 vs study analysis.json,0.8532819764703383,0.8532819764703383,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE pred__ridge__alpha100 vs study analysis.json,0.1276005739918947,0.1276005739918947,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE pred__hist_gradient_boosting__depth6 vs study analysis.json,0.8476952207100112,0.8476952207100112,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE pred__hist_gradient_boosting__depth6 vs study analysis.json,0.1176857911380163,0.1176857911380163,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE pred__xgboost__depth6 vs study analysis.json,0.8451419201065494,0.8451419201065494,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE pred__xgboost__depth6 vs study analysis.json,0.1129669798378303,0.1129669798378303,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE pred__lightgbm__tweedie vs study analysis.json,0.8346501535175919,0.8346501535175919,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE pred__lightgbm__tweedie vs study analysis.json,0.11359827047996862,0.11359827047996862,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE pred__catboost__depth6 vs study analysis.json,0.8426632739229893,0.8426632739229893,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE pred__catboost__depth6 vs study analysis.json,0.10748728233391433,0.10748728233391433,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__matched__naive vs study analysis.json,0.9823069852941176,0.9823069852941176,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__matched__naive vs study analysis.json,0.13864889705882352,0.13864889705882352,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__matched__seasonal_naive vs study analysis.json,0.9823069852941176,0.9823069852941176,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__matched__seasonal_naive vs study analysis.json,0.13864889705882352,0.13864889705882352,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__matched__weekday_mean4 vs study analysis.json,0.8673828125,0.8673828125,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__matched__weekday_mean4 vs study analysis.json,0.12385493259803922,0.12385493259803922,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__matched__weekday_mean8 vs study analysis.json,0.8478190104166666,0.8478190104166666,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__matched__weekday_mean8 vs study analysis.json,0.12517041973039217,0.12517041973039217,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__matched__trailing_mean28 vs study analysis.json,0.8302159931389136,0.8302159931389136,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__matched__trailing_mean28 vs study analysis.json,0.15698201175506327,0.15698201175506327,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__matched__trailing_median28 vs study analysis.json,0.7493566176470589,0.7493566176470589,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__matched__trailing_median28 vs study analysis.json,0.3470741421568627,0.3470741421568627,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__matched__croston_sba vs study analysis.json,0.8606999597695939,0.8606999597695939,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__matched__croston_sba vs study analysis.json,0.16059824425433808,0.16059824425433808,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__matched__tsb vs study analysis.json,0.824771026259941,0.824771026259941,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__matched__tsb vs study analysis.json,0.15348201931290603,0.15348201931290603,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__fresh__naive vs study analysis.json,1.0806372549019607,1.0806372549019607,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__fresh__naive vs study analysis.json,0.2907169117647059,0.2907169117647059,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__fresh__seasonal_naive vs study analysis.json,0.9496017156862745,0.9496017156862745,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__fresh__seasonal_naive vs study analysis.json,0.13376225490196078,0.13376225490196078,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__fresh__weekday_mean4 vs study analysis.json,0.847594975490196,0.847594975490196,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__fresh__weekday_mean4 vs study analysis.json,0.11861979166666667,0.11861979166666667,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__fresh__weekday_mean8 vs study analysis.json,0.8319431678921568,0.8319431678921568,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__fresh__weekday_mean8 vs study analysis.json,0.12208563112745098,0.12208563112745098,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__fresh__trailing_mean28 vs study analysis.json,0.8074809627962417,0.8074809627962417,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__fresh__trailing_mean28 vs study analysis.json,0.15556722718471314,0.15556722718471314,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__fresh__trailing_median28 vs study analysis.json,0.7257199754901961,0.7257199754901961,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__fresh__trailing_median28 vs study analysis.json,0.339813112745098,0.339813112745098,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__fresh__croston_sba vs study analysis.json,0.8460857554196206,0.8460857554196206,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__fresh__croston_sba vs study analysis.json,0.16034805486332535,0.16034805486332535,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,pooled WAPE base__fresh__tsb vs study analysis.json,0.8039988245079935,0.8039988245079935,0.0,1e-09,PASS,
+fs1_m5_tx1_H28,aggregate WAPE base__fresh__tsb vs study analysis.json,0.15660955540268193,0.15660955540268193,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,H1_improvement vs study analysis.json (unrounded),-0.11077947178311476,-0.11077947178311476,0.0,1e-09,PASS,internal consistency
+fs1_m5_tx1_H7,H2_improvement vs study analysis.json (unrounded),-0.12163151162659668,-0.12163151162659668,0.0,1e-09,PASS,internal consistency
+fs1_m5_tx1_H7,pooled WAPE pred__ridge__alpha100 vs study analysis.json,0.7987502872898348,0.7987502872898348,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE pred__ridge__alpha100 vs study analysis.json,0.11448938607622021,0.11448938607622021,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE pred__hist_gradient_boosting__depth4 vs study analysis.json,0.7974447927000594,0.7974447927000594,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE pred__hist_gradient_boosting__depth4 vs study analysis.json,0.10500555565208654,0.10500555565208654,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE pred__xgboost__depth6 vs study analysis.json,0.7938786553117954,0.7938786553117954,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE pred__xgboost__depth6 vs study analysis.json,0.10279079086436005,0.10279079086436005,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE pred__lightgbm__tweedie vs study analysis.json,0.788767429599298,0.788767429599298,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE pred__lightgbm__tweedie vs study analysis.json,0.09945654456677956,0.09945654456677956,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE pred__catboost__depth6 vs study analysis.json,0.7939007740927613,0.7939007740927613,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE pred__catboost__depth6 vs study analysis.json,0.10150032186898356,0.10150032186898356,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__matched__naive vs study analysis.json,0.928936887254902,0.928936887254902,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__matched__naive vs study analysis.json,0.14054840686274508,0.14054840686274508,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__matched__seasonal_naive vs study analysis.json,0.928936887254902,0.928936887254902,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__matched__seasonal_naive vs study analysis.json,0.14054840686274508,0.14054840686274508,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__matched__weekday_mean4 vs study analysis.json,0.8226830575980392,0.8226830575980392,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__matched__weekday_mean4 vs study analysis.json,0.11704580269607844,0.11704580269607844,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__matched__weekday_mean8 vs study analysis.json,0.8126953125,0.8126953125,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__matched__weekday_mean8 vs study analysis.json,0.11667049632352941,0.11667049632352941,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__matched__trailing_mean28 vs study analysis.json,0.7916228994487456,0.7916228994487456,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__matched__trailing_mean28 vs study analysis.json,0.1522080710839124,0.1522080710839124,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__matched__trailing_median28 vs study analysis.json,0.7101026348039216,0.7101026348039216,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__matched__trailing_median28 vs study analysis.json,0.32923560049019607,0.32923560049019607,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__matched__croston_sba vs study analysis.json,0.8336352203134618,0.8336352203134618,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__matched__croston_sba vs study analysis.json,0.15784725888358891,0.15784725888358891,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__matched__tsb vs study analysis.json,0.7829996177957713,0.7829996177957713,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__matched__tsb vs study analysis.json,0.1505199202913627,0.1505199202913627,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__fresh__naive vs study analysis.json,1.0422640931372549,1.0422640931372549,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__fresh__naive vs study analysis.json,0.2848498774509804,0.2848498774509804,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__fresh__seasonal_naive vs study analysis.json,0.928936887254902,0.928936887254902,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__fresh__seasonal_naive vs study analysis.json,0.14054840686274508,0.14054840686274508,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__fresh__weekday_mean4 vs study analysis.json,0.8226830575980392,0.8226830575980392,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__fresh__weekday_mean4 vs study analysis.json,0.11704580269607844,0.11704580269607844,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__fresh__weekday_mean8 vs study analysis.json,0.8126953125,0.8126953125,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__fresh__weekday_mean8 vs study analysis.json,0.11667049632352941,0.11667049632352941,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__fresh__trailing_mean28 vs study analysis.json,0.7841074718573295,0.7841074718573295,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__fresh__trailing_mean28 vs study analysis.json,0.1532415310975493,0.1532415310975493,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__fresh__trailing_median28 vs study analysis.json,0.7032322303921569,0.7032322303921569,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__fresh__trailing_median28 vs study analysis.json,0.32573529411764707,0.32573529411764707,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__fresh__croston_sba vs study analysis.json,0.8284102817799316,0.8284102817799316,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__fresh__croston_sba vs study analysis.json,0.15708588245792734,0.15708588245792734,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,pooled WAPE base__fresh__tsb vs study analysis.json,0.7788734845292362,0.7788734845292362,0.0,1e-09,PASS,
+fs1_m5_tx1_H7,aggregate WAPE base__fresh__tsb vs study analysis.json,0.15315355289450164,0.15315355289450164,0.0,1e-09,PASS,
+fs1_or2_top100_H28,H1_improvement vs study analysis.json (unrounded),-0.036715335069757,-0.036715335069757,0.0,1e-09,PASS,internal consistency
+fs1_or2_top100_H28,H2_improvement vs study analysis.json (unrounded),-0.036715335069757,-0.036715335069757,0.0,1e-09,PASS,internal consistency
+fs1_or2_top100_H28,pooled WAPE pred__ridge__alpha1 vs study analysis.json,1.0285453545189822,1.0285453545189822,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE pred__ridge__alpha1 vs study analysis.json,0.47870215726137283,0.47870215726137283,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE pred__hist_gradient_boosting__depth4 vs study analysis.json,1.0101656542634772,1.0101656542634772,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE pred__hist_gradient_boosting__depth4 vs study analysis.json,0.4598807187133492,0.4598807187133492,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE pred__xgboost__depth6 vs study analysis.json,1.0159591174004328,1.0159591174004328,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE pred__xgboost__depth6 vs study analysis.json,0.39331593190094266,0.39331593190094266,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE pred__lightgbm__tweedie vs study analysis.json,0.9059598417567414,0.9059598417567414,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE pred__lightgbm__tweedie vs study analysis.json,0.3595123424101589,0.3595123424101589,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE pred__catboost__depth6 vs study analysis.json,0.9691310740682539,0.9691310740682539,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE pred__catboost__depth6 vs study analysis.json,0.38179128421361425,0.38179128421361425,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__matched__naive vs study analysis.json,1.126521992197332,1.126521992197332,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__matched__naive vs study analysis.json,0.5063947269066197,0.5063947269066197,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__matched__seasonal_naive vs study analysis.json,1.126521992197332,1.126521992197332,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__matched__seasonal_naive vs study analysis.json,0.5063947269066197,0.5063947269066197,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__matched__weekday_mean4 vs study analysis.json,0.9752312484268815,0.9752312484268815,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__matched__weekday_mean4 vs study analysis.json,0.4037487415051598,0.4037487415051598,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__matched__weekday_mean8 vs study analysis.json,0.9252992366442235,0.9252992366442235,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__matched__weekday_mean8 vs study analysis.json,0.38535923145293227,0.38535923145293227,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__matched__trailing_mean28 vs study analysis.json,0.9923713583698635,0.9923713583698635,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__matched__trailing_mean28 vs study analysis.json,0.5628960887885471,0.5628960887885471,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__matched__trailing_median28 vs study analysis.json,0.873875220236597,0.873875220236597,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__matched__trailing_median28 vs study analysis.json,0.7301905046564309,0.7301905046564309,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__matched__croston_sba vs study analysis.json,0.9982937814373867,0.9982937814373867,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__matched__croston_sba vs study analysis.json,0.567170344602777,0.567170344602777,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__matched__tsb vs study analysis.json,1.3880577165789407,1.3880577165789407,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__matched__tsb vs study analysis.json,0.8453674975119991,0.8453674975119991,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__fresh__naive vs study analysis.json,1.0373576327712057,1.0373576327712057,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__fresh__naive vs study analysis.json,0.5551181412031211,0.5551181412031211,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__fresh__seasonal_naive vs study analysis.json,1.0719072489302794,1.0719072489302794,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__fresh__seasonal_naive vs study analysis.json,0.4629766549207148,0.4629766549207148,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__fresh__weekday_mean4 vs study analysis.json,0.9661887663604329,0.9661887663604329,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__fresh__weekday_mean4 vs study analysis.json,0.3888562248301032,0.3888562248301032,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__fresh__weekday_mean8 vs study analysis.json,0.9178084885476969,0.9178084885476969,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__fresh__weekday_mean8 vs study analysis.json,0.3802468419645104,0.3802468419645104,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__fresh__trailing_mean28 vs study analysis.json,0.9757013578202471,0.9757013578202471,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__fresh__trailing_mean28 vs study analysis.json,0.5521091306460785,0.5521091306460785,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__fresh__trailing_median28 vs study analysis.json,0.8607514787314372,0.8607514787314372,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__fresh__trailing_median28 vs study analysis.json,0.7255753681097408,0.7255753681097408,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__fresh__croston_sba vs study analysis.json,0.9957996739295873,0.9957996739295873,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__fresh__croston_sba vs study analysis.json,0.5476851924049454,0.5476851924049454,0.0,1e-09,PASS,
+fs1_or2_top100_H28,pooled WAPE base__fresh__tsb vs study analysis.json,1.148316003641005,1.148316003641005,0.0,1e-09,PASS,
+fs1_or2_top100_H28,aggregate WAPE base__fresh__tsb vs study analysis.json,0.6047968024535699,0.6047968024535699,0.0,1e-09,PASS,
+fs1_or2_top100_H7,H1_improvement vs study analysis.json (unrounded),-0.030268597064755362,-0.030268597064755362,0.0,1e-09,PASS,internal consistency
+fs1_or2_top100_H7,H2_improvement vs study analysis.json (unrounded),-0.028520781337256346,-0.028520781337256346,0.0,1e-09,PASS,internal consistency
+fs1_or2_top100_H7,pooled WAPE pred__ridge__alpha100 vs study analysis.json,0.9771890826645199,0.9771890826645199,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE pred__ridge__alpha100 vs study analysis.json,0.47804628480427397,0.47804628480427397,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE pred__hist_gradient_boosting__depth6 vs study analysis.json,0.9932306663454584,0.9932306663454584,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE pred__hist_gradient_boosting__depth6 vs study analysis.json,0.45352113071201794,0.45352113071201794,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE pred__xgboost__depth4 vs study analysis.json,0.9528241554963159,0.9528241554963159,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE pred__xgboost__depth4 vs study analysis.json,0.38657162584366306,0.38657162584366306,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE pred__lightgbm__tweedie vs study analysis.json,0.8786316510238988,0.8786316510238988,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE pred__lightgbm__tweedie vs study analysis.json,0.35742848512537106,0.35742848512537106,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE pred__catboost__depth6 vs study analysis.json,0.9436941116357337,0.9436941116357337,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE pred__catboost__depth6 vs study analysis.json,0.3859189289296554,0.3859189289296554,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__matched__naive vs study analysis.json,1.1001742228794362,1.1001742228794362,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__matched__naive vs study analysis.json,0.4653736943116033,0.4653736943116033,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__matched__seasonal_naive vs study analysis.json,1.1001742228794362,1.1001742228794362,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__matched__seasonal_naive vs study analysis.json,0.4653736943116033,0.4653736943116033,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__matched__weekday_mean4 vs study analysis.json,0.9593063727032469,0.9593063727032469,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__matched__weekday_mean4 vs study analysis.json,0.38693407060156054,0.38693407060156054,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__matched__weekday_mean8 vs study analysis.json,0.9103025008652152,0.9103025008652152,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__matched__weekday_mean8 vs study analysis.json,0.37019879302479236,0.37019879302479236,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__matched__trailing_mean28 vs study analysis.json,0.9777251331317168,0.9777251331317168,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__matched__trailing_mean28 vs study analysis.json,0.5445929249547241,0.5445929249547241,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__matched__trailing_median28 vs study analysis.json,0.8528180452428895,0.8528180452428895,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__matched__trailing_median28 vs study analysis.json,0.7136540790964007,0.7136540790964007,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__matched__croston_sba vs study analysis.json,0.9806190072188448,0.9806190072188448,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__matched__croston_sba vs study analysis.json,0.549229569179225,0.549229569179225,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__matched__tsb vs study analysis.json,1.0737642883581318,1.0737642883581318,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__matched__tsb vs study analysis.json,0.5697364207933465,0.5697364207933466,1.1102230246251565e-16,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__fresh__naive vs study analysis.json,1.2831731374276365,1.2831731374276365,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__fresh__naive vs study analysis.json,0.6543032657941102,0.6543032657941102,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__fresh__seasonal_naive vs study analysis.json,1.1001742228794362,1.1001742228794362,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__fresh__seasonal_naive vs study analysis.json,0.4653736943116033,0.4653736943116033,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__fresh__weekday_mean4 vs study analysis.json,0.9593063727032469,0.9593063727032469,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__fresh__weekday_mean4 vs study analysis.json,0.38693407060156054,0.38693407060156054,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__fresh__weekday_mean8 vs study analysis.json,0.9103025008652152,0.9103025008652152,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__fresh__weekday_mean8 vs study analysis.json,0.37019879302479236,0.37019879302479236,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__fresh__trailing_mean28 vs study analysis.json,0.9833052798649067,0.9833052798649067,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__fresh__trailing_mean28 vs study analysis.json,0.5486569780817224,0.5486569780817224,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__fresh__trailing_median28 vs study analysis.json,0.8542672807072741,0.8542672807072741,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__fresh__trailing_median28 vs study analysis.json,0.7129383101560534,0.7129383101560534,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__fresh__croston_sba vs study analysis.json,1.0032477003249478,1.0032477003249478,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__fresh__croston_sba vs study analysis.json,0.5463937718659502,0.5463937718659502,0.0,1e-09,PASS,
+fs1_or2_top100_H7,pooled WAPE base__fresh__tsb vs study analysis.json,1.1032082557975256,1.1032082557975256,0.0,1e-09,PASS,
+fs1_or2_top100_H7,aggregate WAPE base__fresh__tsb vs study analysis.json,0.5798386955094313,0.5798386955094313,0.0,1e-09,PASS,
+fs1_m5_ca1_H28,Table 1 WAPE baseline (matched reference),0.724,0.7238539088576553,0.00014609114234465093,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 1 WAPE model,0.743,0.7428438300496779,0.00015616995032208258,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 1 relative improvement % (point),-2.6,-2.623446659560268,0.023446659560268035,0.050000001,PASS,
+fs1_m5_ca1_H28,Table 1 blocks won,1,1,0,0,PASS,
+fs1_m5_ca1_H7,Table 1 WAPE baseline (matched reference),0.682,0.6816035058241184,0.00039649417588161207,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 1 WAPE model,0.707,0.7066785229221321,0.00032147707786789326,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 1 relative improvement % (point),-3.7,-3.678827483097484,0.021172516902516314,0.050000001,PASS,
+fs1_m5_ca1_H7,Table 1 blocks won,0,0,0,0,PASS,
+fs1_m5_tx1_H28,Table 1 WAPE baseline (matched reference),0.749,0.7493566176470589,0.00035661764705885446,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 1 WAPE model,0.835,0.8346501535175919,0.00034984648240810046,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 1 relative improvement % (point),-11.4,-11.382235622119454,0.01776437788054608,0.050000001,PASS,
+fs1_m5_tx1_H28,Table 1 blocks won,0,0,0,0,PASS,
+fs1_m5_tx1_H7,Table 1 WAPE baseline (matched reference),0.71,0.7101026348039216,0.0001026348039215863,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 1 WAPE model,0.789,0.788767429599298,0.00023257040070201462,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 1 relative improvement % (point),-11.1,-11.077947178311476,0.02205282168852385,0.050000001,PASS,
+fs1_m5_tx1_H7,Table 1 blocks won,0,0,0,0,PASS,
+fs1_or2_top100_H28,Table 1 WAPE baseline (matched reference),0.874,0.873875220236597,0.00012477976340297126,0.000500001,PASS,
+fs1_or2_top100_H28,Table 1 WAPE model,0.906,0.9059598417567414,4.015824325864781e-05,0.000500001,PASS,
+fs1_or2_top100_H28,Table 1 relative improvement % (point),-3.7,-3.6715335069757002,0.028466493024299933,0.050000001,PASS,
+fs1_or2_top100_H28,Table 1 blocks won,3,3,0,0,PASS,
+fs1_or2_top100_H7,Table 1 WAPE baseline (matched reference),0.853,0.8528180452428895,0.0001819547571104696,0.000500001,PASS,
+fs1_or2_top100_H7,Table 1 WAPE model,0.879,0.8786316510238988,0.0003683489761011627,0.000500001,PASS,
+fs1_or2_top100_H7,Table 1 relative improvement % (point),-3.0,-3.0268597064755363,0.02685970647553626,0.050000001,PASS,
+fs1_or2_top100_H7,Table 1 blocks won,1,1,0,0,PASS,
+fs1_m5_ca1_H28,Table 2 pooled WAPE model,0.743,0.7428438300496779,0.00015616995032208258,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 pooled WAPE baseline (matched reference),0.724,0.7238539088576553,0.00014609114234465093,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 store-day aggregate WAPE model,0.105,0.10529007657641645,0.00029007657641645646,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 store-day aggregate WAPE baseline (matched reference),0.306,0.306379282940896,0.00037928294089600856,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 relative bias model,-0.083,-0.08323852683874099,0.00023852683874098224,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 relative bias baseline (matched reference),-0.299,-0.2985683794645898,0.0004316205354101821,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 RMSE model,2.257,2.2569365849280536,6.341507194651541e-05,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 RMSE baseline (matched reference),2.454,2.453992477908735,7.522091264977604e-06,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 MAE model,1.113,1.1127750040550295,0.00022499594497049635,0.000500001,PASS,
+fs1_m5_ca1_H28,Table 2 MAE baseline (matched reference),1.084,1.084328231292517,0.00032823129251702277,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 pooled WAPE model,0.707,0.7066785229221321,0.00032147707786789326,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 pooled WAPE baseline (matched reference),0.682,0.6816035058241184,0.00039649417588161207,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 store-day aggregate WAPE model,0.082,0.0817815441040091,0.00021845589599089887,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 store-day aggregate WAPE baseline (matched reference),0.288,0.28806112486092506,6.112486092507696e-05,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 relative bias model,-0.039,-0.03915689918614433,0.00015689918614433113,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 relative bias baseline (matched reference),-0.28,-0.2802842805567539,0.00028428055675389086,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 RMSE model,2.13,2.129525868508126,0.00047413149187391923,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 RMSE baseline (matched reference),2.325,2.325384907060849,0.0003849070608490379,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 MAE model,1.059,1.0585996200004633,0.0004003799995366819,0.000500001,PASS,
+fs1_m5_ca1_H7,Table 2 MAE baseline (matched reference),1.021,1.0210374149659864,3.741496598652638e-05,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 pooled WAPE model,0.835,0.8346501535175919,0.00034984648240810046,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 pooled WAPE baseline (matched reference),0.749,0.7493566176470589,0.00035661764705885446,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 store-day aggregate WAPE model,0.114,0.11359827047996862,0.0004017295200313825,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 store-day aggregate WAPE baseline (matched reference),0.347,0.3470741421568627,7.414215686274428e-05,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 relative bias model,-0.065,-0.06544445334755651,0.0004444533475565088,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 relative bias baseline (matched reference),-0.339,-0.33880208333333334,0.0001979166666666865,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 RMSE model,2.069,2.068631601872535,0.00036839812746514156,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 RMSE baseline (matched reference),2.13,2.1303723605411857,0.0003723605411858344,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 MAE model,0.927,0.9266320071705509,0.00036799282944910416,0.000500001,PASS,
+fs1_m5_tx1_H28,Table 2 MAE baseline (matched reference),0.832,0.8319387755102041,6.122448979584139e-05,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 pooled WAPE model,0.789,0.788767429599298,0.00023257040070201462,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 pooled WAPE baseline (matched reference),0.71,0.7101026348039216,0.0001026348039215863,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 store-day aggregate WAPE model,0.099,0.09945654456677956,0.000456544566779557,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 store-day aggregate WAPE baseline (matched reference),0.329,0.32923560049019607,0.0002356004901960529,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 relative bias model,-0.036,-0.03621876964900331,0.00021876964900331003,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 relative bias baseline (matched reference),-0.321,-0.32105545343137254,5.545343137253189e-05,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 RMSE model,1.912,1.9119565593716426,4.3440628357371835e-05,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 RMSE baseline (matched reference),2.02,2.0195315429725835,0.0004684570274164912,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 MAE model,0.876,0.875692819800037,0.0003071801999630086,0.000500001,PASS,
+fs1_m5_tx1_H7,Table 2 MAE baseline (matched reference),0.788,0.7883588435374149,0.00035884353741488795,0.000500001,PASS,
+fs1_or2_top100_H28,Table 2 pooled WAPE model,0.906,0.9059598417567414,4.015824325864781e-05,0.000500001,PASS,
+fs1_or2_top100_H28,Table 2 pooled WAPE baseline (matched reference),0.874,0.873875220236597,0.00012477976340297126,0.000500001,PASS,
+fs1_or2_top100_H28,Table 2 store-day aggregate WAPE model,0.36,0.3595123424101589,0.0004876575898410951,0.000500001,PASS,
+fs1_or2_top100_H28,Table 2 store-day aggregate WAPE baseline (matched reference),0.73,0.7301905046564309,0.00019050465643088987,0.000500001,PASS,
+fs1_or2_top100_H28,Table 2 relative bias model,-0.05,-0.05011288600396045,0.00011288600396044957,0.000500001,PASS,
+fs1_or2_top100_H28,Table 2 relative bias baseline (matched reference),-0.583,-0.5830862226277372,8.622262773727574e-05,0.000500001,PASS,
+fs1_or2_top100_H28,Table 2 RMSE model,80.95,80.95098755555829,0.000987555558282338,0.0050000010000000004,PASS,
+fs1_or2_top100_H28,Table 2 RMSE baseline (matched reference),86.58,86.57538794379757,0.004612056202432768,0.0050000010000000004,PASS,
+fs1_or2_top100_H28,Table 2 MAE model,27.42,27.423835819425015,0.0038358194250136535,0.0050000010000000004,PASS,
+fs1_or2_top100_H28,Table 2 MAE baseline (matched reference),26.45,26.45261904761905,0.0026190476190492973,0.0050000010000000004,PASS,
+fs1_or2_top100_H7,Table 2 pooled WAPE model,0.879,0.8786316510238988,0.0003683489761011627,0.000500001,PASS,
+fs1_or2_top100_H7,Table 2 pooled WAPE baseline (matched reference),0.853,0.8528180452428895,0.0001819547571104696,0.000500001,PASS,
+fs1_or2_top100_H7,Table 2 store-day aggregate WAPE model,0.357,0.35742848512537106,0.00042848512537108085,0.000500001,PASS,
+fs1_or2_top100_H7,Table 2 store-day aggregate WAPE baseline (matched reference),0.714,0.7136540790964007,0.00034592090359930605,0.000500001,PASS,
+fs1_or2_top100_H7,Table 2 relative bias model,-0.071,-0.07149803592417721,0.0004980359241772148,0.000500001,PASS,
+fs1_or2_top100_H7,Table 2 relative bias baseline (matched reference),-0.546,-0.5459832384218475,1.6761578152557632e-05,0.000500001,PASS,
+fs1_or2_top100_H7,Table 2 RMSE model,80.2,80.20079685551755,0.0007968555175494885,0.0050000010000000004,PASS,
+fs1_or2_top100_H7,Table 2 RMSE baseline (matched reference),85.24,85.24083868872445,0.0008386887244569152,0.0050000010000000004,PASS,
+fs1_or2_top100_H7,Table 2 MAE model,26.6,26.596598472517716,0.0034015274822856156,0.0050000010000000004,PASS,
+fs1_or2_top100_H7,Table 2 MAE baseline (matched reference),25.82,25.815208333333334,0.004791666666665861,0.0050000010000000004,PASS,
+all,leave-one-origin-out: number of the 36 estimates that are negative (manuscript: all 36),36,36,0,0,PASS,
+all,"abstract: relative bias of matched reference, minimum (manuscript -0.58)",-0.58,-0.5830862226277372,0.0030862226277372784,0.005,PASS,
+all,"abstract: relative bias of matched reference, maximum (manuscript -0.28)",-0.28,-0.2802842805567539,0.00028428055675389086,0.005,PASS,
+m5 cells,abstract: model aggregate WAPE range low (0.08),0.08,0.0817815441040091,0.001781544104009103,0.005,PASS,
+m5 cells,abstract: model aggregate WAPE range high (0.11),0.11,0.11359827047996862,0.003598270479968621,0.005,PASS,
+m5 cells,abstract: baseline aggregate WAPE range low (0.29),0.29,0.28806112486092506,0.0019388751390749248,0.005,PASS,
+m5 cells,abstract: baseline aggregate WAPE range high (0.35),0.35,0.3470741421568627,0.0029258578431372584,0.005,PASS,
+fs1_m5_ca1_H28,discussion: seasonal-naive (matched) pooled WAPE (0.89),0.89,0.8943598010944347,0.004359801094434679,0.005,PASS,
+all,sec 11: min crossed/series-only CI-width ratio (manuscript 1.21),1.21,1.15487055474559,0.05512944525440999,0.08,PASS,line 112; Monte-Carlo error of two bootstraps
+all,sec 11: max crossed/series-only CI-width ratio (manuscript 1.47),1.47,1.5624317531477314,0.09243175314773144,0.1,PASS,line 112
+fs1_m5_ca1_H28,sec 11: series-only CI lower (-5.1 %),-5.1,-5.187614160230502,0.08761416023050206,0.2,PASS,line 112
+fs1_m5_ca1_H28,sec 11: series-only CI upper (-0.2 %),-0.2,-0.2563841323037036,0.056384132303703594,0.2,PASS,line 112
+fs1_m5_ca1_H28:frequency=frequent,sec 12: segment relative improvement %,6.3,6.313840304538266,0.01384030453826579,0.05,PASS,line 116; point estimate
+fs1_m5_ca1_H28:frequency=frequent,sec 12: segment CI lower %,3.3,3.2768219318523917,0.023178068147608144,0.5,PASS,line 116; bootstrap MC tolerance 0.5 pp
+fs1_m5_ca1_H28:frequency=frequent,sec 12: segment CI upper %,9.5,9.336352657173407,0.163647342826593,0.5,PASS,line 116
+fs1_m5_ca1_H28:frequency=intermittent_or_sparse,sec 12: segment relative improvement %,-8.0,-8.0075845016363,0.0075845016363000894,0.05,PASS,line 116; point estimate
+fs1_m5_ca1_H28:frequency=intermittent_or_sparse,sec 12: segment CI lower %,-12.0,-12.316477399570338,0.3164773995703385,0.5,PASS,line 116; bootstrap MC tolerance 0.5 pp
+fs1_m5_ca1_H28:frequency=intermittent_or_sparse,sec 12: segment CI upper %,-3.8,-4.137320164260089,0.33732016426008915,0.5,PASS,line 116
+fs1_m5_ca1_H28:volume=high,sec 12: segment relative improvement %,4.8,4.764526363683109,0.035473636316891266,0.05,PASS,line 116; point estimate
+fs1_m5_ca1_H28:volume=high,sec 12: segment CI lower %,0.8,1.1065539821630725,0.3065539821630725,0.5,PASS,line 116; bootstrap MC tolerance 0.5 pp
+fs1_m5_ca1_H28:volume=high,sec 12: segment CI upper %,7.8,7.867510125783626,0.06751012578362658,0.5,PASS,line 116
+fs1_m5_ca1_H28:volume=low,sec 12: segment relative improvement %,-35.0,-35.02161478673762,0.021614786737622182,0.05,PASS,line 116; point estimate
+fs1_m5_ca1_H28:volume=low,sec 12: segment CI lower %,-44.9,-45.446397299083806,0.5463972990838073,0.5,FAIL-TOL (within bootstrap MC noise; no conclusion affected),"line 116; bootstrap MC tolerance 0.5 pp | endpoint of a very wide interval: expected MC s.e. of one bootstrap percentile endpoint is about 0.3-0.45 pp (study B=2000, audit B=1500); difference 0.5-0.55 pp; preset tolerance 0.5 pp not loosened after the fact"
+fs1_m5_ca1_H28:volume=low,sec 12: segment CI upper %,-25.8,-25.709989446488922,0.09001055351107823,0.5,PASS,line 116
+fs1_m5_ca1_H28:pattern=smooth,sec 12: segment relative improvement %,7.9,7.942716594308541,0.04271659430854058,0.05,PASS,line 116; point estimate
+fs1_m5_tx1_H28:frequency=frequent,sec 12: segment relative improvement %,2.1,2.060416674124088,0.03958332587591196,0.05,PASS,line 116; point estimate
+fs1_m5_tx1_H28:frequency=frequent,sec 12: segment CI lower %,-1.7,-1.6934951109867096,0.0065048890132903825,0.5,PASS,line 116; bootstrap MC tolerance 0.5 pp
+fs1_m5_tx1_H28:frequency=frequent,sec 12: segment CI upper %,6.0,5.894125440486656,0.10587455951334412,0.5,PASS,line 116
+fs1_m5_tx1_H28:volume=high,sec 12: segment relative improvement %,-2.4,-2.441956617661911,0.04195661766191128,0.05,PASS,line 116; point estimate
+fs1_m5_tx1_H28:volume=high,sec 12: segment CI lower %,-5.7,-6.207586820640428,0.5075868206404275,0.5,FAIL-TOL (within bootstrap MC noise; no conclusion affected),"line 116; bootstrap MC tolerance 0.5 pp | endpoint of a very wide interval: expected MC s.e. of one bootstrap percentile endpoint is about 0.3-0.45 pp (study B=2000, audit B=1500); difference 0.5-0.55 pp; preset tolerance 0.5 pp not loosened after the fact"
+fs1_m5_tx1_H28:volume=high,sec 12: segment CI upper %,0.7,0.7459072244133123,0.0459072244133123,0.5,PASS,line 116
+fs1_m5_ca1_H28,sec 12: ablation calendar: WAPE change when removed %,2.6,2.6284898726838275,0.02848987268382741,0.06,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation calendar: CI lower %,1.1,1.090529458273703,0.009470541726297022,0.4,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation calendar: CI upper %,4.3,4.3580785244290245,0.058078524429024725,0.4,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation history_stats: WAPE change when removed %,3.5,3.50001314506771,1.3145067709885438e-05,0.06,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation history_stats: CI lower %,2.3,2.2231624413052717,0.07683755869472808,0.4,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation history_stats: CI upper %,4.5,4.53473989920225,0.034739899202249624,0.4,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation price: WAPE change when removed %,0.8,0.8185656410417084,0.018565641041708325,0.06,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation price: CI lower %,-0.1,-0.15932451486098065,0.05932451486098064,0.4,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation price: CI upper %,1.8,1.7565899107634575,0.04341008923654255,0.4,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation static_ids: WAPE change when removed %,0.3,0.2553019862940725,0.044698013705927464,0.06,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation static_ids: CI lower %,-0.4,-0.392867884971404,0.007132115028596009,0.4,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation static_ids: CI upper %,0.8,0.827780982302356,0.027780982302355928,0.4,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation price Holm p (0.19),0.19,0.208,0.017999999999999988,0.03,PASS,line 118
+fs1_m5_ca1_H28,sec 12: ablation static_ids Holm p (0.38),0.38,0.389,0.009000000000000008,0.03,PASS,line 118
+fs1_m5_ca1_H28,sec 13 E1: L1 pooled WAPE,0.699,0.6992205129666761,0.00022051296667613407,0.000500001,PASS,lines 124-128 (post hoc)
+fs1_m5_ca1_H28,sec 13 E1: L1 aggregate WAPE,0.37,0.36966412811111654,0.00033587188888345443,0.000500001,PASS,
+fs1_m5_ca1_H28,sec 13 E1: L1 bias,-0.366,-0.3658463992206051,0.00015360077939491346,0.000500001,PASS,
+fs1_m5_ca1_H28,sec 13 E1: L1 vs matched baseline %,3.4,3.403089434144835,0.0030894341448348683,0.06,PASS,
+fs1_m5_ca1_H28,sec 13 E1: L1 vs best any-info baseline %,-0.5,-0.5497636373192227,0.04976363731922273,0.06,PASS,
+fs1_m5_ca1_H28,sec 13 E1: L1 vs Tweedie model %,5.9,5.872474848459664,0.027525151540336523,0.06,PASS,
+fs1_m5_tx1_H28,sec 13 E1: L1 pooled WAPE,0.743,0.7434590793294816,0.00045907932948163754,0.000500001,PASS,lines 124-128 (post hoc)
+fs1_m5_tx1_H28,sec 13 E1: L1 aggregate WAPE,0.45,0.4498699490083619,0.00013005099163809763,0.000500001,PASS,
+fs1_m5_tx1_H28,sec 13 E1: L1 bias,-0.445,-0.4449252835477498,7.471645225021195e-05,0.000500001,PASS,
+fs1_m5_tx1_H28,sec 13 E1: L1 vs matched baseline %,0.8,0.7870135765391861,0.012986423460813912,0.06,PASS,
+fs1_m5_tx1_H28,sec 13 E1: L1 vs best any-info baseline %,-2.4,-2.444345538002235,0.04434553800223506,0.06,PASS,
+fs1_m5_tx1_H28,sec 13 E1: L1 vs Tweedie model %,10.9,10.925664340177732,0.025664340177732115,0.06,PASS,
+fs1_or2_top100_H28,sec 13 E1: L1 pooled WAPE,0.787,0.7873173074358019,0.00031730743580182796,0.000500001,PASS,lines 124-128 (post hoc)
+fs1_or2_top100_H28,sec 13 E1: L1 aggregate WAPE,0.523,0.5232212969928316,0.00022129699283157667,0.000500001,PASS,
+fs1_or2_top100_H28,sec 13 E1: L1 bias,-0.491,-0.49078178429948227,0.000218215700517721,0.000500001,PASS,
+fs1_or2_top100_H28,sec 13 E1: L1 vs matched baseline %,9.9,9.905065482616626,0.0050654826166258715,0.06,PASS,
+fs1_or2_top100_H28,sec 13 E1: L1 vs best any-info baseline %,9.9,9.905065482616626,0.0050654826166258715,0.06,PASS,
+fs1_or2_top100_H28,sec 13 E1: L1 vs Tweedie model %,13.1,13.09578293126994,0.004217068730060447,0.06,PASS,
+fs1_m5_ca1_H28,sec 14: model overall 80% interval coverage,0.802,0.8021428571428572,0.00014285714285711126,0.000500001,PASS,line 134
+fs1_m5_ca1_H7,sec 14: model overall 80% interval coverage,0.802,0.8022278911564625,0.0002278911564624897,0.000500001,PASS,line 134
+fs1_m5_tx1_H28,sec 14: model overall 80% interval coverage,0.794,0.7938435374149659,0.0001564625850341006,0.000500001,PASS,line 134
+fs1_m5_tx1_H7,sec 14: model overall 80% interval coverage,0.793,0.792891156462585,0.0001088435374150265,0.000500001,PASS,line 134
+fs1_or2_top100_H28,sec 14: model overall 80% interval coverage,0.807,0.8068452380952381,0.0001547619047619353,0.000500001,PASS,line 134
+fs1_or2_top100_H7,sec 14: model overall 80% interval coverage,0.81,0.8098809523809524,0.00011904761904768524,0.000500001,PASS,line 134
+all,sec 14: min per-origin model coverage (0.775),0.775,0.7754081632653061,0.00040816326530612734,0.000500001,PASS,line 134
+all,sec 14: max per-origin model coverage (0.824),0.824,0.8242857142857143,0.00028571428571433355,0.000500001,PASS,line 134
+all,sec 14: min frequent-series coverage (0.66),0.66,0.6601037851037851,0.00010378510378505901,0.005,PASS,line 134
+all,sec 14: max frequent-series coverage (0.78),0.78,0.7769047619047619,0.003095238095238151,0.005,PASS,line 134
+all,sec 14: min intermittent-series coverage (0.81),0.81,0.8073993262900016,0.0026006737099985022,0.005,PASS,line 134
+all,sec 14: max intermittent-series coverage (0.82),0.82,0.8217460317460318,0.0017460317460318286,0.005,PASS,line 134
+fs1_m5_ca1_H28,sec 14: model mean interval width (2.50),2.5,2.5018830718170793,0.0018830718170792515,0.005,PASS,line 134
+fs1_m5_ca1_H28,sec 14: matched-baseline mean interval width (2.29),2.29,2.294906462585034,0.0049064625850339105,0.005,PASS,line 134
+fs1_or2_top100_H28,sec 14: model mean interval width (53.5),53.5,53.51950085951215,0.019500859512149304,0.05,PASS,line 134
+fs1_or2_top100_H28,sec 14: matched-baseline mean interval width (35.6),35.6,35.561875,0.03812500000000085,0.05,PASS,line 134
+S2 origin A,sec 15: model ROC-AUC,0.804,0.8038466663705415,0.0001533336294585741,0.000500001,PASS,Table 3
+S2 origin A,sec 15: model PR-AUC,0.881,0.8808419695441964,0.00015803045580364827,0.000500001,PASS,Table 3
+S2 origin A,sec 15: recency ROC-AUC,0.776,0.7756920651261437,0.0003079348738562748,0.000500001,PASS,Table 3
+S2 origin A,sec 15: recency PR-AUC,0.871,0.8709151691429723,8.483085702770676e-05,0.000500001,PASS,Table 3
+S2 origin B,sec 15: model ROC-AUC,0.799,0.7989120341768011,8.79658231989211e-05,0.000500001,PASS,Table 3
+S2 origin B,sec 15: model PR-AUC,0.818,0.8179824667375949,1.753326240505615e-05,0.000500001,PASS,Table 3
+S2 origin B,sec 15: recency ROC-AUC,0.762,0.7622691437817659,0.0002691437817659015,0.000500001,PASS,Table 3
+S2 origin B,sec 15: recency PR-AUC,0.798,0.7983913317038578,0.00039133170385774463,0.000500001,PASS,Table 3
+S2 origin A,sec 15: ECE10 raw,0.083,0.08316046777140176,0.00016046777140175938,0.000500001,PASS,Table 3
+S2 origin A,sec 15: ECE10 Platt,0.038,0.03814006655510412,0.00014006655510412358,0.000500001,PASS,Table 3 / line 153
+S2 origin B,sec 15: ECE10 raw,0.092,0.09189533187539203,0.00010466812460796504,0.000500001,PASS,Table 3
+S2 origin B,sec 15: ECE10 Platt,0.126,0.12576036491768852,0.000239635082311479,0.000500001,PASS,Table 3 / line 153
+S2 origin A,sec 15: ROC-AUC difference,0.028,0.028154601244397726,0.00015460124439772502,0.000500001,PASS,line 151
+S2 origin A,sec 15: ROC-AUC CI lower,0.017,0.01700916852130114,9.168521301138044e-06,0.0015,PASS,line 151; MC
+S2 origin A,sec 15: ROC-AUC CI upper,0.039,0.038797575973830344,0.00020242402616965638,0.0015,PASS,line 151
+S2 origin A,sec 15: PR-AUC difference,0.01,0.009926800401224067,7.319959877593284e-05,0.000500001,PASS,line 151
+S2 origin A,sec 15: PR-AUC CI lower,0.002,0.0017161119106656687,0.0002838880893343313,0.0015,PASS,line 151
+S2 origin A,sec 15: PR-AUC CI upper,0.018,0.018255989427415267,0.000255989427415268,0.0015,PASS,line 151
+S2 origin B,sec 15: ROC-AUC difference,0.037,0.03664289039503521,0.0003571096049647879,0.000500001,PASS,line 151
+S2 origin B,sec 15: ROC-AUC CI lower,0.029,0.029133000443167665,0.00013300044316766346,0.0015,PASS,line 151; MC
+S2 origin B,sec 15: ROC-AUC CI upper,0.044,0.04401965013081673,1.9650130816735445e-05,0.0015,PASS,line 151
+S2 origin B,sec 15: PR-AUC difference,0.02,0.019591135033737106,0.00040886496626289445,0.000500001,PASS,line 151
+S2 origin B,sec 15: PR-AUC CI lower,0.011,0.010344892025802821,0.000655107974197178,0.0015,PASS,line 151
+S2 origin B,sec 15: PR-AUC CI upper,0.029,0.029141902771573275,0.00014190277157327333,0.0015,PASS,line 151
+S2 origin A,sec 15: accuracy at the one validation threshold,0.762,0.7616643102403555,0.00033568975964448633,0.000500001,PASS,line 155
+S2 origin A,sec 15: recall,0.955,0.954965702356099,3.4297643900949026e-05,0.000500001,PASS,line 155
+S2 origin A,sec 15: precision,0.757,0.7567950839045143,0.00020491609548567435,0.000500001,PASS,line 155
+S2 origin A,sec 15: majority-class accuracy,0.677,0.6772369218339729,0.00023692183397283628,0.000500001,PASS,line 155
+S2 origin B,sec 15: accuracy at the one validation threshold,0.691,0.6912100456621004,0.0002100456621004776,0.000500001,PASS,line 155
+S2 origin B,sec 15: recall,0.966,0.965981812057932,1.818794206798202e-05,0.000500001,PASS,line 155
+S2 origin B,sec 15: precision,0.653,0.6533029612756264,0.00030296127562634556,0.000500001,PASS,line 155
+S2 origin B,sec 15: majority-class accuracy,0.565,0.5648782343987824,0.00012176560121757163,0.000500001,PASS,line 155
+S2 holm,"sec 15: Holm p, origin A PR-AUC (0.021)",0.021,0.024,0.002999999999999999,0.01,PASS,line 151; bootstrap resolution 0.0005 x multiplier

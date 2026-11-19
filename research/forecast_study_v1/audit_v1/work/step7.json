@@ -1,0 +1,144 @@
+{
+ "fits_equal_predictions_npz": {
+  "fs1_m5_ca1_H28": {
+   "ridge:alpha1": true,
+   "hist_gradient_boosting:depth6": true,
+   "xgboost:depth6": true,
+   "lightgbm:tweedie": true,
+   "catboost:depth6": true
+  },
+  "fs1_m5_ca1_H7": {
+   "ridge:alpha1": true,
+   "hist_gradient_boosting:depth6": true,
+   "xgboost:depth6": true,
+   "lightgbm:tweedie": true,
+   "catboost:depth6": true
+  },
+  "fs1_m5_tx1_H28": {
+   "ridge:alpha100": true,
+   "hist_gradient_boosting:depth6": true,
+   "xgboost:depth6": true,
+   "lightgbm:tweedie": true,
+   "catboost:depth6": true
+  },
+  "fs1_m5_tx1_H7": {
+   "ridge:alpha100": true,
+   "hist_gradient_boosting:depth4": true,
+   "xgboost:depth6": true,
+   "lightgbm:tweedie": true,
+   "catboost:depth6": true
+  },
+  "fs1_or2_top100_H28": {
+   "ridge:alpha1": true,
+   "hist_gradient_boosting:depth4": true,
+   "xgboost:depth6": true,
+   "lightgbm:tweedie": true,
+   "catboost:depth6": true
+  },
+  "fs1_or2_top100_H7": {
+   "ridge:alpha100": true,
+   "hist_gradient_boosting:depth6": true,
+   "xgboost:depth4": true,
+   "lightgbm:tweedie": true,
+   "catboost:depth6": true
+  }
+ },
+ "machine_specific_path_mentions": {
+  "run_all.sh": [
+   [
+    5,
+    "PY=backend/.venv/Scripts/python.exe"
+   ]
+  ]
+ },
+ "dependency_files": {
+  "backend\\requirements-runtime.txt": {
+   "lightgbm": false,
+   "xgboost": true,
+   "catboost": false,
+   "scikit-learn": true,
+   "scipy": true,
+   "matplotlib": false,
+   "numpy": true,
+   "pandas": true,
+   "openpyxl": true
+  },
+  "backend\\requirements.txt": {
+   "lightgbm": false,
+   "xgboost": true,
+   "catboost": false,
+   "scikit-learn": true,
+   "scipy": true,
+   "matplotlib": false,
+   "numpy": true,
+   "pandas": true,
+   "openpyxl": true
+  },
+  "ml\\benchmark\\requirements.txt": {
+   "lightgbm": true,
+   "xgboost": false,
+   "catboost": true,
+   "scikit-learn": true,
+   "scipy": false,
+   "matplotlib": false,
+   "numpy": true,
+   "pandas": true,
+   "openpyxl": true
+  }
+ },
+ "pyproject_present": false,
+ "research_specific_requirements_file": false,
+ "environment_freeze_txt": [
+  "catboost==1.2.10",
+  "joblib==1.5.3",
+  "lightgbm==4.7.0",
+  "matplotlib==3.11.2",
+  "numpy==2.5.2",
+  "openpyxl==3.1.5",
+  "pandas==3.0.5",
+  "pyarrow==23.0.1",
+  "pytest==9.1.1",
+  "scikit-learn==1.9.0",
+  "scipy==1.18.0",
+  "xgboost==3.4.0"
+ ],
+ "regen_returncode": 0,
+ "regen_stderr_tail": "",
+ "TABLES_md_byte_identical_after_regeneration": true,
+ "figures_identical_ignoring_ids_and_date": {
+  "fig1_forest.svg": true,
+  "fig2_metric_reversal.svg": true,
+  "fig3_segments.svg": true,
+  "fig4_coverage.svg": true
+ },
+ "missing_input_behaviour": {
+  "analyze_on_missing_cell": {
+   "returncode": 1,
+   "last_line": "FileNotFoundError: [Errno 2] No such file or directory: 'D:\\\\DecisionGPT\\\\research\\\\forecast_study_v1\\\\results\\\\fs1_does_not_exist\\\\predictions.npz'"
+  }
+ },
+ "historical_hashes_checked": {
+  "checked": 20,
+  "listed": 20,
+  "bad": []
+ },
+ "freeze_code_hash_status": {
+  "research/forecast_study_v1/__init__.py": "unchanged",
+  "research/forecast_study_v1/ablation_report.py": "unchanged",
+  "research/forecast_study_v1/aggregate.py": "unchanged",
+  "research/forecast_study_v1/analyze.py": "unchanged",
+  "research/forecast_study_v1/baselines.py": "unchanged",
+  "research/forecast_study_v1/inference.py": "unchanged",
+  "research/forecast_study_v1/make_freeze.py": "unchanged",
+  "research/forecast_study_v1/metrics.py": "unchanged",
+  "research/forecast_study_v1/protocol.py": "unchanged",
+  "research/forecast_study_v1/run_classification_study.py": "unchanged",
+  "research/forecast_study_v1/run_forecast_study.py": "unchanged",
+  "research/forecast_study_v1/verify_cell.py": "unchanged",
+  "research/forecast_study_v1/EXPERIMENT_PLAN.md": "CHANGED",
+  "tests/unit/test_forecast_study.py": "unchanged"
+ },
+ "plan_text_above_deviation_log_hash_matches_freeze": true,
+ "freeze_git_head": "41c1d1443267fae1704718561b39405af0807d4e",
+ "git_history_of_study_dir": "none (directory is untracked: no commit history, no external timestamp)"
+}

@@ -121,6 +121,10 @@ def test_ensemble_methods_never_receive_test_data_by_construction():
 @pytest.mark.parametrize("family,variant", [("linear", "ols"), ("ridge", "alpha1"), ("hist_gradient_boosting", "depth4"),
                                             ("xgboost", "depth4"), ("lightgbm", "l2"), ("catboost", "depth6"), ("random_forest", "leaf5")])
 def test_every_family_fits_predicts_nonnegative_and_reloads_identically(family, variant, tmp_path):
+    if family == "catboost":
+        pytest.importorskip("catboost")
+    if family == "lightgbm":
+        pytest.importorskip("lightgbm")
     y, price, cal, static = _toy(n=4, T=200)
     F, names = ft.build_direct_features(y, price, cal, static, H=28)
     valid = ft.valid_mask(y, price, 28)

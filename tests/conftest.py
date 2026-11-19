@@ -5,7 +5,12 @@ Postgres instance — see backend/app/db/types.py's cross-dialect GUID type
 and AGENTS.md. Production always runs on Postgres (docker-compose.yml);
 SQLite here is a test-only substitute so the suite works without Docker.
 """
+import os
 from pathlib import Path
+
+# Default DATABASE_URL for testing if unset (so in-memory SQLite is used rather than attempting to connect to PostgreSQL default credentials)
+if "DATABASE_URL" not in os.environ and not os.environ.get("DECISIONGPT_TEST_PG_APP_URL"):
+    os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 
 import pytest
 from fastapi.testclient import TestClient

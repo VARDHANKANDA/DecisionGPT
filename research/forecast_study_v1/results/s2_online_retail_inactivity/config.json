@@ -1,0 +1,47 @@
+{
+  "study": "forecast_study_v1/S2",
+  "origins": {
+    "A": {
+      "train": [
+        "2010-06-01",
+        "2010-09-01",
+        "2010-12-01"
+      ],
+      "validation": "2011-03-14",
+      "test": "2011-06-12"
+    },
+    "B": {
+      "train": [
+        "2010-06-01",
+        "2010-09-01",
+        "2010-12-01",
+        "2011-03-14"
+      ],
+      "validation": "2011-06-12",
+      "test": "2011-09-10"
+    }
+  },
+  "window_days": 90,
+  "features": [
+    "recency_days",
+    "tenure_days",
+    "frequency",
+    "monetary",
+    "avg_order_value",
+    "distinct_skus",
+    "invoices_last_90d",
+    "invoices_last_180d",
+    "revenue_last_90d",
+    "mean_gap_days",
+    "recency_ratio"
+  ],
+  "seed": 42,
+  "baselines": {
+    "recency_rank": "recency_days",
+    "recency_ratio_rank": "recency_ratio"
+  },
+  "bootstrap_B": 2000,
+  "quick": false,
+  "label": "no purchase in the 90 days after the cutoff (PROXY for inactivity, not churn)",
+  "config_hash": "2cf44d80ebbe"
+}

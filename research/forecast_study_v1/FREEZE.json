@@ -1,0 +1,25 @@
+{
+  "frozen_utc": "2026-10-22T03:29:27.556394+00:00",
+  "git_head": "41c1d1443267fae1704718561b39405af0807d4e",
+  "statement": "EXPERIMENT_PLAN.md and the code listed here were fixed before any confirmatory (full) run; later changes go to the plan's deviations log.",
+  "sha256": {
+    "research/forecast_study_v1/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "research/forecast_study_v1/ablation_report.py": "355617d4614bf0298a874ec9835aaa7f58cb917071bca7b8545f9a6a2943bbb4",
+    "research/forecast_study_v1/aggregate.py": "360e37226e2836ef954a15d03842999165a9df6400d538d8dfea8f8b86ef7057",
+    "research/forecast_study_v1/analyze.py": "adff6d294eb576c9633c5fb6779bbac9fa7fce0bf2d5b300fdd5776fc65c7717",
+    "research/forecast_study_v1/baselines.py": "f7e5dc23a6665d78a84d1d1b241ad0f19d7ccc07fea2d35a26f25e897e7a7d2c",
+    "research/forecast_study_v1/inference.py": "77216d6715b3c0e1cdb82393f7b8e767a55550ad54b19c6504f0f5025351cf76",
+    "research/forecast_study_v1/make_freeze.py": "46f46228391a28d3b458f7abd51ea1edd84f28b37a33f30839d28b7d529c29ea",
+    "research/forecast_study_v1/metrics.py": "ae687a4de7f84c214fbdf0f0ce3c7f86333823918729e20209ea3977a1c97622",
+    "research/forecast_study_v1/protocol.py": "b987fbaf0e534286bf0c3d8e67b0bdb44b2af8340cd9bd7b95fadb904317e5ae",
+    "research/forecast_study_v1/run_classification_study.py": "4b00733c4e9fbf4d233b56920746c49812f5716337085b3de341bd70f101acae",
+    "research/forecast_study_v1/run_forecast_study.py": "c051faa08c0014df7e984395ff949090f05b3c0173b0dfc317b6ebbd83c82d9b",
+    "research/forecast_study_v1/verify_cell.py": "ab9b24b886ed86fd3e22c3a500c950a7aa51f25682ba8ed25f7fadc70312d3de",
+    "research/forecast_study_v1/EXPERIMENT_PLAN.md": "162ef116ee79684f7d32e4bf788a265fd7aa7a2256668cd4d65632f63837bd67",
+    "tests/unit/test_forecast_study.py": "c7e22ecdd99773990e2b1f4f2348950427f94858cb947b71b232ea8106d6dd04"
+  },
+  "historical_hash_file_sha256": "45fdeb4db2b3522a9eb3d9ba6c54d93b3ded1cf68a1a5c58ebc830dcf788ea97",
+  "results_dir_at_freeze": [],
+  "plan_sha256_text_above_deviations_log": "a06e1743a597bb2562e82c8735e55b4d894fd2c785f907b2416d4607204a163b",
+  "note": "sha256 of EXPERIMENT_PLAN.md in this file covers the whole file at freeze; the deviations log is the only part allowed to change afterwards, so verify the plan via plan_sha256_text_above_deviations_log."
+}

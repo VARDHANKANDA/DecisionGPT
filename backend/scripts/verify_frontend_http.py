@@ -13,9 +13,11 @@ routes = [
 print("=== VERIFYING FRONTEND ROUTES ===")
 for r in routes:
     url = f"http://localhost:3000{r}"
+    if not (url.startswith("http://") or url.startswith("https://")):
+        raise ValueError(f"Disallowed URL scheme: {url}")
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req) as resp:  # nosec: B310
             content = resp.read().decode("utf-8", errors="ignore")
             title = ""
             if "<title>" in content:

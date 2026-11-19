@@ -1,0 +1,24 @@
+{
+  "run_id": "c2_20261022T030610Z_ec3d89a4",
+  "created_utc": "2026-10-22T03:06:43.378183+00:00",
+  "git_revision": "41c1d14",
+  "versions": {
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "scipy": "1.18.0",
+    "scikit-learn": "1.9.0",
+    "xgboost": "3.4.0",
+    "lightgbm": "4.7.0",
+    "catboost": "1.2.10"
+  },
+  "runtime_seconds_total": 33,
+  "quick": false,
+  "evidence_type": "synthetic",
+  "dataset": {
+    "file": "data\\platform\\churn\\customers.csv",
+    "sha256": "c44c575681e9b3290d1877436604b0ae4aafc324470b2fa8b8b9eb2b01ee8ab9"
+  },
+  "seed": 42
+}

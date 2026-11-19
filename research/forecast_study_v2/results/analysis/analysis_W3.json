@@ -1,0 +1,2191 @@
+{
+ "window": "W3",
+ "cells": {
+  "m5_ca1_H28": {
+   "window": "W3",
+   "dataset": "m5_ca1",
+   "H": 28,
+   "n_rows": 58800,
+   "selection": {
+    "model_item_day": "lgbm_l1",
+    "model_subset_day": "lgbm_l2",
+    "reference_model": "lgbm_tweedie_p11",
+    "baseline_item_day_matched": "matched__trailing_median91",
+    "baseline_item_day_any": "fresh__trailing_median28",
+    "baseline_subset_day_matched": "matched__weekday_mean4"
+   },
+   "H1": {
+    "label": "model(item-day) vs best matched baseline",
+    "wape_reference": 0.7709181365897784,
+    "wape_model": 0.7323475280254399,
+    "improvement": 0.05003204196876054,
+    "primary": {
+     "estimate": 0.05003204196876054,
+     "ci95": [
+      0.02868051816646829,
+      0.07453715451713709
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.05003204196876054,
+     "ci95": [
+      0.02868051816646829,
+      0.07453715451713709
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.05003204196876054,
+     "ci95": [
+      0.030976127088675594,
+      0.0690879568488455
+     ],
+     "p": 1.6103768907038685e-05,
+     "se": 0.009211729763353533,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 3.220753781407737e-05,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H1b": {
+    "label": "model(item-day) vs best baseline of any information set",
+    "wape_reference": 0.738877383417839,
+    "wape_model": 0.7323475280254399,
+    "improvement": 0.00883753588747549,
+    "primary": {
+     "estimate": 0.00883753588747549,
+     "ci95": [
+      -0.014785569895661632,
+      0.030520486083823604
+     ],
+     "p": 0.42795720427957207,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.00883753588747549,
+     "ci95": [
+      -0.014785569895661632,
+      0.030520486083823604
+     ],
+     "p": 0.42795720427957207,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.00883753588747549,
+     "ci95": [
+      -0.010881520388699804,
+      0.028556592163650783
+     ],
+     "p": 0.36349410925667924,
+     "se": 0.009532295811959331,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 5,
+    "n_weekly_blocks": 24,
+    "holm_p": 1.0,
+    "verdict_primary_method": "INCONCLUSIVE",
+    "holm_p_secondary": 0.7663012368657627,
+    "verdict_secondary_method": "INCONCLUSIVE",
+    "methods_agree_on_verdict": true,
+    "verdict": "INCONCLUSIVE"
+   },
+   "H2": {
+    "label": "model(item-day) vs reference Tweedie model (p=1.1) refit on the same window",
+    "wape_reference": 0.7892479585440905,
+    "wape_model": 0.7323475280254399,
+    "improvement": 0.0720944918547698,
+    "primary": {
+     "estimate": 0.0720944918547698,
+     "ci95": [
+      0.051530544782074444,
+      0.09224929358407646
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.0720944918547698,
+     "ci95": [
+      0.051530544782074444,
+      0.09224929358407646
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.0720944918547698,
+     "ci95": [
+      0.05363094785438566,
+      0.09055803585515393
+     ],
+     "p": 3.6340396247780404e-08,
+     "se": 0.008925374555649145,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 3.6340396247780404e-08,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H3": {
+    "label": "model(subset-day) vs best matched baseline on subset-day WAPE",
+    "wape_reference": 0.12342593253826561,
+    "wape_model": 0.09736483032525785,
+    "improvement": 0.2111477035421877,
+    "primary": {
+     "estimate": 0.2111477035421877,
+     "ci95": [
+      0.08737287037701613,
+      0.31051287534295025
+     ],
+     "p": 0.0021997800219978004,
+     "B": 10000,
+     "method": "iid bootstrap over 7-day blocks of daily totals"
+    },
+    "secondary": {
+     "estimate": 0.2111477035421877,
+     "ci95": [
+      0.10129204208089185,
+      0.30370413713434763
+     ],
+     "p": 0.00039996000399960006,
+     "B": 10000,
+     "method": "stationary bootstrap over 7-day blocks of daily totals"
+    },
+    "blocks_won": 5,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.010998900109989003,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 0.001999800019998,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "ladder": {
+    "pred__lgbm_l1": {
+     "item_day_wape": 0.7323475280254399,
+     "item_week_wape": 0.5105599441960473,
+     "subset_week_wape": 0.3163992308536795,
+     "subset_day_wape": 0.3225822241291977,
+     "rel_bias": -0.31639923085367955,
+     "mae": 1.0464349423408403,
+     "rmse": 2.2726543081991326,
+     "zero_forecast_share": 0.295765306122449,
+     "item_day_wape_by_block": [
+      0.7122502850624061,
+      0.7089317495044726,
+      0.6927593633363393,
+      0.7209493361117746,
+      0.7378564962238919,
+      0.8400528124589206
+     ]
+    },
+    "pred__lgbm_l2": {
+     "item_day_wape": 0.8123567704829707,
+     "item_week_wape": 0.4554695498864442,
+     "subset_week_wape": 0.05644269908779273,
+     "subset_day_wape": 0.09736483032525785,
+     "rel_bias": 0.011279856005860444,
+     "mae": 1.1607583527625551,
+     "rmse": 2.2483539880925445,
+     "zero_forecast_share": 0.002653061224489796,
+     "item_day_wape_by_block": [
+      0.7952154856241092,
+      0.7840316339389208,
+      0.7555895993840253,
+      0.7893221379798903,
+      0.8152949320356605,
+      0.9602493784790912
+     ]
+    },
+    "pred__lgbm_tweedie_p11": {
+     "item_day_wape": 0.7892479585440905,
+     "item_week_wape": 0.43481887061213925,
+     "subset_week_wape": 0.06098960127538544,
+     "subset_day_wape": 0.09896979545581813,
+     "rel_bias": -0.017391405630436948,
+     "mae": 1.1277386901523367,
+     "rmse": 2.2161446599737458,
+     "zero_forecast_share": 0.0,
+     "item_day_wape_by_block": [
+      0.7792873047588816,
+      0.756545050437539,
+      0.7355517876180612,
+      0.7660821875553296,
+      0.7951224429354345,
+      0.9266648641132591
+     ]
+    },
+    "base__matched__weekday_mean4": {
+     "item_day_wape": 0.8479968578161823,
+     "item_week_wape": 0.4643469256587874,
+     "subset_week_wape": 0.0842081458735033,
+     "subset_day_wape": 0.12342593253826561,
+     "rel_bias": 0.052697041110238284,
+     "mae": 1.2116836734693877,
+     "rmse": 2.4478428307000275,
+     "zero_forecast_share": 0.24818027210884352,
+     "item_day_wape_by_block": [
+      0.825870985302123,
+      0.8331110955154748,
+      0.7938690682369242,
+      0.8015427534283409,
+      0.8544379774463441,
+      1.0078638595323293
+     ]
+    },
+    "base__matched__zero": {
+     "item_day_wape": 1.0,
+     "item_week_wape": 1.0,
+     "subset_week_wape": 1.0,
+     "subset_day_wape": 1.0,
+     "rel_bias": -1.0,
+     "mae": 1.4288775510204081,
+     "rmse": 3.496947162280596,
+     "zero_forecast_share": 1.0,
+     "item_day_wape_by_block": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "base__matched__trailing_median91": {
+     "item_day_wape": 0.7709181365897784,
+     "item_week_wape": 0.5443952486371968,
+     "subset_week_wape": 0.24157918541264967,
+     "subset_day_wape": 0.26607393653740863,
+     "rel_bias": -0.24157918541264967,
+     "mae": 1.101547619047619,
+     "rmse": 2.411032606849712,
+     "zero_forecast_share": 0.5811564625850341,
+     "item_day_wape_by_block": [
+      0.7180865541643985,
+      0.7462278054600323,
+      0.7289920332525113,
+      0.7771578381285291,
+      0.7749727173517643,
+      0.9028043604893068
+     ]
+    },
+    "base__fresh__trailing_median28": {
+     "item_day_wape": 0.738877383417839,
+     "item_week_wape": 0.48840724606631913,
+     "subset_week_wape": 0.20850293984622342,
+     "subset_day_wape": 0.23959151610369206,
+     "rel_bias": -0.20850293984622342,
+     "mae": 1.055765306122449,
+     "rmse": 2.3082335620276275,
+     "zero_forecast_share": 0.5414285714285715,
+     "item_day_wape_by_block": [
+      0.7182226456178552,
+      0.7430696891009896,
+      0.7023207481815033,
+      0.7212960473245497,
+      0.7230993088395781,
+      0.8428892402429891
+     ]
+    }
+   },
+   "endpoint_dependence": {
+    "item_day_improvement_vs_matched": 0.05003204196876054,
+    "subset_day_improvement_vs_matched": 0.2111477035421877,
+    "reversed": false
+   },
+   "segments_exploratory": {
+    "frequency=frequent": {
+     "n_series": 46,
+     "improvement": 0.06154578580928771,
+     "ci95": [
+      0.015888477873669378,
+      0.11016746734125951
+     ]
+    },
+    "frequency=intermittent_or_sparse": {
+     "n_series": 304,
+     "improvement": 0.043479974222689344,
+     "ci95": [
+      0.022868955451801544,
+      0.06514016386017042
+     ]
+    },
+    "volume=high": {
+     "n_series": 117,
+     "improvement": 0.060959649089379786,
+     "ci95": [
+      0.030795165158333165,
+      0.09597179183139411
+     ]
+    },
+    "volume=low": {
+     "n_series": 117,
+     "improvement": 0.008413530011019965,
+     "ci95": [
+      -0.021158836817769137,
+      0.0381932949858506
+     ]
+    },
+    "volume=mid": {
+     "n_series": 116,
+     "improvement": 0.036598411665411223,
+     "ci95": [
+      0.013751135921186958,
+      0.059880578096332536
+     ]
+    }
+   }
+  },
+  "m5_ca1_H7": {
+   "window": "W3",
+   "dataset": "m5_ca1",
+   "H": 7,
+   "n_rows": 58800,
+   "selection": {
+    "model_item_day": "lgbm_l1",
+    "model_subset_day": "lgbm_l2",
+    "reference_model": "lgbm_tweedie_p11",
+    "baseline_item_day_matched": "matched__trailing_median14",
+    "baseline_item_day_any": "fresh__trailing_median14",
+    "baseline_subset_day_matched": "matched__weekday_mean4"
+   },
+   "H1": {
+    "label": "model(item-day) vs best matched baseline",
+    "wape_reference": 0.7337832369254207,
+    "wape_model": 0.6885171785923461,
+    "improvement": 0.06168859692508266,
+    "primary": {
+     "estimate": 0.06168859692508266,
+     "ci95": [
+      0.045158603106205765,
+      0.0802041102230127
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.06168859692508266,
+     "ci95": [
+      0.045158603106205765,
+      0.0802041102230127
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.06168859692508266,
+     "ci95": [
+      0.04695732972892979,
+      0.07641986412123553
+     ],
+     "p": 1.0661957761115559e-08,
+     "se": 0.007121172262609835,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 6.397174656669335e-08,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H1b": {
+    "label": "model(item-day) vs best baseline of any information set",
+    "wape_reference": 0.7174772072651099,
+    "wape_model": 0.6885171785923461,
+    "improvement": 0.040363691528479406,
+    "primary": {
+     "estimate": 0.040363691528479406,
+     "ci95": [
+      0.022786041887313882,
+      0.0584085963734888
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.040363691528479406,
+     "ci95": [
+      0.022786041887313882,
+      0.0584085963734888
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.040363691528479406,
+     "ci95": [
+      0.025520282625002652,
+      0.05520710043195616
+     ],
+     "p": 1.0028457518407308e-05,
+     "se": 0.007175382155421032,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 5.014228759203654e-05,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H2": {
+    "label": "model(item-day) vs reference Tweedie model (p=1.1) refit on the same window",
+    "wape_reference": 0.7396877526788209,
+    "wape_model": 0.6885171785923461,
+    "improvement": 0.06917861476164466,
+    "primary": {
+     "estimate": 0.06917861476164466,
+     "ci95": [
+      0.053327064618458625,
+      0.08615882478924813
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.06917861476164466,
+     "ci95": [
+      0.053327064618458625,
+      0.08615882478924813
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.06917861476164466,
+     "ci95": [
+      0.0542305022813586,
+      0.08412672724193072
+     ],
+     "p": 1.7283672271162231e-09,
+     "se": 0.007225996416709103,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 3.4567344542324463e-09,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H3": {
+    "label": "model(subset-day) vs best matched baseline on subset-day WAPE",
+    "wape_reference": 0.11300257087766907,
+    "wape_model": 0.09489270790110936,
+    "improvement": 0.16026062801849483,
+    "primary": {
+     "estimate": 0.16026062801849483,
+     "ci95": [
+      0.012878178248637254,
+      0.2765537045871734
+     ],
+     "p": 0.034596540345965404,
+     "B": 10000,
+     "method": "iid bootstrap over 7-day blocks of daily totals"
+    },
+    "secondary": {
+     "estimate": 0.16026062801849483,
+     "ci95": [
+      0.05940776522838107,
+      0.2536707080446486
+     ],
+     "p": 0.0057994200579942,
+     "B": 10000,
+     "method": "stationary bootstrap over 7-day blocks of daily totals"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0575942405759424,
+    "verdict_primary_method": "INCONCLUSIVE",
+    "holm_p_secondary": 0.0115988401159884,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": false,
+    "verdict": "INCONCLUSIVE"
+   },
+   "ladder": {
+    "pred__lgbm_l1": {
+     "item_day_wape": 0.6885171785923461,
+     "item_week_wape": 0.4366907689783329,
+     "subset_week_wape": 0.2780969238037133,
+     "subset_day_wape": 0.2822875809715865,
+     "rel_bias": -0.2780969238037133,
+     "mae": 0.9838067399825124,
+     "rmse": 2.1457099442141723,
+     "zero_forecast_share": 0.2991496598639456,
+     "item_day_wape_by_block": [
+      0.6610779211686719,
+      0.6978475519217049,
+      0.6549561789545645,
+      0.6837058907235612,
+      0.6951199601450078,
+      0.749727909489772
+     ]
+    },
+    "pred__lgbm_l2": {
+     "item_day_wape": 0.757950212711329,
+     "item_week_wape": 0.3908581509984012,
+     "subset_week_wape": 0.0473408283880096,
+     "subset_day_wape": 0.09489270790110936,
+     "rel_bias": 0.005651385317352287,
+     "mae": 1.0830180437343613,
+     "rmse": 2.1152891281981905,
+     "zero_forecast_share": 0.0027891156462585033,
+     "item_day_wape_by_block": [
+      0.7298506313081168,
+      0.7526108731925321,
+      0.7104552213026447,
+      0.742373216546532,
+      0.772137077847814,
+      0.8587529781050076
+     ]
+    },
+    "pred__lgbm_tweedie_p11": {
+     "item_day_wape": 0.7396877526788209,
+     "item_week_wape": 0.37586588597715054,
+     "subset_week_wape": 0.055889387959327186,
+     "subset_day_wape": 0.0982901201777878,
+     "rel_bias": -0.01849139127503618,
+     "mae": 1.056923224567503,
+     "rmse": 2.073084540431767,
+     "zero_forecast_share": 0.0,
+     "item_day_wape_by_block": [
+      0.710767514008796,
+      0.738073765144983,
+      0.6964598156919539,
+      0.7256086174728968,
+      0.7530670222257819,
+      0.8310206944837736
+     ]
+    },
+    "base__matched__weekday_mean4": {
+     "item_day_wape": 0.791886857578138,
+     "item_week_wape": 0.39009200409436073,
+     "subset_week_wape": 0.0646498369397034,
+     "subset_day_wape": 0.11300257087766907,
+     "rel_bias": 0.02526541931490871,
+     "mae": 1.1315093537414966,
+     "rmse": 2.239237059925594,
+     "zero_forecast_share": 0.25418367346938775,
+     "item_day_wape_by_block": [
+      0.7633879967338051,
+      0.7893360937609657,
+      0.7315725666782127,
+      0.7667047593439097,
+      0.8189341578755911,
+      0.902450694848964
+     ]
+    },
+    "base__matched__zero": {
+     "item_day_wape": 1.0,
+     "item_week_wape": 1.0,
+     "subset_week_wape": 1.0,
+     "subset_day_wape": 1.0,
+     "rel_bias": -1.0,
+     "mae": 1.4288775510204081,
+     "rmse": 3.496947162280596,
+     "zero_forecast_share": 1.0,
+     "item_day_wape_by_block": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "base__matched__trailing_median14": {
+     "item_day_wape": 0.7337832369254207,
+     "item_week_wape": 0.46323406888999974,
+     "subset_week_wape": 0.21109762193815612,
+     "subset_day_wape": 0.24747078007093717,
+     "rel_bias": -0.21109762193815612,
+     "mae": 1.048486394557823,
+     "rmse": 2.3043695553489347,
+     "zero_forecast_share": 0.5348809523809523,
+     "item_day_wape_by_block": [
+      0.7041031573217202,
+      0.7569303108990104,
+      0.6922064426740561,
+      0.7255982791072869,
+      0.7272462713714077,
+      0.810185570441874
+     ]
+    },
+    "base__fresh__trailing_median14": {
+     "item_day_wape": 0.7174772072651099,
+     "item_week_wape": 0.4650670094503559,
+     "subset_week_wape": 0.2202504225285058,
+     "subset_day_wape": 0.25094622580875525,
+     "rel_bias": -0.2202504225285058,
+     "mae": 1.0251870748299319,
+     "rmse": 2.2606155473811165,
+     "zero_forecast_share": 0.5384523809523809,
+     "item_day_wape_by_block": [
+      0.6860370168753402,
+      0.7457716330970594,
+      0.6770003463803256,
+      0.715918257596128,
+      0.7088759548926883,
+      0.782766081384705
+     ]
+    }
+   },
+   "endpoint_dependence": {
+    "item_day_improvement_vs_matched": 0.06168859692508266,
+    "subset_day_improvement_vs_matched": 0.16026062801849483,
+    "reversed": false
+   },
+   "segments_exploratory": {
+    "frequency=frequent": {
+     "n_series": 46,
+     "improvement": 0.0923448736060718,
+     "ci95": [
+      0.05753772844033969,
+      0.12572617871028266
+     ]
+    },
+    "frequency=intermittent_or_sparse": {
+     "n_series": 304,
+     "improvement": 0.04409514514216584,
+     "ci95": [
+      0.030723441429286725,
+      0.05777037689254841
+     ]
+    },
+    "volume=high": {
+     "n_series": 117,
+     "improvement": 0.07895930082407987,
+     "ci95": [
+      0.05629273355702414,
+      0.1034701237872119
+     ]
+    },
+    "volume=low": {
+     "n_series": 117,
+     "improvement": 0.017117646569996925,
+     "ci95": [
+      -0.0006814758855446468,
+      0.034772495887168006
+     ]
+    },
+    "volume=mid": {
+     "n_series": 116,
+     "improvement": 0.03282295560252413,
+     "ci95": [
+      0.016879506041750245,
+      0.04888135798106244
+     ]
+    }
+   }
+  },
+  "m5_tx1_H28": {
+   "window": "W3",
+   "dataset": "m5_tx1",
+   "H": 28,
+   "n_rows": 58800,
+   "selection": {
+    "model_item_day": "lgbm_l1",
+    "model_subset_day": "lgbm_tweedie_p15",
+    "reference_model": "lgbm_tweedie_p11",
+    "baseline_item_day_matched": "matched__trailing_median91",
+    "baseline_item_day_any": "fresh__trailing_median14",
+    "baseline_subset_day_matched": "matched__weekday_mean8"
+   },
+   "H1": {
+    "label": "model(item-day) vs best matched baseline",
+    "wape_reference": 0.7933751754128949,
+    "wape_model": 0.7762458321933186,
+    "improvement": 0.02159047037318984,
+    "primary": {
+     "estimate": 0.02159047037318984,
+     "ci95": [
+      0.0022611856873228256,
+      0.04141617728794079
+     ],
+     "p": 0.028397160283971604,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.02159047037318984,
+     "ci95": [
+      0.0022611856873228256,
+      0.04141617728794079
+     ],
+     "p": 0.028397160283971604,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.02159047037318984,
+     "ci95": [
+      0.0048629634238399055,
+      0.038317977322539776
+     ],
+     "p": 0.01367578936640057,
+     "se": 0.00808616508846113,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 5,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.028397160283971604,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 0.01367578936640057,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H1b": {
+    "label": "model(item-day) vs best baseline of any information set",
+    "wape_reference": 0.7842768362453159,
+    "wape_model": 0.7762458321933186,
+    "improvement": 0.010240011792832404,
+    "primary": {
+     "estimate": 0.010240011792832404,
+     "ci95": [
+      -0.024996986163646644,
+      0.04176815396436584
+     ],
+     "p": 0.5325467453254674,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.010240011792832404,
+     "ci95": [
+      -0.024996986163646644,
+      0.04176815396436584
+     ],
+     "p": 0.5325467453254674,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.010240011792832404,
+     "ci95": [
+      -0.01733256445309806,
+      0.03781258803876287
+     ],
+     "p": 0.45014577826089774,
+     "se": 0.01332872878868779,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 4,
+    "n_weekly_blocks": 24,
+    "holm_p": 1.0,
+    "verdict_primary_method": "INCONCLUSIVE",
+    "holm_p_secondary": 0.7663012368657627,
+    "verdict_secondary_method": "INCONCLUSIVE",
+    "methods_agree_on_verdict": true,
+    "verdict": "INCONCLUSIVE"
+   },
+   "H2": {
+    "label": "model(item-day) vs reference Tweedie model (p=1.1) refit on the same window",
+    "wape_reference": 0.8788276442961054,
+    "wape_model": 0.7762458321933186,
+    "improvement": 0.11672574567786786,
+    "primary": {
+     "estimate": 0.11672574567786786,
+     "ci95": [
+      0.09304182683873093,
+      0.14175721326902954
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.11672574567786786,
+     "ci95": [
+      0.09304182683873093,
+      0.14175721326902954
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.11672574567786786,
+     "ci95": [
+      0.09481589371342337,
+      0.13863559764231237
+     ],
+     "p": 1.184590203706648e-10,
+     "se": 0.010591338003008727,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 4.738360814826592e-10,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H3": {
+    "label": "model(subset-day) vs best matched baseline on subset-day WAPE",
+    "wape_reference": 0.13112788563850294,
+    "wape_model": 0.10751323955944395,
+    "improvement": 0.18008866660262113,
+    "primary": {
+     "estimate": 0.18008866660262113,
+     "ci95": [
+      0.049739837360579624,
+      0.2907717318193141
+     ],
+     "p": 0.008799120087991202,
+     "B": 10000,
+     "method": "iid bootstrap over 7-day blocks of daily totals"
+    },
+    "secondary": {
+     "estimate": 0.18008866660262113,
+     "ci95": [
+      0.05874534937451463,
+      0.29732814722641016
+     ],
+     "p": 0.0031996800319968005,
+     "B": 10000,
+     "method": "stationary bootstrap over 7-day blocks of daily totals"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.026397360263973605,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 0.009599040095990401,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "ladder": {
+    "pred__lgbm_l1": {
+     "item_day_wape": 0.7762458321933186,
+     "item_week_wape": 0.577117883931742,
+     "subset_week_wape": 0.37356381735654687,
+     "subset_day_wape": 0.37991205408693274,
+     "rel_bias": -0.37356381735654687,
+     "mae": 0.8560750591877573,
+     "rmse": 2.2739166307757923,
+     "zero_forecast_share": 0.47437074829931974,
+     "item_day_wape_by_block": [
+      0.7693981862954169,
+      0.7738080787299809,
+      0.7925658306651803,
+      0.7434145335482417,
+      0.7581851176033996,
+      0.8206214644518002
+     ]
+    },
+    "pred__lgbm_tweedie_p15": {
+     "item_day_wape": 0.8653640377989273,
+     "item_week_wape": 0.5117044806727903,
+     "subset_week_wape": 0.05542248255966737,
+     "subset_day_wape": 0.10751323955944395,
+     "rel_bias": -0.028671184482610503,
+     "mae": 0.9543581931827728,
+     "rmse": 2.1986935652615,
+     "zero_forecast_share": 0.0,
+     "item_day_wape_by_block": [
+      0.8560245628551584,
+      0.8360579970277676,
+      0.8958503979837622,
+      0.8572382538173499,
+      0.8486483251568916,
+      0.9006333348512008
+     ]
+    },
+    "pred__lgbm_tweedie_p11": {
+     "item_day_wape": 0.8788276442961054,
+     "item_week_wape": 0.51872288379025,
+     "subset_week_wape": 0.04386766127725593,
+     "subset_day_wape": 0.10523635320106944,
+     "rel_bias": 0.00042580102849132715,
+     "mae": 0.9692063988039039,
+     "rmse": 2.2054742385495945,
+     "zero_forecast_share": 0.0,
+     "item_day_wape_by_block": [
+      0.8703736899715204,
+      0.8448245806719633,
+      0.8996586487011229,
+      0.873001775225125,
+      0.8615472326491206,
+      0.9259422189076452
+     ]
+    },
+    "base__matched__weekday_mean8": {
+     "item_day_wape": 0.9116150323068145,
+     "item_week_wape": 0.538286273844588,
+     "subset_week_wape": 0.07188458988079634,
+     "subset_day_wape": 0.13112788563850294,
+     "rel_bias": 0.016851203602325473,
+     "mae": 1.0053656462585034,
+     "rmse": 2.3388486732784997,
+     "zero_forecast_share": 0.22064625850340136,
+     "item_day_wape_by_block": [
+      0.9057347670250896,
+      0.9031778898091466,
+      0.9373103546368291,
+      0.8868673148412926,
+      0.8885522812815569,
+      0.9491032021786083
+     ]
+    },
+    "base__matched__zero": {
+     "item_day_wape": 1.0,
+     "item_week_wape": 1.0,
+     "subset_week_wape": 1.0,
+     "subset_day_wape": 1.0,
+     "rel_bias": -1.0,
+     "mae": 1.1028401360544218,
+     "rmse": 3.1566014403248985,
+     "zero_forecast_share": 1.0,
+     "item_day_wape_by_block": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "base__matched__trailing_median91": {
+     "item_day_wape": 0.7933751754128949,
+     "item_week_wape": 0.6039755115888168,
+     "subset_week_wape": 0.3362376054404984,
+     "subset_day_wape": 0.34496584267583696,
+     "rel_bias": -0.3362376054404984,
+     "mae": 0.8749659863945578,
+     "rmse": 2.309489445006978,
+     "zero_forecast_share": 0.7206122448979592,
+     "item_day_wape_by_block": [
+      0.803763440860215,
+      0.7821389989196975,
+      0.8186990328086479,
+      0.7646554189305119,
+      0.7738914899476729,
+      0.8173537421354118
+     ]
+    },
+    "base__fresh__trailing_median14": {
+     "item_day_wape": 0.7842768362453159,
+     "item_week_wape": 0.5645750767190464,
+     "subset_week_wape": 0.24351165050040866,
+     "subset_day_wape": 0.2624176908723611,
+     "rel_bias": -0.24351165050040866,
+     "mae": 0.8649319727891156,
+     "rmse": 2.2701104291518988,
+     "zero_forecast_share": 0.6628571428571428,
+     "item_day_wape_by_block": [
+      0.7921146953405018,
+      0.7829492257832193,
+      0.7992603830836336,
+      0.8029739776951673,
+      0.7369870559074635,
+      0.7925626819419663
+     ]
+    }
+   },
+   "endpoint_dependence": {
+    "item_day_improvement_vs_matched": 0.02159047037318984,
+    "subset_day_improvement_vs_matched": 0.18008866660262113,
+    "reversed": false
+   },
+   "segments_exploratory": {
+    "frequency=frequent": {
+     "n_series": 36,
+     "improvement": 0.04795631920765819,
+     "ci95": [
+      0.0031096500571496074,
+      0.09418598122452958
+     ]
+    },
+    "frequency=intermittent_or_sparse": {
+     "n_series": 314,
+     "improvement": 0.01088416313125129,
+     "ci95": [
+      -0.00834568132106529,
+      0.029322862680365797
+     ]
+    },
+    "volume=high": {
+     "n_series": 117,
+     "improvement": 0.02962821088470957,
+     "ci95": [
+      0.005148328362902527,
+      0.055797702671129
+     ]
+    },
+    "volume=low": {
+     "n_series": 118,
+     "improvement": -0.01675718341322474,
+     "ci95": [
+      -0.038373460006475436,
+      0.00109064937918771
+     ]
+    },
+    "volume=mid": {
+     "n_series": 115,
+     "improvement": 0.006951140912120457,
+     "ci95": [
+      -0.011732582488952648,
+      0.024749901318874407
+     ]
+    }
+   }
+  },
+  "m5_tx1_H7": {
+   "window": "W3",
+   "dataset": "m5_tx1",
+   "H": 7,
+   "n_rows": 58800,
+   "selection": {
+    "model_item_day": "lgbm_l1",
+    "model_subset_day": "lgbm_tweedie_p15",
+    "reference_model": "lgbm_tweedie_p11",
+    "baseline_item_day_matched": "matched__trailing_median28",
+    "baseline_item_day_any": "fresh__trailing_median28",
+    "baseline_subset_day_matched": "matched__weekday_mean8"
+   },
+   "H1": {
+    "label": "model(item-day) vs best matched baseline",
+    "wape_reference": 0.7576140762101562,
+    "wape_model": 0.7264634261257782,
+    "improvement": 0.041116778400164145,
+    "primary": {
+     "estimate": 0.041116778400164145,
+     "ci95": [
+      0.023666395244036218,
+      0.06003867541010569
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.041116778400164145,
+     "ci95": [
+      0.023666395244036218,
+      0.06003867541010569
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.041116778400164145,
+     "ci95": [
+      0.02751567035993574,
+      0.05471788644039255
+     ],
+     "p": 2.216897689866215e-06,
+     "se": 0.006574847365617563,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 8.86759075946486e-06,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H1b": {
+    "label": "model(item-day) vs best baseline of any information set",
+    "wape_reference": 0.745655157524635,
+    "wape_model": 0.7264634261257782,
+    "improvement": 0.025738079064011155,
+    "primary": {
+     "estimate": 0.025738079064011155,
+     "ci95": [
+      0.00984121421647079,
+      0.04323098057020137
+     ],
+     "p": 0.0027997200279972004,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.025738079064011155,
+     "ci95": [
+      0.00984121421647079,
+      0.04323098057020137
+     ],
+     "p": 0.0027997200279972004,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.025738079064011155,
+     "ci95": [
+      0.013669134495916934,
+      0.03780702363210538
+     ],
+     "p": 0.0002018099740954682,
+     "se": 0.0058341914617999115,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.011198880111988802,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 0.0008072398963818728,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H2": {
+    "label": "model(item-day) vs reference Tweedie model (p=1.1) refit on the same window",
+    "wape_reference": 0.8234999631453013,
+    "wape_model": 0.7264634261257782,
+    "improvement": 0.11783429430755377,
+    "primary": {
+     "estimate": 0.11783429430755377,
+     "ci95": [
+      0.09711632747087114,
+      0.1410795712644027
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.11783429430755377,
+     "ci95": [
+      0.09711632747087114,
+      0.1410795712644027
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.11783429430755377,
+     "ci95": [
+      0.0989968614489278,
+      0.13667172716617973
+     ],
+     "p": 4.835243316847482e-12,
+     "se": 0.009106114401798012,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 2.901145990108489e-11,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H3": {
+    "label": "model(subset-day) vs best matched baseline on subset-day WAPE",
+    "wape_reference": 0.13034720187518312,
+    "wape_model": 0.10544596766424079,
+    "improvement": 0.19103773500858934,
+    "primary": {
+     "estimate": 0.19103773500858934,
+     "ci95": [
+      0.07134659059224747,
+      0.300698960030869
+     ],
+     "p": 0.0015998400159984002,
+     "B": 10000,
+     "method": "iid bootstrap over 7-day blocks of daily totals"
+    },
+    "secondary": {
+     "estimate": 0.19103773500858934,
+     "ci95": [
+      0.09097299312227342,
+      0.2931479290578554
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "stationary bootstrap over 7-day blocks of daily totals"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.009599040095990401,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 0.0011998800119988001,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "ladder": {
+    "pred__lgbm_l1": {
+     "item_day_wape": 0.7264634261257782,
+     "item_week_wape": 0.5050889620506848,
+     "subset_week_wape": 0.3589753404227114,
+     "subset_day_wape": 0.3650296574771452,
+     "rel_bias": -0.35897534042271145,
+     "mae": 0.8011730237071146,
+     "rmse": 2.159183193190896,
+     "zero_forecast_share": 0.4608673469387755,
+     "item_day_wape_by_block": [
+      0.7328503053460057,
+      0.7359420390526242,
+      0.7155829261108022,
+      0.7040875809423986,
+      0.7248890778870255,
+      0.7443124369110493
+     ]
+    },
+    "pred__lgbm_tweedie_p15": {
+     "item_day_wape": 0.812208903216871,
+     "item_week_wape": 0.4374047741854139,
+     "subset_week_wape": 0.058262486240105396,
+     "subset_day_wape": 0.10544596766424079,
+     "rel_bias": -0.030890001024363494,
+     "mae": 0.8957365773283067,
+     "rmse": 2.096152217884426,
+     "zero_forecast_share": 0.0,
+     "item_day_wape_by_block": [
+      0.8100846284360518,
+      0.8057286739213286,
+      0.8171699696475602,
+      0.7946861085127912,
+      0.8083193970523991,
+      0.8375230094128399
+     ]
+    },
+    "pred__lgbm_tweedie_p11": {
+     "item_day_wape": 0.8234999631453013,
+     "item_week_wape": 0.441546722328059,
+     "subset_week_wape": 0.05261678307524927,
+     "subset_day_wape": 0.10422577183703456,
+     "rel_bias": -0.0069542625388895885,
+     "mae": 0.9081888113959754,
+     "rmse": 2.0971515694926426,
+     "zero_forecast_share": 0.0,
+     "item_day_wape_by_block": [
+      0.8171653490349581,
+      0.8121850068438973,
+      0.8263625551033066,
+      0.8122153603079437,
+      0.8203468092610444,
+      0.8534488791849514
+     ]
+    },
+    "base__matched__weekday_mean8": {
+     "item_day_wape": 0.8732844233349268,
+     "item_week_wape": 0.4788444338211482,
+     "subset_week_wape": 0.07863316730149429,
+     "subset_day_wape": 0.13034720187518312,
+     "rel_bias": 0.013048020725708206,
+     "mae": 0.9630931122448979,
+     "rmse": 2.2561696755822704,
+     "zero_forecast_share": 0.223078231292517,
+     "item_day_wape_by_block": [
+      0.8729838709677419,
+      0.8654123154483255,
+      0.8886426133131045,
+      0.8507887713278048,
+      0.8443610575599009,
+      0.918349140764391
+     ]
+    },
+    "base__matched__zero": {
+     "item_day_wape": 1.0,
+     "item_week_wape": 1.0,
+     "subset_week_wape": 1.0,
+     "subset_day_wape": 1.0,
+     "rel_bias": -1.0,
+     "mae": 1.1028401360544218,
+     "rmse": 3.1566014403248985,
+     "zero_forecast_share": 1.0,
+     "item_day_wape_by_block": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "base__matched__trailing_median28": {
+     "item_day_wape": 0.7576140762101562,
+     "item_week_wape": 0.5369099572840687,
+     "subset_week_wape": 0.30712292010424536,
+     "subset_day_wape": 0.31705398861936557,
+     "rel_bias": -0.30712292010424536,
+     "mae": 0.8355272108843538,
+     "rmse": 2.2487165651713847,
+     "zero_forecast_share": 0.693469387755102,
+     "item_day_wape_by_block": [
+      0.7615591397849463,
+      0.7639539070939864,
+      0.7549781907832354,
+      0.7441616623772758,
+      0.7289543743688608,
+      0.7920462015212696
+     ]
+    },
+    "base__fresh__trailing_median28": {
+     "item_day_wape": 0.745655157524635,
+     "item_week_wape": 0.5296698382346138,
+     "subset_week_wape": 0.3112480145573427,
+     "subset_day_wape": 0.32097861119249926,
+     "rel_bias": -0.3112480145573427,
+     "mae": 0.8223384353741496,
+     "rmse": 2.223275721086521,
+     "zero_forecast_share": 0.6932142857142857,
+     "item_day_wape_by_block": [
+      0.7438172043010752,
+      0.7535109830752611,
+      0.7458278020102409,
+      0.7333905252120866,
+      0.7257872027907831,
+      0.7716217485209879
+     ]
+    }
+   },
+   "endpoint_dependence": {
+    "item_day_improvement_vs_matched": 0.041116778400164145,
+    "subset_day_improvement_vs_matched": 0.19103773500858934,
+    "reversed": false
+   },
+   "segments_exploratory": {
+    "frequency=frequent": {
+     "n_series": 36,
+     "improvement": 0.07227793247457137,
+     "ci95": [
+      0.03728937176271699,
+      0.11456893228403561
+     ]
+    },
+    "frequency=intermittent_or_sparse": {
+     "n_series": 314,
+     "improvement": 0.028953381350461438,
+     "ci95": [
+      0.011541167088830356,
+      0.04583814652643497
+     ]
+    },
+    "volume=high": {
+     "n_series": 117,
+     "improvement": 0.05194296835348444,
+     "ci95": [
+      0.029978984829653027,
+      0.07408900047502372
+     ]
+    },
+    "volume=low": {
+     "n_series": 118,
+     "improvement": -0.0034380638882081094,
+     "ci95": [
+      -0.02358863179833518,
+      0.012812315256104094
+     ]
+    },
+    "volume=mid": {
+     "n_series": 115,
+     "improvement": 0.02053336315542753,
+     "ci95": [
+      -0.00024229725373733343,
+      0.0404021780341889
+     ]
+    }
+   }
+  },
+  "m5_wi1_H28": {
+   "window": "W3",
+   "dataset": "m5_wi1",
+   "H": 28,
+   "n_rows": 58632,
+   "selection": {
+    "model_item_day": "lgbm_l1",
+    "model_subset_day": "lgbm_l2",
+    "reference_model": "lgbm_tweedie_p11",
+    "baseline_item_day_matched": "matched__trailing_median56",
+    "baseline_item_day_any": "fresh__trailing_median28",
+    "baseline_subset_day_matched": "matched__weekday_mean4"
+   },
+   "H1": {
+    "label": "model(item-day) vs best matched baseline",
+    "wape_reference": 0.8002037080774681,
+    "wape_model": 0.7644620513607989,
+    "improvement": 0.04466569744164328,
+    "primary": {
+     "estimate": 0.04466569744164328,
+     "ci95": [
+      0.027269687047779163,
+      0.062410658165898004
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.04466569744164328,
+     "ci95": [
+      0.027269687047779163,
+      0.062410658165898004
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.04466569744164328,
+     "ci95": [
+      0.029518408156697103,
+      0.05981298672658946
+     ],
+     "p": 3.1943594809291653e-06,
+     "se": 0.007322279534638789,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 9.583078442787496e-06,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H1b": {
+    "label": "model(item-day) vs best baseline of any information set",
+    "wape_reference": 0.7705774681152574,
+    "wape_model": 0.7644620513607989,
+    "improvement": 0.007936147898816914,
+    "primary": {
+     "estimate": 0.007936147898816914,
+     "ci95": [
+      -0.009507249418363973,
+      0.024639192406875038
+     ],
+     "p": 0.37376262373762625,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.007936147898816914,
+     "ci95": [
+      -0.009507249418363973,
+      0.024639192406875038
+     ],
+     "p": 0.37376262373762625,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.007936147898816914,
+     "ci95": [
+      -0.006139801071232397,
+      0.022012096868866224
+     ],
+     "p": 0.2554337456219209,
+     "se": 0.006804387975638918,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 5,
+    "n_weekly_blocks": 24,
+    "holm_p": 1.0,
+    "verdict_primary_method": "INCONCLUSIVE",
+    "holm_p_secondary": 0.7663012368657627,
+    "verdict_secondary_method": "INCONCLUSIVE",
+    "methods_agree_on_verdict": true,
+    "verdict": "INCONCLUSIVE"
+   },
+   "H2": {
+    "label": "model(item-day) vs reference Tweedie model (p=1.1) refit on the same window",
+    "wape_reference": 0.841107144930917,
+    "wape_model": 0.7644620513607989,
+    "improvement": 0.09112405480328345,
+    "primary": {
+     "estimate": 0.09112405480328345,
+     "ci95": [
+      0.07244162815490268,
+      0.11118636546818796
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.09112405480328345,
+     "ci95": [
+      0.07244162815490268,
+      0.11118636546818796
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.09112405480328345,
+     "ci95": [
+      0.0735964076517237,
+      0.1086517019548432
+     ],
+     "p": 1.9039436693901735e-10,
+     "se": 0.008472957082544544,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 5.71183100817052e-10,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H3": {
+    "label": "model(subset-day) vs best matched baseline on subset-day WAPE",
+    "wape_reference": 0.11006509801606046,
+    "wape_model": 0.09518663069908151,
+    "improvement": 0.13517879496012364,
+    "primary": {
+     "estimate": 0.13517879496012364,
+     "ci95": [
+      0.04759593100584441,
+      0.21246265991208685
+     ],
+     "p": 0.004399560043995601,
+     "B": 10000,
+     "method": "iid bootstrap over 7-day blocks of daily totals"
+    },
+    "secondary": {
+     "estimate": 0.13517879496012364,
+     "ci95": [
+      0.06081708473073469,
+      0.2127366278355307
+     ],
+     "p": 0.0007999200079992001,
+     "B": 10000,
+     "method": "stationary bootstrap over 7-day blocks of daily totals"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.017598240175982403,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 0.0031996800319968005,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "ladder": {
+    "pred__lgbm_l1": {
+     "item_day_wape": 0.7644620513607989,
+     "item_week_wape": 0.5211418022257002,
+     "subset_week_wape": 0.3221618235767865,
+     "subset_day_wape": 0.32486634914772516,
+     "rel_bias": -0.3221618235767865,
+     "mae": 0.8832671102364914,
+     "rmse": 1.8552673912091946,
+     "zero_forecast_share": 0.3744371674171101,
+     "item_day_wape_by_block": [
+      0.7203324828677884,
+      0.7319095452106739,
+      0.7794810312292592,
+      0.7872365880468082,
+      0.7911205253291198,
+      0.7792837639942111
+     ]
+    },
+    "pred__lgbm_l2": {
+     "item_day_wape": 0.8555603838050452,
+     "item_week_wape": 0.46140838150847624,
+     "subset_week_wape": 0.04812881832193744,
+     "subset_day_wape": 0.09518663069908151,
+     "rel_bias": 0.0348428033497213,
+     "mae": 0.9885230358931809,
+     "rmse": 1.8007814089608896,
+     "zero_forecast_share": 0.0014497202892618365,
+     "item_day_wape_by_block": [
+      0.8013376838030142,
+      0.8211001960075301,
+      0.8642829114568746,
+      0.8617618472573604,
+      0.9102603879355359,
+      0.8786552676208245
+     ]
+    },
+    "pred__lgbm_tweedie_p11": {
+     "item_day_wape": 0.841107144930917,
+     "item_week_wape": 0.44976749615810707,
+     "subset_week_wape": 0.04776063429470759,
+     "subset_day_wape": 0.0975089718846194,
+     "rel_bias": 0.011803442081073302,
+     "mae": 0.9718236189486977,
+     "rmse": 1.7871717927628858,
+     "zero_forecast_share": 0.0,
+     "item_day_wape_by_block": [
+      0.786639817726613,
+      0.8094007992628243,
+      0.8465251980879843,
+      0.8561847261873745,
+      0.89512836230791,
+      0.8564640584335094
+     ]
+    },
+    "base__matched__weekday_mean4": {
+     "item_day_wape": 0.8984448807274446,
+     "item_week_wape": 0.47648869272555505,
+     "subset_week_wape": 0.055322242560226734,
+     "subset_day_wape": 0.11006509801606046,
+     "rel_bias": 0.02305370217288616,
+     "mae": 1.0380722131259381,
+     "rmse": 1.990561743250085,
+     "zero_forecast_share": 0.2801882930822759,
+     "item_day_wape_by_block": [
+      0.8532385195339274,
+      0.8566628601546029,
+      0.9160264900662252,
+      0.9087158781708067,
+      0.9383505715841045,
+      0.9210358056265985
+     ]
+    },
+    "base__matched__zero": {
+     "item_day_wape": 1.0,
+     "item_week_wape": 1.0,
+     "subset_week_wape": 1.0,
+     "subset_day_wape": 1.0,
+     "rel_bias": -1.0,
+     "mae": 1.1554100150088689,
+     "rmse": 2.7116569916442095,
+     "zero_forecast_share": 1.0,
+     "item_day_wape_by_block": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "base__matched__trailing_median56": {
+     "item_day_wape": 0.8002037080774681,
+     "item_week_wape": 0.5608319555975437,
+     "subset_week_wape": 0.28045288143599434,
+     "subset_day_wape": 0.29714808691544636,
+     "rel_bias": -0.28045288143599434,
+     "mae": 0.92456337835994,
+     "rmse": 1.9533527718872203,
+     "zero_forecast_share": 0.611781962068495,
+     "item_day_wape_by_block": [
+      0.7248115147361206,
+      0.7457835558678847,
+      0.8279470198675497,
+      0.8244974984639691,
+      0.8584195245871893,
+      0.8245798319327731
+     ]
+    },
+    "base__fresh__trailing_median28": {
+     "item_day_wape": 0.7705774681152574,
+     "item_week_wape": 0.5183042040623523,
+     "subset_week_wape": 0.2649090694378838,
+     "subset_day_wape": 0.2817371280113368,
+     "rel_bias": -0.2649090694378838,
+     "mae": 0.8903329240005458,
+     "rmse": 1.8968622430788626,
+     "zero_forecast_share": 0.5912129894937918,
+     "item_day_wape_by_block": [
+      0.7306374228923921,
+      0.7383169360505973,
+      0.7777483443708609,
+      0.8051435091722988,
+      0.7916893485755762,
+      0.7820606503470954
+     ]
+    }
+   },
+   "endpoint_dependence": {
+    "item_day_improvement_vs_matched": 0.04466569744164328,
+    "subset_day_improvement_vs_matched": 0.13517879496012364,
+    "reversed": false
+   },
+   "segments_exploratory": {
+    "frequency=frequent": {
+     "n_series": 35,
+     "improvement": 0.06604461531342931,
+     "ci95": [
+      0.03159494344240282,
+      0.10187288763248886
+     ]
+    },
+    "frequency=intermittent_or_sparse": {
+     "n_series": 314,
+     "improvement": 0.035888497624281146,
+     "ci95": [
+      0.019050577192342717,
+      0.05297799029138856
+     ]
+    },
+    "volume=high": {
+     "n_series": 116,
+     "improvement": 0.05616229763494951,
+     "ci95": [
+      0.03309239602989354,
+      0.08132092519692245
+     ]
+    },
+    "volume=low": {
+     "n_series": 118,
+     "improvement": 0.018044098772381223,
+     "ci95": [
+      -0.007920844394489058,
+      0.04421561085504527
+     ]
+    },
+    "volume=mid": {
+     "n_series": 115,
+     "improvement": 0.024889256842103635,
+     "ci95": [
+      0.001729696897435257,
+      0.04823506202130879
+     ]
+    }
+   }
+  },
+  "m5_wi1_H7": {
+   "window": "W3",
+   "dataset": "m5_wi1",
+   "H": 7,
+   "n_rows": 58632,
+   "selection": {
+    "model_item_day": "lgbm_l1",
+    "model_subset_day": "lgbm_l2",
+    "reference_model": "lgbm_tweedie_p11",
+    "baseline_item_day_matched": "matched__trailing_median28",
+    "baseline_item_day_any": "fresh__trailing_median28",
+    "baseline_subset_day_matched": "matched__weekday_mean8"
+   },
+   "H1": {
+    "label": "model(item-day) vs best matched baseline",
+    "wape_reference": 0.7507971185640057,
+    "wape_model": 0.7170145207152013,
+    "improvement": 0.04499564131708156,
+    "primary": {
+     "estimate": 0.04499564131708156,
+     "ci95": [
+      0.031232375522146423,
+      0.05985061624085662
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.04499564131708156,
+     "ci95": [
+      0.031232375522146423,
+      0.05985061624085662
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.04499564131708156,
+     "ci95": [
+      0.03369609037225141,
+      0.05629519226191171
+     ],
+     "p": 2.5867952890834545e-08,
+     "se": 0.005462262526151535,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 1.2933976445417272e-07,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H1b": {
+    "label": "model(item-day) vs best baseline of any information set",
+    "wape_reference": 0.7410176547000472,
+    "wape_model": 0.7170145207152013,
+    "improvement": 0.03239212160817151,
+    "primary": {
+     "estimate": 0.03239212160817151,
+     "ci95": [
+      0.020050487470011834,
+      0.04495017108219178
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.03239212160817151,
+     "ci95": [
+      0.020050487470011834,
+      0.04495017108219178
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.03239212160817151,
+     "ci95": [
+      0.023395213686475385,
+      0.04138902952986763
+     ],
+     "p": 1.4302645068298148e-07,
+     "se": 0.004349152743490315,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 8.581587040978889e-07,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H2": {
+    "label": "model(item-day) vs reference Tweedie model (p=1.1) refit on the same window",
+    "wape_reference": 0.7892011475126228,
+    "wape_model": 0.7170145207152013,
+    "improvement": 0.09146796988947226,
+    "primary": {
+     "estimate": 0.09146796988947226,
+     "ci95": [
+      0.07548098500482867,
+      0.10917946636907155
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "crossed_bootstrap": {
+     "estimate": 0.09146796988947226,
+     "ci95": [
+      0.07548098500482867,
+      0.10917946636907155
+     ],
+     "p": 0.00019998000199980003,
+     "B": 10000,
+     "method": "crossed bootstrap (series x 7-day blocks)"
+    },
+    "cgm_t": {
+     "estimate": 0.09146796988947226,
+     "ci95": [
+      0.0762794673170181,
+      0.10665647246192642
+     ],
+     "p": 1.043076736095827e-11,
+     "se": 0.007342202255199412,
+     "df": 23,
+     "method": "two-way cluster-robust delta method, t(G-1)"
+    },
+    "blocks_won": 6,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0011998800119988001,
+    "verdict_primary_method": "SUPPORTED",
+    "holm_p_secondary": 5.2153836804791354e-11,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": true,
+    "verdict": "SUPPORTED"
+   },
+   "H3": {
+    "label": "model(subset-day) vs best matched baseline on subset-day WAPE",
+    "wape_reference": 0.10555362836561172,
+    "wape_model": 0.09320571841209935,
+    "improvement": 0.11698233537498359,
+    "primary": {
+     "estimate": 0.11698233537498359,
+     "ci95": [
+      0.013547594638144131,
+      0.20887131379975105
+     ],
+     "p": 0.0287971202879712,
+     "B": 10000,
+     "method": "iid bootstrap over 7-day blocks of daily totals"
+    },
+    "secondary": {
+     "estimate": 0.11698233537498359,
+     "ci95": [
+      0.030731950070481694,
+      0.18729858599540608
+     ],
+     "p": 0.0115988401159884,
+     "B": 10000,
+     "method": "stationary bootstrap over 7-day blocks of daily totals"
+    },
+    "blocks_won": 4,
+    "n_weekly_blocks": 24,
+    "holm_p": 0.0575942405759424,
+    "verdict_primary_method": "INCONCLUSIVE",
+    "holm_p_secondary": 0.0115988401159884,
+    "verdict_secondary_method": "SUPPORTED",
+    "methods_agree_on_verdict": false,
+    "verdict": "INCONCLUSIVE"
+   },
+   "ladder": {
+    "pred__lgbm_l1": {
+     "item_day_wape": 0.7170145207152013,
+     "item_week_wape": 0.4497789864819166,
+     "subset_week_wape": 0.3059073358030256,
+     "subset_day_wape": 0.3092768305262841,
+     "rel_bias": -0.3059073358030256,
+     "mae": 0.8284457581411276,
+     "rmse": 1.760420380507402,
+     "zero_forecast_share": 0.3934370309728476,
+     "item_day_wape_by_block": [
+      0.6849245856706174,
+      0.7045655481411316,
+      0.724745175821048,
+      0.7288228559232968,
+      0.7463094812909439,
+      0.7143931960950156
+     ]
+    },
+    "pred__lgbm_l2": {
+     "item_day_wape": 0.8078425135810089,
+     "item_week_wape": 0.39442194170844613,
+     "subset_week_wape": 0.03932603395277054,
+     "subset_day_wape": 0.09320571841209935,
+     "rel_bias": 0.024994823273622464,
+     "mae": 0.9333893307414359,
+     "rmse": 1.735171719360754,
+     "zero_forecast_share": 0.0022513303315595578,
+     "item_day_wape_by_block": [
+      0.7722959686655549,
+      0.7955206857054368,
+      0.8158820201101288,
+      0.8188082958139753,
+      0.833893252681767,
+      0.8125976420060792
+     ]
+    },
+    "pred__lgbm_tweedie_p11": {
+     "item_day_wape": 0.7892011475126228,
+     "item_week_wape": 0.3783610698117195,
+     "subset_week_wape": 0.03515082195158655,
+     "subset_day_wape": 0.09241886003880566,
+     "rel_bias": 0.0037087579853404343,
+     "mae": 0.911850909692576,
+     "rmse": 1.7088906401414028,
+     "zero_forecast_share": 0.0,
+     "item_day_wape_by_block": [
+      0.7563459644015674,
+      0.7820002203389596,
+      0.7947572183990995,
+      0.8118612086081584,
+      0.8168021353714356,
+      0.7746007077233096
+     ]
+    },
+    "base__matched__weekday_mean8": {
+     "item_day_wape": 0.8391684134388285,
+     "item_week_wape": 0.42086568552196507,
+     "subset_week_wape": 0.05365604333963155,
+     "subset_day_wape": 0.10555362836561172,
+     "rel_bias": 0.01912900035427492,
+     "mae": 0.9695835891663256,
+     "rmse": 1.819495222461992,
+     "zero_forecast_share": 0.16632555601036977,
+     "item_day_wape_by_block": [
+      0.7938442426319396,
+      0.8102270730850316,
+      0.85341059602649,
+      0.8416461862547178,
+      0.8802508619125385,
+      0.85891258677384
+     ]
+    },
+    "base__matched__zero": {
+     "item_day_wape": 1.0,
+     "item_week_wape": 1.0,
+     "subset_week_wape": 1.0,
+     "subset_day_wape": 1.0,
+     "rel_bias": -1.0,
+     "mae": 1.1554100150088689,
+     "rmse": 2.7116569916442095,
+     "zero_forecast_share": 1.0,
+     "item_day_wape_by_block": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "base__matched__trailing_median28": {
+     "item_day_wape": 0.7507971185640057,
+     "item_week_wape": 0.4819319792158715,
+     "subset_week_wape": 0.2654404818138876,
+     "subset_day_wape": 0.28290328294756734,
+     "rel_bias": -0.2654404818138876,
+     "mae": 0.8674785100286533,
+     "rmse": 1.8482543493033974,
+     "zero_forecast_share": 0.591622322281348,
+     "item_day_wape_by_block": [
+      0.7072052775873886,
+      0.7249209416725229,
+      0.7610154525386313,
+      0.7809619942069692,
+      0.771094175285792,
+      0.7617829740591889
+     ]
+    },
+    "base__fresh__trailing_median28": {
+     "item_day_wape": 0.7410176547000472,
+     "item_week_wape": 0.47854422531884744,
+     "subset_week_wape": 0.2660973665564478,
+     "subset_day_wape": 0.28398824988190835,
+     "rel_bias": -0.2660973665564478,
+     "mae": 0.8561792195388184,
+     "rmse": 1.8307759330742128,
+     "zero_forecast_share": 0.5922874880611271,
+     "item_day_wape_by_block": [
+      0.7002227553118574,
+      0.7146433591004919,
+      0.7501545253863134,
+      0.7690248398139208,
+      0.7670114316820904,
+      0.7471684325904274
+     ]
+    }
+   },
+   "endpoint_dependence": {
+    "item_day_improvement_vs_matched": 0.04499564131708156,
+    "subset_day_improvement_vs_matched": 0.11698233537498359,
+    "reversed": false
+   },
+   "segments_exploratory": {
+    "frequency=frequent": {
+     "n_series": 35,
+     "improvement": 0.05744533322335088,
+     "ci95": [
+      0.032294414920456094,
+      0.08454989766920439
+     ]
+    },
+    "frequency=intermittent_or_sparse": {
+     "n_series": 314,
+     "improvement": 0.03998404297029923,
+     "ci95": [
+      0.025708394699463837,
+      0.05512498098670939
+     ]
+    },
+    "volume=high": {
+     "n_series": 116,
+     "improvement": 0.05724556039832951,
+     "ci95": [
+      0.03850479454064844,
+      0.07879045303426267
+     ]
+    },
+    "volume=low": {
+     "n_series": 118,
+     "improvement": 0.01896641453296677,
+     "ci95": [
+      -0.00038997922691831876,
+      0.03959680796709127
+     ]
+    },
+    "volume=mid": {
+     "n_series": 115,
+     "improvement": 0.024084136065397277,
+     "ci95": [
+      0.007537765790763049,
+      0.04072295701449472
+     ]
+    }
+   }
+  }
+ },
+ "holm_adjusted_p": {
+  "H1": {
+   "m5_ca1_H28": 0.0011998800119988001,
+   "m5_ca1_H7": 0.0011998800119988001,
+   "m5_tx1_H28": 0.028397160283971604,
+   "m5_tx1_H7": 0.0011998800119988001,
+   "m5_wi1_H28": 0.0011998800119988001,
+   "m5_wi1_H7": 0.0011998800119988001
+  },
+  "H1b": {
+   "m5_ca1_H28": 1.0,
+   "m5_ca1_H7": 0.0011998800119988001,
+   "m5_tx1_H28": 1.0,
+   "m5_tx1_H7": 0.011198880111988802,
+   "m5_wi1_H28": 1.0,
+   "m5_wi1_H7": 0.0011998800119988001
+  },
+  "H2": {
+   "m5_ca1_H28": 0.0011998800119988001,
+   "m5_ca1_H7": 0.0011998800119988001,
+   "m5_tx1_H28": 0.0011998800119988001,
+   "m5_tx1_H7": 0.0011998800119988001,
+   "m5_wi1_H28": 0.0011998800119988001,
+   "m5_wi1_H7": 0.0011998800119988001
+  },
+  "H3": {
+   "m5_ca1_H28": 0.010998900109989003,
+   "m5_ca1_H7": 0.0575942405759424,
+   "m5_tx1_H28": 0.026397360263973605,
+   "m5_tx1_H7": 0.009599040095990401,
+   "m5_wi1_H28": 0.017598240175982403,
+   "m5_wi1_H7": 0.0575942405759424
+  }
+ },
+ "primary_method_item_day": "PH",
+ "primary_method_subset_day": "iid",
+ "B": 10000,
+ "min_gain": 0.02
+}

@@ -1,0 +1,194 @@
+{
+ "Kolassa2016": {
+  "paperId": "2ba434f425622a3c9cdb784238786f0b417b0ac8",
+  "title": "Evaluating predictive count data distributions in retail sales forecasting",
+  "venue": "",
+  "year": 2016,
+  "openAccessPdf": {
+   "url": "",
+   "status": "CLOSED",
+   "license": null,
+   "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.1016/J.IJFORECAST.2015.12.004?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/J.IJFORECAST.2015.12.004, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2650950",
+    "name": "S. Kolassa"
+   }
+  ],
+  "abstract": null
+ },
+ "Kourentzes2014": {
+  "paperId": "d972830e00865b6fb990b0bbc3e42f2a9b0a820c",
+  "title": "On intermittent demand model optimisation and selection",
+  "venue": "",
+  "year": 2014,
+  "openAccessPdf": {
+   "url": "https://eprints.lancs.ac.uk/id/eprint/69640/1/Kourentzes_2013_Intermittent_Optimisation.pdf",
+   "status": "GREEN",
+   "license": null,
+   "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.1016/J.IJPE.2014.06.007?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/J.IJPE.2014.06.007, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "1822417",
+    "name": "N. Kourentzes"
+   }
+  ],
+  "abstract": null
+ },
+ "Januschowski2022": {
+  "paperId": "4868abcbf67e190313a5d9df2550b29e6c287e04",
+  "title": "Forecasting with trees",
+  "venue": "International Journal of Forecasting",
+  "year": 2021,
+  "openAccessPdf": {
+   "url": "https://www.sciencedirect.com/science/article/pii/S0169207021001679/pdf",
+   "status": "HYBRID",
+   "license": "CCBYNCND",
+   "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/j.ijforecast.2021.10.004?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/j.ijforecast.2021.10.004, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2166235",
+    "name": "Tim Januschowski"
+   },
+   {
+    "authorId": "49416149",
+    "name": "Bernie Wang"
+   },
+   {
+    "authorId": "1770190",
+    "name": "K. Torkkola"
+   },
+   {
+    "authorId": "2761410",
+    "name": "Timo Erkkilä"
+   },
+   {
+    "authorId": "31743390",
+    "name": "Hilaf Hasson"
+   },
+   {
+    "authorId": "2113062",
+    "name": "Jan Gasthaus"
+   }
+  ],
+  "abstract": null
+ },
+ "Bojer2021": {
+  "paperId": "f0ca0c9b42c69f7a983941806196e93ec5a711c0",
+  "title": "Kaggle forecasting competitions: An overlooked learning opportunity",
+  "venue": "International Journal of Forecasting",
+  "year": 2020,
+  "openAccessPdf": {
+   "url": "https://arxiv.org/pdf/2009.07701",
+   "status": "GREEN",
+   "license": null,
+   "disclaimer": "Notice: Paper or abstract available at https://arxiv.org/abs/2009.07701, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "1412402505",
+    "name": "Casper Solheim Bojer"
+   },
+   {
+    "authorId": "1945519965",
+    "name": "Jens Peder Meldgaard"
+   }
+  ],
+  "abstract": "Abstract We review the results of six forecasting competitions based on the online data science platform Kaggle, which have been largely overlooked by the forecasting community. In contrast to the M competitions, the competitions reviewed in this study feature daily and weekly time series with exogenous variables, business hierarchy information, or both. Furthermore, the Kaggle data sets all exhibit higher entropy than the M3 and M4 competitions, and they are intermittent. In this review, we confirm the conclusion of the M4 competition that ensemble models using cross-learning tend to outperform local time series models and that gradient boosted decision trees and neural networks are strong forecast methods. Moreover, we present insights regarding the use of external information and validation strategies, and discuss the impacts of data characteristics on the choice of statistics or machine learning methods. Based on these insights, we construct nine ex-ante hypotheses for the outcome of the M5 competition to allow empirical validation of our findings."
+ },
+ "Spiliotis2022": {
+  "paperId": "fe9ac1b42df750a1112e64258e79fa437f428366",
+  "title": "Comparison of statistical and machine learning methods for daily SKU demand forecasting",
+  "venue": "Operational Research",
+  "year": 2020,
+  "openAccessPdf": {
+   "url": "",
+   "status": null,
+   "license": null,
+   "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.1007/s12351-020-00605-2?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1007/s12351-020-00605-2, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2146553",
+    "name": "Evangelos Spiliotis"
+   },
+   {
+    "authorId": "2276105",
+    "name": "S. Makridakis"
+   },
+   {
+    "authorId": "2079491668",
+    "name": "Artemios-Anargyros Semenoglou"
+   },
+   {
+    "authorId": "90170330",
+    "name": "Vassilios Assimakopoulos"
+   }
+  ],
+  "abstract": null
+ },
+ "HyndmanKoehler2006": {
+  "paperId": "784f972682a958d65a6d48b2c8025736caa45fb4",
+  "title": "Another look at measures of forecast accuracy",
+  "venue": "",
+  "year": 2006,
+  "openAccessPdf": {
+   "url": "https://figshare.com/articles/journal_contribution/Another_look_at_measures_of_forecast_accuracy/5091436",
+   "status": "GREEN",
+   "license": "CCBY",
+   "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/J.IJFORECAST.2006.03.001?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/J.IJFORECAST.2006.03.001, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "145211352",
+    "name": "Rob J Hyndman"
+   },
+   {
+    "authorId": "143694423",
+    "name": "A. Koehler"
+   }
+  ],
+  "abstract": "We discuss and compare measures of accuracy of univariate time series forecasts. The methods used in the M-competition and the M3-competition, and many of the measures recommended by previous authors on this topic, are found to be inadequate, and many of them are degenerate in commonly occurring situations. Instead, we propose that the mean absolute scaled error become the standard measure for comparing forecast accuracy across multiple time series."
+ },
+ "Kolassa2020": {
+  "paperId": "33fb6ec48780bbf85d2396ce58583baa57d28f0f",
+  "title": "Why the “best” point forecast depends on the error or accuracy measure",
+  "venue": "",
+  "year": 2020,
+  "openAccessPdf": {
+   "url": "https://doi.org/10.1016/j.ijforecast.2019.02.017",
+   "status": "HYBRID",
+   "license": "CCBY",
+   "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/J.IJFORECAST.2019.02.017?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/J.IJFORECAST.2019.02.017, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2650950",
+    "name": "S. Kolassa"
+   }
+  ],
+  "abstract": null
+ },
+ "Gneiting2011": {
+  "paperId": "06f682919eafa8adbcc1b7bec23516cb962e7b22",
+  "title": "Making and Evaluating Point Forecasts",
+  "venue": "",
+  "year": 2009,
+  "openAccessPdf": {
+   "url": "http://arxiv.org/pdf/0912.0902.pdf",
+   "status": "GREEN",
+   "license": null,
+   "disclaimer": "Notice: Paper or abstract available at https://arxiv.org/abs/0912.0902, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "1839473",
+    "name": "T. Gneiting"
+   }
+  ],
+  "abstract": "Typically, point forecasting methods are compared and assessed by means of an error measure or scoring function, with the absolute error and the squared error being key examples. The individual scores are averaged over forecast cases, to result in a summary measure of the predictive performance, such as the mean absolute error or the mean squared error. I demonstrate that this common practice can lead to grossly misguided inferences, unless the scoring function and the forecasting task are carefully matched. Effective point forecasting requires that the scoring function be specified ex ante, or that the forecaster receives a directive in the form of a statistical functional, such as the mean or a quantile of the predictive distribution. If the scoring function is specified ex ante, the forecaster can issue the optimal point forecast, namely, the Bayes rule. If the forecaster receives a directive in the form of a functional, it is critical that the scoring function be consistent for it, in the sense that the expected score is minimized when following the directive. A functional is elicitable if there exists a scoring function that is strictly consistent for it. Expectations, ratios of expectations and quantiles are elicitable. For example, a scoring function is consistent for the mean functional if and only if it is a Bregman function. It is consistent for a quantile if and only if it is generalized piecewise linear. Similar characterizations apply to ratios of expectations and to expectiles. Weighted scoring functions are consistent for functionals that adapt to the weighting in peculiar ways. Not all functionals are elicitable; for instance, conditional value-at-risk is not, despite its popularity in quantitative finance."
+ }
+}

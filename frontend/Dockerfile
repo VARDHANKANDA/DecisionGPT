@@ -8,6 +8,7 @@ FROM node:24-trixie-slim AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN mkdir -p /app/public
 # Baked in at build time — Next.js inlines NEXT_PUBLIC_* into the client
 # bundle, so this must be set for the browser to reach the backend. The same value
 # also fixes the Content-Security-Policy `connect-src` (next.config.ts).

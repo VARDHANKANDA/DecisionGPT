@@ -1,0 +1,242 @@
+{
+ "L01": {
+  "title": "Making and Evaluating Point Forecasts",
+  "year": 2011,
+  "first_page": "746",
+  "last_page": "762",
+  "volume": "106",
+  "abstract": "Typically, point forecasting methods are compared and assessed by means of an error measure or scoring function, with the absolute error and the squared error being key examples. The individual scores are averaged over forecast cases, to result in a summary measure of the predictive performance, such as the mean absolute error or the mean squared error. I demonstrate that this common practice can lead to grossly misguided inferences, unless the scoring function and the forecasting task are carefully matched. Effective point forecasting requires that the scoring function be specified ex ante, or that the forecaster receives a directive in the form of a statistical functional, such as the mean or a quantile of the predictive distribution. If the scoring function is specified ex ante, the forecaster can issue the optimal point forecast, namely, the Bayes rule. If the forecaster receives a directive in the form of a functional, it is critical that the scoring function be consistent for it, in the sense that the expected score is minimized when following the directive. A functional is elicitable if there exists a scoring function that is strictly consistent for it. Expectations, ratios of expectations and quantiles are elicitable. For example, a scoring function is consistent for the mean functional if and only if it is a Bregman function. It is consistent for a quantile if and only if it is generalized piecewise linear. Similar characterizations apply to ratios of expectations and to expectiles. Weighted scoring functions are consistent for functionals that adapt to the weighting in peculiar ways. Not all functionals are elicitable; for instance, conditional value-at-risk is not, despite its popularity in quantitative finance."
+ },
+ "L02": {
+  "title": "Why the “best” point forecast depends on the error or accuracy measure",
+  "year": 2019,
+  "first_page": "208",
+  "last_page": "211",
+  "volume": "36",
+  "abstract": "Invited commentary on the M4 forecasting competition"
+ },
+ "L03": {
+  "title": "Evaluating predictive count data distributions in retail sales forecasting",
+  "year": 2016,
+  "first_page": "788",
+  "last_page": "803",
+  "volume": "32",
+  "abstract": ""
+ },
+ "L04": {
+  "title": "Mean-based error measures for intermittent demand forecasting",
+  "year": 2014,
+  "first_page": "6782",
+  "last_page": "6791",
+  "volume": "52",
+  "abstract": "To compare different forecasting methods on demand series, we require an error measure. Many error measures have been proposed, but when demand is intermittent some become inapplicable because of infinities, some give counter-intuitive results, and there is no agreement on which is best. We argue that almost all known measures rank forecasters incorrectly on intermittent demand series. We propose several new error measures with almost no infinities, and with correct forecaster ranking on several intermittent demand patterns. We call these ‘mean-based’ error measures because they evaluate forecasts against the (possibly time-dependent) mean of the underlying stochastic process instead of point demands."
+ },
+ "L05": {
+  "title": "On intermittent demand model optimisation and selection",
+  "year": 2014,
+  "first_page": "180",
+  "last_page": "190",
+  "volume": "156",
+  "abstract": ""
+ },
+ "L06": {
+  "title": "Another look at measures of forecast accuracy",
+  "year": 2006,
+  "first_page": "679",
+  "last_page": "688",
+  "volume": "22",
+  "abstract": ""
+ },
+ "L07": {
+  "title": "Forecasting and Stock Control for Intermittent Demands",
+  "year": 1972,
+  "first_page": "289",
+  "last_page": "303",
+  "volume": "23",
+  "abstract": "Exponential smoothing is frequently used for the forecasts in stock control systems. The analysis given shows that intermittent demands almost always produce inappropriate stock levels. Demand for constant quantities at fixed intervals may generate stock levels of up to double the quantity really needed. A method of overcoming these difficulties is described, using separate estimates of the size of demand, and of the demand frequency. The rules for setting the safety stock levels have also to be adjusted before consistent protection can be obtained against being out of stock."
+ },
+ "L08": {
+  "title": "The accuracy of intermittent demand estimates",
+  "year": 2004,
+  "first_page": "303",
+  "last_page": "314",
+  "volume": "21",
+  "abstract": ""
+ },
+ "L09": {
+  "title": "Intermittent demand: Linking forecasting to inventory obsolescence",
+  "year": 2011,
+  "first_page": "606",
+  "last_page": "615",
+  "volume": "214",
+  "abstract": "The standard method to forecast intermittent demand is that by Croston. This method is available in ERP-type solutions such as SAP and specialised forecasting software packages (e.g. Forecast Pro), and often applied in practice. It uses exponential smoothing to separately update the estimated demand size and demand interval whenever a positive demand occurs, and their ratio provides the forecast of demand per period. The Croston method has two important disadvantages. First and foremost, not updating after (many) periods with zero demand renders the method unsuitable for dealing with obsolescence issues. Second, the method is positively biased and this is true for all points in time (i.e. considering the forecasts made at an arbitrary time period) and issue points only (i.e. considering the forecasts following a positive demand occurrence only). The second issue has been addressed in the literature by the proposal of an estimator (Syntetos–Boylan Approximation, SBA) that is approximately unbiased. In this paper, we propose a new method that overcomes both these shortcomings while not adding complexity. Different from the Croston method, the new method is unbiased (for all points in time) and it updates the demand probability instead of the demand interval, doing so in every period. The comparative merits of the new estimator are assessed by means of an extensive simulation experiment. The results indicate its superior performance and enable insights to be gained into the linkage between demand forecasting and obsolescence."
+ },
+ "L10": {
+  "title": "An aggregate–disaggregate intermittent demand approach (ADIDA) to forecasting: an empirical proposition and analysis",
+  "year": 2010,
+  "first_page": "544",
+  "last_page": "554",
+  "volume": "62",
+  "abstract": "Intermittent demand patterns are characterised by infrequent demand arrivals coupled with variable demand sizes. Such patterns prevail in many industrial applications, including IT, automotive, aerospace and military. An intuitively appealing strategy to deal with such patterns from a forecasting perspective is to aggregate demand in lower-frequency ‘time buckets’ thereby reducing the presence of zero observations. However, such aggregation may result in losing useful information, as the frequency of observations is reduced. In this paper, we explore the effects of aggregation by investigating 5000 stock keeping units from the Royal Air Force (UK). We are also concerned with the empirical determination of an optimum aggregation level as well as the effects of aggregating demand in time buckets that equal the lead-time length (plus review period). This part of the analysis is of direct relevance to a (periodic) inventory management setting where such cumulative lead-time demand estimates are required. Our study allows insights to be gained into the value of aggregation in an intermittent demand context. The paper concludes with an agenda for further research."
+ },
+ "L11": {
+  "title": "Forecasting with temporal hierarchies",
+  "year": 2017,
+  "first_page": "60",
+  "last_page": "74",
+  "volume": "262",
+  "abstract": ""
+ },
+ "L12": {
+  "title": "Optimal combination forecasts for hierarchical time series",
+  "year": 2011,
+  "first_page": "2579",
+  "last_page": "2589",
+  "volume": "55",
+  "abstract": ""
+ },
+ "L13": {
+  "title": "Hierarchical forecast reconciliation with machine learning",
+  "year": 2021,
+  "first_page": "107756",
+  "last_page": "107756",
+  "volume": "112",
+  "abstract": ""
+ },
+ "L14": {
+  "title": "M5 accuracy competition: Results, findings, and conclusions",
+  "year": 2022,
+  "first_page": "1346",
+  "last_page": "1364",
+  "volume": "38",
+  "abstract": "In this study, we present the results of the M5 “Accuracy” competition, which was the first of two parallel challenges in the latest M competition with the aim of advancing the theory and practice of forecasting. The main objective in the M5 “Accuracy” competition was to accurately predict 42,840 time series representing the hierarchical unit sales for the largest retail company in the world by revenue, Walmart. The competition required the submission of 30,490 point forecasts for the lowest cross-sectional aggregation level of the data, which could then be summed up accordingly to estimate forecasts for the remaining upward levels. We provide details of the implementation of the M5 “Accuracy” challenge, as well as the results and best performing methods, and summarize the major findings and conclusions. Finally, we discuss the implications of these findings and suggest directions for future research."
+ },
+ "L15": {
+  "title": "Forecasting with trees",
+  "year": 2021,
+  "first_page": "1473",
+  "last_page": "1481",
+  "volume": "38",
+  "abstract": "The prevalence of approaches based on gradient boosted trees among the top contestants in the M5 competition is potentially the most eye-catching result. Tree-based methods out-shone other solutions, in particular deep learning-based solutions. The winners in both tracks of the M5 competition heavily relied on them. This prevalence is even more remarkable given the dominance of other methods in the literature and the M4 competition. This article tries to explain why tree-based methods were so widely used in the M5 competition. We see possibilities for future improvements of tree-based models and then distill some learnings for other approaches, including but not limited to neural networks."
+ },
+ "L16": {
+  "title": "Kaggle forecasting competitions: An overlooked learning opportunity",
+  "year": 2020,
+  "first_page": "587",
+  "last_page": "603",
+  "volume": "37",
+  "abstract": ""
+ },
+ "L17": {
+  "title": "Comparison of statistical and machine learning methods for daily SKU demand forecasting",
+  "year": 2020,
+  "first_page": "3037",
+  "last_page": "3061",
+  "volume": "22",
+  "abstract": ""
+ },
+ "L18": {
+  "title": "Statistical and Machine Learning forecasting methods: Concerns and ways forward",
+  "year": 2018,
+  "first_page": "e0194889",
+  "last_page": "e0194889",
+  "volume": "13",
+  "abstract": "Machine Learning (ML) methods have been proposed in the academic literature as alternatives to statistical ones for time series forecasting. Yet, scant evidence is available about their relative performance in terms of accuracy and computational requirements. The purpose of this paper is to evaluate such performance across multiple forecasting horizons using a large subset of 1045 monthly time series used in the M3 Competition. After comparing the post-sample accuracy of popular ML methods with that of eight traditional statistical ones, we found that the former are dominated across both accuracy measures used and for all forecasting horizons examined. Moreover, we observed that their computational requirements are considerably greater than those of statistical methods. The paper discusses the results, explains why the accuracy of ML models is below that of statistical ones and proposes some possible ways forward. The empirical results found in our research stress the need for objective and unbiased ways to test the performance of forecasting methods that can be achieved through sizable and open competitions allowing meaningful comparisons and definite conclusions."
+ },
+ "L19": {
+  "title": "The M4 Competition: 100,000 time series and 61 forecasting methods",
+  "year": 2019,
+  "first_page": "54",
+  "last_page": "74",
+  "volume": "36",
+  "abstract": "The M4 Competition follows on from the three previous M competitions, the purpose of which was to learn from empirical evidence both how to improve the forecasting accuracy and how such learning could be used to advance the theory and practice of forecasting. The aim of M4 was to replicate and extend the three previous competitions by: (a) significantly increasing the number of series, (b) expanding the number of forecasting methods, and (c) including prediction intervals in the evaluation process as well as point forecasts. This paper covers all aspects of M4 in detail, including its organization and running, the presentation of its results, the top-performing methods overall and by categories, its major findings and their implications, and the computational requirements of the various methods. Finally, it summarizes its main conclusions and states the expectation that its series will become a testing ground for the evaluation of new methods and the improvement of the practice of forecasting, while also suggesting some ways forward for the field."
+ },
+ "L20": {
+  "title": "Retail forecasting: Research and practice",
+  "year": 2019,
+  "first_page": "1283",
+  "last_page": "1318",
+  "volume": "38",
+  "abstract": ""
+ },
+ "L21": {
+  "title": "Forecast evaluation for data scientists: common pitfalls and best practices",
+  "year": 2022,
+  "first_page": "788",
+  "last_page": "832",
+  "volume": "37",
+  "abstract": "Recent trends in the Machine Learning (ML) and in particular Deep Learning (DL) domains have demonstrated that with the availability of massive amounts of time series, ML and DL techniques are competitive in time series forecasting. Nevertheless, the different forms of non-stationarities associated with time series challenge the capabilities of data-driven ML models. Furthermore, due to the domain of forecasting being fostered mainly by statisticians and econometricians over the years, the concepts related to forecast evaluation are not the mainstream knowledge among ML researchers. We demonstrate in our work that as a consequence, ML researchers oftentimes adopt flawed evaluation practices which results in spurious conclusions suggesting methods that are not competitive in reality to be seemingly competitive. Therefore, in this work we provide a tutorial-like compilation of the details associated with forecast evaluation. This way, we intend to impart the information associated with forecast evaluation to fit the context of ML, as means of bridging the knowledge gap between traditional methods of forecasting and adopting current state-of-the-art ML techniques.We elaborate the details of the different problematic characteristics of time series such as non-normality and non-stationarities and how they are associated with common pitfalls in forecast evaluation. Best practices in forecast evaluation are outlined with respect to the different steps such as data partitioning, error calculation, statistical testing, and others. Further guidelines are also provided along selecting valid and suitable error measures depending on the specific characteristics of the dataset at hand."
+ },
+ "L22": {
+  "title": "Regression Quantiles",
+  "year": 1978,
+  "first_page": "33",
+  "last_page": "33",
+  "volume": "46",
+  "abstract": "Your use of the JSTOR archive indicates your acceptance of JSTOR's Terms and Conditions of Use, available at"
+ },
+ "L23": {
+  "title": "Greedy function approximation: A gradient boosting machine.",
+  "year": 2001,
+  "first_page": "1189",
+  "last_page": "1232",
+  "volume": "29",
+  "abstract": "Function estimation/approximation is viewed from the perspective of numerical optimization in function space, rather than parameter space. A connection is made between stagewise additive expansions and steepest-descent minimization. A general gradient descent “boosting” paradigm is developed for additive expansions based on any fitting criterion.Specific algorithms are presented for least-squares, least absolute deviation, and Huber-M loss functions for regression, and multiclass logistic likelihood for classification. Special enhancements are derived for the particular case where the individual additive components are regression trees, and tools for interpreting such “TreeBoost” models are presented. Gradient boosting of regression trees produces competitive, highly robust, interpretable procedures for both regression and classification, especially appropriate for mining less than clean data. Connections between this approach and the boosting methods of Freund and Shapire and Friedman, Hastie and Tibshirani are discussed."
+ },
+ "L24": {
+  "title": "Robust Inference With Multiway Clustering",
+  "year": 2011,
+  "first_page": "238",
+  "last_page": "249",
+  "volume": "29",
+  "abstract": "In this article we propose a variance estimator for the OLS estimator as well as for nonlinear estimators such as logit, probit, and GMM. This variance estimator enables cluster-robust inference when there is two-way or multiway clustering that is nonnested. The variance estimator extends the standard cluster-robust variance estimator or sandwich estimator for one-way clustering (e.g., Liang and Zeger 1986; Arellano 1987) and relies on similar relatively weak distributional assumptions. Our method is easily implemented in statistical packages, such as Stata and SAS, that already offer cluster-robust standard errors when there is one-way clustering. The method is demonstrated by a Monte Carlo analysis for a two-way random effects model; a Monte Carlo analysis of a placebo law that extends the state–year effects example of Bertrand, Duflo, and Mullainathan (2004) to two dimensions; and by application to studies in the empirical literature where two-way clustering is present."
+ },
+ "L25": {
+  "title": "The pigeonhole bootstrap",
+  "year": 2007,
+  "first_page": "386",
+  "last_page": "411",
+  "volume": "1",
+  "abstract": "Recently there has been much interest in data that, in statistical language, may be described as having a large crossed and severely unbalanced random effects structure. Such data sets arise for recommender engines and information retrieval problems. Many large bipartite weighted graphs have this structure too. We would like to assess the stability of algorithms fit to such data. Even for linear statistics, a naive form of bootstrap sampling can be seriously misleading and McCullagh [Bernoulli 6 (2000) 285–301] has shown that no bootstrap method is exact. We show that an alternative bootstrap separately resampling rows and columns of the data matrix satisfies a mean consistency property even in heteroscedastic crossed unbalanced random effects models. This alternative does not require the user to fit a crossed random effects model to the data."
+ },
+ "L26": {
+  "title": "Bootstrapping data arrays of arbitrary order",
+  "year": 2012,
+  "first_page": "895",
+  "last_page": "927",
+  "volume": "6",
+  "abstract": "In this paper we study a bootstrap strategy for estimating the variance of a mean taken over large multifactor crossed random effects data sets. We apply bootstrap reweighting independently to the levels of each factor, giving each observation the product of independently sampled factor weights. No exact bootstrap exists for this problem [McCullagh (2000) Bernoulli 6 285–301]. We show that the proposed bootstrap is mildly conservative, meaning biased toward overestimating the variance, under sufficient conditions that allow very unbalanced and heteroscedastic inputs. Earlier results for a resampling bootstrap only apply to two factors and use multinomial weights that are poorly suited to online computation. The proposed reweighting approach can be implemented in parallel and online settings. The results for this method apply to any number of factors. The method is illustrated using a $3$ factor data set of comment lengths from Facebook."
+ },
+ "L28": {
+  "title": "XGBoost",
+  "year": 2016,
+  "first_page": "785",
+  "last_page": "794",
+  "volume": null,
+  "abstract": "Tree boosting is a highly effective and widely used machine learning method. In this paper, we describe a scalable end-to-end tree boosting system called XGBoost, which is used widely by data scientists to achieve state-of-the-art results on many machine learning challenges. We propose a novel sparsity-aware algorithm for sparse data and weighted quantile sketch for approximate tree learning. More importantly, we provide insights on cache access patterns, data compression and sharding to build a scalable tree boosting system. By combining these insights, XGBoost scales beyond billions of examples using far fewer resources than existing systems."
+ },
+ "L30": {
+  "title": "Comparing Predictive Accuracy",
+  "year": 1995,
+  "first_page": "253",
+  "last_page": "263",
+  "volume": "13",
+  "abstract": "We propose and evaluate explicit tests of the null hypothesis of no difference in the accuracy of two competing forecasts. In contrast to previously developed tests, a wide variety of accuracy measures can be used (in particular, the loss function need not be quadratic and need not even be symmetric), and forecast errors can be non-Gaussian, nonzero mean, serially correlated, and contemporaneously correlated. Asymptotic and exact finite-sample tests are proposed, evaluated, and illustrated."
+ },
+ "L31": {
+  "title": "The Stationary Bootstrap",
+  "year": 1994,
+  "first_page": "1303",
+  "last_page": "1303",
+  "volume": "89",
+  "abstract": "This article introduces a resampling procedure called the stationary bootstrap as a means of calculating standard errors of estimators and constructing confidence regions for parameters based on weakly dependent stationary observations. Previously, a technique based on resampling blocks of consecutive observations was introduced to construct confidence intervals for a parameter of the m-dimensional joint distribution of m consecutive observations, where m is fixed. This procedure has been generalized by constructing a “blocks of blocks” resampling scheme that yields asymptotically valid procedures even for a multivariate parameter of the whole (i.e., infinite-dimensional) joint distribution of the stationary sequence of observations. These methods share the construction of resampling blocks of observations to form a pseudo-time series, so that the statistic of interest may be recalculated based on the resampled data set. But in the context of applying this method to stationary data, it is natural to require the resampled pseudo-time series to be stationary (conditional on the original data) as well. Although the aforementioned procedures lack this property, the stationary procedure developed here is indeed stationary and possesses other desirable properties. The stationary procedure is based on resampling blocks of random length, where the length of each block has a geometric distribution. In this article, fundamental consistency and weak convergence properties of the stationary resampling scheme are developed."
+ },
+ "L32": {
+  "title": "Online Retail II",
+  "year": 2012,
+  "first_page": null,
+  "last_page": null,
+  "volume": null,
+  "abstract": ""
+ }
+}

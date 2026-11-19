@@ -1,0 +1,39 @@
+{
+ "T_trunc": 1185,
+ "val": [
+  933,
+  961,
+  989
+ ],
+ "test": [
+  1017,
+  1045,
+  1073,
+  1101,
+  1129,
+  1157
+ ],
+ "series_ids_sha256": "6555b7d77ffc757c6f05d568a5f209b0a3fb6ce4d5502840c08d0a4238c8dedb",
+ "dataset_info": {
+  "store": "CA_2",
+  "n_series": 350,
+  "n_days": 1941,
+  "seed": 20261022,
+  "max_first_sale_day": 848,
+  "eligible_series_in_store": 2159,
+  "series_in_store": 3049,
+  "excluded_retired_benchmark_series_in_store": 3,
+  "units_sold_on_days_without_price": 0,
+  "negative_units": 0,
+  "zero_share": 0.607808935011408,
+  "missing_price_share": 0.09332302936630603,
+  "source_files": {
+   "calendar.csv": "d12b5914ef03e66649adf5dd9e996e6602251c22b7a6af8f1f7e3aa12f8860f5",
+   "sales_train_evaluation.csv": "4b4a47c44c38380d2a9168216fea8c9ff2f31b1ddb772f8a0995952a038b8aa0",
+   "sell_prices.csv": "9da3ad1f8b8ccacdbdc70612191dd375ec24a4ac6625c24b75b3bc60b0bed2ef"
+  },
+  "window": "W4",
+  "T_trunc": 1185,
+  "first_unused_day_index": 1185
+ }
+}

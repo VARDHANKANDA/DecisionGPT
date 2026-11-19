@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "backend-offline",
+      "type": "python",
+      "request": "launch",
+      "runtimeArgs": [
+        "ANALYTICS_LLM_ENABLED='false'",
+        "ANALYTICS_EXPLAIN_ENABLED='false'",
+        "OPENAI_BASE_URL='http://127.0.0.1:9/v1'",
+        "$env:HTTPS_PROXY='http://127.0.0.1:9'",
+        "$env:HTTP_PROXY='http://127.0.0.1:9'",
+        "$env:ALL_PROXY='http://127.0.0.1:9'",
+        "$env:NO_PROXY='127.0.0.1,localhost'"
+      ]
+    }
+  ]
+}

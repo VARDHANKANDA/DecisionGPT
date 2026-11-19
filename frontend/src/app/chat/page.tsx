@@ -393,7 +393,7 @@ function Ask() {
           <div className="max-w-2xl">
             <h2 className="text-xl font-semibold text-foreground">Understand & Explore Your Business</h2>
             <p className="mt-1.5 text-sm text-muted leading-relaxed">
-              Ask questions about sales performance, top revenue-generating items, customer retention, or margin trajectories. Every answer is grounded in your company's actual transaction history.
+              Ask questions about sales performance, top revenue-generating items, customer retention, or margin trajectories. Every answer is grounded in your company&apos;s actual transaction history.
             </p>
           </div>
 

@@ -1,0 +1,28 @@
+{
+ "frozen_utc": "2026-10-22T13:34:59.154271+00:00",
+ "git_head": "41c1d1443267fae1704718561b39405af0807d4e",
+ "statement": "forecast_study_v3 protocol and code frozen BEFORE any data of the fresh stores was read for modelling or scoring (prep/validation/test not yet run). Internal timestamped hash, not a public pre-registration.",
+ "sha256": {
+  "research/forecast_study_v3_fresh_stats/PROTOCOL_V3.md": "64be8a76a572aeadd74ae1fe48e64fc3cc86685a2581721ad9b04d18e68a0bae",
+  "research/forecast_study_v3_fresh_stats/v3common.py": "901f9c18122ebaf7bfe296acee70e5baadd5f61ae666b012dec92ffb89ae92a0",
+  "research/forecast_study_v3_fresh_stats/data3.py": "694335dd902f9c78e76ca07db9be986753e746e7ef5807756e691b57398a2732",
+  "research/forecast_study_v3_fresh_stats/stat_forecasts.py": "a87b14732f58a32389fac7748a6a1515d87457b8680ee726001f4736366b1a59",
+  "research/forecast_study_v3_fresh_stats/run_v3.py": "49e0d401e6439ae50fde6de2e531ba4d35e9811b2952b2caf72c6b5104fdb85b",
+  "research/forecast_study_v3_fresh_stats/analysis3.py": "9d7cc696fff5a6817ce96d4f156b0466ad9d6286293c844458a222ce1bc7fbde",
+  "research/forecast_study_v3_fresh_stats/freeze3.py": "351130e639a2ac6c77dc45cc2ee7f0e46c13002c796a53e13be60a99a242354e",
+  "research/forecast_study_v3_fresh_stats/requirements_stats.txt": "7946d001d2adb06db22e113be5533ffbe5584f178df7920b7ea8b6147ee5dde0",
+  "research/forecast_study_v3_fresh_stats/run_v3.sh": "2f5f556affc1e46601634ee075e5f60b41eb462260bf33bda617bdb4f1c3991e",
+  "research/forecast_study_v2/pipeline.py": "ed8bcde28a31740378bbfd66cf9672534c6c3060c92fce4035bb13048cc5cd53",
+  "research/forecast_study_v2/data.py": "a4a47a4e0c32aaec91d0c51ef2c4f2fcd29e1793819d01dcc0d111d2e63af4b0",
+  "research/forecast_study_v2/windows.py": "937c3e8dd5c42de9166df16abfc63f2f6b27d8d9a215b4771b804bdda9555ec4",
+  "research/forecast_study_v2/baselines.py": "0b248a23259ae6dbad227490f824a23277c8e76a6d3b837dfdbf84c91850ce8a",
+  "research/forecast_study_v2/models.py": "8f57e0ffb6f509b72de473e021f3da1e3e5623561d3f4ad243d17f7df2a629a9",
+  "research/forecast_study_v2/metrics.py": "cf55f7f85d1ecfcdc7e0e2126e8662276b7cf2f91af1796c56ae8ce2fa6519b3",
+  "research/forecast_study_v2/analysis.py": "6952ff948cf547448900ee246e6d0bc9ee793b667aa39dfdd563822a62728bf2",
+  "research/forecast_study_v2/common.py": "eed8e54153d1d6a9f6286135f3c7d8a90901b3cb9e392a3ad9a2c9e831aa5959",
+  "research/forecast_study_v2/freeze.py": "d3059657e2ef3ed941e7d26cee9ac02e088ef8fb991d8b1d6bbeda4cbc64c06c",
+  "tests/unit/test_forecast_study_v3.py": "b153cd6832d77c7a9ab8013c786c0c4076169aa6eb312ccdbb4d53070499d1a0",
+  "ml/benchmark/datasets.py": "a01833197b74b8a673755c7c00f1a751f877112b303008486470fd38801f4aa6",
+  "ml/benchmark/features.py": "3398aa09f4d2fe78093e54c687cb0c21fecec960a61b13dadb1eff682daab10e"
+ }
+}

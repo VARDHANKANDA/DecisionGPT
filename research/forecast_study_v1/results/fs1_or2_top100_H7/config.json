@@ -1,0 +1,89 @@
+{
+  "study": "forecast_study_v1",
+  "dataset": "or2_top100",
+  "H": 7,
+  "block": 28,
+  "n_test_blocks": 6,
+  "n_val_blocks": 3,
+  "train_span": 730,
+  "seed": 42,
+  "families": {
+    "ridge": [
+      "alpha1",
+      "alpha100"
+    ],
+    "hist_gradient_boosting": [
+      "depth4",
+      "depth6"
+    ],
+    "xgboost": [
+      "depth4",
+      "depth6"
+    ],
+    "lightgbm": [
+      "l2",
+      "tweedie"
+    ],
+    "catboost": [
+      "depth6"
+    ]
+  },
+  "features": [
+    "lag_7",
+    "lag_14",
+    "lag_21",
+    "lag_28",
+    "lag_35",
+    "roll_mean_7",
+    "roll_mean_28",
+    "roll_mean_84",
+    "roll_std_28",
+    "nonzero_share_28",
+    "days_since_sale",
+    "same_weekday_mean4",
+    "dow",
+    "dom",
+    "month",
+    "event",
+    "snap",
+    "item_code"
+  ],
+  "dropped_features": [],
+  "quick": false,
+  "windows": {
+    "test": [
+      571,
+      599,
+      627,
+      655,
+      683,
+      711
+    ],
+    "val": [
+      487,
+      515,
+      543
+    ]
+  },
+  "baselines": [
+    "fresh__croston_sba",
+    "fresh__naive",
+    "fresh__seasonal_naive",
+    "fresh__trailing_mean28",
+    "fresh__trailing_median28",
+    "fresh__tsb",
+    "fresh__weekday_mean4",
+    "fresh__weekday_mean8",
+    "matched__croston_sba",
+    "matched__naive",
+    "matched__seasonal_naive",
+    "matched__trailing_mean28",
+    "matched__trailing_median28",
+    "matched__tsb",
+    "matched__weekday_mean4",
+    "matched__weekday_mean8"
+  ],
+  "min_history": 84,
+  "segment_history_days": 365,
+  "config_hash": "51449a645975"
+}

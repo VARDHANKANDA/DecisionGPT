@@ -1,0 +1,231 @@
+{
+ "checks": [
+  {
+   "study": "r1",
+   "contrast": "B_vs_A",
+   "stored_mean": -0.043551,
+   "mine_mean": -0.043550663970588245,
+   "mean_ok": true,
+   "stored_p": 4.8381183588984175e-09,
+   "mine_p": 4.8381183588984175e-09,
+   "p_ok": true,
+   "stored_wtl": [
+    292,
+    0,
+    116
+   ],
+   "mine_wtl": [
+    292,
+    0,
+    116
+   ],
+   "wtl_same_orientation": true,
+   "stored_rank_biserial": 0.431373,
+   "mine_rank_biserial_kerby_nonzero_pairs": -0.33436406347380027
+  },
+  {
+   "study": "r1",
+   "contrast": "C_vs_B",
+   "stored_mean": -0.054005,
+   "mine_mean": -0.0540045274509804,
+   "mean_ok": true,
+   "stored_p": 0.6094875413797051,
+   "mine_p": 0.6094875413797051,
+   "p_ok": true,
+   "stored_wtl": [
+    141,
+    100,
+    167
+   ],
+   "mine_wtl": [
+    141,
+    100,
+    167
+   ],
+   "wtl_same_orientation": true,
+   "stored_rank_biserial": -0.084416,
+   "mine_rank_biserial_kerby_nonzero_pairs": -0.03358130542596562
+  },
+  {
+   "study": "r1",
+   "contrast": "D_vs_B",
+   "stored_mean": 0.085223,
+   "mine_mean": 0.0852226286764706,
+   "mean_ok": true,
+   "stored_p": 5.438841663211047e-10,
+   "mine_p": 5.438841663211047e-10,
+   "p_ok": true,
+   "stored_wtl": [
+    99,
+    35,
+    274
+   ],
+   "mine_wtl": [
+    99,
+    35,
+    274
+   ],
+   "wtl_same_orientation": true,
+   "stored_rank_biserial": -0.469169,
+   "mine_rank_biserial_kerby_nonzero_pairs": 0.370790382933578
+  },
+  {
+   "study": "r1",
+   "contrast": "D_vs_C",
+   "stored_mean": 0.139227,
+   "mine_mean": 0.139227156127451,
+   "mean_ok": true,
+   "stored_p": 1.7310580115755422e-31,
+   "mine_p": 1.7310580115755422e-31,
+   "p_ok": true,
+   "stored_wtl": [
+    63,
+    65,
+    280
+   ],
+   "mine_wtl": [
+    63,
+    65,
+    280
+   ],
+   "wtl_same_orientation": true,
+   "stored_rank_biserial": -0.632653,
+   "mine_rank_biserial_kerby_nonzero_pairs": 0.7273204963048342
+  },
+  {
+   "study": "upgraded_v1",
+   "contrast": "B_vs_A",
+   "stored_mean": 0.075121,
+   "mine_mean": 0.07512094999999999,
+   "mean_ok": true,
+   "stored_p": 0.00487134354742567,
+   "mine_p": 0.00487134354742567,
+   "p_ok": true,
+   "stored_holm": 0.01461403,
+   "mine_holm": 0.01461403064227701,
+   "holm_ok": true,
+   "stored_wtl": [
+    36,
+    0,
+    44
+   ],
+   "mine_wtl": [
+    44,
+    0,
+    36
+   ],
+   "wtl_same_orientation": false,
+   "wtl_reversed_orientation": true,
+   "stored_rank_biserial": -0.1,
+   "mine_rank_biserial_kerby_nonzero_pairs": 0.36234567901234566
+  },
+  {
+   "study": "upgraded_v1",
+   "contrast": "C_vs_B",
+   "stored_mean": 0.030282,
+   "mine_mean": 0.030281567500000005,
+   "mean_ok": true,
+   "stored_p": 0.504974052249303,
+   "mine_p": 0.504974052249303,
+   "p_ok": true,
+   "stored_holm": 1.0,
+   "mine_holm": 1.0,
+   "holm_ok": true,
+   "stored_wtl": [
+    44,
+    0,
+    36
+   ],
+   "mine_wtl": [
+    36,
+    0,
+    44
+   ],
+   "wtl_same_orientation": false,
+   "wtl_reversed_orientation": true,
+   "stored_rank_biserial": 0.1,
+   "mine_rank_biserial_kerby_nonzero_pairs": 0.08580246913580247
+  },
+  {
+   "study": "upgraded_v1",
+   "contrast": "D_vs_A",
+   "stored_mean": 0.108785,
+   "mine_mean": 0.10878456750000001,
+   "mean_ok": true,
+   "stored_p": 0.0006379220291333459,
+   "mine_p": 0.0006379220291333459,
+   "p_ok": true,
+   "stored_holm": 0.00255169,
+   "mine_holm": 0.0025516881165333835,
+   "holm_ok": true,
+   "stored_wtl": [
+    49,
+    0,
+    31
+   ],
+   "mine_wtl": [
+    31,
+    0,
+    49
+   ],
+   "wtl_same_orientation": false,
+   "wtl_reversed_orientation": true,
+   "stored_rank_biserial": 0.225,
+   "mine_rank_biserial_kerby_nonzero_pairs": 0.43950617283950616
+  },
+  {
+   "study": "upgraded_v1",
+   "contrast": "D_vs_B",
+   "stored_mean": 0.033664,
+   "mine_mean": 0.03366361749999999,
+   "mean_ok": true,
+   "stored_p": 0.5392650472755577,
+   "mine_p": 0.5392650472755577,
+   "p_ok": true,
+   "stored_holm": 1.0,
+   "mine_holm": 1.0,
+   "holm_ok": true,
+   "stored_wtl": [
+    44,
+    0,
+    36
+   ],
+   "mine_wtl": [
+    36,
+    0,
+    44
+   ],
+   "wtl_same_orientation": false,
+   "wtl_reversed_orientation": true,
+   "stored_rank_biserial": 0.1,
+   "mine_rank_biserial_kerby_nonzero_pairs": 0.07901234567901234
+  }
+ ],
+ "notes": [
+  "Rank-biserial: the stored files use a different sign/definition than the standard matched-pairs formula (Kerby 2014) applied here to the non-zero paired differences; the effect size is therefore reported with its definition and not compared numerically.",
+  "upgraded_v1: the stored `wins_ties_losses` is listed as [count(first higher), ties, count(first lower)] although its label says wins first; the direction of every effect is fixed by the signed mean difference and by our recount from raw records, which agree with each other."
+ ],
+ "summary": {
+  "n_checked": 8,
+  "mean_and_p_all_match": true,
+  "mismatches": [],
+  "wtl_orientation_reversed_in_stored_file": [
+   [
+    "upgraded_v1",
+    "B_vs_A"
+   ],
+   [
+    "upgraded_v1",
+    "C_vs_B"
+   ],
+   [
+    "upgraded_v1",
+    "D_vs_A"
+   ],
+   [
+    "upgraded_v1",
+    "D_vs_B"
+   ]
+  ]
+ }
+}

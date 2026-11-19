@@ -1,0 +1,746 @@
+{
+ "fs1_m5_ca1_H28": {
+  "data": {
+   "source": "sales_train_evaluation.csv",
+   "n_series": 350,
+   "n_days": 1941
+  },
+  "n_rows": 58800,
+  "expected_rows": 58800,
+  "unique_rows": 58800,
+  "test_block_starts": [
+   1773,
+   1801,
+   1829,
+   1857,
+   1885,
+   1913
+  ],
+  "n_series": 350,
+  "n_days_in_data": 1941,
+  "H": 28,
+  "targets_equal_raw_data": true,
+  "target_max_abs_diff": 0.0,
+  "last_test_day_is_last_data_day": true,
+  "first_test_day": 1773,
+  "last_test_day": 1940,
+  "zero_share_of_targets": 0.5379421768707483,
+  "negative_targets": 0,
+  "nan_targets": 0,
+  "cutoff_checks": {
+   "matched_cutoff_max_gap_ok": true,
+   "fresh_cutoff_before_target": true,
+   "matched_min_t_minus_cutoff": 28,
+   "matched_max_t_minus_cutoff": 28,
+   "matched_all_cutoffs_before_target": true,
+   "fresh_min_t_minus_cutoff": 1,
+   "fresh_max_t_minus_cutoff": 28,
+   "fresh_all_cutoffs_before_target": true
+  },
+  "baseline_comparison": {
+   "matched__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_mean28": {
+    "max_abs_diff": 8.174351293632753e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__croston_sba": {
+    "max_abs_diff": 1.079619671884302e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__tsb": {
+    "max_abs_diff": 1.6350395668496276e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_mean28": {
+    "max_abs_diff": 8.174351293632753e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__croston_sba": {
+    "max_abs_diff": 8.73805781509418e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__tsb": {
+    "max_abs_diff": 9.290388049976173e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   }
+  },
+  "all_baselines_match": true,
+  "runtime_s": 18.7
+ },
+ "fs1_m5_ca1_H7": {
+  "data": {
+   "source": "sales_train_evaluation.csv",
+   "n_series": 350,
+   "n_days": 1941
+  },
+  "n_rows": 58800,
+  "expected_rows": 58800,
+  "unique_rows": 58800,
+  "test_block_starts": [
+   1773,
+   1801,
+   1829,
+   1857,
+   1885,
+   1913
+  ],
+  "n_series": 350,
+  "n_days_in_data": 1941,
+  "H": 7,
+  "targets_equal_raw_data": true,
+  "target_max_abs_diff": 0.0,
+  "last_test_day_is_last_data_day": true,
+  "first_test_day": 1773,
+  "last_test_day": 1940,
+  "zero_share_of_targets": 0.5379421768707483,
+  "negative_targets": 0,
+  "nan_targets": 0,
+  "cutoff_checks": {
+   "matched_cutoff_max_gap_ok": true,
+   "fresh_cutoff_before_target": true,
+   "matched_min_t_minus_cutoff": 7,
+   "matched_max_t_minus_cutoff": 7,
+   "matched_all_cutoffs_before_target": true,
+   "fresh_min_t_minus_cutoff": 1,
+   "fresh_max_t_minus_cutoff": 7,
+   "fresh_all_cutoffs_before_target": true
+  },
+  "baseline_comparison": {
+   "matched__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_mean28": {
+    "max_abs_diff": 8.174351293632753e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__croston_sba": {
+    "max_abs_diff": 1.079619671884302e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__tsb": {
+    "max_abs_diff": 1.6350395668496276e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_mean28": {
+    "max_abs_diff": 8.174351293632753e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__croston_sba": {
+    "max_abs_diff": 1.079619671884302e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__tsb": {
+    "max_abs_diff": 9.290388049976173e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   }
+  },
+  "all_baselines_match": true,
+  "runtime_s": 11.4
+ },
+ "fs1_m5_tx1_H28": {
+  "data": {
+   "source": "sales_train_evaluation.csv",
+   "n_series": 350,
+   "n_days": 1941
+  },
+  "n_rows": 58800,
+  "expected_rows": 58800,
+  "unique_rows": 58800,
+  "test_block_starts": [
+   1773,
+   1801,
+   1829,
+   1857,
+   1885,
+   1913
+  ],
+  "n_series": 350,
+  "n_days_in_data": 1941,
+  "H": 28,
+  "targets_equal_raw_data": true,
+  "target_max_abs_diff": 0.0,
+  "last_test_day_is_last_data_day": true,
+  "first_test_day": 1773,
+  "last_test_day": 1940,
+  "zero_share_of_targets": 0.6282142857142857,
+  "negative_targets": 0,
+  "nan_targets": 0,
+  "cutoff_checks": {
+   "matched_cutoff_max_gap_ok": true,
+   "fresh_cutoff_before_target": true,
+   "matched_min_t_minus_cutoff": 28,
+   "matched_max_t_minus_cutoff": 28,
+   "matched_all_cutoffs_before_target": true,
+   "fresh_min_t_minus_cutoff": 1,
+   "fresh_max_t_minus_cutoff": 28,
+   "fresh_all_cutoffs_before_target": true
+  },
+  "baseline_comparison": {
+   "matched__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_mean28": {
+    "max_abs_diff": 1.6348702587265507e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__croston_sba": {
+    "max_abs_diff": 1.4862109978253102e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__tsb": {
+    "max_abs_diff": 1.8048641692303136e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_mean28": {
+    "max_abs_diff": 1.6348702587265507e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__croston_sba": {
+    "max_abs_diff": 8.728583544836965e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__tsb": {
+    "max_abs_diff": 7.034653108917155e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   }
+  },
+  "all_baselines_match": true,
+  "runtime_s": 19.6
+ },
+ "fs1_m5_tx1_H7": {
+  "data": {
+   "source": "sales_train_evaluation.csv",
+   "n_series": 350,
+   "n_days": 1941
+  },
+  "n_rows": 58800,
+  "expected_rows": 58800,
+  "unique_rows": 58800,
+  "test_block_starts": [
+   1773,
+   1801,
+   1829,
+   1857,
+   1885,
+   1913
+  ],
+  "n_series": 350,
+  "n_days_in_data": 1941,
+  "H": 7,
+  "targets_equal_raw_data": true,
+  "target_max_abs_diff": 0.0,
+  "last_test_day_is_last_data_day": true,
+  "first_test_day": 1773,
+  "last_test_day": 1940,
+  "zero_share_of_targets": 0.6282142857142857,
+  "negative_targets": 0,
+  "nan_targets": 0,
+  "cutoff_checks": {
+   "matched_cutoff_max_gap_ok": true,
+   "fresh_cutoff_before_target": true,
+   "matched_min_t_minus_cutoff": 7,
+   "matched_max_t_minus_cutoff": 7,
+   "matched_all_cutoffs_before_target": true,
+   "fresh_min_t_minus_cutoff": 1,
+   "fresh_max_t_minus_cutoff": 7,
+   "fresh_all_cutoffs_before_target": true
+  },
+  "baseline_comparison": {
+   "matched__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_mean28": {
+    "max_abs_diff": 1.6348702587265507e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__croston_sba": {
+    "max_abs_diff": 1.4862109978253102e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__tsb": {
+    "max_abs_diff": 1.8048641692303136e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_mean28": {
+    "max_abs_diff": 1.6348702587265507e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__croston_sba": {
+    "max_abs_diff": 9.020694911043847e-07,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__tsb": {
+    "max_abs_diff": 1.2254756995844218e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   }
+  },
+  "all_baselines_match": true,
+  "runtime_s": 11.5
+ },
+ "fs1_or2_top100_H28": {
+  "data": {
+   "source": "online_retail_ii_raw_as_csv.csv (independently cleaned)",
+   "n_series": 100,
+   "n_days": 739,
+   "top_list_equals_stored": true,
+   "date_first": "2009-12-01",
+   "date_last": "2011-12-09"
+  },
+  "n_rows": 16800,
+  "expected_rows": 16800,
+  "unique_rows": 16800,
+  "test_block_starts": [
+   571,
+   599,
+   627,
+   655,
+   683,
+   711
+  ],
+  "n_series": 100,
+  "n_days_in_data": 739,
+  "H": 28,
+  "targets_equal_raw_data": true,
+  "target_max_abs_diff": 0.0,
+  "last_test_day_is_last_data_day": true,
+  "first_test_day": 571,
+  "last_test_day": 738,
+  "zero_share_of_targets": 0.3169047619047619,
+  "negative_targets": 0,
+  "nan_targets": 0,
+  "cutoff_checks": {
+   "matched_cutoff_max_gap_ok": true,
+   "fresh_cutoff_before_target": true,
+   "matched_min_t_minus_cutoff": 28,
+   "matched_max_t_minus_cutoff": 28,
+   "matched_all_cutoffs_before_target": true,
+   "fresh_min_t_minus_cutoff": 1,
+   "fresh_max_t_minus_cutoff": 28,
+   "fresh_all_cutoffs_before_target": true
+  },
+  "baseline_comparison": {
+   "matched__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_mean28": {
+    "max_abs_diff": 8.719308027593797e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__croston_sba": {
+    "max_abs_diff": 1.4735452111835912e-05,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__tsb": {
+    "max_abs_diff": 0.0004226801629556576,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_mean28": {
+    "max_abs_diff": 8.719308027593797e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__croston_sba": {
+    "max_abs_diff": 7.32362897792882e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__tsb": {
+    "max_abs_diff": 9.194764334097272e-05,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   }
+  },
+  "all_baselines_match": true,
+  "runtime_s": 6.9
+ },
+ "fs1_or2_top100_H7": {
+  "data": {
+   "source": "online_retail_ii_raw_as_csv.csv (independently cleaned)",
+   "n_series": 100,
+   "n_days": 739,
+   "top_list_equals_stored": true,
+   "date_first": "2009-12-01",
+   "date_last": "2011-12-09"
+  },
+  "n_rows": 16800,
+  "expected_rows": 16800,
+  "unique_rows": 16800,
+  "test_block_starts": [
+   571,
+   599,
+   627,
+   655,
+   683,
+   711
+  ],
+  "n_series": 100,
+  "n_days_in_data": 739,
+  "H": 7,
+  "targets_equal_raw_data": true,
+  "target_max_abs_diff": 0.0,
+  "last_test_day_is_last_data_day": true,
+  "first_test_day": 571,
+  "last_test_day": 738,
+  "zero_share_of_targets": 0.3169047619047619,
+  "negative_targets": 0,
+  "nan_targets": 0,
+  "cutoff_checks": {
+   "matched_cutoff_max_gap_ok": true,
+   "fresh_cutoff_before_target": true,
+   "matched_min_t_minus_cutoff": 7,
+   "matched_max_t_minus_cutoff": 7,
+   "matched_all_cutoffs_before_target": true,
+   "fresh_min_t_minus_cutoff": 1,
+   "fresh_max_t_minus_cutoff": 7,
+   "fresh_all_cutoffs_before_target": true
+  },
+  "baseline_comparison": {
+   "matched__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_mean28": {
+    "max_abs_diff": 1.3078962069812405e-05,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__croston_sba": {
+    "max_abs_diff": 1.5181579215095553e-05,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "matched__tsb": {
+    "max_abs_diff": 0.00011374052292012493,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__seasonal_naive": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean4": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__weekday_mean8": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_mean28": {
+    "max_abs_diff": 8.719308027593797e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__trailing_median28": {
+    "max_abs_diff": 0.0,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__croston_sba": {
+    "max_abs_diff": 9.752967855547467e-06,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   },
+   "fresh__tsb": {
+    "max_abs_diff": 9.194764334097272e-05,
+    "n_mismatch_gt_1e-4": 0,
+    "n_nan_mine": 0
+   }
+  },
+  "all_baselines_match": true,
+  "runtime_s": 2.5
+ }
+}

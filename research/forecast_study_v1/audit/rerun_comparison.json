@@ -1,0 +1,131 @@
+{
+  "c1": {
+    "n_numbers": 708,
+    "max_abs_diff": 1.512301169737107e-05,
+    "max_abs_diff_at": "/models/random_forest/isotonic/test/pr_auc",
+    "numbers_differing": [
+      {
+        "path": "/models/random_forest/isotonic/test/pr_auc",
+        "stored": 0.8064606562070864,
+        "rerun": 0.8064757792187838,
+        "abs_diff": 1.512301169737107e-05
+      },
+      {
+        "path": "/models/random_forest/isotonic/test/roc_auc",
+        "stored": 0.7974521152330091,
+        "rerun": 0.7974527043256929,
+        "abs_diff": 5.890926838558741e-07
+      }
+    ],
+    "structure": [],
+    "non_numeric_differences": [],
+    "stored_run": "c1_20261015T073420Z_aec3aea3",
+    "rerun": "c1_20261022T030503Z_aec3aea3",
+    "rerun_versions": {
+      "python": "3.12.0",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "scipy": "1.18.0",
+      "scikit-learn": "1.9.0",
+      "xgboost": "3.4.0",
+      "lightgbm": "4.7.0",
+      "catboost": "1.2.10"
+    },
+    "rerun_git_revision": "41c1d14",
+    "identical_within_1e-9": false
+  },
+  "c2": {
+    "n_numbers": 702,
+    "max_abs_diff": 1.1102230246251565e-16,
+    "max_abs_diff_at": "/models/stacking_logistic_meta/isotonic/test/log_loss",
+    "numbers_differing": [],
+    "structure": [],
+    "non_numeric_differences": [],
+    "stored_run": "c2_20261015T074116Z_ec3d89a4",
+    "rerun": "c2_20261022T030610Z_ec3d89a4",
+    "rerun_versions": {
+      "python": "3.12.0",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "scipy": "1.18.0",
+      "scikit-learn": "1.9.0",
+      "xgboost": "3.4.0",
+      "lightgbm": "4.7.0",
+      "catboost": "1.2.10"
+    },
+    "rerun_git_revision": "41c1d14",
+    "identical_within_1e-9": true
+  },
+  "f2": {
+    "n_numbers": 599,
+    "max_abs_diff": 1.6653345369377348e-16,
+    "max_abs_diff_at": "/top20_sku_daily_units/ensemble_weights_nnls/lightgbm:tweedie",
+    "numbers_differing": [],
+    "structure": [],
+    "non_numeric_differences": [],
+    "stored_run": "f2_20261015T072724Z_2f8af9c9",
+    "rerun": "f2_20261022T030643Z_2f8af9c9",
+    "rerun_versions": {
+      "python": "3.12.0",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "scipy": "1.18.0",
+      "scikit-learn": "1.9.0",
+      "xgboost": "3.4.0",
+      "lightgbm": "4.7.0",
+      "catboost": "1.2.10"
+    },
+    "rerun_git_revision": "41c1d14",
+    "identical_within_1e-9": true
+  },
+  "f1": {
+    "n_numbers": 266,
+    "max_abs_diff": 1.4210854715202004e-14,
+    "max_abs_diff_at": "/test/ensemble:nnls_weighted/aggregate_daily_mae",
+    "numbers_differing": [],
+    "structure": [
+      "/baseline_validation_wape/seasonal_naive: only in rerun",
+      "/baseline_validation_wape/seasonal_naive_28: only in stored",
+      "/best_single_by_validation: only in rerun",
+      "/features: only in rerun",
+      "/method_selection_validation_wape/baseline:seasonal_naive: only in rerun",
+      "/method_selection_validation_wape/baseline:seasonal_naive_28: only in stored",
+      "/n_features: only in rerun",
+      "/n_train_rows_final: only in rerun",
+      "/paired_test_comparisons/catboost:depth6 vs baseline:seasonal_naive: only in rerun",
+      "/paired_test_comparisons/catboost:depth6 vs baseline:seasonal_naive_28: only in stored",
+      "/paired_test_comparisons/ensemble:mean_all vs baseline:seasonal_naive: only in rerun",
+      "/paired_test_comparisons/ensemble:mean_all vs baseline:seasonal_naive_28: only in stored",
+      "/paired_test_comparisons/ensemble:mean_top3 vs baseline:seasonal_naive: only in rerun",
+      "/paired_test_comparisons/ensemble:mean_top3 vs baseline:seasonal_naive_28: only in stored",
+      "/paired_test_comparisons/ensemble:nnls_weighted vs baseline:seasonal_naive: only in rerun",
+      "/paired_test_comparisons/ensemble:nnls_weighted vs baseline:seasonal_naive_28: only in stored",
+      "/test/baseline:seasonal_naive: only in rerun",
+      "/test/baseline:seasonal_naive_28: only in stored",
+      "/test_window_index: only in rerun",
+      "/validation_origins_days: only in stored",
+      "/validation_origins_index: only in rerun"
+    ],
+    "non_numeric_differences": [
+      "/not_run[0]: 'learned stacking meta-model: 3 overlapping validation origins are not enough independent data' vs 'learned stacking meta-model: few, overlapping validation origins are not enough independent data'"
+    ],
+    "stored_run": "f1_20261015T063242Z_d61f858f",
+    "rerun": "f1_20261022T031042Z_e1ed9cc1",
+    "rerun_versions": {
+      "python": "3.12.0",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "scipy": "1.18.0",
+      "scikit-learn": "1.9.0",
+      "xgboost": "3.4.0",
+      "lightgbm": "4.7.0",
+      "catboost": "1.2.10"
+    },
+    "rerun_git_revision": "41c1d14",
+    "identical_within_1e-9": false
+  }
+}

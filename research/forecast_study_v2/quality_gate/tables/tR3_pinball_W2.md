@@ -1,0 +1,14 @@
+**Table R3-3. Pinball-loss improvement of the item-day-selected model over the best matched baseline when under-forecasting is penalised more (W2; illustrative, no cost data)**
+
+| cell | tau = 0.5 (= absolute error) | tau = 0.7 | tau = 0.8 | tau = 0.9 |
+|---|---|---|---|---|
+| CA_1 H28 | +4.6 % [+2.3, +7.2] | +1.6 % [−0.5, +3.8] | +0.4 % [−1.9, +2.6] | −0.6 % [−3.2, +1.7] |
+| CA_1 H7 | +4.0 % [+2.3, +6.1] | +0.8 % [−0.9, +2.4] | −0.6 % [−2.4, +1.2] | −1.8 % [−4.0, +0.1] |
+| TX_1 H28 | +2.5 % [+1.0, +4.0] | −0.7 % [−2.3, +0.8] | −2.0 % [−3.9, −0.0] | −3.1 % [−5.4, −0.8] |
+| TX_1 H7 | +4.5 % [+2.5, +6.7] | +3.2 % [+1.2, +5.2] | +2.7 % [+0.3, +5.0] | +2.2 % [−0.4, +5.0] |
+| WI_1 H28 | +3.3 % [+1.6, +5.3] | +1.1 % [−0.7, +2.7] | +0.1 % [−1.8, +2.0] | −0.7 % [−2.8, +1.4] |
+| WI_1 H7 | +6.0 % [+3.6, +9.1] | +4.8 % [+2.3, +7.1] | +4.3 % [+1.8, +6.7] | +3.9 % [+1.0, +6.5] |
+| Online Retail II H28 | +5.8 % [+2.8, +9.5] | +3.0 % [+0.1, +5.4] | +1.9 % [−1.9, +4.9] | +0.9 % [−3.8, +4.5] |
+| Online Retail II H7 | +4.0 % [+1.7, +7.0] | +2.3 % [−0.0, +4.5] | +1.6 % [−1.4, +4.5] | +1.0 % [−2.7, +4.7] |
+
+*Source: `quality_gate/results/audit_sensitivity.json` (C); crossed bootstrap B = 2,000, no multiplicity control; exploratory.*

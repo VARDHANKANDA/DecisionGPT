@@ -1,0 +1,365 @@
+{
+  "purpose": "recompute stored metrics from stored predictions with independent code",
+  "runs": {
+    "f1_20261015T063242Z_d61f858f": {
+      "checks": {
+        "n_rows_equals_series_times_days": true,
+        "test_days_inside_declared_window": true,
+        "y_equals_raw_target_at_those_cells": true,
+        "test_window_is_the_last_28_days_of_the_file": true,
+        "scale_uses_history_strictly_before_test_window": true
+      },
+      "methods": {
+        "linear:ols": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 4.885011284372354e-10,
+          "mismatches": {}
+        },
+        "ridge:alpha1": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 4.885006843480255e-10,
+          "mismatches": {}
+        },
+        "random_forest:leaf5": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 2.450865066450092e-10,
+          "mismatches": {}
+        },
+        "hist_gradient_boosting:depth6": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 3.102360590645503e-10,
+          "mismatches": {}
+        },
+        "xgboost:depth6": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 3.3990943393291673e-10,
+          "mismatches": {}
+        },
+        "lightgbm:tweedie": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 3.1191049743029e-10,
+          "mismatches": {}
+        },
+        "catboost:depth6": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 3.517983682144177e-10,
+          "mismatches": {}
+        },
+        "baseline:seasonal_naive_28": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 5.171332251308058e-10,
+          "mismatches": {}
+        },
+        "baseline:same_weekday_mean4": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 4.611159232226214e-10,
+          "mismatches": {}
+        },
+        "ensemble:mean_all": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 3.668059189720907e-10,
+          "mismatches": {}
+        },
+        "ensemble:mean_top3": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 3.084670296971126e-10,
+          "mismatches": {}
+        },
+        "ensemble:nnls_weighted": {
+          "compared_metrics": [
+            "aggregate_daily_mae",
+            "aggregate_daily_wape",
+            "bias",
+            "mae",
+            "median_series_wape",
+            "n_points",
+            "n_series",
+            "rmse",
+            "rmsse_mean",
+            "rmsse_series_excluded_constant_history",
+            "series_with_defined_wape",
+            "wape",
+            "zero_share"
+          ],
+          "max_abs_diff": 3.3108427111017136e-10,
+          "mismatches": {}
+        }
+      },
+      "max_abs_diff_all_methods": 5.171332251308058e-10,
+      "prediction_file_sha256": "998f10eb8e175c103edc548a536a7112617b19d974efebce1b694fd9fb43b805",
+      "results_file_sha256": "84a92108b0b2defb95fe08a1e309286bb1a9e2d8fc80c3ebc6b901e3ad49ff88",
+      "all_match": true
+    },
+    "f2_20261015T072724Z_2f8af9c9": {
+      "tasks": {
+        "total_daily_revenue": {
+          "n_points": 28,
+          "n_series": 1,
+          "methods": {
+            "linear:ols": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "ridge:alpha1": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "random_forest:leaf5": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "hist_gradient_boosting:depth4": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "xgboost:depth6": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "lightgbm:l2": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "catboost:depth8": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "baseline:seasonal_naive": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "baseline:same_weekday_mean4": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "ensemble:mean_all": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "ensemble:mean_top3": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "ensemble:nnls_weighted": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            }
+          }
+        },
+        "top20_sku_daily_units": {
+          "n_points": 560,
+          "n_series": 20,
+          "methods": {
+            "linear:ols": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "ridge:alpha1": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "random_forest:leaf20": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "hist_gradient_boosting:depth6": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "xgboost:depth4": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "lightgbm:tweedie": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "catboost:depth8": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "baseline:seasonal_naive": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "baseline:same_weekday_mean4": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "ensemble:mean_all": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "ensemble:mean_top3": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            },
+            "ensemble:nnls_weighted": {
+              "max_abs_diff": 0.0,
+              "mismatches": {}
+            }
+          }
+        }
+      },
+      "max_abs_diff_all_methods": 0.0,
+      "rmsse_not_recomputed": "needs the per-series training history; not stored with the predictions",
+      "prediction_file_sha256": "4bd1c4fd93411feb121eaa6f54fa0926d11d90e3214ae1be079e201e79187879",
+      "results_file_sha256": "03cec2c3f55330d6a01792583e5d7f3b8fe7ad450bb79521cf6ed53ac66629fc",
+      "all_match": true
+    }
+  }
+}

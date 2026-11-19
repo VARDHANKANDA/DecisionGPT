@@ -1,0 +1,37 @@
+{
+  "run_id": "c1_20261022T030503Z_aec3aea3",
+  "created_utc": "2026-10-22T03:06:10.336907+00:00",
+  "git_revision": "41c1d14",
+  "versions": {
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "scipy": "1.18.0",
+    "scikit-learn": "1.9.0",
+    "xgboost": "3.4.0",
+    "lightgbm": "4.7.0",
+    "catboost": "1.2.10"
+  },
+  "runtime_seconds_total": 73,
+  "quick": false,
+  "evidence_type": "public_real_transactions_proxy_label",
+  "dataset": {
+    "rows_in": 1067371,
+    "rows_kept": 1003423,
+    "dropped": {
+      "cancellation_invoice": 19494,
+      "non_positive_quantity": 3457,
+      "non_positive_price": 2750,
+      "non_product_stock_code": 4581,
+      "exact_duplicate_line": 33666
+    },
+    "date_first": "2009-12-01",
+    "date_last": "2011-12-09",
+    "customers": 5852,
+    "rows_without_customer": 226843,
+    "source_sha256": "5f45b06f2a93191d96ca2aaa23e67e67be14df8a564178761e9afbd294710b78",
+    "currency": "GBP (not stated by the source for each line; UK retailer)"
+  },
+  "seed": 42
+}

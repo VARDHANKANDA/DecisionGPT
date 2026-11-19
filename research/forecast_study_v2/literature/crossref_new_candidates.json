@@ -1,0 +1,282 @@
+{
+ "Nikolopoulos2011_ADIDA": {
+  "doi": "10.1057/jors.2010.32",
+  "title": "An aggregate–disaggregate intermittent demand approach (ADIDA) to forecasting: an empirical proposition and analysis",
+  "container": "Journal of the Operational Research Society",
+  "volume": "62",
+  "issue": "3",
+  "pages": "544-554",
+  "year": 2011,
+  "authors": [
+   "Nikolopoulos",
+   "Syntetos",
+   "Boylan",
+   "Petropoulos",
+   "Assimakopoulos"
+  ]
+ },
+ "Athanasopoulos2017_temporal_hierarchies": {
+  "doi": "10.1016/j.ejor.2017.02.046",
+  "title": "Forecasting with temporal hierarchies",
+  "container": "European Journal of Operational Research",
+  "volume": "262",
+  "issue": "1",
+  "pages": "60-74",
+  "year": 2017,
+  "authors": [
+   "Athanasopoulos",
+   "Hyndman",
+   "Kourentzes",
+   "Petropoulos"
+  ]
+ },
+ "KoenkerBassett1978": {
+  "doi": "10.2307/1913643",
+  "title": "Regression Quantiles",
+  "container": "Econometrica",
+  "volume": "46",
+  "issue": "1",
+  "pages": "33",
+  "year": 1978,
+  "authors": [
+   "Koenker",
+   "Bassett"
+  ]
+ },
+ "Friedman2001": {
+  "doi": "10.1214/aos/1013203451",
+  "title": "Greedy function approximation: A gradient boosting machine.",
+  "container": "The Annals of Statistics",
+  "volume": "29",
+  "issue": "5",
+  "pages": "1189-1232",
+  "year": 2001,
+  "authors": [
+   "Friedman"
+  ]
+ },
+ "Makridakis2018_PLOSONE": {
+  "doi": "10.1371/journal.pone.0194889",
+  "title": "Statistical and Machine Learning forecasting methods: Concerns and ways forward",
+  "container": "PLOS ONE",
+  "volume": "13",
+  "issue": "3",
+  "pages": "e0194889",
+  "year": 2018,
+  "authors": [
+   "Makridakis",
+   "Spiliotis",
+   "Assimakopoulos"
+  ]
+ },
+ "CameronGelbachMiller2011": {
+  "doi": "10.1198/jbes.2010.07136",
+  "title": "Robust Inference With Multiway Clustering",
+  "container": "Journal of Business &amp; Economic Statistics",
+  "volume": "29",
+  "issue": "2",
+  "pages": "238-249",
+  "year": 2011,
+  "authors": [
+   "Cameron",
+   "Gelbach",
+   "Miller"
+  ]
+ },
+ "Owen2007_pigeonhole": {
+  "doi": "10.1214/07-AOAS122",
+  "title": "The pigeonhole bootstrap",
+  "container": "The Annals of Applied Statistics",
+  "volume": "1",
+  "issue": "2",
+  "pages": "386-411",
+  "year": 2007,
+  "authors": [
+   "Owen"
+  ]
+ },
+ "Menzel2021": {
+  "doi": "10.3982/ECTA16966",
+  "error": "HTTP Error 404: Not Found"
+ },
+ "Petropoulos2022": {
+  "doi": "10.1016/j.ijforecast.2021.11.001",
+  "title": "Forecasting: theory and practice",
+  "container": "International Journal of Forecasting",
+  "volume": "38",
+  "issue": "3",
+  "pages": "705-871",
+  "year": 2022,
+  "authors": [
+   "Petropoulos",
+   "Apiletti",
+   "Assimakopoulos",
+   "Babai",
+   "Barrow",
+   "Ben Taieb",
+   "Bergmeir",
+   "Bessa",
+   "Bijak",
+   "Boylan",
+   "Browell",
+   "Carnevale",
+   "Castle",
+   "Cirillo",
+   "Clements",
+   "Cordeiro",
+   "Cyrino Oliveira",
+   "De Baets",
+   "Dokumentov",
+   "Ellison",
+   "Fiszeder",
+   "Franses",
+   "Frazier",
+   "Gilliland",
+   "Gönül",
+   "Goodwin",
+   "Grossi",
+   "Grushka-Cockayne",
+   "Guidolin",
+   "Guidolin",
+   "Gunter",
+   "Guo",
+   "Guseo",
+   "Harvey",
+   "Hendry",
+   "Hollyman",
+   "Januschowski",
+   "Jeon",
+   "Jose",
+   "Kang",
+   "Koehler",
+   "Kolassa",
+   "Kourentzes",
+   "Leva",
+   "Li",
+   "Litsiou",
+   "Makridakis",
+   "Martin",
+   "Martinez",
+   "Meeran",
+   "Modis",
+   "Nikolopoulos",
+   "Önkal",
+   "Paccagnini",
+   "Panagiotelis",
+   "Panapakidis",
+   "Pavía",
+   "Pedio",
+   "Pedregal",
+   "Pinson",
+   "Ramos",
+   "Rapach",
+   "Reade",
+   "Rostami-Tabar",
+   "Rubaszek",
+   "Sermpinis",
+   "Shang",
+   "Spiliotis",
+   "Syntetos",
+   "Talagala",
+   "Talagala",
+   "Tashman",
+   "Thomakos",
+   "Thorarinsdottir",
+   "Todini",
+   "Trapero Arenas",
+   "Wang",
+   "Winkler",
+   "Yusupova",
+   "Ziel"
+  ]
+ },
+ "Makridakis2022_M5uncertainty": {
+  "doi": "10.1016/j.ijforecast.2021.10.009",
+  "title": "The M5 uncertainty competition: Results, findings and conclusions",
+  "container": "International Journal of Forecasting",
+  "volume": "38",
+  "issue": "4",
+  "pages": "1365-1385",
+  "year": 2022,
+  "authors": [
+   "Makridakis",
+   "Spiliotis",
+   "Assimakopoulos",
+   "Chen",
+   "Gaba",
+   "Tsetlin",
+   "Winkler"
+  ]
+ },
+ "Makridakis2020_M4": {
+  "doi": "10.1016/j.ijforecast.2019.04.014",
+  "title": "The M4 Competition: 100,000 time series and 61 forecasting methods",
+  "container": "International Journal of Forecasting",
+  "volume": "36",
+  "issue": "1",
+  "pages": "54-74",
+  "year": 2020,
+  "authors": [
+   "Makridakis",
+   "Spiliotis",
+   "Assimakopoulos"
+  ]
+ },
+ "SpiliotisEtAl2021_hierarchical_ML": {
+  "doi": "10.1016/j.asoc.2021.107756",
+  "title": "Hierarchical forecast reconciliation with machine learning",
+  "container": "Applied Soft Computing",
+  "volume": "112",
+  "issue": null,
+  "pages": "107756",
+  "year": 2021,
+  "authors": [
+   "Spiliotis",
+   "Abolghasemi",
+   "Hyndman",
+   "Petropoulos",
+   "Assimakopoulos"
+  ]
+ },
+ "HyndmanEtAl2011_optimal_combination": {
+  "doi": "10.1016/j.csda.2011.03.006",
+  "title": "Optimal combination forecasts for hierarchical time series",
+  "container": "Computational Statistics &amp; Data Analysis",
+  "volume": "55",
+  "issue": "9",
+  "pages": "2579-2589",
+  "year": 2011,
+  "authors": [
+   "Hyndman",
+   "Ahmed",
+   "Athanasopoulos",
+   "Shang"
+  ]
+ },
+ "Syntetos_Boylan_Croston2005": {
+  "doi": "10.1016/j.ijforecast.2004.10.001",
+  "title": "The accuracy of intermittent demand estimates",
+  "container": "International Journal of Forecasting",
+  "volume": "21",
+  "issue": "2",
+  "pages": "303-314",
+  "year": 2005,
+  "authors": [
+   "Syntetos",
+   "Boylan"
+  ]
+ },
+ "DunnSmyth2005": {
+  "doi": "10.1007/s11222-005-4070-y",
+  "title": "Series evaluation of Tweedie exponential dispersion model densities",
+  "container": "Statistics and Computing",
+  "volume": "15",
+  "issue": "4",
+  "pages": "267-280",
+  "year": 2005,
+  "authors": [
+   "Dunn",
+   "Smyth"
+  ]
+ }
+}

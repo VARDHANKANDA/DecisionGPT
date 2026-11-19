@@ -1,0 +1,63 @@
+{
+  "label": "POST-HOC EXPLORATORY (E1); not part of the confirmatory families",
+  "cell": "fs1_m5_tx1_H28",
+  "references": {
+    "matched": "base__matched__trailing_median28",
+    "any": "base__fresh__trailing_median28",
+    "primary_tweedie": "pred__lightgbm__tweedie"
+  },
+  "table": {
+    "l1_model": {
+      "wape": 0.7434590793294816,
+      "aggregate_wape": 0.4498699490083619,
+      "rel_bias": -0.4449252835477498,
+      "mae": 0.8253913043984449,
+      "rmse": 2.1640490682052955
+    },
+    "tweedie_primary": {
+      "wape": 0.8346501535175919,
+      "aggregate_wape": 0.11359827047996862,
+      "rel_bias": -0.06544445334755651,
+      "mae": 0.9266320071705509,
+      "rmse": 2.068631601872535
+    },
+    "ref_matched": {
+      "wape": 0.7493566176470589,
+      "aggregate_wape": 0.3470741421568627,
+      "rel_bias": -0.33880208333333334,
+      "mae": 0.8319387755102041,
+      "rmse": 2.1303723605411857
+    },
+    "ref_any": {
+      "wape": 0.7257199754901961,
+      "aggregate_wape": 0.339813112745098,
+      "rel_bias": -0.33174019607843136,
+      "mae": 0.8056972789115646,
+      "rmse": 2.0759105862018146
+    }
+  },
+  "l1_vs_matched_reference": {
+    "estimate": 0.007870135765391901,
+    "ci95": [
+      -0.01890399235115277,
+      0.029029382455761817
+    ],
+    "p_two_sided": 0.508
+  },
+  "l1_vs_any_reference": {
+    "estimate": -0.02444345538002241,
+    "ci95": [
+      -0.05515455050957938,
+      0.0005145406092608617
+    ],
+    "p_two_sided": 0.056
+  },
+  "l1_vs_tweedie_primary": {
+    "estimate": 0.10925664340177732,
+    "ci95": [
+      0.08163792593633659,
+      0.13836028670207284
+    ],
+    "p_two_sided": 0.0
+  }
+}

@@ -1,0 +1,38 @@
+**Table 5. Aggregation ladder and bias, window W2, all cells**
+
+| cell | method | item-day WAPE | item-week WAPE | subset-week WAPE | subset-day WAPE | relative bias | share of zero forecasts |
+|---|---|---|---|---|---|---|---|
+| CA_1 H28 | absolute-error model (item-day winner) | 0.739 | 0.518 | 0.346 | 0.346 | −0.346 | 0.29 |
+| CA_1 H28 | best item-day baseline | 0.775 | 0.560 | 0.293 | 0.295 | −0.293 | 0.57 |
+| CA_1 H28 | Tweedie 1.1 model (subset-day winner) | 0.806 | 0.441 | 0.046 | 0.088 | +0.001 | 0.00 |
+| CA_1 H28 | best subset-day baseline | 0.849 | 0.454 | 0.074 | 0.114 | −0.007 | 0.24 |
+| CA_1 H7 | absolute-error model (item-day winner) | 0.686 | 0.429 | 0.287 | 0.287 | −0.287 | 0.29 |
+| CA_1 H7 | best item-day baseline | 0.714 | 0.448 | 0.232 | 0.242 | −0.232 | 0.53 |
+| CA_1 H7 | Tweedie 1.1 model (subset-day winner) | 0.745 | 0.368 | 0.045 | 0.084 | −0.004 | 0.00 |
+| CA_1 H7 | best subset-day baseline | 0.792 | 0.405 | 0.068 | 0.104 | −0.006 | 0.13 |
+| TX_1 H28 | absolute-error model (item-day winner) | 0.755 | 0.558 | 0.394 | 0.394 | −0.394 | 0.49 |
+| TX_1 H28 | best item-day baseline | 0.774 | 0.573 | 0.330 | 0.332 | −0.330 | 0.68 |
+| TX_1 H28 | Tweedie 1.1 model (subset-day winner) | 0.843 | 0.464 | 0.060 | 0.099 | −0.021 | 0.00 |
+| TX_1 H28 | best subset-day baseline | 0.881 | 0.490 | 0.074 | 0.117 | +0.010 | 0.19 |
+| TX_1 H7 | absolute-error model (item-day winner) | 0.718 | 0.487 | 0.360 | 0.360 | −0.360 | 0.48 |
+| TX_1 H7 | best item-day baseline | 0.752 | 0.552 | 0.346 | 0.347 | −0.346 | 0.70 |
+| TX_1 H7 | Tweedie 1.1 model (subset-day winner) | 0.805 | 0.406 | 0.054 | 0.094 | −0.019 | 0.00 |
+| TX_1 H7 | best subset-day baseline | 0.862 | 0.428 | 0.071 | 0.123 | +0.005 | 0.32 |
+| WI_1 H28 | absolute-error model (item-day winner) | 0.757 | 0.505 | 0.331 | 0.331 | −0.331 | 0.35 |
+| WI_1 H28 | best item-day baseline | 0.783 | 0.534 | 0.289 | 0.290 | −0.289 | 0.59 |
+| WI_1 H28 | squared error model (subset-day winner) | 0.831 | 0.433 | 0.047 | 0.092 | +0.020 | 0.00 |
+| WI_1 H28 | best subset-day baseline | 0.855 | 0.450 | 0.052 | 0.100 | +0.003 | 0.17 |
+| WI_1 H7 | absolute-error model (item-day winner) | 0.708 | 0.427 | 0.307 | 0.307 | −0.307 | 0.38 |
+| WI_1 H7 | best item-day baseline | 0.753 | 0.502 | 0.298 | 0.298 | −0.298 | 0.60 |
+| WI_1 H7 | squared error model (subset-day winner) | 0.784 | 0.370 | 0.043 | 0.087 | +0.005 | 0.00 |
+| WI_1 H7 | best subset-day baseline | 0.822 | 0.400 | 0.045 | 0.099 | +0.000 | 0.17 |
+| Online Retail II H28 | absolute-error model (item-day winner) | 0.877 | 0.662 | 0.515 | 0.573 | −0.384 | 0.07 |
+| Online Retail II H28 | best item-day baseline | 0.931 | 0.691 | 0.500 | 0.572 | −0.329 | 0.29 |
+| Online Retail II H28 | Tweedie 1.1 model (subset-day winner) | 1.053 | 0.706 | 0.312 | 0.482 | +0.085 | 0.00 |
+| Online Retail II H28 | best subset-day baseline | 1.135 | 0.765 | 0.402 | 0.511 | +0.115 | 0.20 |
+| Online Retail II H7 | absolute-error model (item-day winner) | 0.836 | 0.606 | 0.490 | 0.534 | −0.390 | 0.03 |
+| Online Retail II H7 | best item-day baseline | 0.871 | 0.618 | 0.483 | 0.541 | −0.361 | 0.29 |
+| Online Retail II H7 | Tweedie 1.1 model (subset-day winner) | 1.005 | 0.649 | 0.305 | 0.458 | +0.059 | 0.00 |
+| Online Retail II H7 | best subset-day baseline | 1.057 | 0.665 | 0.292 | 0.456 | +0.068 | 0.20 |
+
+*Source: `results/analysis/analysis_W2.json` (`ladder`); CSV: `tables/table5_ladder_W2.csv`.*

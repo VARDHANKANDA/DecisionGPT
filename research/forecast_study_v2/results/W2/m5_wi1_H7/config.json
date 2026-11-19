@@ -1,0 +1,172 @@
+{
+ "study": "forecast_study_v2",
+ "dataset": "m5_wi1",
+ "window": "W2",
+ "H": 7,
+ "T_trunc": 1689,
+ "blocks": {
+  "test": [
+   1521,
+   1549,
+   1577,
+   1605,
+   1633,
+   1661
+  ],
+  "val": [
+   1437,
+   1465,
+   1493
+  ]
+ },
+ "train_span": 730,
+ "min_history": 84,
+ "candidates": {
+  "lgbm_tweedie_p11": {
+   "kind": "lgbm",
+   "params": {
+    "objective": "tweedie",
+    "tweedie_variance_power": 1.1
+   },
+   "target": "conditional mean (Tweedie p=1.1, log link)"
+  },
+  "lgbm_tweedie_p15": {
+   "kind": "lgbm",
+   "params": {
+    "objective": "tweedie",
+    "tweedie_variance_power": 1.5
+   },
+   "target": "conditional mean (Tweedie p=1.5, log link)"
+  },
+  "lgbm_l2": {
+   "kind": "lgbm",
+   "params": {
+    "objective": "regression"
+   },
+   "target": "conditional mean (squared error)"
+  },
+  "lgbm_l1": {
+   "kind": "lgbm",
+   "params": {
+    "objective": "l1"
+   },
+   "target": "conditional median (absolute error)"
+  },
+  "lgbm_l1_small": {
+   "kind": "lgbm",
+   "params": {
+    "objective": "l1",
+    "num_leaves": 15,
+    "min_child_samples": 100
+   },
+   "target": "conditional median (absolute error), smoother trees"
+  },
+  "lgbm_quantile50": {
+   "kind": "lgbm",
+   "params": {
+    "objective": "quantile",
+    "alpha": 0.5
+   },
+   "target": "conditional median (pinball loss at 0.5)"
+  },
+  "xgb_l1": {
+   "kind": "xgb",
+   "params": {
+    "objective": "reg:absoluteerror"
+   },
+   "target": "conditional median (absolute error)"
+  },
+  "ridge_a100": {
+   "kind": "ridge",
+   "params": {
+    "alpha": 100.0
+   },
+   "target": "conditional mean (squared error, linear)"
+  }
+ },
+ "reference_model": "lgbm_tweedie_p11",
+ "features": [
+  "lag_7",
+  "lag_14",
+  "lag_21",
+  "lag_28",
+  "lag_35",
+  "roll_mean_7",
+  "roll_mean_28",
+  "roll_mean_84",
+  "roll_std_28",
+  "nonzero_share_28",
+  "days_since_sale",
+  "same_weekday_mean4",
+  "dow",
+  "dom",
+  "month",
+  "event",
+  "snap",
+  "sell_price",
+  "rel_price_91",
+  "price_change_7",
+  "days_since_price_change",
+  "dept_code",
+  "cat_code",
+  "item_code"
+ ],
+ "lgbm_base": {
+  "n_estimators": 500,
+  "learning_rate": 0.05,
+  "num_leaves": 31,
+  "min_child_samples": 40,
+  "subsample": 0.8,
+  "subsample_freq": 1,
+  "colsample_bytree": 0.8,
+  "verbose": -1,
+  "deterministic": true,
+  "force_row_wise": true
+ },
+ "xgb_base": {
+  "n_estimators": 400,
+  "max_depth": 6,
+  "learning_rate": 0.05,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "min_child_weight": 5,
+  "tree_method": "hist",
+  "verbosity": 0
+ },
+ "baselines": [
+  "fresh__croston",
+  "fresh__croston_sba",
+  "fresh__naive",
+  "fresh__seasonal_naive",
+  "fresh__trailing_mean28",
+  "fresh__trailing_mean91",
+  "fresh__trailing_median14",
+  "fresh__trailing_median28",
+  "fresh__trailing_median56",
+  "fresh__trailing_median91",
+  "fresh__tsb",
+  "fresh__weekday_mean4",
+  "fresh__weekday_mean8",
+  "fresh__weekday_median4",
+  "fresh__weekday_median8",
+  "matched__croston",
+  "matched__croston_sba",
+  "matched__naive",
+  "matched__seasonal_naive",
+  "matched__trailing_mean28",
+  "matched__trailing_mean91",
+  "matched__trailing_median14",
+  "matched__trailing_median28",
+  "matched__trailing_median56",
+  "matched__trailing_median91",
+  "matched__tsb",
+  "matched__weekday_mean4",
+  "matched__weekday_mean8",
+  "matched__weekday_median4",
+  "matched__weekday_median8",
+  "matched__zero"
+ ],
+ "seed": 42,
+ "series_ids_sha256": "d98ff43ed7e2f6e531dde172e96f9a803ebe7e85e6819c98d3c2f8a799bcde85",
+ "config_hash": "5eb1eef6545b0478"
+}

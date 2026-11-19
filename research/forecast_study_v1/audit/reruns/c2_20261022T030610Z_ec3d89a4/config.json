@@ -1,0 +1,18 @@
+{
+  "task": "c2_platform_churn_synthetic",
+  "seed": 42,
+  "features": [
+    "tenure_days",
+    "recency_days",
+    "frequency",
+    "avg_order_value",
+    "monetary_value",
+    "purchase_rate_per_year",
+    "recency_ratio"
+  ],
+  "split": "stratified 64/16/20",
+  "feature_set": "production FEATURE_COLUMNS",
+  "file": "data\\platform\\churn\\customers.csv",
+  "cost_fp": 1.0,
+  "cost_fn": 3.0
+}

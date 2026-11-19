@@ -1,0 +1,330 @@
+{
+ "ADIDA": {
+  "paperId": "a4593b5f502a00888cf24490d530f915526e7b3a",
+  "title": "An aggregate–disaggregate intermittent demand approach (ADIDA) to forecasting: an empirical proposition and analysis",
+  "year": 2011,
+  "openAccessPdf": {
+   "url": "https://purehost.bath.ac.uk/ws/files/147092667/JORS_2011_pre_print_.pdf",
+   "status": "GREEN",
+   "license": null,
+   "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.1057/jors.2010.32?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1057/jors.2010.32, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2271702706",
+    "name": "K. Nikolopoulos"
+   },
+   {
+    "authorId": "1838247",
+    "name": "A. Syntetos"
+   },
+   {
+    "authorId": "2026934",
+    "name": "J. Boylan"
+   },
+   {
+    "authorId": "2974030",
+    "name": "F. Petropoulos"
+   },
+   {
+    "authorId": "40074994",
+    "name": "V. Assimakopoulos"
+   }
+  ],
+  "abstract": null
+ },
+ "TemporalHierarchies": {
+  "paperId": "f765de96ef09e0b8dfda81367f45325810ab007f",
+  "title": "Forecasting with temporal hierarchies",
+  "year": 2017,
+  "openAccessPdf": {
+   "url": "https://researchportal.bath.ac.uk/files/153427625/EJOR_2017_Temporal_hierarchies_post_print_.pdf",
+   "status": "GREEN",
+   "license": "CCBYNCND",
+   "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/j.ejor.2017.02.046?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/j.ejor.2017.02.046, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "144032773",
+    "name": "G. Athanasopoulos"
+   },
+   {
+    "authorId": "145211352",
+    "name": "Rob J Hyndman"
+   },
+   {
+    "authorId": "1822417",
+    "name": "N. Kourentzes"
+   },
+   {
+    "authorId": "2974030",
+    "name": "F. Petropoulos"
+   }
+  ],
+  "abstract": "This paper introduces the concept of Temporal Hierarchies for time series forecasting. A temporal hierarchy can be constructed for any time series by means of non-overlapping temporal aggregation. Predictions constructed at all aggregation levels are combined with the proposed framework to result in temporally reconciled, accurate and robust forecasts. The implied combination mitigates modelling uncertainty, while the reconciled nature of the forecasts results in a unified prediction that supports aligned decisions at different planning horizons: from short-term operational up to long-term strategic planning. The proposed methodology is independent of forecasting models. It can embed high level managerial forecasts that incorporate complex and unstructured information with lower level statistical forecasts. Our results show that forecasting with temporal hierarchies increases accuracy over conventional forecasting, particularly under increased modelling uncertainty. We discuss organisational implications of the temporally reconciled forecasts using a case study of Accident & Emergency departments."
+ },
+ "Makridakis2018": {
+  "paperId": "a6b3aeb29b5b4034d84598424b1edfb29acf2a6c",
+  "title": "Statistical and Machine Learning forecasting methods: Concerns and ways forward",
+  "year": 2018,
+  "openAccessPdf": {
+   "url": "https://doi.org/10.1371/journal.pone.0194889",
+   "status": "GOLD",
+   "license": "CCBY",
+   "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC5870978, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2276105",
+    "name": "S. Makridakis"
+   },
+   {
+    "authorId": "2146553",
+    "name": "Evangelos Spiliotis"
+   },
+   {
+    "authorId": "90170330",
+    "name": "Vassilios Assimakopoulos"
+   }
+  ],
+  "abstract": "Machine Learning (ML) methods have been proposed in the academic literature as alternatives to statistical ones for time series forecasting. Yet, scant evidence is available about their relative performance in terms of accuracy and computational requirements. The purpose of this paper is to evaluate such performance across multiple forecasting horizons using a large subset of 1045 monthly time series used in the M3 Competition. After comparing the post-sample accuracy of popular ML methods with that of eight traditional statistical ones, we found that the former are dominated across both accuracy measures used and for all forecasting horizons examined. Moreover, we observed that their computational requirements are considerably greater than those of statistical methods. The paper discusses the results, explains why the accuracy of ML models is below that of statistical ones and proposes some possible ways forward. The empirical results found in our research stress the need for objective and unbiased ways to test the performance of forecasting methods that can be achieved through sizable and open competitions allowing meaningful comparisons and definite conclusions."
+ },
+ "CGM2011": {
+  "paperId": "3b3e6989bcfd3ef9354afc328ecf3e734d6f3bd4",
+  "title": "Robust Inference With Multiway Clustering",
+  "year": 2006,
+  "openAccessPdf": {
+   "url": "https://doi.org/10.3386/t0327",
+   "status": "BRONZE",
+   "license": null,
+   "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.1198/jbes.2010.07136?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1198/jbes.2010.07136, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "120088689",
+    "name": "A. Cameron"
+   },
+   {
+    "authorId": "4750271",
+    "name": "Jonah B. Gelbach"
+   },
+   {
+    "authorId": "2412002682",
+    "name": "Douglas L. Miller"
+   }
+  ],
+  "abstract": null
+ },
+ "Owen2007": {
+  "paperId": "a8e8a903fb6e8bba530c50937e656cadc0ca0e81",
+  "title": "THE PIGEONHOLE BOOTSTRAP",
+  "year": 2007,
+  "openAccessPdf": {
+   "url": "https://projecteuclid.org/journals/annals-of-applied-statistics/volume-1/issue-2/The-pigeonhole-bootstrap/10.1214/07-AOAS122.pdf",
+   "status": "BRONZE",
+   "license": null,
+   "disclaimer": "Notice: Paper or abstract available at https://arxiv.org/abs/0712.1111, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "144244963",
+    "name": "A. Owen"
+   }
+  ],
+  "abstract": "Recently there has been much interest in data that, in statistical language, may be described as having a large crossed and severely unbalanced random effects structure. Such data sets arise for recommender engines and information retrieval problems. Many large bipartite weighted graphs have this structure too. We would like to assess the stability of algorithms fit to such data. Even for linear statistics, a naive form of bootstrap sampling can be seriously misleading and McCullagh [Bernoulli 6 (2000) 285-301] has shown that no bootstrap method is exact. We show that an alternative bootstrap separately resampling rows and columns of the data matrix satisfies a mean consistency property even in heteroscedastic crossed unbalanced random effects models. This alternative does not require the user to fit a crossed random effects model to the data."
+ },
+ "KoenkerBassett": {
+  "paperId": "c09db7439505f49a0958f68e782df94b3807341a",
+  "title": "Regression Quantiles",
+  "year": 2007,
+  "openAccessPdf": {
+   "url": "",
+   "status": "CLOSED",
+   "license": null,
+   "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.2307/1913643?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.2307/1913643, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "8923238",
+    "name": "R. Koenker"
+   },
+   {
+    "authorId": "13709499",
+    "name": "G. Bassett"
+   }
+  ],
+  "abstract": null
+ },
+ "Friedman2001": {
+  "paperId": "1679beddda3a183714d380e944fe6bf586c083cd",
+  "title": "Greedy function approximation: A gradient boosting machine.",
+  "year": 2001,
+  "openAccessPdf": {
+   "url": "",
+   "status": "CLOSED",
+   "license": null,
+   "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.1214/AOS/1013203451?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1214/AOS/1013203451, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "3056361",
+    "name": "J. Friedman"
+   }
+  ],
+  "abstract": null
+ },
+ "M5uncertainty": {
+  "paperId": "088f91d144f7904cf099610cc6e5263e75e2d33c",
+  "title": "The M5 uncertainty competition: Results, findings and conclusions",
+  "year": 2021,
+  "openAccessPdf": {
+   "url": "https://www.sciencedirect.com/science/article/pii/S0169207021001722/pdf",
+   "status": "HYBRID",
+   "license": "CCBY",
+   "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/j.ijforecast.2021.10.009?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/j.ijforecast.2021.10.009, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2276105",
+    "name": "S. Makridakis"
+   },
+   {
+    "authorId": "2146553",
+    "name": "Evangelos Spiliotis"
+   },
+   {
+    "authorId": "90170330",
+    "name": "Vassilios Assimakopoulos"
+   },
+   {
+    "authorId": "144874590",
+    "name": "Zhi Chen"
+   },
+   {
+    "authorId": "3190345",
+    "name": "Anil Gaba"
+   },
+   {
+    "authorId": "3108393",
+    "name": "Ilia Tsetlin"
+   },
+   {
+    "authorId": "1830895",
+    "name": "R. Winkler"
+   }
+  ],
+  "abstract": null
+ },
+ "SpiliotisHier2021": {
+  "paperId": "3900af711efd6742912d3bb6b6e2f9e1a7743891",
+  "title": "Hierarchical forecast reconciliation with machine learning",
+  "year": 2020,
+  "openAccessPdf": {
+   "url": "https://arxiv.org/pdf/2006.02043",
+   "status": "GREEN",
+   "license": null,
+   "disclaimer": "Notice: Paper or abstract available at https://arxiv.org/abs/2006.02043, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2146553",
+    "name": "Evangelos Spiliotis"
+   },
+   {
+    "authorId": "145499670",
+    "name": "M. Abolghasemi"
+   },
+   {
+    "authorId": "145211352",
+    "name": "Rob J Hyndman"
+   },
+   {
+    "authorId": "2974030",
+    "name": "F. Petropoulos"
+   },
+   {
+    "authorId": "90170330",
+    "name": "Vassilios Assimakopoulos"
+   }
+  ],
+  "abstract": "Hierarchical forecasting methods have been widely used to support aligned decision-making by providing coherent forecasts at different aggregation levels. Traditional hierarchical forecasting approaches, such as the bottom-up and top-down methods, focus on a particular aggregation level to anchor the forecasts. During the past decades, these have been replaced by a variety of linear combination approaches that exploit information from the complete hierarchy to produce more accurate forecasts. However, the performance of these combination methods depends on the particularities of the examined series and their relationships. This paper proposes a novel hierarchical forecasting approach based on machine learning that deals with these limitations in three important ways. First, the proposed method allows for a non-linear combination of the base forecasts, thus being more general than the linear approaches. Second, it structurally combines the objectives of improved post-sample empirical forecasting accuracy and coherence. Finally, due to its non-linear nature, our approach selectively combines the base forecasts in a direct and automated way without requiring that the complete information must be used for producing reconciled forecasts for each series and level. The proposed method is evaluated both in terms of accuracy and bias using two different data sets coming from the tourism and retail industries. Our results suggest that the proposed method gives superior point forecasts than existing approaches, especially when the series comprising the hierarchy are not characterized by the same patterns."
+ },
+ "HyndmanOptComb": {
+  "paperId": "7eee3071fea2ef5bea226432afe52f3f7281ce8d",
+  "title": "Optimal combination forecasts for hierarchical time series",
+  "year": 2011,
+  "openAccessPdf": {
+   "url": "https://figshare.com/articles/journal_contribution/Optimal_combination_forecasts_for_hierarchical_time_series/5085532",
+   "status": "GREEN",
+   "license": "CCBY",
+   "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/J.CSDA.2011.03.006?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/J.CSDA.2011.03.006, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "145211352",
+    "name": "Rob J Hyndman"
+   },
+   {
+    "authorId": "2101158",
+    "name": "R. Ahmed"
+   },
+   {
+    "authorId": "144032773",
+    "name": "G. Athanasopoulos"
+   },
+   {
+    "authorId": "2762633",
+    "name": "Lin-Shang Han"
+   }
+  ],
+  "abstract": "In many applications, there are multiple time series that are hierarchically organized and can be aggregated at several different levels in groups based on products, geography or some other features. We call these ''hierarchical time series''. They are commonly forecast using either a ''bottom-up'' or a ''top-down'' method. In this paper we propose a new approach to hierarchical forecasting which provides optimal forecasts that are better than forecasts produced by either a top-down or a bottom-up approach. Our method is based on independently forecasting all series at all levels of the hierarchy and then using a regression model to optimally combine and reconcile these forecasts. The resulting revised forecasts add up appropriately across the hierarchy, are unbiased and have minimum variance amongst all combination forecasts under some simple assumptions. We show in a simulation study that our method performs well compared to the top-down approach and the bottom-up method. We demonstrate our proposed method by forecasting Australian tourism demand where the data are disaggregated by purpose of travel and geographical region."
+ },
+ "DunnSmyth": {
+  "paperId": "ca79e85932d2c6df1bd792bc1eabe1f2020c0647",
+  "title": "Series evaluation of Tweedie exponential dispersion model densities",
+  "year": 2005,
+  "openAccessPdf": {
+   "url": "http://eprints.usq.edu.au/2335/1/Dunn_Smyth_Stats_and_Comp_v15n4.pdf",
+   "status": "GREEN",
+   "license": null,
+   "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.1007/s11222-005-4070-y?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1007/s11222-005-4070-y, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2172357",
+    "name": "P. Dunn"
+   },
+   {
+    "authorId": "2118627",
+    "name": "G. Smyth"
+   }
+  ],
+  "abstract": null
+ },
+ "M4": {
+  "paperId": "0eec749c9d712bdf8e807e9c3424514436eba849",
+  "title": "The M4 Competition: 100,000 time series and 61 forecasting methods",
+  "year": 2020,
+  "openAccessPdf": {
+   "url": "https://www.sciencedirect.com/science/article/pii/S0169207019301128/pdf",
+   "status": "HYBRID",
+   "license": "CCBYNCND",
+   "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/J.IJFORECAST.2019.04.014?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/J.IJFORECAST.2019.04.014, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "authors": [
+   {
+    "authorId": "2276105",
+    "name": "S. Makridakis"
+   },
+   {
+    "authorId": "2146553",
+    "name": "Evangelos Spiliotis"
+   },
+   {
+    "authorId": "90170330",
+    "name": "Vassilios Assimakopoulos"
+   }
+  ],
+  "abstract": "Abstract The M4 Competition follows on from the three previous M competitions, the purpose of which was to learn from empirical evidence both how to improve the forecasting accuracy and how such learning could be used to advance the theory and practice of forecasting. The aim of M4 was to replicate and extend the three previous competitions by: (a) significantly increasing the number of series, (b) expanding the number of forecasting methods, and (c) including prediction intervals in the evaluation process as well as point forecasts. This paper covers all aspects of M4 in detail, including its organization and running, the presentation of its results, the top-performing methods overall and by categories, its major findings and their implications, and the computational requirements of the various methods. Finally, it summarizes its main conclusions and states the expectation that its series will become a testing ground for the evaluation of new methods and the improvement of the practice of forecasting, while also suggesting some ways forward for the field."
+ }
+}

@@ -1,0 +1,8 @@
+# Limitations and threats to validity (copy of manuscript section 19)
+
+*Construct validity.* WAPE favours median-type forecasts on sparse data; the 2 % minimum-relevant-gain threshold is a declared but arbitrary choice; the classification label is a proxy.
+*Internal validity.* One random seed per model and one machine; seed variance was not estimated. A small hyper-parameter grid (≤ 2 variants per family) was used; stronger tuning could narrow the gap. Matched baselines use the same information staleness as the models, fresh baselines use more recent information — both are reported, but the choice of the "primary" reference is itself data-dependent (made on validation data).
+*Statistical conclusion validity.* The crossed bootstrap is an approximation to two-way dependence, checked with the stationary bootstrap; the Diebold–Mariano test is exploratory on short aggregate series; the p-values of exactly 0 from 2000 draws are reported as "< 0.001". Six confirmatory tests were adjusted; exploratory results were not and are labelled.
+*External validity.* Two Walmart stores (350-series subsets) and one UK wholesaler's top 100 SKUs; retail only; all public. No data from Indian SMEs or any real customer is used, and no conclusion should be transferred to them. M5 CA_1 and TX_1 are not independent samples of retail practice.
+*Post-hoc analysis.* E1 was designed after seeing the confirmatory results; it is hypothesis-generating.
+*Not evaluated.* Deep or foundation models, probabilistic forecasters, hierarchical reconciliation, promotion data, inventory-cost metrics, the M5 competition metric, other horizons, seed variance.

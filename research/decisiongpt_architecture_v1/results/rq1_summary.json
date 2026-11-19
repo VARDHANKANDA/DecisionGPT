@@ -1,0 +1,554 @@
+{
+ "f1": {
+  "run": "f1_20261015T063242Z_d61f858f",
+  "n_series": 350,
+  "n_points": 9800,
+  "selected": "single:catboost:depth6",
+  "test": {
+   "linear:ols": {
+    "wape": 0.7188377193621185,
+    "mae": 1.2003856405470479,
+    "rmse": 2.191558741414164,
+    "aggregate_daily_wape": 0.09576897207788357,
+    "bias": -0.05708728497255663
+   },
+   "ridge:alpha1": {
+    "wape": 0.7188378296858418,
+    "mae": 1.2003858247764083,
+    "rmse": 2.191557848184247,
+    "aggregate_daily_wape": 0.09576880031006482,
+    "bias": -0.05708629907574938
+   },
+   "random_forest:leaf5": {
+    "wape": 0.7021782060701047,
+    "mae": 1.1725659532997208,
+    "rmse": 2.120608482659548,
+    "aggregate_daily_wape": 0.07985230269346139,
+    "bias": -0.04510804255398469
+   },
+   "hist_gradient_boosting:depth6": {
+    "wape": 0.7056631190393491,
+    "mae": 1.1783854023549947,
+    "rmse": 2.138660061334736,
+    "aggregate_daily_wape": 0.07025525445302662,
+    "bias": -0.038508124396732075
+   },
+   "xgboost:depth6": {
+    "wape": 0.7052522576758635,
+    "mae": 1.1776993058026026,
+    "rmse": 2.1395409561990744,
+    "aggregate_daily_wape": 0.0697167763422766,
+    "bias": -0.029604367938847614
+   },
+   "lightgbm:tweedie": {
+    "wape": 0.7038129313702891,
+    "mae": 1.1752957777423245,
+    "rmse": 2.1437217408153764,
+    "aggregate_daily_wape": 0.07425305775793062,
+    "bias": -0.04998797140585687
+   },
+   "catboost:depth6": {
+    "wape": 0.6980714733325625,
+    "mae": 1.1657081286823863,
+    "rmse": 2.1169385557341664,
+    "aggregate_daily_wape": 0.07738955591579574,
+    "bias": -0.05367264428138972
+   },
+   "baseline:seasonal_naive_28": {
+    "wape": 0.8692942254812099,
+    "mae": 1.4516326530612245,
+    "rmse": 2.938658586109364,
+    "aggregate_daily_wape": 0.10876871371830125,
+    "bias": -0.024686831652917813
+   },
+   "baseline:same_weekday_mean4": {
+    "wape": 0.7397341888175986,
+    "mae": 1.235280612244898,
+    "rmse": 2.2999348371425743,
+    "aggregate_daily_wape": 0.06723189734188817,
+    "bias": -0.031698747326611675
+   },
+   "ensemble:mean_all": {
+    "wape": 0.7011387574143191,
+    "mae": 1.1708301801107481,
+    "rmse": 2.1171606428128835,
+    "aggregate_daily_wape": 0.07828040507373625,
+    "bias": -0.04729353351787385
+   },
+   "ensemble:mean_top3": {
+    "wape": 0.6978144306581063,
+    "mae": 1.1652788936448888,
+    "rmse": 2.109837154369637,
+    "aggregate_daily_wape": 0.07588410374642812,
+    "bias": -0.049589552747077104
+   },
+   "ensemble:nnls_weighted": {
+    "wape": 0.6969997085314369,
+    "mae": 1.1639183908282615,
+    "rmse": 2.1080441148057605,
+    "aggregate_daily_wape": 0.07602899889686095,
+    "bias": -0.05135089974128216
+   }
+  },
+  "catboost_vs_seasonal_naive": {
+   "diff": -0.17122275214864743,
+   "ci95": [
+    -0.19828457980009623,
+    -0.14388746511920242
+   ]
+  }
+ },
+ "f2b": {
+  "run": "f2_20261015T072724Z_2f8af9c9",
+  "n_series": 20,
+  "n_points": 560,
+  "selected": "single:lightgbm:tweedie",
+  "test": {
+   "linear:ols": {
+    "wape": 0.8039955185281691,
+    "mae": 66.26071637698583,
+    "rmse": 185.62531478668842,
+    "aggregate_daily_wape": 0.5188409851088766
+   },
+   "ridge:alpha1": {
+    "wape": 0.8041906030737231,
+    "mae": 66.27679413046155,
+    "rmse": 185.65992081749735,
+    "aggregate_daily_wape": 0.5188267360756025
+   },
+   "random_forest:leaf20": {
+    "wape": 0.7530277436162093,
+    "mae": 62.06024361317016,
+    "rmse": 182.76270020500175,
+    "aggregate_daily_wape": 0.402172239157751
+   },
+   "hist_gradient_boosting:depth6": {
+    "wape": 0.9033671796953932,
+    "mae": 74.45036085232462,
+    "rmse": 192.30049215322805,
+    "aggregate_daily_wape": 0.5200750358579458
+   },
+   "xgboost:depth4": {
+    "wape": 0.8100042648966674,
+    "mae": 66.75592291698392,
+    "rmse": 179.93187868122664,
+    "aggregate_daily_wape": 0.38177606575565554
+   },
+   "lightgbm:tweedie": {
+    "wape": 0.7211909467335202,
+    "mae": 59.43643673865255,
+    "rmse": 178.13696108741797,
+    "aggregate_daily_wape": 0.37106505344543256
+   },
+   "catboost:depth8": {
+    "wape": 0.8753280280587408,
+    "mae": 72.13953419815537,
+    "rmse": 190.92804265401674,
+    "aggregate_daily_wape": 0.35009822191775
+   },
+   "baseline:seasonal_naive": {
+    "wape": 0.9879095163806553,
+    "mae": 81.41785714285714,
+    "rmse": 227.7597104719922,
+    "aggregate_daily_wape": 0.6443491072976253
+   },
+   "baseline:same_weekday_mean4": {
+    "wape": 0.7882486132778644,
+    "mae": 64.96294642857143,
+    "rmse": 188.8783778770463,
+    "aggregate_daily_wape": 0.48183719015427284
+   },
+   "ensemble:mean_all": {
+    "wape": 0.7764745102238034,
+    "mae": 63.992592135444596,
+    "rmse": 181.1210024036108,
+    "aggregate_daily_wape": 0.41303277307133074
+   },
+   "ensemble:mean_top3": {
+    "wape": 0.7437764980107121,
+    "mae": 61.29780881462568,
+    "rmse": 180.39345260439273,
+    "aggregate_daily_wape": 0.4218990651879881
+   },
+   "ensemble:nnls_weighted": {
+    "wape": 0.7475058116400548,
+    "mae": 61.60515753359251,
+    "rmse": 179.80924785873583,
+    "aggregate_daily_wape": 0.36975763938848394
+   }
+  }
+ },
+ "f2a": {
+  "test": {
+   "linear:ols": {
+    "wape": 0.3297230845740311,
+    "mae": 17679.663016183036,
+    "rmse": 34133.78958034517,
+    "bias": -0.287017292975659
+   },
+   "ridge:alpha1": {
+    "wape": 0.32970155906043364,
+    "mae": 17678.508823939734,
+    "rmse": 34127.908263356185,
+    "bias": -0.2868452326174762
+   },
+   "random_forest:leaf5": {
+    "wape": 0.28374650086486236,
+    "mae": 15214.410976995201,
+    "rmse": 33081.143300506395,
+    "bias": -0.23575050921217325
+   },
+   "hist_gradient_boosting:depth4": {
+    "wape": 0.3201774405251203,
+    "mae": 17167.82815246641,
+    "rmse": 33586.35850017718,
+    "bias": -0.27501303765514995
+   },
+   "xgboost:depth6": {
+    "wape": 0.2443051678620724,
+    "mae": 13099.577321052551,
+    "rmse": 31386.41221304912,
+    "bias": -0.1766202617954528
+   },
+   "lightgbm:l2": {
+    "wape": 0.3115637039875828,
+    "mae": 16705.961918591438,
+    "rmse": 35496.4584688648,
+    "bias": -0.2512600397422
+   },
+   "catboost:depth8": {
+    "wape": 0.24650373779059914,
+    "mae": 13217.464048650294,
+    "rmse": 31245.11332799682,
+    "bias": -0.20312159146597905
+   },
+   "baseline:seasonal_naive": {
+    "wape": 0.32842499001486236,
+    "mae": 17610.059535435266,
+    "rmse": 33441.907910811446,
+    "bias": -0.23663731461604293
+   },
+   "baseline:same_weekday_mean4": {
+    "wape": 0.3179836049126851,
+    "mae": 17050.195277622766,
+    "rmse": 32814.825990151345,
+    "bias": -0.3046147603685354
+   },
+   "ensemble:mean_all": {
+    "wape": 0.2787706756902278,
+    "mae": 14947.608570883327,
+    "rmse": 32941.93718643827,
+    "bias": -0.2450897093520129
+   },
+   "ensemble:mean_top3": {
+    "wape": 0.2503967179869729,
+    "mae": 13426.204598586246,
+    "rmse": 32425.404967948703,
+    "bias": -0.21033396433454396
+   },
+   "ensemble:nnls_weighted": {
+    "wape": 0.25548297919689467,
+    "mae": 13698.928555175069,
+    "rmse": 32463.206456083277,
+    "bias": -0.21834334300932595
+   }
+  },
+  "n_points": 28
+ },
+ "churn": {
+  "c1_run": "c1_20261015T073420Z_aec3aea3",
+  "c2_run": "c2_20261015T074116Z_ec3d89a4",
+  "c1": {
+   "logistic_regression": {
+    "roc_auc": 0.7943113675889747,
+    "pr_auc": 0.8138479937488883,
+    "brier": 0.1902592825995372,
+    "brier_prevalence_baseline": 0.24579081470129666,
+    "log_loss": 0.5619955426897426,
+    "ece": 0.08535460107141794,
+    "prevalence": 0.5648782343987824,
+    "n": 5256
+   },
+   "random_forest": {
+    "roc_auc": 0.7989120341768012,
+    "pr_auc": 0.8179824667375949,
+    "brier": 0.1880821165945245,
+    "brier_prevalence_baseline": 0.24579081470129666,
+    "log_loss": 0.5559111886816243,
+    "ece": 0.09189533187539203,
+    "prevalence": 0.5648782343987824,
+    "n": 5256
+   },
+   "xgboost": {
+    "roc_auc": 0.7948103290922097,
+    "pr_auc": 0.8134639791731944,
+    "brier": 0.19292598962783813,
+    "brier_prevalence_baseline": 0.24579080939292908,
+    "log_loss": 0.569076418876648,
+    "ece": 0.109182896488736,
+    "prevalence": 0.5648782343987824,
+    "n": 5256
+   },
+   "catboost": {
+    "roc_auc": 0.7944292597623335,
+    "pr_auc": 0.8124428036363511,
+    "brier": 0.1941500057580897,
+    "brier_prevalence_baseline": 0.24579081470129666,
+    "log_loss": 0.5730159512536712,
+    "ece": 0.11267721204033851,
+    "prevalence": 0.5648782343987824,
+    "n": 5256
+   },
+   "soft_voting": {
+    "roc_auc": 0.7993157099384205,
+    "pr_auc": 0.8181557230022983,
+    "brier": 0.18974996588148912,
+    "brier_prevalence_baseline": 0.24579081470129666,
+    "log_loss": 0.5595382364515787,
+    "ece": 0.09977751357927121,
+    "prevalence": 0.5648782343987824,
+    "n": 5256
+   },
+   "stacking_logistic_meta": {
+    "roc_auc": 0.7979498985508762,
+    "pr_auc": 0.8169574989327435,
+    "brier": 0.191077160536921,
+    "brier_prevalence_baseline": 0.24579081470129666,
+    "log_loss": 0.5631344620849738,
+    "ece": 0.10470022749082328,
+    "prevalence": 0.5648782343987824,
+    "n": 5256
+   }
+  },
+  "c2": {
+   "logistic_regression": {
+    "roc_auc": 0.7962860279374041,
+    "pr_auc": 0.7626384289562329,
+    "brier": 0.18335265244018709,
+    "brier_prevalence_baseline": 0.24797500000000003,
+    "log_loss": 0.5438387624683456,
+    "ece": 0.030366653894812422,
+    "prevalence": 0.455,
+    "n": 1200
+   },
+   "random_forest": {
+    "roc_auc": 0.7888536030737865,
+    "pr_auc": 0.7485969643824868,
+    "brier": 0.18663949856337714,
+    "brier_prevalence_baseline": 0.24797500000000003,
+    "log_loss": 0.5536299275094069,
+    "ece": 0.03993166967668307,
+    "prevalence": 0.455,
+    "n": 1200
+   },
+   "xgboost": {
+    "roc_auc": 0.7877222166212993,
+    "pr_auc": 0.7500393028120045,
+    "brier": 0.1870867758989334,
+    "brier_prevalence_baseline": 0.24797500669956207,
+    "log_loss": 0.5524619817733765,
+    "ece": 0.026517111808061593,
+    "prevalence": 0.455,
+    "n": 1200
+   },
+   "catboost": {
+    "roc_auc": 0.7888003943049815,
+    "pr_auc": 0.7508530814689822,
+    "brier": 0.18714759016510452,
+    "brier_prevalence_baseline": 0.24797500000000003,
+    "log_loss": 0.552603354678135,
+    "ece": 0.04008096823175596,
+    "prevalence": 0.455,
+    "n": 1200
+   },
+   "soft_voting": {
+    "roc_auc": 0.794107268877911,
+    "pr_auc": 0.7593663944256577,
+    "brier": 0.18446282074182324,
+    "brier_prevalence_baseline": 0.24797500000000003,
+    "log_loss": 0.546712705071703,
+    "ece": 0.04858648991264441,
+    "prevalence": 0.455,
+    "n": 1200
+   },
+   "stacking_logistic_meta": {
+    "roc_auc": 0.796280427014372,
+    "pr_auc": 0.7616689877930993,
+    "brier": 0.1833089915882641,
+    "brier_prevalence_baseline": 0.24797500000000003,
+    "log_loss": 0.5443546099691005,
+    "ece": 0.02950002621412313,
+    "prevalence": 0.455,
+    "n": 1200
+   }
+  },
+  "c1_prevalence": {
+   "train": 0.5758865248226951,
+   "validation": 0.6772369218339729,
+   "test": 0.5648782343987824
+  },
+  "c1_brier_prevalence_baseline": 0.24579081470129666,
+  "c1_paired_auc_vs_best_single": {
+   "logistic_regression minus random_forest": {
+    "delta_auc": -0.004600666587826541,
+    "ci95": [
+     -0.009471442765049432,
+     0.00021319158452154315
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   },
+   "xgboost minus random_forest": {
+    "delta_auc": -0.0041017050845915115,
+    "ci95": [
+     -0.007529061791172539,
+     -0.0006698979850503922
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   },
+   "catboost minus random_forest": {
+    "delta_auc": -0.004482774414467761,
+    "ci95": [
+     -0.008421627688710923,
+     -0.0006342912113827987
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   },
+   "soft_voting minus random_forest": {
+    "delta_auc": 0.0004036757616192599,
+    "ci95": [
+     -0.002063237143907548,
+     0.0027187772574470514
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   },
+   "stacking_logistic_meta minus random_forest": {
+    "delta_auc": -0.0009621356259250646,
+    "ci95": [
+     -0.003587048939498222,
+     0.0016949485494976155
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   }
+  },
+  "c2_paired_auc_vs_best_single": {
+   "random_forest minus logistic_regression": {
+    "delta_auc": -0.007432424863617615,
+    "ci95": [
+     -0.015804164698114714,
+     0.0009850953200391168
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   },
+   "xgboost minus logistic_regression": {
+    "delta_auc": -0.008563811316104841,
+    "ci95": [
+     -0.017445927305763893,
+     0.0005562348792153965
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   },
+   "catboost minus logistic_regression": {
+    "delta_auc": -0.007485633632422606,
+    "ci95": [
+     -0.016990322035086398,
+     0.0022080488733798405
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   },
+   "soft_voting minus logistic_regression": {
+    "delta_auc": -0.0021787590594930517,
+    "ci95": [
+     -0.008260013813291065,
+     0.004426358059964486
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   },
+   "stacking_logistic_meta minus logistic_regression": {
+    "delta_auc": -5.600923032145211e-06,
+    "ci95": [
+     -0.002783219217642413,
+     0.0028565083699779743
+    ],
+    "method": "bootstrap over test customers on identical rows"
+   }
+  }
+ },
+ "registry_rescoring": [
+  {
+   "model": "sales_forecast_linear",
+   "version": "v1",
+   "status": "evaluated",
+   "reason": null,
+   "wape": 0.10972582949871529,
+   "mae": 17.29126388372856,
+   "rmse": 25.51122770712597,
+   "baseline_wape": 0.15648380265353617,
+   "baseline_name": "Yesterday's value (1-day lag)",
+   "improvement": {
+    "wape_pct": 29.880391683953153,
+    "mae_pct": 29.880391683953153
+   },
+   "n": null
+  },
+  {
+   "model": "sales_forecast_linear",
+   "version": "v2",
+   "status": "unavailable",
+   "reason": "The stored artifact file for sales_forecast_linear v2 is missing (models/sales_forecast_linear/v2/model.joblib)."
+  },
+  {
+   "model": "sales_forecast_naive",
+   "version": "v1",
+   "status": "evaluated",
+   "reason": null,
+   "wape": 0.15648380265353617,
+   "mae": 24.659669811320754,
+   "rmse": 38.27514896511687,
+   "baseline_wape": 0.15648380265353617,
+   "baseline_name": "Yesterday's value (1-day lag)",
+   "improvement": {
+    "wape_pct": null,
+    "mae_pct": null
+   },
+   "n": null
+  },
+  {
+   "model": "sales_forecast_naive",
+   "version": "v2",
+   "status": "evaluated",
+   "reason": null,
+   "wape": 0.9788053949903661,
+   "mae": 19.92156862745098,
+   "rmse": 31.249784312981156,
+   "baseline_wape": 0.9788053949903661,
+   "baseline_name": "Yesterday's value (1-day lag)",
+   "improvement": {
+    "wape_pct": null,
+    "mae_pct": null
+   },
+   "n": null
+  },
+  {
+   "model": "sales_forecast_xgboost",
+   "version": "v1",
+   "status": "evaluated",
+   "reason": null,
+   "wape": 0.09606720780640832,
+   "mae": 15.13885516603038,
+   "rmse": 21.863057200107395,
+   "baseline_wape": 0.15648380265353617,
+   "baseline_name": "Yesterday's value (1-day lag)",
+   "improvement": {
+    "wape_pct": 38.60884885376511,
+    "mae_pct": 38.60884885376511
+   },
+   "n": null
+  },
+  {
+   "model": "sales_forecast_xgboost",
+   "version": "v2",
+   "status": "failed",
+   "reason": "Verification failed: the recomputed MAE/RMSE/MAPE do not reproduce the values recorded at training. The stored artifact or the rebuilt dataset is not the one that was evaluated at training time, so none of these figures is shown as this model's result."
+  }
+ ]
+}

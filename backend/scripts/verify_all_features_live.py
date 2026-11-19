@@ -11,9 +11,12 @@ def req(method, endpoint, body=None, token=None):
     if token:
         headers["Authorization"] = f"Bearer {token}"
     data = json.dumps(body).encode("utf-8") if body is not None else None
-    r = urllib.request.Request(f"{API_URL}{endpoint}", data=data, headers=headers, method=method)
+    url = f"{API_URL}{endpoint}"
+    if not (url.startswith("http://") or url.startswith("https://")):
+        raise ValueError(f"Disallowed URL scheme in verification: {url}")
+    r = urllib.request.Request(url, data=data, headers=headers, method=method)
     try:
-        with urllib.request.urlopen(r) as resp:
+        with urllib.request.urlopen(r) as resp:  # nosec: B310
             content = resp.read().decode("utf-8")
             return resp.status, json.loads(content) if content else {}
     except urllib.error.HTTPError as e:

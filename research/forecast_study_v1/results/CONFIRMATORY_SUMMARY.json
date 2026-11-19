@@ -1,0 +1,198 @@
+{
+  "cells_run": [
+    "fs1_m5_ca1_H28",
+    "fs1_m5_ca1_H7",
+    "fs1_m5_tx1_H28",
+    "fs1_m5_tx1_H7",
+    "fs1_or2_top100_H28",
+    "fs1_or2_top100_H7"
+  ],
+  "cells_not_run": [],
+  "alpha": 0.05,
+  "families": {
+    "H1_vs_matched_reference": {
+      "fs1_m5_ca1_H28": {
+        "estimate": -0.02623446659560268,
+        "ci95": [
+          -0.05774843640352429,
+          0.002607744532994837
+        ],
+        "raw_p": 0.069,
+        "holm_p": 0.20700000000000002,
+        "verdict": "INCONCLUSIVE",
+        "model_wins_blocks": 1,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__matched__trailing_median28",
+        "wape_model": 0.7428438300496779,
+        "wape_reference": 0.7238539088576553
+      },
+      "fs1_m5_ca1_H7": {
+        "estimate": -0.03678827483097484,
+        "ci95": [
+          -0.06441765753056304,
+          -0.011448955568290542
+        ],
+        "raw_p": 0.004,
+        "holm_p": 0.016,
+        "verdict": "CONTRADICTED",
+        "model_wins_blocks": 0,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__matched__trailing_median28",
+        "wape_model": 0.7066785229221321,
+        "wape_reference": 0.6816035058241184
+      },
+      "fs1_m5_tx1_H28": {
+        "estimate": -0.11382235622119455,
+        "ci95": [
+          -0.14751681490549287,
+          -0.08193622500482052
+        ],
+        "raw_p": 0.0,
+        "holm_p": 0.0,
+        "verdict": "CONTRADICTED",
+        "model_wins_blocks": 0,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__matched__trailing_median28",
+        "wape_model": 0.8346501535175919,
+        "wape_reference": 0.7493566176470589
+      },
+      "fs1_m5_tx1_H7": {
+        "estimate": -0.11077947178311476,
+        "ci95": [
+          -0.14324506006136692,
+          -0.08106650970515356
+        ],
+        "raw_p": 0.0,
+        "holm_p": 0.0,
+        "verdict": "CONTRADICTED",
+        "model_wins_blocks": 0,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__matched__trailing_median28",
+        "wape_model": 0.788767429599298,
+        "wape_reference": 0.7101026348039216
+      },
+      "fs1_or2_top100_H28": {
+        "estimate": -0.036715335069757,
+        "ci95": [
+          -0.10354822689075767,
+          0.018099842363778016
+        ],
+        "raw_p": 0.183,
+        "holm_p": 0.366,
+        "verdict": "INCONCLUSIVE",
+        "model_wins_blocks": 3,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__matched__trailing_median28",
+        "wape_model": 0.9059598417567414,
+        "wape_reference": 0.873875220236597
+      },
+      "fs1_or2_top100_H7": {
+        "estimate": -0.030268597064755362,
+        "ci95": [
+          -0.08449532067470296,
+          0.016561321874118507
+        ],
+        "raw_p": 0.205,
+        "holm_p": 0.366,
+        "verdict": "INCONCLUSIVE",
+        "model_wins_blocks": 1,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__matched__trailing_median28",
+        "wape_model": 0.8786316510238988,
+        "wape_reference": 0.8528180452428895
+      }
+    },
+    "H2_vs_any_reference": {
+      "fs1_m5_ca1_H28": {
+        "estimate": -0.0682291229418751,
+        "ci95": [
+          -0.0988142278229082,
+          -0.04052010475249153
+        ],
+        "raw_p": 0.0,
+        "holm_p": 0.0,
+        "verdict": "CONTRADICTED",
+        "model_wins_blocks": 0,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__fresh__trailing_median28",
+        "wape_model": 0.7428438300496779,
+        "wape_reference": 0.6953974705388161
+      },
+      "fs1_m5_ca1_H7": {
+        "estimate": -0.046163089396918176,
+        "ci95": [
+          -0.07321666672714057,
+          -0.020689544815967992
+        ],
+        "raw_p": 0.0,
+        "holm_p": 0.0,
+        "verdict": "CONTRADICTED",
+        "model_wins_blocks": 0,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__fresh__trailing_median28",
+        "wape_model": 0.7066785229221321,
+        "wape_reference": 0.6754955609545651
+      },
+      "fs1_m5_tx1_H28": {
+        "estimate": -0.15009946219796091,
+        "ci95": [
+          -0.18719225799201608,
+          -0.11458817852756881
+        ],
+        "raw_p": 0.0,
+        "holm_p": 0.0,
+        "verdict": "CONTRADICTED",
+        "model_wins_blocks": 0,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__fresh__trailing_median28",
+        "wape_model": 0.8346501535175919,
+        "wape_reference": 0.7257199754901961
+      },
+      "fs1_m5_tx1_H7": {
+        "estimate": -0.12163151162659668,
+        "ci95": [
+          -0.15518824587959743,
+          -0.09222630401721699
+        ],
+        "raw_p": 0.0,
+        "holm_p": 0.0,
+        "verdict": "CONTRADICTED",
+        "model_wins_blocks": 0,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__fresh__trailing_median28",
+        "wape_model": 0.788767429599298,
+        "wape_reference": 0.7032322303921569
+      },
+      "fs1_or2_top100_H28": {
+        "estimate": -0.036715335069757,
+        "ci95": [
+          -0.10354822689075767,
+          0.018099842363778016
+        ],
+        "raw_p": 0.183,
+        "holm_p": 0.366,
+        "verdict": "INCONCLUSIVE",
+        "model_wins_blocks": 3,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__matched__trailing_median28",
+        "wape_model": 0.9059598417567414,
+        "wape_reference": 0.873875220236597
+      },
+      "fs1_or2_top100_H7": {
+        "estimate": -0.028520781337256346,
+        "ci95": [
+          -0.08303680487969199,
+          0.019227534178867512
+        ],
+        "raw_p": 0.238,
+        "holm_p": 0.366,
+        "verdict": "INCONCLUSIVE",
+        "model_wins_blocks": 1,
+        "model": "pred__lightgbm__tweedie",
+        "reference": "base__fresh__trailing_median28",
+        "wape_model": 0.8786316510238988,
+        "wape_reference": 0.8542672807072741
+      }
+    }
+  }
+}

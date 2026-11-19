@@ -41,41 +41,75 @@ for old_id, email in arch_users.items():
 
 print(f"User remappings (email match): {user_remap}")
 
+ALLOWED_TABLES = {
+    "users",
+    "businesses",
+    "research_datasets",
+    "research_dataset_versions",
+    "models",
+    "training_runs",
+    "experiment_runs",
+    "goals",
+    "strategies",
+    "decisions",
+    "agent_runs",
+    "agent_evaluations",
+    "causal_graphs",
+    "causal_edges",
+    "digital_twin_states",
+    "digital_twin_simulations",
+    "products",
+    "customers",
+    "sales",
+    "inventory",
+    "marketing_campaigns",
+    "business_memory",
+    "analysis_runs",
+    "saved_reports",
+    "alerts",
+    "data_prep_runs",
+    "data_ingestion_jobs",
+}
+ALLOWED_PK_COLS = {"id", "email", "key", "model_name"}
+
 # Insert missing users
 cur_arch.execute("SELECT * FROM users")
 arch_user_rows = cur_arch.fetchall()
 inserted_users = 0
 for u in arch_user_rows:
     if u["email"] not in curr_users:
-        cols = list(u.keys())
+        cols = [c for c in u.keys() if c.isidentifier()]
         placeholders = ", ".join(["?"] * len(cols))
         col_names = ", ".join([f'"{c}"' for c in cols])
-        cur_curr.execute(f"INSERT INTO users ({col_names}) VALUES ({placeholders})", [u[c] for c in cols])
+        cur_curr.execute(f"INSERT INTO users ({col_names}) VALUES ({placeholders})", [u[c] for c in cols])  # nosec: B608
         curr_users[u["email"]] = u["id"]
         inserted_users += 1
 print(f"Inserted {inserted_users} additional users.")
 
 # Helper to copy rows from archived to current
 def copy_table(table_name, pk_col="id", transform_fn=None):
-    cur_curr.execute(f"PRAGMA table_info('{table_name}')")
-    curr_cols = [r[1] for r in cur_curr.fetchall()]
+    if table_name not in ALLOWED_TABLES or pk_col not in ALLOWED_PK_COLS:
+        raise ValueError(f"Table or column not allowed: {table_name}.{pk_col}")
+
+    cur_curr.execute(f"PRAGMA table_info('{table_name}')")  # nosec: B608
+    curr_cols = [r[1] for r in cur_curr.fetchall() if r[1].isidentifier()]
     if not curr_cols:
         print(f"Table {table_name} does not exist in current DB. Skipping.")
         return 0
     
-    cur_curr.execute(f'SELECT "{pk_col}" FROM "{table_name}"')
+    cur_curr.execute(f'SELECT "{pk_col}" FROM "{table_name}"')  # nosec: B608
     existing_pks = set(r[0] for r in cur_curr.fetchall())
     
-    cur_arch.execute(f"PRAGMA table_info('{table_name}')")
-    arch_cols = [r[1] for r in cur_arch.fetchall()]
+    cur_arch.execute(f"PRAGMA table_info('{table_name}')")  # nosec: B608
+    arch_cols = [r[1] for r in cur_arch.fetchall() if r[1].isidentifier()]
     common_cols = [c for c in curr_cols if c in arch_cols]
     
-    cur_arch.execute(f"SELECT * FROM \"{table_name}\"")
+    cur_arch.execute(f"SELECT * FROM \"{table_name}\"")  # nosec: B608
     arch_rows = cur_arch.fetchall()
     
     col_names = ", ".join([f'"{c}"' for c in common_cols])
     placeholders = ", ".join(["?"] * len(common_cols))
-    insert_sql = f'INSERT INTO "{table_name}" ({col_names}) VALUES ({placeholders})'
+    insert_sql = f'INSERT INTO "{table_name}" ({col_names}) VALUES ({placeholders})'  # nosec: B608
     
     inserted = 0
     for row in arch_rows:
@@ -116,14 +150,14 @@ def copy_models():
     
     col_names = ", ".join([f'"{c}"' for c in common_cols])
     placeholders = ", ".join(["?"] * len(common_cols))
-    insert_sql = f'INSERT INTO models ({col_names}) VALUES ({placeholders})'
+    insert_sql = f'INSERT INTO models ({col_names}) VALUES ({placeholders})'  # nosec: B608
     
     inserted = 0
     for r in arch_rows:
         key = (r["model_name"], r["version"])
         if key in existing:
             continue
-        cur_curr.execute(insert_sql, [r[c] for c in common_cols])
+        cur_curr.execute(insert_sql, [r[c] for c in common_cols])  # nosec: B608
         existing.add(key)
         inserted += 1
     print(f"Table models                        : inserted {inserted} rows (total now: {len(existing)})")

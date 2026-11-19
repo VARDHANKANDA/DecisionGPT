@@ -1,0 +1,63 @@
+{
+  "label": "POST-HOC EXPLORATORY (E1); not part of the confirmatory families",
+  "cell": "fs1_or2_top100_H28",
+  "references": {
+    "matched": "base__matched__trailing_median28",
+    "any": "base__matched__trailing_median28",
+    "primary_tweedie": "pred__lightgbm__tweedie"
+  },
+  "table": {
+    "l1_model": {
+      "wape": 0.7873173074358019,
+      "aggregate_wape": 0.5232212969928316,
+      "rel_bias": -0.49078178429948227,
+      "mae": 23.832469809085264,
+      "rmse": 83.73965338706695
+    },
+    "tweedie_primary": {
+      "wape": 0.9059598417567414,
+      "aggregate_wape": 0.3595123424101589,
+      "rel_bias": -0.05011288600396045,
+      "mae": 27.423835819425015,
+      "rmse": 80.95098755555829
+    },
+    "ref_matched": {
+      "wape": 0.873875220236597,
+      "aggregate_wape": 0.7301905046564309,
+      "rel_bias": -0.5830862226277372,
+      "mae": 26.45261904761905,
+      "rmse": 86.57538794379757
+    },
+    "ref_any": {
+      "wape": 0.873875220236597,
+      "aggregate_wape": 0.7301905046564309,
+      "rel_bias": -0.5830862226277372,
+      "mae": 26.45261904761905,
+      "rmse": 86.57538794379757
+    }
+  },
+  "l1_vs_matched_reference": {
+    "estimate": 0.09905065482616623,
+    "ci95": [
+      0.07979191365085213,
+      0.11778507159505702
+    ],
+    "p_two_sided": 0.0
+  },
+  "l1_vs_any_reference": {
+    "estimate": 0.09905065482616623,
+    "ci95": [
+      0.07979191365085213,
+      0.11778507159505702
+    ],
+    "p_two_sided": 0.0
+  },
+  "l1_vs_tweedie_primary": {
+    "estimate": 0.13095782931269942,
+    "ci95": [
+      0.08795215185574928,
+      0.18054122094761207
+    ],
+    "p_two_sided": 0.0
+  }
+}

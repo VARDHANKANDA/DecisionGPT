@@ -1,0 +1,28 @@
+**Table R3-4. Clean-environment reproduction of all cells**
+
+| window / cell | selection identical | method summaries compared | max abs. diff. of metrics | max abs. diff. of stored forecasts | verdicts recomputed from re-run |
+|---|---|---|---|---|---|
+| W1/m5_ca1_H28 | True | 33 | 0.00e+00 | 0.00e+00 | identical |
+| W1/m5_ca1_H7 | True | 33 | 0.00e+00 | 0.00e+00 | identical |
+| W1/m5_tx1_H28 | True | 33 | 0.00e+00 | 0.00e+00 | identical |
+| W1/m5_tx1_H7 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W1/m5_wi1_H28 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W1/m5_wi1_H7 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W1/or2_H28 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W1/or2_H7 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W2/m5_ca1_H28 | True | 35 | 0.00e+00 | 0.00e+00 | identical |
+| W2/m5_ca1_H7 | True | 35 | 0.00e+00 | 0.00e+00 | identical |
+| W2/m5_tx1_H28 | True | 35 | 0.00e+00 | 0.00e+00 | identical |
+| W2/m5_tx1_H7 | True | 35 | 0.00e+00 | 0.00e+00 | identical |
+| W2/m5_wi1_H28 | True | 36 | 0.00e+00 | 0.00e+00 | identical |
+| W2/m5_wi1_H7 | True | 36 | 0.00e+00 | 0.00e+00 | identical |
+| W2/or2_H28 | True | 35 | 0.00e+00 | 0.00e+00 | identical |
+| W2/or2_H7 | True | 35 | 0.00e+00 | 0.00e+00 | identical |
+| W3/m5_ca1_H28 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W3/m5_ca1_H7 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W3/m5_tx1_H28 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W3/m5_tx1_H7 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W3/m5_wi1_H28 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+| W3/m5_wi1_H7 | True | 34 | 0.00e+00 | 0.00e+00 | identical |
+
+*Source: `quality_gate/results/e1_reproduction.json` (re-run in a fresh pinned environment into a scratch directory).*

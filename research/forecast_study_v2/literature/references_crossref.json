@@ -1,0 +1,564 @@
+[
+ {
+  "id": "L01",
+  "doi": "10.1198/jasa.2011.r10138",
+  "stated": "Gneiting (2011) Making and evaluating point forecasts",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Gneiting, T."
+  ],
+  "title": "Making and Evaluating Point Forecasts",
+  "journal": "Journal of the American Statistical Association",
+  "volume": "106",
+  "issue": "494",
+  "page": "746-762",
+  "year": 2011,
+  "publisher": "Informa UK Limited"
+ },
+ {
+  "id": "L02",
+  "doi": "10.1016/j.ijforecast.2019.02.017",
+  "stated": "Kolassa (2020) Why the best point forecast depends on the error or accuracy measure",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Kolassa, S."
+  ],
+  "title": "Why the “best” point forecast depends on the error or accuracy measure",
+  "journal": "International Journal of Forecasting",
+  "volume": "36",
+  "issue": "1",
+  "page": "208-211",
+  "year": 2020,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L03",
+  "doi": "10.1016/j.ijforecast.2015.12.004",
+  "stated": "Kolassa (2016) Evaluating predictive count data distributions in retail sales forecasting",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Kolassa, S."
+  ],
+  "title": "Evaluating predictive count data distributions in retail sales forecasting",
+  "journal": "International Journal of Forecasting",
+  "volume": "32",
+  "issue": "3",
+  "page": "788-803",
+  "year": 2016,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L04",
+  "doi": "10.1080/00207543.2014.917771",
+  "stated": "Prestwich (2014) Mean-based error measures for intermittent demand forecasting",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Prestwich, S.",
+   "Rossi, R.",
+   "Armagan Tarim, S.",
+   "Hnich, B."
+  ],
+  "title": "Mean-based error measures for intermittent demand forecasting",
+  "journal": "International Journal of Production Research",
+  "volume": "52",
+  "issue": "22",
+  "page": "6782-6791",
+  "year": 2014,
+  "publisher": "Informa UK Limited"
+ },
+ {
+  "id": "L05",
+  "doi": "10.1016/j.ijpe.2014.06.007",
+  "stated": "Kourentzes (2014) On intermittent demand model optimisation and selection",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Kourentzes, N."
+  ],
+  "title": "On intermittent demand model optimisation and selection",
+  "journal": "International Journal of Production Economics",
+  "volume": "156",
+  "issue": "",
+  "page": "180-190",
+  "year": 2014,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L06",
+  "doi": "10.1016/j.ijforecast.2006.03.001",
+  "stated": "Hyndman (2006) Another look at measures of forecast accuracy",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Hyndman, R.J.",
+   "Koehler, A.B."
+  ],
+  "title": "Another look at measures of forecast accuracy",
+  "journal": "International Journal of Forecasting",
+  "volume": "22",
+  "issue": "4",
+  "page": "679-688",
+  "year": 2006,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L07",
+  "doi": "10.1057/jors.1972.50",
+  "stated": "Croston (1972) Forecasting and stock control for intermittent demands",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Croston, J.D."
+  ],
+  "title": "Forecasting and Stock Control for Intermittent Demands",
+  "journal": "Journal of the Operational Research Society",
+  "volume": "23",
+  "issue": "3",
+  "page": "289-303",
+  "year": 1972,
+  "publisher": "Informa UK Limited"
+ },
+ {
+  "id": "L08",
+  "doi": "10.1016/j.ijforecast.2004.10.001",
+  "stated": "Syntetos (2005) The accuracy of intermittent demand estimates",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Syntetos, A.A.",
+   "Boylan, J.E."
+  ],
+  "title": "The accuracy of intermittent demand estimates",
+  "journal": "International Journal of Forecasting",
+  "volume": "21",
+  "issue": "2",
+  "page": "303-314",
+  "year": 2005,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L09",
+  "doi": "10.1016/j.ejor.2011.05.018",
+  "stated": "Teunter (2011) Intermittent demand: Linking forecasting to inventory obsolescence",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Teunter, R.H.",
+   "Syntetos, A.A.",
+   "Zied Babai, M."
+  ],
+  "title": "Intermittent demand: Linking forecasting to inventory obsolescence",
+  "journal": "European Journal of Operational Research",
+  "volume": "214",
+  "issue": "3",
+  "page": "606-615",
+  "year": 2011,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L10",
+  "doi": "10.1057/jors.2010.32",
+  "stated": "Nikolopoulos (2011) An aggregate-disaggregate intermittent demand approach (ADIDA) to forecasting: an empirical proposition and analysis",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Nikolopoulos, K.",
+   "Syntetos, A.A.",
+   "Boylan, J.E.",
+   "Petropoulos, F.",
+   "Assimakopoulos, V."
+  ],
+  "title": "An aggregate–disaggregate intermittent demand approach (ADIDA) to forecasting: an empirical proposition and analysis",
+  "journal": "Journal of the Operational Research Society",
+  "volume": "62",
+  "issue": "3",
+  "page": "544-554",
+  "year": 2011,
+  "publisher": "Informa UK Limited"
+ },
+ {
+  "id": "L11",
+  "doi": "10.1016/j.ejor.2017.02.046",
+  "stated": "Athanasopoulos (2017) Forecasting with temporal hierarchies",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Athanasopoulos, G.",
+   "Hyndman, R.J.",
+   "Kourentzes, N.",
+   "Petropoulos, F."
+  ],
+  "title": "Forecasting with temporal hierarchies",
+  "journal": "European Journal of Operational Research",
+  "volume": "262",
+  "issue": "1",
+  "page": "60-74",
+  "year": 2017,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L12",
+  "doi": "10.1016/j.csda.2011.03.006",
+  "stated": "Hyndman (2011) Optimal combination forecasts for hierarchical time series",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Hyndman, R.J.",
+   "Ahmed, R.A.",
+   "Athanasopoulos, G.",
+   "Shang, H.L."
+  ],
+  "title": "Optimal combination forecasts for hierarchical time series",
+  "journal": "Computational Statistics &amp; Data Analysis",
+  "volume": "55",
+  "issue": "9",
+  "page": "2579-2589",
+  "year": 2011,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L13",
+  "doi": "10.1016/j.asoc.2021.107756",
+  "stated": "Spiliotis (2021) Hierarchical forecast reconciliation with machine learning",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Spiliotis, E.",
+   "Abolghasemi, M.",
+   "Hyndman, R.J.",
+   "Petropoulos, F.",
+   "Assimakopoulos, V."
+  ],
+  "title": "Hierarchical forecast reconciliation with machine learning",
+  "journal": "Applied Soft Computing",
+  "volume": "112",
+  "issue": "",
+  "page": "107756",
+  "year": 2021,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L14",
+  "doi": "10.1016/j.ijforecast.2021.11.013",
+  "stated": "Makridakis (2022) M5 accuracy competition: Results, findings, and conclusions",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Makridakis, S.",
+   "Spiliotis, E.",
+   "Assimakopoulos, V."
+  ],
+  "title": "M5 accuracy competition: Results, findings, and conclusions",
+  "journal": "International Journal of Forecasting",
+  "volume": "38",
+  "issue": "4",
+  "page": "1346-1364",
+  "year": 2022,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L15",
+  "doi": "10.1016/j.ijforecast.2021.10.004",
+  "stated": "Januschowski (2022) Forecasting with trees",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Januschowski, T.",
+   "Wang, Y.",
+   "Torkkola, K.",
+   "Erkkilä, T.",
+   "Hasson, H.",
+   "Gasthaus, J."
+  ],
+  "title": "Forecasting with trees",
+  "journal": "International Journal of Forecasting",
+  "volume": "38",
+  "issue": "4",
+  "page": "1473-1481",
+  "year": 2022,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L16",
+  "doi": "10.1016/j.ijforecast.2020.07.007",
+  "stated": "Bojer (2021) Kaggle forecasting competitions: An overlooked learning opportunity",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Bojer, C.S.",
+   "Meldgaard, J.P."
+  ],
+  "title": "Kaggle forecasting competitions: An overlooked learning opportunity",
+  "journal": "International Journal of Forecasting",
+  "volume": "37",
+  "issue": "2",
+  "page": "587-603",
+  "year": 2021,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L17",
+  "doi": "10.1007/s12351-020-00605-2",
+  "stated": "Spiliotis (2022) Comparison of statistical and machine learning methods for daily SKU demand forecasting",
+  "status": "VERIFIED (metadata; year convention)",
+  "notes": "Registry 'issued' year 2020 is online-first; print volume 22(3) is 2022; cite the print year consistently",
+  "authors": [
+   "Spiliotis, E.",
+   "Makridakis, S.",
+   "Semenoglou, A.A.",
+   "Assimakopoulos, V."
+  ],
+  "title": "Comparison of statistical and machine learning methods for daily SKU demand forecasting",
+  "journal": "Operational Research",
+  "volume": "22",
+  "issue": "3",
+  "page": "3037-3061",
+  "year": 2020,
+  "publisher": "Springer Science and Business Media LLC"
+ },
+ {
+  "id": "L18",
+  "doi": "10.1371/journal.pone.0194889",
+  "stated": "Makridakis (2018) Statistical and Machine Learning forecasting methods: Concerns and ways forward",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Makridakis, S.",
+   "Spiliotis, E.",
+   "Assimakopoulos, V."
+  ],
+  "title": "Statistical and Machine Learning forecasting methods: Concerns and ways forward",
+  "journal": "PLOS ONE",
+  "volume": "13",
+  "issue": "3",
+  "page": "e0194889",
+  "year": 2018,
+  "publisher": "Public Library of Science (PLoS)"
+ },
+ {
+  "id": "L19",
+  "doi": "10.1016/j.ijforecast.2019.04.014",
+  "stated": "Makridakis (2020) The M4 Competition: 100,000 time series and 61 forecasting methods",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Makridakis, S.",
+   "Spiliotis, E.",
+   "Assimakopoulos, V."
+  ],
+  "title": "The M4 Competition: 100,000 time series and 61 forecasting methods",
+  "journal": "International Journal of Forecasting",
+  "volume": "36",
+  "issue": "1",
+  "page": "54-74",
+  "year": 2020,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L20",
+  "doi": "10.1016/j.ijforecast.2019.06.004",
+  "stated": "Fildes (2022) Retail forecasting: Research and practice",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Fildes, R.",
+   "Ma, S.",
+   "Kolassa, S."
+  ],
+  "title": "Retail forecasting: Research and practice",
+  "journal": "International Journal of Forecasting",
+  "volume": "38",
+  "issue": "4",
+  "page": "1283-1318",
+  "year": 2022,
+  "publisher": "Elsevier BV"
+ },
+ {
+  "id": "L21",
+  "doi": "10.1007/s10618-022-00894-5",
+  "stated": "Hewamalage (2023) Forecast evaluation for data scientists: common pitfalls and best practices",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Hewamalage, H.",
+   "Ackermann, K.",
+   "Bergmeir, C."
+  ],
+  "title": "Forecast evaluation for data scientists: common pitfalls and best practices",
+  "journal": "Data Mining and Knowledge Discovery",
+  "volume": "37",
+  "issue": "2",
+  "page": "788-832",
+  "year": 2022,
+  "publisher": "Springer Science and Business Media LLC"
+ },
+ {
+  "id": "L22",
+  "doi": "10.2307/1913643",
+  "stated": "Koenker (1978) Regression quantiles",
+  "status": "VERIFIED (metadata; page range partly)",
+  "notes": "Registry lists the start page only (33); the range 33-50 is the standard citation and was not confirmed by the registry",
+  "authors": [
+   "Koenker, R.",
+   "Bassett, G."
+  ],
+  "title": "Regression Quantiles",
+  "journal": "Econometrica",
+  "volume": "46",
+  "issue": "1",
+  "page": "33",
+  "year": 1978,
+  "publisher": "JSTOR"
+ },
+ {
+  "id": "L23",
+  "doi": "10.1214/aos/1013203451",
+  "stated": "Friedman (2001) Greedy function approximation: A gradient boosting machine",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Friedman, J.H."
+  ],
+  "title": "Greedy function approximation: A gradient boosting machine.",
+  "journal": "The Annals of Statistics",
+  "volume": "29",
+  "issue": "5",
+  "page": "1189-1232",
+  "year": 2001,
+  "publisher": "Institute of Mathematical Statistics"
+ },
+ {
+  "id": "L24",
+  "doi": "10.1198/jbes.2010.07136",
+  "stated": "Cameron (2011) Robust inference with multiway clustering",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Cameron, A.C.",
+   "Gelbach, J.B.",
+   "Miller, D.L."
+  ],
+  "title": "Robust Inference With Multiway Clustering",
+  "journal": "Journal of Business &amp; Economic Statistics",
+  "volume": "29",
+  "issue": "2",
+  "page": "238-249",
+  "year": 2011,
+  "publisher": "Informa UK Limited"
+ },
+ {
+  "id": "L25",
+  "doi": "10.1214/07-AOAS122",
+  "stated": "Owen (2007) The pigeonhole bootstrap",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Owen, A.B."
+  ],
+  "title": "The pigeonhole bootstrap",
+  "journal": "The Annals of Applied Statistics",
+  "volume": "1",
+  "issue": "2",
+  "page": "386-411",
+  "year": 2007,
+  "publisher": "Institute of Mathematical Statistics"
+ },
+ {
+  "id": "L26",
+  "doi": "10.1214/12-AOAS547",
+  "stated": "Owen (2012) Bootstrapping data arrays of arbitrary order",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Owen, A.B.",
+   "Eckles, D."
+  ],
+  "title": "Bootstrapping data arrays of arbitrary order",
+  "journal": "The Annals of Applied Statistics",
+  "volume": "6",
+  "issue": "3",
+  "page": "895-927",
+  "year": 2012,
+  "publisher": "Institute of Mathematical Statistics"
+ },
+ {
+  "id": "L27",
+  "doi": "",
+  "stated": "Ke (2017) LightGBM: A highly efficient gradient boosting decision tree",
+  "status": "VERIFIED at venue/arXiv page (no DOI)",
+  "notes": ""
+ },
+ {
+  "id": "L28",
+  "doi": "10.1145/2939672.2939785",
+  "stated": "Chen (2016) XGBoost: A scalable tree boosting system",
+  "status": "VERIFIED (metadata; short registry title)",
+  "notes": "Registry title is 'XGBoost'; subtitle 'A Scalable Tree Boosting System' matches the paper; pages 785-794 confirmed",
+  "authors": [
+   "Chen, T.",
+   "Guestrin, C."
+  ],
+  "title": "XGBoost",
+  "journal": "Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining",
+  "volume": "",
+  "issue": "",
+  "page": "785-794",
+  "year": 2016,
+  "publisher": "ACM"
+ },
+ {
+  "id": "L29",
+  "doi": "arXiv:2601.14031",
+  "stated": "Damato (2026) Intermittent time series forecasting: local vs global models",
+  "status": "VERIFIED at venue/arXiv page (no DOI)",
+  "notes": ""
+ },
+ {
+  "id": "L30",
+  "doi": "10.1080/07350015.1995.10524599",
+  "stated": "Diebold (1995) Comparing predictive accuracy",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Diebold, F.X.",
+   "Mariano, R.S."
+  ],
+  "title": "Comparing Predictive Accuracy",
+  "journal": "Journal of Business &amp; Economic Statistics",
+  "volume": "13",
+  "issue": "3",
+  "page": "253-263",
+  "year": 1995,
+  "publisher": "Informa UK Limited"
+ },
+ {
+  "id": "L31",
+  "doi": "10.1080/01621459.1994.10476870",
+  "stated": "Politis (1994) The stationary bootstrap",
+  "status": "VERIFIED (metadata)",
+  "notes": "",
+  "authors": [
+   "Politis, D.N.",
+   "Romano, J.P."
+  ],
+  "title": "The Stationary Bootstrap",
+  "journal": "Journal of the American Statistical Association",
+  "volume": "89",
+  "issue": "428",
+  "page": "1303-1313",
+  "year": 1994,
+  "publisher": "Informa UK Limited"
+ },
+ {
+  "id": "L32",
+  "doi": "10.24432/C5CG6D",
+  "stated": "Chen (2012) Online Retail II [Dataset]. UCI Machine Learning Repository",
+  "status": "VERIFIED at UCI dataset page (DataCite DOI, not in Crossref)",
+  "notes": "UCI page read 2026-10-22: licence CC BY 4.0, donor Daqing Chen, DOI 10.24432/C5CG6D",
+  "lookup_error": "HTTP Error 404: Not Found"
+ }
+]

@@ -1,0 +1,86 @@
+{
+ "snapshot": {
+  "before_files": 543,
+  "after_files": 548,
+  "changed": [],
+  "removed": [],
+  "added": [
+   "research/forecast_study_v1/manuscript/figures_v2/fig1_forest.svg",
+   "research/forecast_study_v1/manuscript/figures_v2/fig2_aggregation_ladder.svg",
+   "research/forecast_study_v1/manuscript/figures_v2/fig3_segments.svg",
+   "research/forecast_study_v1/manuscript/figures_v2/fig4_coverage_zero_positive.svg",
+   "research/forecast_study_v1/manuscript/MANUSCRIPT_v2.md"
+  ]
+ },
+ "originals_identical_before_after": {
+  "research/forecast_study_v1/manuscript/MANUSCRIPT.md": true,
+  "research/forecast_study_v1/EXPERIMENT_PLAN.md": true,
+  "research/forecast_study_v1/FREEZE.json": true,
+  "research/forecast_study_v1/results/CONFIRMATORY_SUMMARY.md": true,
+  "research/forecast_study_v1/results/TABLES.md": true,
+  "research/forecast_study_v1/manuscript/figures/fig1_forest.svg": true
+ },
+ "predictions_files": {
+  "count": 15,
+  "all_identical": true
+ },
+ "results_tree": {
+  "count": 457,
+  "all_identical": true
+ },
+ "historical_benchmark_tree": {
+  "count": 25,
+  "all_identical": true
+ },
+ "freeze_code_and_plan": {
+  "__init__.py": "unchanged",
+  "ablation_report.py": "unchanged",
+  "aggregate.py": "unchanged",
+  "analyze.py": "unchanged",
+  "baselines.py": "unchanged",
+  "inference.py": "unchanged",
+  "make_freeze.py": "unchanged",
+  "metrics.py": "unchanged",
+  "protocol.py": "unchanged",
+  "run_classification_study.py": "unchanged",
+  "run_forecast_study.py": "unchanged",
+  "verify_cell.py": "unchanged",
+  "EXPERIMENT_PLAN.md": "CHANGED",
+  "test_forecast_study.py": "unchanged"
+ },
+ "plan_text_above_deviation_log_matches_freeze": true,
+ "historical_hashes": {
+  "checked": 20,
+  "listed": 20,
+  "bad": []
+ },
+ "historical_hash_file_sha256_matches_freeze_record": true,
+ "experiment_manifest_sha256": "94aa419c703b1babb465975463b26e55255755a7687ecbecadb6db4c4c15cbff",
+ "experiment_manifest_matches_frozen_constant": true,
+ "verify_historical_freeze_py": {
+  "returncode": 0,
+  "last_line": "OK \u2014 all 22 historical artifacts unchanged since freeze at 2026-09-23T22:45:00Z."
+ },
+ "v2": {
+  "words": 8456,
+  "no_unfilled_markers": true,
+  "abstract_words": 276,
+  "banned_phrases_absent": {
+   "exactly the official evaluation window": true,
+   "store-day": true,
+   "near-nominal": true,
+   "pre-registered evaluation": true,
+   "Pre-registered": true
+  },
+  "required_phrases_present": {
+   "not ready for submission": true,
+   "Not ready for submission": true,
+   "post hoc": true,
+   "**internal** record": true,
+   "does not show that machine-learning forecasts generally fail to beat simple baselines": true,
+   "public leaderboard": true,
+   "zero-demand rows": true,
+   "Appendix A": true
+  }
+ }
+}

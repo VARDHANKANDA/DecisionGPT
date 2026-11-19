@@ -204,24 +204,7 @@ class LLMService:
         )
 
     def generate_strategy_explanation(self, context: dict) -> str:
-        """Strategy narrative explaining results that already exist. If OpenAI is available, uses GPT-5 mini; otherwise falls back to template."""
-        if not self.enabled:
-            return self._default_strategy_explanation(context)
-
-        prompt = (
-            f"Explain the following evaluated business strategy concisely (1-2 sentences) for an executive:\n"
-            f"- Strategy Name: {context.get('strategy_name', 'Unnamed')}\n"
-            f"- Expected Revenue: {context.get('expected_revenue', 'N/A')}\n"
-            f"- Risk Level: {context.get('risk_level', 'N/A')}\n"
-            f"Rule: State verified expected outcomes clearly without fabricating extra numbers."
-        )
-        res = self.generate(
-            instructions="You are DecisionGPT's Strategy Synthesis Engine. Provide concise, grounded executive strategy explanations.",
-            input_text=prompt,
-            max_output_tokens=300,
-        )
-        if res.ok and res.text:
-            return res.text
+        """Strategy narrative explaining results that already exist (deterministic template per AGENTS.md)."""
         return self._default_strategy_explanation(context)
 
     def _default_strategy_explanation(self, context: dict) -> str:
@@ -233,25 +216,7 @@ class LLMService:
         return " ".join(parts)
 
     def evaluate_agent(self, agent_name: str, evaluation: dict) -> str:
-        """One agent's structured evaluation synthesized. Uses GPT-5 mini when configured, otherwise deterministic template."""
-        if not self.enabled:
-            return self._default_evaluate_agent(agent_name, evaluation)
-
-        label = agent_name.replace("_", " ").title()
-        prompt = (
-            f"Synthesize the following specialist evaluation into a concise executive finding (1-2 sentences):\n"
-            f"Specialist: {label}\n"
-            f"Key Points: {json.dumps(evaluation.get('key_points', []))}\n"
-            f"Risks: {json.dumps(evaluation.get('risks', []))}\n"
-            f"Assumptions: {json.dumps(evaluation.get('assumptions', []))}\n"
-        )
-        res = self.generate(
-            instructions="You are DecisionGPT's Agent Review Synthesizer. Synthesize findings faithfully without hallucinating new data.",
-            input_text=prompt,
-            max_output_tokens=350,
-        )
-        if res.ok and res.text:
-            return res.text
+        """One agent's structured evaluation synthesized (deterministic template per AGENTS.md)."""
         return self._default_evaluate_agent(agent_name, evaluation)
 
     def _default_evaluate_agent(self, agent_name: str, evaluation: dict) -> str:

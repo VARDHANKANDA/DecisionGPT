@@ -96,7 +96,8 @@ pnpm-debug.log*
 *~
 .tools/
 .formatting_fix_backup/
-.claude/
+.claude/*
+!.claude/launch.json
 
 # Operating System & IDE Files
 .DS_Store

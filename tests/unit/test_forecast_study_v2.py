@@ -114,6 +114,7 @@ def test_ladder_levels_collapse_correctly():
 
 # ------------------------------------------------------------------ objective semantics
 def test_absolute_error_objective_recovers_the_median_and_squared_error_the_mean():
+    pytest.importorskip("lightgbm")
     rng = np.random.default_rng(0)
     n = 6000
     X = rng.normal(size=(n, 2)).astype(np.float32)
@@ -132,6 +133,7 @@ def test_absolute_error_objective_recovers_the_median_and_squared_error_the_mean
 
 
 def test_predictions_are_clipped_at_zero():
+    pytest.importorskip("lightgbm")
     rng = np.random.default_rng(1)
     X = rng.normal(size=(500, 2)).astype(np.float32)
     y = np.maximum(0, X[:, 0] * 3 - 1).round()

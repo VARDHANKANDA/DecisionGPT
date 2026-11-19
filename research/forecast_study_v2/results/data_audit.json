@@ -1,0 +1,1089 @@
+{
+ "raw_file_sha256": {
+  "data/external/m5_forecasting/raw/calendar.csv": "d12b5914ef03e66649adf5dd9e996e6602251c22b7a6af8f1f7e3aa12f8860f5",
+  "data/external/m5_forecasting/raw/sales_train_evaluation.csv": "4b4a47c44c38380d2a9168216fea8c9ff2f31b1ddb772f8a0995952a038b8aa0",
+  "data/external/m5_forecasting/raw/sell_prices.csv": "9da3ad1f8b8ccacdbdc70612191dd375ec24a4ac6625c24b75b3bc60b0bed2ef",
+  "data/external/uci_online_retail_ii/processed/online_retail_ii_raw_as_csv.csv": "5f45b06f2a93191d96ca2aaa23e67e67be14df8a564178761e9afbd294710b78"
+ },
+ "datasets": {
+  "m5_ca1_W1": {
+   "T_trunc": 1941,
+   "T_full": 1941,
+   "series": 350,
+   "date_first": "2011-01-29",
+   "date_last_used": "2016-05-22",
+   "zero_share_all_days": 0.6010127327592552,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.1254198866563627,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1689,
+     1717,
+     1745
+    ],
+    "test_blocks": [
+     1773,
+     1801,
+     1829,
+     1857,
+     1885,
+     1913
+    ],
+    "scored_span_days": [
+     1689,
+     1940
+    ],
+    "scored_span_dates": [
+     "2015-09-14",
+     "2016-05-22"
+    ],
+    "test_zero_share_all_rows": 0.5379421768707483,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 50,
+      "intermittent_or_sparse": 300
+     },
+     "volume": {
+      "high": 116,
+      "low": 117,
+      "mid": 117
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1689,
+     1717,
+     1745
+    ],
+    "test_blocks": [
+     1773,
+     1801,
+     1829,
+     1857,
+     1885,
+     1913
+    ],
+    "scored_span_days": [
+     1689,
+     1940
+    ],
+    "scored_span_dates": [
+     "2015-09-14",
+     "2016-05-22"
+    ],
+    "test_zero_share_all_rows": 0.5379421768707483,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 50,
+      "intermittent_or_sparse": 300
+     },
+     "volume": {
+      "high": 116,
+      "low": 117,
+      "mid": 117
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2673,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 94,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 16,
+     "HOUSEHOLD_1": 59,
+     "HOUSEHOLD_2": 61
+    }
+   }
+  },
+  "m5_ca1_W2": {
+   "T_trunc": 1689,
+   "T_full": 1941,
+   "series": 350,
+   "date_first": "2011-01-29",
+   "date_last_used": "2015-09-13",
+   "zero_share_all_days": 0.6091025966336802,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.14413262285375963,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1437,
+     1465,
+     1493
+    ],
+    "test_blocks": [
+     1521,
+     1549,
+     1577,
+     1605,
+     1633,
+     1661
+    ],
+    "scored_span_days": [
+     1437,
+     1688
+    ],
+    "scored_span_dates": [
+     "2015-01-05",
+     "2015-09-13"
+    ],
+    "test_zero_share_all_rows": 0.5422108843537415,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 46,
+      "intermittent_or_sparse": 304
+     },
+     "volume": {
+      "high": 117,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1437,
+     1465,
+     1493
+    ],
+    "test_blocks": [
+     1521,
+     1549,
+     1577,
+     1605,
+     1633,
+     1661
+    ],
+    "scored_span_days": [
+     1437,
+     1688
+    ],
+    "scored_span_dates": [
+     "2015-01-05",
+     "2015-09-13"
+    ],
+    "test_zero_share_all_rows": 0.5422108843537415,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 46,
+      "intermittent_or_sparse": 304
+     },
+     "volume": {
+      "high": 117,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2673,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 94,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 16,
+     "HOUSEHOLD_1": 59,
+     "HOUSEHOLD_2": 61
+    }
+   }
+  },
+  "m5_ca1_W3": {
+   "T_trunc": 1437,
+   "T_full": 1941,
+   "series": 350,
+   "date_first": "2011-01-29",
+   "date_last_used": "2015-01-04",
+   "zero_share_all_days": 0.6183835371309275,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.16940848990953375,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1185,
+     1213,
+     1241
+    ],
+    "test_blocks": [
+     1269,
+     1297,
+     1325,
+     1353,
+     1381,
+     1409
+    ],
+    "scored_span_days": [
+     1185,
+     1436
+    ],
+    "scored_span_dates": [
+     "2014-04-28",
+     "2015-01-04"
+    ],
+    "test_zero_share_all_rows": 0.5617176870748299,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 46,
+      "intermittent_or_sparse": 304
+     },
+     "volume": {
+      "high": 117,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1185,
+     1213,
+     1241
+    ],
+    "test_blocks": [
+     1269,
+     1297,
+     1325,
+     1353,
+     1381,
+     1409
+    ],
+    "scored_span_days": [
+     1185,
+     1436
+    ],
+    "scored_span_dates": [
+     "2014-04-28",
+     "2015-01-04"
+    ],
+    "test_zero_share_all_rows": 0.5617176870748299,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 46,
+      "intermittent_or_sparse": 304
+     },
+     "volume": {
+      "high": 117,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2673,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 94,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 16,
+     "HOUSEHOLD_1": 59,
+     "HOUSEHOLD_2": 61
+    }
+   }
+  },
+  "m5_tx1_W1": {
+   "T_trunc": 1941,
+   "T_full": 1941,
+   "series": 350,
+   "date_first": "2011-01-29",
+   "date_last_used": "2016-05-22",
+   "zero_share_all_days": 0.6709855008463973,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.1327047913446677,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1689,
+     1717,
+     1745
+    ],
+    "test_blocks": [
+     1773,
+     1801,
+     1829,
+     1857,
+     1885,
+     1913
+    ],
+    "scored_span_days": [
+     1689,
+     1940
+    ],
+    "scored_span_dates": [
+     "2015-09-14",
+     "2016-05-22"
+    ],
+    "test_zero_share_all_rows": 0.6282142857142857,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 39,
+      "intermittent_or_sparse": 311
+     },
+     "volume": {
+      "high": 117,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1689,
+     1717,
+     1745
+    ],
+    "test_blocks": [
+     1773,
+     1801,
+     1829,
+     1857,
+     1885,
+     1913
+    ],
+    "scored_span_days": [
+     1689,
+     1940
+    ],
+    "scored_span_dates": [
+     "2015-09-14",
+     "2016-05-22"
+    ],
+    "test_zero_share_all_rows": 0.6282142857142857,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 39,
+      "intermittent_or_sparse": 311
+     },
+     "volume": {
+      "high": 117,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2661,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 95,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 15,
+     "HOUSEHOLD_1": 59,
+     "HOUSEHOLD_2": 61
+    }
+   }
+  },
+  "m5_tx1_W2": {
+   "T_trunc": 1689,
+   "T_full": 1941,
+   "series": 350,
+   "date_first": "2011-01-29",
+   "date_last_used": "2015-09-13",
+   "zero_share_all_days": 0.6768417491330457,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.1525044404973357,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1437,
+     1465,
+     1493
+    ],
+    "test_blocks": [
+     1521,
+     1549,
+     1577,
+     1605,
+     1633,
+     1661
+    ],
+    "scored_span_days": [
+     1437,
+     1688
+    ],
+    "scored_span_dates": [
+     "2015-01-05",
+     "2015-09-13"
+    ],
+    "test_zero_share_all_rows": 0.618843537414966,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 33,
+      "intermittent_or_sparse": 317
+     },
+     "volume": {
+      "high": 117,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1437,
+     1465,
+     1493
+    ],
+    "test_blocks": [
+     1521,
+     1549,
+     1577,
+     1605,
+     1633,
+     1661
+    ],
+    "scored_span_days": [
+     1437,
+     1688
+    ],
+    "scored_span_dates": [
+     "2015-01-05",
+     "2015-09-13"
+    ],
+    "test_zero_share_all_rows": 0.618843537414966,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 33,
+      "intermittent_or_sparse": 317
+     },
+     "volume": {
+      "high": 117,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2661,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 95,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 15,
+     "HOUSEHOLD_1": 59,
+     "HOUSEHOLD_2": 61
+    }
+   }
+  },
+  "m5_tx1_W3": {
+   "T_trunc": 1437,
+   "T_full": 1941,
+   "series": 350,
+   "date_first": "2011-01-29",
+   "date_last_used": "2015-01-04",
+   "zero_share_all_days": 0.6858693707127945,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.17924843423799583,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1185,
+     1213,
+     1241
+    ],
+    "test_blocks": [
+     1269,
+     1297,
+     1325,
+     1353,
+     1381,
+     1409
+    ],
+    "scored_span_days": [
+     1185,
+     1436
+    ],
+    "scored_span_dates": [
+     "2014-04-28",
+     "2015-01-04"
+    ],
+    "test_zero_share_all_rows": 0.6511224489795918,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 36,
+      "intermittent_or_sparse": 314
+     },
+     "volume": {
+      "high": 117,
+      "low": 118,
+      "mid": 115
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1185,
+     1213,
+     1241
+    ],
+    "test_blocks": [
+     1269,
+     1297,
+     1325,
+     1353,
+     1381,
+     1409
+    ],
+    "scored_span_days": [
+     1185,
+     1436
+    ],
+    "scored_span_dates": [
+     "2014-04-28",
+     "2015-01-04"
+    ],
+    "test_zero_share_all_rows": 0.6511224489795918,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 36,
+      "intermittent_or_sparse": 314
+     },
+     "volume": {
+      "high": 117,
+      "low": 118,
+      "mid": 115
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2661,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 95,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 15,
+     "HOUSEHOLD_1": 59,
+     "HOUSEHOLD_2": 61
+    }
+   }
+  },
+  "m5_wi1_W1": {
+   "T_trunc": 1941,
+   "T_full": 1941,
+   "series": 349,
+   "date_first": "2011-01-29",
+   "date_last_used": "2016-05-22",
+   "zero_share_all_days": 0.6621760265954542,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.1930192837709567,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1689,
+     1717,
+     1745
+    ],
+    "test_blocks": [
+     1773,
+     1801,
+     1829,
+     1857,
+     1885,
+     1913
+    ],
+    "scored_span_days": [
+     1689,
+     1940
+    ],
+    "scored_span_dates": [
+     "2015-09-14",
+     "2016-05-22"
+    ],
+    "test_zero_share_all_rows": 0.5344351207531723,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 39,
+      "intermittent_or_sparse": 310
+     },
+     "volume": {
+      "high": 116,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1689,
+     1717,
+     1745
+    ],
+    "test_blocks": [
+     1773,
+     1801,
+     1829,
+     1857,
+     1885,
+     1913
+    ],
+    "scored_span_days": [
+     1689,
+     1940
+    ],
+    "scored_span_dates": [
+     "2015-09-14",
+     "2016-05-22"
+    ],
+    "test_zero_share_all_rows": 0.5344351207531723,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 39,
+      "intermittent_or_sparse": 310
+     },
+     "volume": {
+      "high": 116,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2677,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 95,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 16,
+     "HOUSEHOLD_1": 58,
+     "HOUSEHOLD_2": 60
+    }
+   }
+  },
+  "m5_wi1_W2": {
+   "T_trunc": 1689,
+   "T_full": 1941,
+   "series": 349,
+   "date_first": "2011-01-29",
+   "date_last_used": "2015-09-13",
+   "zero_share_all_days": 0.6792323834825374,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.22181789804584187,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1437,
+     1465,
+     1493
+    ],
+    "test_blocks": [
+     1521,
+     1549,
+     1577,
+     1605,
+     1633,
+     1661
+    ],
+    "scored_span_days": [
+     1437,
+     1688
+    ],
+    "scored_span_dates": [
+     "2015-01-05",
+     "2015-09-13"
+    ],
+    "test_zero_share_all_rows": 0.5766646200027289,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 41,
+      "intermittent_or_sparse": 308
+     },
+     "volume": {
+      "high": 116,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1437,
+     1465,
+     1493
+    ],
+    "test_blocks": [
+     1521,
+     1549,
+     1577,
+     1605,
+     1633,
+     1661
+    ],
+    "scored_span_days": [
+     1437,
+     1688
+    ],
+    "scored_span_dates": [
+     "2015-01-05",
+     "2015-09-13"
+    ],
+    "test_zero_share_all_rows": 0.5766646200027289,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 41,
+      "intermittent_or_sparse": 308
+     },
+     "volume": {
+      "high": 116,
+      "low": 117,
+      "mid": 116
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2677,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 95,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 16,
+     "HOUSEHOLD_1": 58,
+     "HOUSEHOLD_2": 60
+    }
+   }
+  },
+  "m5_wi1_W3": {
+   "T_trunc": 1437,
+   "T_full": 1941,
+   "series": 349,
+   "date_first": "2011-01-29",
+   "date_last_used": "2015-01-04",
+   "zero_share_all_days": 0.6965641967406627,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": 0.26071707014573897,
+   "units_on_days_without_price": 0,
+   "H28": {
+    "validation_blocks": [
+     1185,
+     1213,
+     1241
+    ],
+    "test_blocks": [
+     1269,
+     1297,
+     1325,
+     1353,
+     1381,
+     1409
+    ],
+    "scored_span_days": [
+     1185,
+     1436
+    ],
+    "scored_span_dates": [
+     "2014-04-28",
+     "2015-01-04"
+    ],
+    "test_zero_share_all_rows": 0.5871196616182289,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 35,
+      "intermittent_or_sparse": 314
+     },
+     "volume": {
+      "high": 116,
+      "low": 118,
+      "mid": 115
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     1185,
+     1213,
+     1241
+    ],
+    "test_blocks": [
+     1269,
+     1297,
+     1325,
+     1353,
+     1381,
+     1409
+    ],
+    "scored_span_days": [
+     1185,
+     1436
+    ],
+    "scored_span_dates": [
+     "2014-04-28",
+     "2015-01-04"
+    ],
+    "test_zero_share_all_rows": 0.5871196616182289,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 35,
+      "intermittent_or_sparse": 314
+     },
+     "volume": {
+      "high": 116,
+      "low": 118,
+      "mid": 115
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "max_first_sale_day": 1100,
+    "eligible_series_in_store": 2677,
+    "series_in_store": 3049,
+    "dept_counts": {
+     "FOODS_1": 27,
+     "FOODS_2": 43,
+     "FOODS_3": 95,
+     "HOBBIES_1": 50,
+     "HOBBIES_2": 16,
+     "HOUSEHOLD_1": 58,
+     "HOUSEHOLD_2": 60
+    }
+   }
+  },
+  "or2_W1": {
+   "T_trunc": 739,
+   "T_full": 739,
+   "series": 100,
+   "date_first": "2009-12-01",
+   "date_last_used": "2011-12-09",
+   "zero_share_all_days": 0.37351826792963466,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": null,
+   "units_on_days_without_price": null,
+   "H28": {
+    "validation_blocks": [
+     487,
+     515,
+     543
+    ],
+    "test_blocks": [
+     571,
+     599,
+     627,
+     655,
+     683,
+     711
+    ],
+    "scored_span_days": [
+     487,
+     738
+    ],
+    "scored_span_dates": [
+     "2011-04-02",
+     "2011-12-09"
+    ],
+    "test_zero_share_all_rows": 0.3169047619047619,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 25,
+      "intermittent_or_sparse": 75
+     },
+     "volume": {
+      "high": 33,
+      "low": 34,
+      "mid": 33
+     }
+    },
+    "segment_history_days": 365
+   },
+   "H7": {
+    "validation_blocks": [
+     487,
+     515,
+     543
+    ],
+    "test_blocks": [
+     571,
+     599,
+     627,
+     655,
+     683,
+     711
+    ],
+    "scored_span_days": [
+     487,
+     738
+    ],
+    "scored_span_dates": [
+     "2011-04-02",
+     "2011-12-09"
+    ],
+    "test_zero_share_all_rows": 0.3169047619047619,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 25,
+      "intermittent_or_sparse": 75
+     },
+     "volume": {
+      "high": 33,
+      "low": 34,
+      "mid": 33
+     }
+    },
+    "segment_history_days": 365
+   },
+   "info": {
+    "rows_in": 1067371,
+    "rows_kept": 1003423,
+    "dropped": {
+     "cancellation_invoice": 19494,
+     "non_positive_quantity": 3457,
+     "non_positive_price": 2750,
+     "non_product_stock_code": 4581,
+     "exact_duplicate_line": 33666
+    },
+    "sku_rule": "top-100 revenue before the first validation block of the window",
+    "first_validation_day_index": 487
+   }
+  },
+  "or2_W2": {
+   "T_trunc": 487,
+   "T_full": 739,
+   "series": 100,
+   "date_first": "2009-12-01",
+   "date_last_used": "2011-04-01",
+   "zero_share_all_days": 0.38675564681724844,
+   "negative_values": 0,
+   "nan_values": 0,
+   "share_series_days_without_price_listing": null,
+   "units_on_days_without_price": null,
+   "H28": {
+    "validation_blocks": [
+     235,
+     263,
+     291
+    ],
+    "test_blocks": [
+     319,
+     347,
+     375,
+     403,
+     431,
+     459
+    ],
+    "scored_span_days": [
+     235,
+     486
+    ],
+    "scored_span_dates": [
+     "2010-07-24",
+     "2011-04-01"
+    ],
+    "test_zero_share_all_rows": 0.40214285714285714,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 17,
+      "intermittent_or_sparse": 83
+     },
+     "volume": {
+      "high": 33,
+      "low": 34,
+      "mid": 33
+     }
+    },
+    "segment_history_days": 235
+   },
+   "H7": {
+    "validation_blocks": [
+     235,
+     263,
+     291
+    ],
+    "test_blocks": [
+     319,
+     347,
+     375,
+     403,
+     431,
+     459
+    ],
+    "scored_span_days": [
+     235,
+     486
+    ],
+    "scored_span_dates": [
+     "2010-07-24",
+     "2011-04-01"
+    ],
+    "test_zero_share_all_rows": 0.40214285714285714,
+    "segment_counts": {
+     "frequency": {
+      "frequent": 17,
+      "intermittent_or_sparse": 83
+     },
+     "volume": {
+      "high": 33,
+      "low": 34,
+      "mid": 33
+     }
+    },
+    "segment_history_days": 235
+   },
+   "info": {
+    "rows_in": 1067371,
+    "rows_kept": 1003423,
+    "dropped": {
+     "cancellation_invoice": 19494,
+     "non_positive_quantity": 3457,
+     "non_positive_price": 2750,
+     "non_product_stock_code": 4581,
+     "exact_duplicate_line": 33666
+    },
+    "sku_rule": "top-100 revenue before the first validation block of the window",
+    "first_validation_day_index": 235
+   }
+  },
+  "or2_W3": {
+   "infeasible": "first validation block starts at -17, too early for H=28, min_history=84"
+  }
+ }
+}

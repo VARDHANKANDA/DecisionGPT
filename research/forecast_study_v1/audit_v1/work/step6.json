@@ -1,0 +1,250 @@
+{
+ "origins": {
+  "A": {
+   "model": "logistic_regression",
+   "baseline": "recency_rank",
+   "n_test": 4951,
+   "test_customer_set_equals_raw_derived_set": true,
+   "labels_equal_raw_derived": true,
+   "recency_equals_raw_derived": true,
+   "label_window": [
+    "2011-06-12",
+    "2011-09-10"
+   ],
+   "last_data_day": "2011-12-09",
+   "prevalence_test": 0.6772369218339729,
+   "prevalence_validation": 0.64782893301331,
+   "roc_auc": {
+    "model": 0.8038466663705415,
+    "baseline": 0.7756920651261437,
+    "platt_model": 0.8038466663705415
+   },
+   "pr_auc": {
+    "model": 0.8808419695441964,
+    "baseline": 0.8709151691429723,
+    "prevalence": 0.6772369218339729
+   },
+   "agrees_with_study": {
+    "roc_auc_model": true,
+    "roc_auc_baseline": true,
+    "pr_auc_model": true,
+    "pr_auc_baseline": true
+   },
+   "paired_bootstrap_independent": {
+    "roc_auc": {
+     "difference": 0.028154601244397726,
+     "ci95": [
+      0.01700916852130114,
+      0.038797575973830344
+     ],
+     "p": 0.0
+    },
+    "pr_auc": {
+     "difference": 0.009926800401224067,
+     "ci95": [
+      0.0017161119106656687,
+      0.018255989427415267
+     ],
+     "p": 0.024
+    }
+   },
+   "paired_study": {
+    "roc_auc": {
+     "difference": 0.028154601244397837,
+     "ci95": [
+      0.017292608757546606,
+      0.039023429747361234
+     ]
+    },
+    "pr_auc": {
+     "difference": 0.009926800401224067,
+     "ci95": [
+      0.001974661269845948,
+      0.01821205483878655
+     ]
+    }
+   },
+   "calibration": {
+    "mean_pred_val_raw": 0.5868459975837506,
+    "mean_pred_val_platt": 0.6478218950359997,
+    "mean_pred_test_raw": 0.6185323662575486,
+    "mean_pred_test_platt": 0.6816571995317423,
+    "ece10_test_raw": 0.08316046777140176,
+    "ece10_test_platt": 0.03814006655510412,
+    "study_ece10_raw": 0.08316046814796332,
+    "study_ece10_platt": 0.03814006723895304,
+    "ece10_test_platt_after_oracle_intercept_shift": 0.04075231956804368,
+    "oracle_intercept_shift_logit": -0.02539816047604743
+   },
+   "threshold": {
+    "thr": 0.41190065,
+    "tp": 3202,
+    "fp": 1029,
+    "fn": 151,
+    "tn": 569,
+    "accuracy": 0.7616643102403555,
+    "precision": 0.7567950839045143,
+    "recall": 0.954965702356099,
+    "flagged_share": 0.8545748333669966,
+    "majority_accuracy": 0.6772369218339729,
+    "study_accuracy": 0.7616643102403555
+   },
+   "precision_at_budget": {
+    "10%": {
+     "model": 0.9495967741935484,
+     "recency": 0.9576612903225806,
+     "prevalence": 0.6772369218339729
+    },
+    "20%": {
+     "model": 0.929364278506559,
+     "recency": 0.9142280524722503,
+     "prevalence": 0.6772369218339729
+    },
+    "30%": {
+     "model": 0.9152086137281292,
+     "recency": 0.9037685060565276,
+     "prevalence": 0.6772369218339729
+    },
+    "50%": {
+     "model": 0.8566235864297254,
+     "recency": 0.8634894991922456,
+     "prevalence": 0.6772369218339729
+    }
+   }
+  },
+  "B": {
+   "model": "random_forest",
+   "baseline": "recency_rank",
+   "n_test": 5256,
+   "test_customer_set_equals_raw_derived_set": true,
+   "labels_equal_raw_derived": true,
+   "recency_equals_raw_derived": true,
+   "label_window": [
+    "2011-09-10",
+    "2011-12-09"
+   ],
+   "last_data_day": "2011-12-09",
+   "prevalence_test": 0.5648782343987824,
+   "prevalence_validation": 0.6772369218339729,
+   "roc_auc": {
+    "model": 0.7989120341768011,
+    "baseline": 0.7622691437817659,
+    "platt_model": 0.7989120341768011
+   },
+   "pr_auc": {
+    "model": 0.8179824667375949,
+    "baseline": 0.7983913317038578,
+    "prevalence": 0.5648782343987824
+   },
+   "agrees_with_study": {
+    "roc_auc_model": true,
+    "roc_auc_baseline": true,
+    "pr_auc_model": true,
+    "pr_auc_baseline": true
+   },
+   "paired_bootstrap_independent": {
+    "roc_auc": {
+     "difference": 0.03664289039503521,
+     "ci95": [
+      0.029133000443167665,
+      0.04401965013081673
+     ],
+     "p": 0.0
+    },
+    "pr_auc": {
+     "difference": 0.019591135033737106,
+     "ci95": [
+      0.010344892025802821,
+      0.029141902771573275
+     ],
+     "p": 0.0
+    }
+   },
+   "paired_study": {
+    "roc_auc": {
+     "difference": 0.03664289039503543,
+     "ci95": [
+      0.029479590412327453,
+      0.04377498299835876
+     ]
+    },
+    "pr_auc": {
+     "difference": 0.019591135033737106,
+     "ci95": [
+      0.010780347593824994,
+      0.028794564891774996
+     ]
+    }
+   },
+   "calibration": {
+    "mean_pred_val_raw": 0.6430937065052552,
+    "mean_pred_val_platt": 0.6772305442598111,
+    "mean_pred_test_raw": 0.6567735662741744,
+    "mean_pred_test_platt": 0.6906385993164708,
+    "ece10_test_raw": 0.09189533187539203,
+    "ece10_test_platt": 0.12576036491768852,
+    "study_ece10_raw": 0.09189533187539203,
+    "study_ece10_platt": 0.12576036491768852,
+    "ece10_test_platt_after_oracle_intercept_shift": 0.018560249668903656,
+    "oracle_intercept_shift_logit": -0.8016169410720855
+   },
+   "threshold": {
+    "thr": 0.40907952,
+    "tp": 2868,
+    "fp": 1522,
+    "fn": 101,
+    "tn": 765,
+    "accuracy": 0.6912100456621004,
+    "precision": 0.6533029612756264,
+    "recall": 0.965981812057932,
+    "flagged_share": 0.8352359208523592,
+    "majority_accuracy": 0.5648782343987824,
+    "study_accuracy": 0.6912100456621004
+   },
+   "precision_at_budget": {
+    "10%": {
+     "model": 0.9201520912547528,
+     "recency": 0.9049429657794676,
+     "prevalence": 0.5648782343987824
+    },
+    "20%": {
+     "model": 0.8650190114068441,
+     "recency": 0.8640684410646388,
+     "prevalence": 0.5648782343987824
+    },
+    "30%": {
+     "model": 0.8363982244768547,
+     "recency": 0.8243500317057705,
+     "prevalence": 0.5648782343987824
+    },
+    "50%": {
+     "model": 0.7792998477929984,
+     "recency": 0.7614155251141552,
+     "prevalence": 0.5648782343987824
+    }
+   }
+  }
+ },
+ "holm_independent": {
+  "A:roc_auc": 0.002,
+  "B:roc_auc": 0.002,
+  "B:pr_auc": 0.002,
+  "A:pr_auc": 0.024
+ },
+ "raw_p_independent": {
+  "A:roc_auc": 0.0,
+  "A:pr_auc": 0.024,
+  "B:roc_auc": 0.0,
+  "B:pr_auc": 0.0
+ },
+ "dependence": {
+  "test_A_customers": 4951,
+  "test_B_customers": 5256,
+  "customers_in_both": 4951,
+  "share_of_B_test_customers_also_in_A_test": 0.9419710806697108,
+  "label_correlation_A_vs_B_on_common_customers": 0.40313409926831434,
+  "share_of_A_test_customers_present_in_A_training_snapshots": null,
+  "share_of_A_test_customers_already_present_at_first_A_train_cutoff": 0.5421127045041406,
+  "share_of_B_test_customers_already_present_at_first_B_train_cutoff": 0.510654490106545
+ }
+}

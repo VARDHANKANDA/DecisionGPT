@@ -1,0 +1,90 @@
+{
+  "cell": "fs1_m5_ca1_H28",
+  "label": "EXPLORATORY (H5): no re-tuning; Holm over the ablations run",
+  "primary": "pred__lightgbm__tweedie",
+  "ablations": {
+    "fs1_m5_ca1_H28_ablate_calendar": {
+      "removed_groups": [
+        "dow",
+        "dom",
+        "month",
+        "event",
+        "snap"
+      ],
+      "wape_full": 0.7428438300496779,
+      "wape_ablated": 0.7623694048923904,
+      "relative_change_when_removed": 0.026284898726838275,
+      "full_vs_ablated": {
+        "estimate": 0.025611697842817433,
+        "ci95": [
+          0.01126581457785825,
+          0.04307246318672139
+        ],
+        "p_two_sided": 0.0
+      },
+      "holm_p": 0.0
+    },
+    "fs1_m5_ca1_H28_ablate_history_stats": {
+      "removed_groups": [
+        "roll_mean_7",
+        "roll_mean_28",
+        "roll_mean_84",
+        "roll_std_28",
+        "nonzero_share_28",
+        "days_since_sale",
+        "same_weekday_mean4"
+      ],
+      "wape_full": 0.7428438300496779,
+      "wape_ablated": 0.7688434617487411,
+      "relative_change_when_removed": 0.0350001314506771,
+      "full_vs_ablated": {
+        "estimate": 0.033816547831371,
+        "ci95": [
+          0.023065354604535706,
+          0.04512137700457259
+        ],
+        "p_two_sided": 0.0
+      },
+      "holm_p": 0.0
+    },
+    "fs1_m5_ca1_H28_ablate_price": {
+      "removed_groups": [
+        "sell_price",
+        "rel_price_91",
+        "price_change_7",
+        "days_since_price_change"
+      ],
+      "wape_full": 0.7428438300496779,
+      "wape_ablated": 0.7489244944090628,
+      "relative_change_when_removed": 0.008185656410417083,
+      "full_vs_ablated": {
+        "estimate": 0.008119195466003364,
+        "ci95": [
+          -0.0013953679489557452,
+          0.017780203071204283
+        ],
+        "p_two_sided": 0.096
+      },
+      "holm_p": 0.192
+    },
+    "fs1_m5_ca1_H28_ablate_static_ids": {
+      "removed_groups": [
+        "dept_code",
+        "cat_code",
+        "item_code"
+      ],
+      "wape_full": 0.7428438300496779,
+      "wape_ablated": 0.7447403251028577,
+      "relative_change_when_removed": 0.002553019862940725,
+      "full_vs_ablated": {
+        "estimate": 0.002546518550499952,
+        "ci95": [
+          -0.003881727176161887,
+          0.008373500182535748
+        ],
+        "p_two_sided": 0.376
+      },
+      "holm_p": 0.376
+    }
+  }
+}

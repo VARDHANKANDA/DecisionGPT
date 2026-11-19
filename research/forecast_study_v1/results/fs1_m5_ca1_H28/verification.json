@@ -1,0 +1,127 @@
+{
+  "cell": "fs1_m5_ca1_H28",
+  "n_checks": 24,
+  "n_failed": 0,
+  "checks": [
+    {
+      "check": "all method arrays have one value per evaluated row",
+      "passed": true,
+      "detail": "58800 rows, 21 methods"
+    },
+    {
+      "check": "all stored values finite and non-negative baselines/predictions finite",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "no (series, day) row repeated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "every row lies in its declared 28-day test block",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "validation blocks end before the first test block",
+      "passed": true,
+      "detail": "val_end=1772 test_start=1773"
+    },
+    {
+      "check": "selected primary and reference arrays exist",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "primary: pooled WAPE recomputed == results.json",
+      "passed": true,
+      "detail": "0.7428438300 vs 0.7428438300"
+    },
+    {
+      "check": "primary: relative bias recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "primary: aggregate WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "primary: by-block WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_matched: pooled WAPE recomputed == results.json",
+      "passed": true,
+      "detail": "0.7238539089 vs 0.7238539089"
+    },
+    {
+      "check": "ref_matched: relative bias recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_matched: aggregate WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_matched: by-block WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_any: pooled WAPE recomputed == results.json",
+      "passed": true,
+      "detail": "0.6953974705 vs 0.6953974705"
+    },
+    {
+      "check": "ref_any: relative bias recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_any: aggregate WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ref_any: by-block WAPE recomputed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "headline relative improvement vs matched reference recomputed == analysis.json",
+      "passed": true,
+      "detail": "-0.02623447"
+    },
+    {
+      "check": "bootstrap interval contains the point estimate",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "block-win count recomputed",
+      "passed": true,
+      "detail": "1"
+    },
+    {
+      "check": "selection.json was written before every test-block fit",
+      "passed": true,
+      "detail": "30 test fits; earliest +2s after selection"
+    },
+    {
+      "check": "primary family == argmin of mean validation WAPE (validation numbers only)",
+      "passed": true,
+      "detail": "lightgbm"
+    },
+    {
+      "check": "reference baselines == argmin of validation WAPE",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

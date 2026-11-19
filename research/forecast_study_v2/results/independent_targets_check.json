@@ -1,0 +1,102 @@
+{
+ "m5_ca1_W1": {
+  "targets_equal_raw": true,
+  "series": 350,
+  "T_trunc": 1941,
+  "last_day_used_is_d": "d_1941",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0,
+  "positive_demand_days_without_price_listing": 0
+ },
+ "m5_ca1_W2": {
+  "targets_equal_raw": true,
+  "series": 350,
+  "T_trunc": 1689,
+  "last_day_used_is_d": "d_1689",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0
+ },
+ "m5_ca1_W3": {
+  "targets_equal_raw": true,
+  "series": 350,
+  "T_trunc": 1437,
+  "last_day_used_is_d": "d_1437",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0
+ },
+ "m5_tx1_W1": {
+  "targets_equal_raw": true,
+  "series": 350,
+  "T_trunc": 1941,
+  "last_day_used_is_d": "d_1941",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0,
+  "positive_demand_days_without_price_listing": 0
+ },
+ "m5_tx1_W2": {
+  "targets_equal_raw": true,
+  "series": 350,
+  "T_trunc": 1689,
+  "last_day_used_is_d": "d_1689",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0
+ },
+ "m5_tx1_W3": {
+  "targets_equal_raw": true,
+  "series": 350,
+  "T_trunc": 1437,
+  "last_day_used_is_d": "d_1437",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0
+ },
+ "m5_wi1_W1": {
+  "targets_equal_raw": true,
+  "series": 349,
+  "T_trunc": 1941,
+  "last_day_used_is_d": "d_1941",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0,
+  "positive_demand_days_without_price_listing": 0
+ },
+ "m5_wi1_W2": {
+  "targets_equal_raw": true,
+  "series": 349,
+  "T_trunc": 1689,
+  "last_day_used_is_d": "d_1689",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0
+ },
+ "m5_wi1_W3": {
+  "targets_equal_raw": true,
+  "series": 349,
+  "T_trunc": 1437,
+  "last_day_used_is_d": "d_1437",
+  "dates_match_calendar": true,
+  "negative": 0,
+  "nan": 0
+ },
+ "or2_W1": {
+  "sku_list_equal": true,
+  "targets_equal_raw": true,
+  "T_trunc": 739,
+  "date_last_used": "2011-12-09",
+  "rows_in": 1067371,
+  "rows_kept": 1003423
+ },
+ "or2_W2": {
+  "sku_list_equal": true,
+  "targets_equal_raw": true,
+  "T_trunc": 487,
+  "date_last_used": "2011-04-01",
+  "rows_in": 1067371,
+  "rows_kept": 1003423
+ }
+}

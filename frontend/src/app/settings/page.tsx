@@ -327,15 +327,17 @@ export default function SettingsPage() {
                 <div>
                   <label className="block text-sm font-medium text-foreground">Appearance / Theme</label>
                   <div className="mt-2 grid grid-cols-3 gap-3">
-                    {[
-                      { key: "system", label: "System Default", icon: "💻" },
-                      { key: "light", label: "Light", icon: "☀️" },
-                      { key: "dark", label: "Dark", icon: "🌙" },
-                    ].map((opt) => (
+                    {(
+                      [
+                        { key: "system", label: "System Default", icon: "💻" },
+                        { key: "light", label: "Light", icon: "☀️" },
+                        { key: "dark", label: "Dark", icon: "🌙" },
+                      ] as const
+                    ).map((opt) => (
                       <button
                         key={opt.key}
                         type="button"
-                        onClick={() => setTheme(opt.key as any)}
+                        onClick={() => setTheme(opt.key)}
                         className={`flex flex-col items-center justify-center rounded-xl border p-3 text-center text-sm transition ${
                           theme === opt.key
                             ? "border-accent bg-accent/10 font-medium text-accent"

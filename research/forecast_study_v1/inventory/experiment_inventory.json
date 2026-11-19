@@ -1,0 +1,560 @@
+{
+  "inventory_version": 1,
+  "built_from_git_revision": "41c1d14",
+  "working_tree_modified_paths": 401,
+  "note": "Historical results are quoted as stored. Nothing here edits them. 'reproducibility' states what was independently verified in this study.",
+  "experiments": [
+    {
+      "id": "E1_m5_ca1_direct_h28",
+      "run": {
+        "run_id": "f1_20261015T063242Z_d61f858f",
+        "created_utc": "2026-10-15T07:15:06.863551+00:00",
+        "git_revision": "41c1d14",
+        "seed": 42,
+        "runtime_seconds": 2556,
+        "versions": {
+          "python": "3.12.0",
+          "platform": "Windows-11-10.0.26300-SP0",
+          "numpy": "2.5.2",
+          "pandas": "3.0.5",
+          "scipy": "1.18.0",
+          "scikit-learn": "1.9.0",
+          "xgboost": "3.4.0",
+          "lightgbm": "4.7.0",
+          "catboost": "1.2.10"
+        },
+        "quick": false,
+        "path": "experiments/ml_benchmark_v1/f1_20261015T063242Z_d61f858f"
+      },
+      "research_question": "Do global learned models beat seasonal baselines for 28-day-ahead daily unit demand of sparse retail series?",
+      "intended_claim": "Boosted trees reduce per-series WAPE relative to seasonal naive; ensembles add nothing. (Exploratory single-window result.)",
+      "dataset": {
+        "name": "M5 Forecasting Accuracy, store CA_1, seeded 350-series department-stratified subset",
+        "evidence_class": "public_benchmark_real_data",
+        "source": "Zenodo record 12636070 (files of the M5 competition); licence label cc-by-4.0 set by the uploader, NOT independently verified against the competition rules",
+        "version": "sales_train_evaluation.csv (1,941 days, 2011-01-29..2016-05-22)",
+        "subset_seed": 20261015,
+        "eligibility": "first sale on or before day 1100"
+      },
+      "unit_of_observation": "series x day (units sold)",
+      "n_series": 350,
+      "n_test_points": 9800,
+      "target": "units_sold (non-negative integers); 48.7% zeros in the test window",
+      "features": "lags H..H+28 (weekly steps), rolling mean 7/28/84, rolling std 28, non-zero share 28, days since last sale, same-weekday mean of 4 lags, calendar, event flag, SNAP flag, selling price + 3 price-derived features, department/category/item codes",
+      "feature_availability": "history features use days <= origin (t - H); calendar, event, SNAP and selling price are published in advance",
+      "split": {
+        "scheme": "chronological; 3 validation windows of 28 days then one untouched 28-day test window",
+        "validation_windows_days": [
+          [
+            1830,
+            1857
+          ],
+          [
+            1858,
+            1885
+          ],
+          [
+            1886,
+            1913
+          ]
+        ],
+        "test_window_days": [
+          1914,
+          1941
+        ],
+        "train_span_days": 730
+      },
+      "horizon": "28 days, direct strategy, single forecast origin (day 1913)",
+      "baselines": [
+        "seasonal_naive_28 (lag_28)",
+        "same_weekday_mean4"
+      ],
+      "models": {
+        "linear": [
+          "ols"
+        ],
+        "ridge": [
+          "alpha1",
+          "alpha100"
+        ],
+        "random_forest": [
+          "leaf5",
+          "leaf20"
+        ],
+        "hist_gradient_boosting": [
+          "depth4",
+          "depth6"
+        ],
+        "xgboost": [
+          "depth4",
+          "depth6"
+        ],
+        "lightgbm": [
+          "l2",
+          "tweedie"
+        ],
+        "catboost": [
+          "depth6",
+          "depth8"
+        ]
+      },
+      "hyperparameter_selection": "fixed 2-variant grid per family; variant chosen per family by mean WAPE on the 3 validation origins; test scored once",
+      "ensembles": [
+        "mean_all",
+        "mean_top3",
+        "nnls_weighted (weights fitted on validation predictions)"
+      ],
+      "metrics": {
+        "mae": "mean(|forecast - actual|) over all (series, day) points; units of the target",
+        "rmse": "sqrt(mean((forecast - actual)^2))",
+        "wape": "sum|forecast - actual| / sum(actual); None when sum(actual) = 0 (never reported as 0)",
+        "bias": "sum(forecast - actual) / sum(actual) (relative bias; positive = over-forecast); None when sum(actual) = 0",
+        "rmsse_mean": "per series sqrt(mean e^2 / mean((y_t - y_{t-1})^2 over TRAINING history)); unweighted mean over series; constant-history series excluded and counted",
+        "aggregate_daily_wape": "WAPE after summing all series per day (store-day aggregate level); NOT comparable with per-series WAPE",
+        "median_series_wape": "median over series of per-series WAPE (series with sum(actual) > 0)"
+      },
+      "uncertainty": "paired series-cluster bootstrap of WAPE differences (2000 draws, seed 42); resamples series only",
+      "warnings_and_limitations": [
+        "one forecast origin: results are conditional on a single 28-day window",
+        "series-cluster bootstrap ignores cross-sectional dependence through shared calendar days and store-level shocks",
+        "one store, 350 of the eligible series: no hierarchy, no between-store generalisation",
+        "tiny fixed hyperparameter grid",
+        "no prediction intervals evaluated"
+      ],
+      "reproducibility": {
+        "stored_predictions": true,
+        "metrics_recomputed_independently": "audit/recompute_report.json (max |diff| ~5e-10)",
+        "rerun": "audit/reruns (see REPRODUCIBILITY.md)"
+      },
+      "sources": [
+        "ml/benchmark/run.py",
+        "ml/benchmark/direct.py",
+        "ml/benchmark/features.py",
+        "ml/benchmark/models.py",
+        "ml/benchmark/evaluate.py",
+        "ml/benchmark/datasets.py"
+      ]
+    },
+    {
+      "id": "E2_online_retail_ii_direct_h28",
+      "run": {
+        "run_id": "f2_20261015T072724Z_2f8af9c9",
+        "created_utc": "2026-10-15T07:34:04.348066+00:00",
+        "git_revision": "41c1d14",
+        "seed": 42,
+        "runtime_seconds": 400,
+        "versions": {
+          "python": "3.12.0",
+          "platform": "Windows-11-10.0.26300-SP0",
+          "numpy": "2.5.2",
+          "pandas": "3.0.5",
+          "scipy": "1.18.0",
+          "scikit-learn": "1.9.0",
+          "xgboost": "3.4.0",
+          "lightgbm": "4.7.0",
+          "catboost": "1.2.10"
+        },
+        "quick": false,
+        "path": "experiments/ml_benchmark_v1/f2_20261015T072724Z_2f8af9c9"
+      },
+      "research_question": "Same protocol as E1 on one real retailer's total revenue and its 20 top SKUs.",
+      "intended_claim": "Exploratory: learned models vs baselines on small real series.",
+      "dataset": {
+        "name": "UCI Online Retail II (one UK online gift retailer)",
+        "evidence_class": "public_real_transactions",
+        "source": "https://archive.ics.uci.edu/dataset/502/online+retail+ii (doi 10.24432/C5CG6D)",
+        "licence": "CC BY 4.0 (stated on the UCI page)",
+        "version": "2009-12-01..2011-12-09, 1,067,371 source rows",
+        "cleaning": "drop cancellations, non-positive quantity or price, 15 non-product stock codes, exact duplicate lines (counts stored in the run)"
+      },
+      "unit_of_observation": "day (revenue) or SKU x day (units)",
+      "targets": {
+        "total_daily_revenue": "1 series, 28 test points",
+        "top20_sku_daily_units": "20 series, 560 test points; SKUs chosen by revenue BEFORE the first validation origin"
+      },
+      "features": "same builder as E1 with price/availability and department/category columns dropped; calendar flags incl. Christmas closure window",
+      "split": {
+        "scheme": "chronological; 3 validation windows then the final 28 days",
+        "validation_windows": null,
+        "train_span_days": 730
+      },
+      "horizon": "28 days, direct, single origin",
+      "baselines": [
+        "seasonal_naive",
+        "same_weekday_mean4"
+      ],
+      "models": {
+        "linear": [
+          "ols"
+        ],
+        "ridge": [
+          "alpha1",
+          "alpha100"
+        ],
+        "random_forest": [
+          "leaf5",
+          "leaf20"
+        ],
+        "hist_gradient_boosting": [
+          "depth4",
+          "depth6"
+        ],
+        "xgboost": [
+          "depth4",
+          "depth6"
+        ],
+        "lightgbm": [
+          "l2",
+          "tweedie"
+        ],
+        "catboost": [
+          "depth6",
+          "depth8"
+        ]
+      },
+      "hyperparameter_selection": "as E1",
+      "metrics": {
+        "mae": "mean(|forecast - actual|) over all (series, day) points; units of the target",
+        "rmse": "sqrt(mean((forecast - actual)^2))",
+        "wape": "sum|forecast - actual| / sum(actual); None when sum(actual) = 0 (never reported as 0)",
+        "bias": "sum(forecast - actual) / sum(actual) (relative bias; positive = over-forecast); None when sum(actual) = 0",
+        "aggregate_daily_wape": "WAPE after summing all series per day (store-day aggregate level); NOT comparable with per-series WAPE",
+        "median_series_wape": "median over series of per-series WAPE (series with sum(actual) > 0)"
+      },
+      "uncertainty": "series-cluster bootstrap for the 20-SKU task only; none for the single series",
+      "warnings_and_limitations": [
+        "28 test points for the revenue series: no inference possible",
+        "single retailer, wholesaler-like customers",
+        "one origin",
+        "currency not stated per line"
+      ],
+      "reproducibility": {
+        "stored_predictions": true,
+        "metrics_recomputed_independently": "audit/recompute_report.json (max |diff| 0.0)"
+      },
+      "sources": [
+        "ml/benchmark/f2_retail.py"
+      ]
+    },
+    {
+      "id": "E3_online_retail_ii_inactivity_c1",
+      "run": {
+        "run_id": "c1_20261015T073420Z_aec3aea3",
+        "created_utc": "2026-10-15T07:36:00.794600+00:00",
+        "git_revision": "41c1d14",
+        "seed": 42,
+        "runtime_seconds": 110,
+        "versions": {
+          "python": "3.12.0",
+          "platform": "Windows-11-10.0.26300-SP0",
+          "numpy": "2.5.2",
+          "pandas": "3.0.5",
+          "scipy": "1.18.0",
+          "scikit-learn": "1.9.0",
+          "xgboost": "3.4.0",
+          "lightgbm": "4.7.0",
+          "catboost": "1.2.10"
+        },
+        "quick": false,
+        "path": "experiments/ml_benchmark_v1/c1_20261015T073420Z_aec3aea3"
+      },
+      "research_question": "How well do classifiers rank customers who will make no purchase in the next 90 days?",
+      "intended_claim": "Exploratory ranking performance and calibration on a PROXY label.",
+      "dataset": {
+        "name": "UCI Online Retail II customers with a Customer ID",
+        "evidence_class": "real_data_proxy_label",
+        "label": "no invoice in the 90 days after a cutoff (inactivity); NOT observed churn",
+        "licence": "CC BY 4.0"
+      },
+      "unit_of_observation": "customer x cutoff snapshot",
+      "rows": {
+        "train": 14805,
+        "validation": 4951,
+        "test": 5256
+      },
+      "positive_rate": {
+        "train": 0.576,
+        "validation": 0.677,
+        "test": 0.565
+      },
+      "features": [
+        "recency_days",
+        "tenure_days",
+        "frequency",
+        "monetary",
+        "avg_order_value",
+        "distinct_skus",
+        "invoices_last_90d",
+        "invoices_last_180d",
+        "revenue_last_90d",
+        "mean_gap_days",
+        "recency_ratio"
+      ],
+      "feature_availability": "transactions strictly before the cutoff",
+      "split": {
+        "scheme": "temporal snapshots: train cutoffs 2010-06-01, 2010-09-01, 2010-12-01, 2011-03-14; validation 2011-06-12; test 2011-09-10; 90-day label windows non-overlapping and ordered"
+      },
+      "models": [
+        "logistic_regression",
+        "random_forest",
+        "xgboost",
+        "catboost",
+        "soft_voting",
+        "stacking_logistic_meta"
+      ],
+      "hyperparameter_selection": "fixed configurations; calibrators (sigmoid, isotonic) and thresholds (F1-max, cost-min) fitted on the validation snapshot only",
+      "metrics": {
+        "roc_auc": "area under ROC; ranking only",
+        "pr_auc": "average precision",
+        "brier": "mean squared error of the score as a probability",
+        "ece": "expected calibration error, 10 equal-width bins on [0,1] (ml/benchmark/churn.py ece)",
+        "log_loss": "negative log-likelihood, scores clipped to [1e-6, 1-1e-6]"
+      },
+      "warnings_and_limitations": [
+        "label is a proxy",
+        "the same customers appear in several snapshots (temporal, not group-disjoint, split)",
+        "no stored predictions: metrics cannot be recomputed without a rerun",
+        "thresholded accuracy is not stored (derivable from stored confusion counts)",
+        "assumed costs (FP 1, FN 3) for the cost threshold"
+      ],
+      "reproducibility": {
+        "stored_predictions": false,
+        "rerun": "audit/reruns"
+      },
+      "sources": [
+        "ml/benchmark/churn.py"
+      ]
+    },
+    {
+      "id": "E4_synthetic_churn_c2",
+      "run": {
+        "run_id": "c2_20261015T074116Z_ec3d89a4",
+        "created_utc": "2026-10-15T07:42:11.324380+00:00",
+        "git_revision": "41c1d14",
+        "seed": 42,
+        "runtime_seconds": 55,
+        "versions": {
+          "python": "3.12.0",
+          "platform": "Windows-11-10.0.26300-SP0",
+          "numpy": "2.5.2",
+          "pandas": "3.0.5",
+          "scipy": "1.18.0",
+          "scikit-learn": "1.9.0",
+          "xgboost": "3.4.0",
+          "lightgbm": "4.7.0",
+          "catboost": "1.2.10"
+        },
+        "quick": false,
+        "path": "experiments/ml_benchmark_v1/c2_20261015T074116Z_ec3d89a4"
+      },
+      "research_question": "Same classifiers on the synthetic platform churn file.",
+      "dataset": {
+        "name": "data/platform/churn/customers.csv",
+        "evidence_class": "synthetic_label",
+        "label": "drawn from a known logistic mechanism (generator seed recorded in the data metadata)"
+      },
+      "rows": {
+        "train": 3840,
+        "validation": 960,
+        "test": 1200
+      },
+      "limitations": [
+        "the label is a function of the features by construction: the result measures how well a model recovers the generator, not customer behaviour",
+        "an earlier c2 run (c2_20261015T073608Z_4598ea68) used columns production excludes and is SUPERSEDED (kept, not used)"
+      ],
+      "reproducibility": {
+        "stored_predictions": false
+      },
+      "sources": [
+        "ml/benchmark/churn.py"
+      ]
+    },
+    {
+      "id": "E5_price_identification_p1",
+      "run": {
+        "run_id": "p1_20261015T072036Z_4738e859",
+        "created_utc": "2026-10-15T07:26:55.474906+00:00",
+        "git_revision": "41c1d14",
+        "seed": 42,
+        "runtime_seconds": 406,
+        "versions": {
+          "python": "3.12.0",
+          "platform": "Windows-11-10.0.26300-SP0",
+          "numpy": "2.5.2",
+          "pandas": "3.0.5",
+          "scipy": "1.18.0",
+          "scikit-learn": "1.9.0",
+          "xgboost": "3.4.0",
+          "lightgbm": "4.7.0",
+          "catboost": "1.2.10"
+        },
+        "quick": false
+      },
+      "research_question": "Is a price response identifiable in M5 and in the platform data, and do the models imply one?",
+      "claim_type": "NOT a prediction benchmark: fixed-effects association + model counterfactual sweeps",
+      "limitations": [
+        "association only",
+        "no elasticity is imposed"
+      ],
+      "reproducibility": {
+        "stored_predictions": false
+      }
+    },
+    {
+      "id": "E6_reproduce",
+      "run": {
+        "run_id": "reproduce_20261015T073707Z_23c970a6",
+        "created_utc": "2026-10-15T07:39:06.537099+00:00",
+        "git_revision": "41c1d14",
+        "seed": 42,
+        "runtime_seconds": 119,
+        "versions": {
+          "python": "3.12.0",
+          "platform": "Windows-11-10.0.26300-SP0",
+          "numpy": "2.5.2",
+          "pandas": "3.0.5",
+          "scipy": "1.18.0",
+          "scikit-learn": "1.9.0",
+          "xgboost": "3.4.0",
+          "lightgbm": "4.7.0",
+          "catboost": "1.2.10"
+        },
+        "quick": false
+      },
+      "research_question": "Recompute the earlier provisional baselines (registry metrics, model comparison) from original files.",
+      "result": "max abs difference 0.0 on both",
+      "reproducibility": {
+        "note": "software versions differ from the original runs; the run records any non-zero difference as is"
+      }
+    },
+    {
+      "id": "E7_pos_register_model_comparison",
+      "run": {
+        "path": "experiments/model_comparison_v1/mc_20261014T070438Z_pos_daily_revenue_ac8b32c9",
+        "run_id": "20261014T070438Z_pos_daily_revenue_ac8b32c9",
+        "seed": 42
+      },
+      "research_question": "One-day-ahead daily revenue of one real Indian local store: do learned models beat a seasonal naive baseline?",
+      "dataset": {
+        "name": "Indian POS register (Kaggle retail-sales-register)",
+        "evidence_class": "real, provenance not independently verified",
+        "licence": "CC BY-NC-SA 4.0",
+        "n_days": 80,
+        "unit": "INR/day"
+      },
+      "features": [
+        "lag_1",
+        "lag_7",
+        "rolling_mean_7",
+        "dow_0..dow_6"
+      ],
+      "split": {
+        "train": "2025-01-08..2025-03-04 (56 d)",
+        "validation": "2025-03-05..2025-03-16 (12 d)",
+        "test": "2025-03-17..2025-03-31 (12 d)"
+      },
+      "hyperparameter_selection": "lowest mean expanding-window CV RMSE (3 folds) among 4 learned models; test unused",
+      "uncertainty": "split-conformal 80% interval; 12 test points",
+      "limitations": [
+        "12 test days: any ranking is unstable",
+        "negative R2 for every model",
+        "exclusion rule removes 34,046 of 94,290 lines (qty<=0, non-integer qty, amount mismatch)"
+      ],
+      "reproducibility": {
+        "rerun": "reproduce run recomputed it with max |diff| 0.0"
+      }
+    },
+    {
+      "id": "E8_platform_units_model_comparison",
+      "run": {
+        "path": "experiments/model_comparison_v1/mc_20261014T070547Z_platform_units_891db345",
+        "run_id": "20261014T070547Z_platform_units_891db345",
+        "seed": 42
+      },
+      "dataset": {
+        "name": "Synthetic D2C platform",
+        "evidence_class": "synthetic",
+        "n_series": 40,
+        "n_days": 710
+      },
+      "limitations": [
+        "synthetic generator; results describe the generator"
+      ],
+      "reproducibility": {
+        "rerun": "reproduce run: max |diff| 0.0"
+      }
+    },
+    {
+      "id": "E9_real_public_own_history_backtests",
+      "run": {
+        "path": "experiments/real_world_validation_v1/results.json",
+        "git_revision": "41c1d14"
+      },
+      "research_question": "How do the product's own forecasting methods do in a chronological own-history backtest on real public retail series?",
+      "datasets": [
+        "Indian POS register (90 d)",
+        "Indian e-commerce, Benroshan (365 d, ~500 orders)",
+        "UCI Online Retail II (739 d)"
+      ],
+      "horizons": [
+        7,
+        14,
+        28
+      ],
+      "origin_step_days": 7,
+      "baselines": [
+        "naive_last",
+        "seasonal_naive_7",
+        "trailing_mean_28"
+      ],
+      "limitations": [
+        "a handful of overlapping origins; coverage is dependent",
+        "not a DecisionGPT customer business"
+      ],
+      "reproducibility": {
+        "stored_predictions": false
+      }
+    },
+    {
+      "id": "E10_registered_platform_models",
+      "run": {
+        "path": "models/registry_index.jsonl",
+        "trained": "2026-08-30",
+        "seed": 42
+      },
+      "dataset": {
+        "name": "platform-forecasting-v1 / platform-churn-v1",
+        "evidence_class": "synthetic"
+      },
+      "models": [
+        "sales_forecast_naive|linear|xgboost",
+        "churn_logistic_regression|random_forest|xgboost"
+      ],
+      "metrics_recorded": "forecast: MAE, RMSE, MAPE; churn: precision, recall, F1 (default 0.5 cut-off), ROC-AUC",
+      "limitations": [
+        "synthetic data",
+        "the churn label is generated from recency and tenure, which are also features",
+        "no PR-AUC, calibration, confusion matrix, baseline MAE or sample counts recorded"
+      ]
+    },
+    {
+      "id": "E11_business_specific_validation",
+      "status": "no stored result on any real business",
+      "detail": "forecast_validation_service (own-history rolling-origin backtest) and customer-score validation exist and are tested; the development database holds 0 forecast_eval and 0 customer_eval runs and 0 outcome observations."
+    }
+  ],
+  "metric_definitions": {
+    "mae": "mean(|forecast - actual|) over all (series, day) points; units of the target",
+    "rmse": "sqrt(mean((forecast - actual)^2))",
+    "wape": "sum|forecast - actual| / sum(actual); None when sum(actual) = 0 (never reported as 0)",
+    "bias": "sum(forecast - actual) / sum(actual) (relative bias; positive = over-forecast); None when sum(actual) = 0",
+    "rmsse_mean": "per series sqrt(mean e^2 / mean((y_t - y_{t-1})^2 over TRAINING history)); unweighted mean over series; constant-history series excluded and counted",
+    "aggregate_daily_wape": "WAPE after summing all series per day (store-day aggregate level); NOT comparable with per-series WAPE",
+    "median_series_wape": "median over series of per-series WAPE (series with sum(actual) > 0)",
+    "roc_auc": "area under ROC; ranking only",
+    "pr_auc": "average precision",
+    "brier": "mean squared error of the score as a probability",
+    "ece": "expected calibration error, 10 equal-width bins on [0,1] (ml/benchmark/churn.py ece)",
+    "log_loss": "negative log-likelihood, scores clipped to [1e-6, 1-1e-6]"
+  }
+}

@@ -99,17 +99,26 @@ def test_a_successful_sign_in_clears_only_the_account_and_address_counter(client
     assert count >= 5
 
 
+def _proxy_client(peer=("10.0.0.5", 4000), **kw) -> TestClient:
+    async def wrap(scope, receive, send):
+        if scope.get("type") == "http":
+            scope = dict(scope)
+            scope["client"] = peer
+        await fastapi_app(scope, receive, send)
+    return TestClient(wrap, **kw)
+
+
 def test_failures_against_an_account_throttle_a_different_address_only_at_the_higher_account_limit(client, rate_limit_on, monkeypatch):
     monkeypatch.setattr(get_settings(), "trusted_proxies", "10.0.0.0/8")
     _signup(client)
-    proxy = TestClient(fastapi_app, client=("10.0.0.5", 4000))
+    proxy = _proxy_client(("10.0.0.5", 4000))
     def from_ip(ip):
         return {"headers": {"X-Forwarded-For": ip}}
     for n in range(6):                                                   # six different attackers, one failure each: no single pair or address is full
         assert _bad(proxy, **from_ip(f"203.0.113.{n + 1}")).status_code == 401
     assert _good(proxy, **from_ip("198.51.100.99")).status_code == 429          # the distributed brake on the account itself has tripped
-    other = TestClient(fastapi_app, client=("10.0.0.5", 4000)).post(LOGIN, json={"email": "someone-else@example.com", "password": PW},
-                                                                       headers={"X-Forwarded-For": "198.51.100.99"})
+    other = _proxy_client(("10.0.0.5", 4000)).post(LOGIN, json={"email": "someone-else@example.com", "password": PW},
+                                                   headers={"X-Forwarded-For": "198.51.100.99"})
     assert other.status_code == 401                                                # other accounts and addresses are unaffected
 
 
@@ -147,7 +156,7 @@ def test_a_forged_forwarded_for_header_cannot_buy_a_fresh_budget_from_an_untrust
 def test_with_a_trusted_proxy_the_bucket_follows_the_address_the_proxy_appended_not_the_forged_prefix(client, rate_limit_on, monkeypatch):
     monkeypatch.setattr(get_settings(), "trusted_proxies", "10.0.0.0/8")
     _signup(client)
-    proxy = TestClient(fastapi_app, client=("10.0.0.5", 4000))
+    proxy = _proxy_client(("10.0.0.5", 4000))
     # the attacker rotates the left part of the header; the proxy always appends the attacker's real address, 203.0.113.50
     codes = [_bad(proxy, headers={"X-Forwarded-For": f"9.9.9.{n}, 203.0.113.50"}).status_code for n in range(5)]
     assert codes == [401, 401, 401, 429, 429]

@@ -1,0 +1,1042 @@
+{
+ "fs1_m5_ca1_H28": {
+  "segment_labels_match_stored": {
+   "pattern": true,
+   "frequency": true,
+   "volume": true
+  },
+  "segment_counts_independent": {
+   "pattern": {
+    "erratic": 13,
+    "intermittent": 256,
+    "lumpy": 44,
+    "smooth": 37
+   },
+   "frequency": {
+    "frequent": 50,
+    "intermittent_or_sparse": 300
+   },
+   "volume": {
+    "high": 116,
+    "low": 117,
+    "mid": 117
+   }
+  },
+  "model": {
+   "pooled_wape": 0.7428438300496779,
+   "item_week_wape": 0.4024758212205304,
+   "subset_day_aggregate_wape": 0.10529007657641645,
+   "abs_relative_bias": 0.08323852683874099,
+   "relative_bias": -0.08323852683874099,
+   "subset_week_aggregate_wape": 0.08825228934978616,
+   "aggregate_minus_abs_bias": 0.022051549737675466,
+   "after_global_scale_correction": {
+    "scale": 1.0907962750132927,
+    "pooled_wape": 0.7556528059501476,
+    "subset_day_aggregate_wape": 0.08533723902045928
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "matched_median_reference": {
+   "pooled_wape": 0.7238539088576553,
+   "item_week_wape": 0.49770100588088373,
+   "subset_day_aggregate_wape": 0.306379282940896,
+   "abs_relative_bias": 0.2985683794645898,
+   "relative_bias": -0.2985683794645898,
+   "subset_week_aggregate_wape": 0.2985683794645898,
+   "aggregate_minus_abs_bias": 0.007810903476306197,
+   "after_global_scale_correction": {
+    "scale": 1.425655717141308,
+    "pooled_wape": 0.8175050016549507,
+    "subset_day_aggregate_wape": 0.16679585183011741
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "segments": {
+   "pattern=erratic": {
+    "n_series": 13,
+    "share_of_total_demand": 0.13494243999909175,
+    "share_of_rows_with_zero_demand": 0.20192307692307693,
+    "model_abs_err_share_of_total_demand": 0.09314347837393595,
+    "ref_abs_err_share_of_total_demand": 0.09636475102745169,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.0032212726535157453,
+    "model_bias_contribution": -0.013557373303320732,
+    "ref_bias_contribution": -0.03340069480711155,
+    "ref_share_of_forecasts_exactly_zero": 0.08974358974358974,
+    "model_share_of_forecasts_below_0.05": 0.0,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.05552751135790005
+   },
+   "pattern=intermittent": {
+    "n_series": 256,
+    "share_of_total_demand": 0.4271360777457369,
+    "share_of_rows_with_zero_demand": 0.6109561011904762,
+    "model_abs_err_share_of_total_demand": 0.38344152912689256,
+    "ref_abs_err_share_of_total_demand": 0.35547557957357917,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.027965949553313413,
+    "model_bias_contribution": -0.03370316265208656,
+    "ref_bias_contribution": -0.16573193160918234,
+    "ref_share_of_forecasts_exactly_zero": 0.6480189732142857,
+    "model_share_of_forecasts_below_0.05": 0.016950334821428572,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.3675145522685591
+   },
+   "pattern=lumpy": {
+    "n_series": 44,
+    "share_of_total_demand": 0.10704797802048091,
+    "share_of_rows_with_zero_demand": 0.5626352813852814,
+    "model_abs_err_share_of_total_demand": 0.10445154504755347,
+    "ref_abs_err_share_of_total_demand": 0.096245543924979,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.008206001122574469,
+    "model_bias_contribution": -0.004433468129953272,
+    "ref_bias_contribution": -0.05541994959242524,
+    "ref_share_of_forecasts_exactly_zero": 0.6170183982683982,
+    "model_share_of_forecasts_below_0.05": 0.005411255411255411,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.40523915579594866
+   },
+   "pattern=smooth": {
+    "n_series": 37,
+    "share_of_total_demand": 0.3308735042346904,
+    "share_of_rows_with_zero_demand": 0.12146074646074646,
+    "model_abs_err_share_of_total_demand": 0.16180727750129598,
+    "ref_abs_err_share_of_total_demand": 0.1757680343316455,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.013960756830349542,
+    "model_bias_contribution": -0.03154452275338042,
+    "ref_bias_contribution": -0.04401580345587067,
+    "ref_share_of_forecasts_exactly_zero": 0.017213642213642213,
+    "model_share_of_forecasts_below_0.05": 0.00016087516087516087,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.007171287400494098
+   },
+   "frequency=frequent": {
+    "n_series": 50,
+    "share_of_total_demand": 0.46581594423378214,
+    "share_of_rows_with_zero_demand": 0.14238095238095239,
+    "model_abs_err_share_of_total_demand": 0.2549507558752319,
+    "ref_abs_err_share_of_total_demand": 0.2721327853590972,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.01718202948386529,
+    "model_bias_contribution": -0.04510189605670115,
+    "ref_bias_contribution": -0.07741649826298222,
+    "ref_share_of_forecasts_exactly_zero": 0.036071428571428574,
+    "model_share_of_forecasts_below_0.05": 0.00011904761904761905,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.021179624664879357
+   },
+   "frequency=intermittent_or_sparse": {
+    "n_series": 300,
+    "share_of_total_demand": 0.5341840557662179,
+    "share_of_rows_with_zero_demand": 0.6038690476190476,
+    "model_abs_err_share_of_total_demand": 0.48789307417444605,
+    "ref_abs_err_share_of_total_demand": 0.45172112349855814,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.03617195067588788,
+    "model_bias_contribution": -0.03813663078203983,
+    "ref_bias_contribution": -0.2211518812016076,
+    "ref_share_of_forecasts_exactly_zero": 0.6434722222222222,
+    "model_share_of_forecasts_below_0.05": 0.015257936507936509,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.37507438578593894
+   },
+   "volume=high": {
+    "n_series": 116,
+    "share_of_total_demand": 0.74545310051997,
+    "share_of_rows_with_zero_demand": 0.2883825944170772,
+    "model_abs_err_share_of_total_demand": 0.459121220539468,
+    "ref_abs_err_share_of_total_demand": 0.48209055198564976,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.02296933144618172,
+    "model_bias_contribution": -0.08184547833667052,
+    "ref_bias_contribution": -0.1664755568674644,
+    "ref_share_of_forecasts_exactly_zero": 0.20581896551724138,
+    "model_share_of_forecasts_below_0.05": 0.005901067323481116,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.10383637166659052
+   },
+   "volume=low": {
+    "n_series": 117,
+    "share_of_total_demand": 0.08199178038645807,
+    "share_of_rows_with_zero_demand": 0.7582926332926333,
+    "model_abs_err_share_of_total_demand": 0.10618454685721618,
+    "ref_abs_err_share_of_total_demand": 0.07864262845984424,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.02754191839737194,
+    "model_bias_contribution": 0.0019744496331408393,
+    "ref_bias_contribution": -0.05926295951499739,
+    "ref_share_of_forecasts_exactly_zero": 0.9052706552706553,
+    "model_share_of_forecasts_below_0.05": 0.02681115181115181,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.7004984768762116
+   },
+   "volume=mid": {
+    "n_series": 117,
+    "share_of_total_demand": 0.1725551190935719,
+    "share_of_rows_with_zero_demand": 0.565018315018315,
+    "model_abs_err_share_of_total_demand": 0.17753806265299377,
+    "ref_abs_err_share_of_total_demand": 0.1631207284121614,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.014417334240832372,
+    "model_bias_contribution": -0.0033674981352113114,
+    "ref_bias_contribution": -0.07282986308212802,
+    "ref_share_of_forecasts_exactly_zero": 0.556013431013431,
+    "model_share_of_forecasts_below_0.05": 0.006512006512006512,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.4368708467662346
+   }
+  },
+  "gap_pooled_wape_ref_minus_model": -0.018989921192022585,
+  "ref_forecast_exactly_zero_share_overall": 0.5567006802721088,
+  "ref_zero_forecast_on_positive_demand_rows": 0.3361183702013324,
+  "total_demand_in_rows_where_ref_forecasts_zero_share": 0.2102245634749438,
+  "demand_share_top_decile_series": 0.4700619876932858
+ },
+ "fs1_m5_ca1_H7": {
+  "segment_labels_match_stored": {
+   "pattern": true,
+   "frequency": true,
+   "volume": true
+  },
+  "segment_counts_independent": {
+   "pattern": {
+    "erratic": 13,
+    "intermittent": 256,
+    "lumpy": 44,
+    "smooth": 37
+   },
+   "frequency": {
+    "frequent": 50,
+    "intermittent_or_sparse": 300
+   },
+   "volume": {
+    "high": 116,
+    "low": 117,
+    "mid": 117
+   }
+  },
+  "model": {
+   "pooled_wape": 0.7066785229221321,
+   "item_week_wape": 0.33939074112592793,
+   "subset_day_aggregate_wape": 0.0817815441040091,
+   "abs_relative_bias": 0.03915689918614433,
+   "relative_bias": -0.03915689918614433,
+   "subset_week_aggregate_wape": 0.05443830467306786,
+   "aggregate_minus_abs_bias": 0.042624644917864773,
+   "after_global_scale_correction": {
+    "scale": 1.0407526464549495,
+    "pooled_wape": 0.712897056288291,
+    "subset_day_aggregate_wape": 0.07794389126969711
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "matched_median_reference": {
+   "pooled_wape": 0.6816035058241184,
+   "item_week_wape": 0.4331759042710202,
+   "subset_day_aggregate_wape": 0.28806112486092506,
+   "abs_relative_bias": 0.2802842805567539,
+   "relative_bias": -0.2802842805567539,
+   "subset_week_aggregate_wape": 0.2802842805567539,
+   "aggregate_minus_abs_bias": 0.007776844304171138,
+   "after_global_scale_correction": {
+    "scale": 1.389437486197432,
+    "pooled_wape": 0.7608324645207716,
+    "subset_day_aggregate_wape": 0.16423251175553627
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "segments": {
+   "pattern=erratic": {
+    "n_series": 13,
+    "share_of_total_demand": 0.13494243999909175,
+    "share_of_rows_with_zero_demand": 0.20192307692307693,
+    "model_abs_err_share_of_total_demand": 0.09110632760924818,
+    "ref_abs_err_share_of_total_demand": 0.09070525192434323,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.00040107568490496014,
+    "model_bias_contribution": -0.008872917091146966,
+    "ref_bias_contribution": -0.034280556753933836,
+    "ref_share_of_forecasts_exactly_zero": 0.0815018315018315,
+    "model_share_of_forecasts_below_0.05": 0.0004578754578754579,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.04029951203096079
+   },
+   "pattern=intermittent": {
+    "n_series": 256,
+    "share_of_total_demand": 0.4271360777457369,
+    "share_of_rows_with_zero_demand": 0.6109561011904762,
+    "model_abs_err_share_of_total_demand": 0.35963168918825356,
+    "ref_abs_err_share_of_total_demand": 0.3344497173088713,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.025181971879382297,
+    "model_bias_contribution": -0.01257086081304345,
+    "ref_bias_contribution": -0.15175631797643105,
+    "ref_share_of_forecasts_exactly_zero": 0.6357886904761905,
+    "model_share_of_forecasts_below_0.05": 0.05331566220238095,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.3049996013077107
+   },
+   "pattern=lumpy": {
+    "n_series": 44,
+    "share_of_total_demand": 0.10704797802048091,
+    "share_of_rows_with_zero_demand": 0.5626352813852814,
+    "model_abs_err_share_of_total_demand": 0.09988996203748216,
+    "ref_abs_err_share_of_total_demand": 0.09039304284643855,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.009496919191043602,
+    "model_bias_contribution": -0.003933211543658776,
+    "ref_bias_contribution": -0.0519061783338253,
+    "ref_share_of_forecasts_exactly_zero": 0.5941558441558441,
+    "model_share_of_forecasts_below_0.05": 0.04153138528138528,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.3373634531763708
+   },
+   "pattern=smooth": {
+    "n_series": 37,
+    "share_of_total_demand": 0.3308735042346904,
+    "share_of_rows_with_zero_demand": 0.12146074646074646,
+    "model_abs_err_share_of_total_demand": 0.15605054408714816,
+    "ref_abs_err_share_of_total_demand": 0.16605549374446538,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.010004949657317228,
+    "model_bias_contribution": -0.013779909738295138,
+    "ref_bias_contribution": -0.04234122749256375,
+    "ref_share_of_forecasts_exactly_zero": 0.013835263835263836,
+    "model_share_of_forecasts_below_0.05": 0.0,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.004289047488333791
+   },
+   "frequency=frequent": {
+    "n_series": 50,
+    "share_of_total_demand": 0.46581594423378214,
+    "share_of_rows_with_zero_demand": 0.14238095238095239,
+    "model_abs_err_share_of_total_demand": 0.24715687169639633,
+    "ref_abs_err_share_of_total_demand": 0.25676074566880863,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.009603873972412268,
+    "model_bias_contribution": -0.022652826829442106,
+    "ref_bias_contribution": -0.07662178424649758,
+    "ref_share_of_forecasts_exactly_zero": 0.03142857142857143,
+    "model_share_of_forecasts_below_0.05": 0.00011904761904761905,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.014720935900560565
+   },
+   "frequency=intermittent_or_sparse": {
+    "n_series": 300,
+    "share_of_total_demand": 0.5341840557662179,
+    "share_of_rows_with_zero_demand": 0.6038690476190476,
+    "model_abs_err_share_of_total_demand": 0.45952165122573574,
+    "ref_abs_err_share_of_total_demand": 0.4248427601553098,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.034678891070425905,
+    "model_bias_contribution": -0.016504072356702225,
+    "ref_bias_contribution": -0.20366249631025635,
+    "ref_share_of_forecasts_exactly_zero": 0.6296825396825397,
+    "model_share_of_forecasts_below_0.05": 0.051587301587301584,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.3114851653489756
+   },
+   "volume=high": {
+    "n_series": 116,
+    "share_of_total_demand": 0.74545310051997,
+    "share_of_rows_with_zero_demand": 0.2883825944170772,
+    "model_abs_err_share_of_total_demand": 0.43260905610735956,
+    "ref_abs_err_share_of_total_demand": 0.4466746894938807,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.014065633386521167,
+    "model_bias_contribution": -0.04195772103794058,
+    "ref_bias_contribution": -0.15330033377988692,
+    "ref_share_of_forecasts_exactly_zero": 0.18811576354679804,
+    "model_share_of_forecasts_below_0.05": 0.022885878489326765,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.06928009016006458
+   },
+   "volume=low": {
+    "n_series": 117,
+    "share_of_total_demand": 0.08199178038645807,
+    "share_of_rows_with_zero_demand": 0.7582926332926333,
+    "model_abs_err_share_of_total_demand": 0.10325981077033666,
+    "ref_abs_err_share_of_total_demand": 0.07818850616471015,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.025071304605626513,
+    "model_bias_contribution": 0.0034866440039754347,
+    "ref_bias_contribution": -0.05568674644081651,
+    "ref_share_of_forecasts_exactly_zero": 0.8930097680097681,
+    "model_share_of_forecasts_below_0.05": 0.06445868945868946,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.6693436721129881
+   },
+   "volume=mid": {
+    "n_series": 117,
+    "share_of_total_demand": 0.1725551190935719,
+    "share_of_rows_with_zero_demand": 0.565018315018315,
+    "model_abs_err_share_of_total_demand": 0.17080965604443588,
+    "ref_abs_err_share_of_total_demand": 0.15674031016552759,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.014069345878908289,
+    "model_bias_contribution": -0.0006858221521791909,
+    "ref_bias_contribution": -0.0712972003360505,
+    "ref_share_of_forecasts_exactly_zero": 0.5484839234839235,
+    "model_share_of_forecasts_below_0.05": 0.045177045177045176,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.38667017566945194
+   }
+  },
+  "gap_pooled_wape_ref_minus_model": -0.02507501709801363,
+  "ref_forecast_exactly_zero_share_overall": 0.54421768707483,
+  "ref_zero_forecast_on_positive_demand_rows": 0.3012624682542604,
+  "total_demand_in_rows_where_ref_forecasts_zero_share": 0.17324765559365138,
+  "demand_share_top_decile_series": 0.4700619876932858
+ },
+ "fs1_m5_tx1_H28": {
+  "segment_labels_match_stored": {
+   "pattern": true,
+   "frequency": true,
+   "volume": true
+  },
+  "segment_counts_independent": {
+   "pattern": {
+    "erratic": 12,
+    "intermittent": 262,
+    "lumpy": 49,
+    "smooth": 27
+   },
+   "frequency": {
+    "frequent": 39,
+    "intermittent_or_sparse": 311
+   },
+   "volume": {
+    "high": 117,
+    "low": 117,
+    "mid": 116
+   }
+  },
+  "model": {
+   "pooled_wape": 0.8346501535175919,
+   "item_week_wape": 0.4690850722039399,
+   "subset_day_aggregate_wape": 0.11359827047996862,
+   "abs_relative_bias": 0.06544445334755651,
+   "relative_bias": -0.06544445334755651,
+   "subset_week_aggregate_wape": 0.08174309641677503,
+   "aggregate_minus_abs_bias": 0.04815381713241211,
+   "after_global_scale_correction": {
+    "scale": 1.0700273553369588,
+    "pooled_wape": 0.8480102553365276,
+    "subset_day_aggregate_wape": 0.10282507106314383
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "matched_median_reference": {
+   "pooled_wape": 0.7493566176470589,
+   "item_week_wape": 0.5464613970588236,
+   "subset_day_aggregate_wape": 0.3470741421568627,
+   "abs_relative_bias": 0.33880208333333334,
+   "relative_bias": -0.33880208333333334,
+   "subset_week_aggregate_wape": 0.33880208333333334,
+   "aggregate_minus_abs_bias": 0.008272058823529382,
+   "after_global_scale_correction": {
+    "scale": 1.5124064592359197,
+    "pooled_wape": 0.8649644588536478,
+    "subset_day_aggregate_wape": 0.16590719095830536
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "segments": {
+   "pattern=erratic": {
+    "n_series": 12,
+    "share_of_total_demand": 0.15972732843137255,
+    "share_of_rows_with_zero_demand": 0.23809523809523808,
+    "model_abs_err_share_of_total_demand": 0.10234952052580375,
+    "ref_abs_err_share_of_total_demand": 0.10244332107843138,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 9.380055262761957e-05,
+    "model_bias_contribution": -0.01771210688668504,
+    "ref_bias_contribution": -0.030660232843137254,
+    "ref_share_of_forecasts_exactly_zero": 0.1130952380952381,
+    "model_share_of_forecasts_below_0.05": 0.0,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.03817013522585595
+   },
+   "pattern=intermittent": {
+    "n_series": 262,
+    "share_of_total_demand": 0.3835018382352941,
+    "share_of_rows_with_zero_demand": 0.700563431479462,
+    "model_abs_err_share_of_total_demand": 0.3987249813870899,
+    "ref_abs_err_share_of_total_demand": 0.3336473651960784,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.06507761619101146,
+    "model_bias_contribution": -0.01251861759679456,
+    "ref_bias_contribution": -0.18516390931372548,
+    "ref_share_of_forecasts_exactly_zero": 0.792325517993457,
+    "model_share_of_forecasts_below_0.05": 0.01663031624863686,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.453604953065708
+   },
+   "pattern=lumpy": {
+    "n_series": 49,
+    "share_of_total_demand": 0.2087469362745098,
+    "share_of_rows_with_zero_demand": 0.5792031098153547,
+    "model_abs_err_share_of_total_demand": 0.1996579297567437,
+    "ref_abs_err_share_of_total_demand": 0.17447150735294117,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.02518642240380252,
+    "model_bias_contribution": -0.0225064589121258,
+    "ref_bias_contribution": -0.09518229166666667,
+    "ref_share_of_forecasts_exactly_zero": 0.5903790087463557,
+    "model_share_of_forecasts_below_0.05": 0.0012147716229348883,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.23952447347178396
+   },
+   "pattern=smooth": {
+    "n_series": 27,
+    "share_of_total_demand": 0.24802389705882352,
+    "share_of_rows_with_zero_demand": 0.1884920634920635,
+    "model_abs_err_share_of_total_demand": 0.1339177218479545,
+    "ref_abs_err_share_of_total_demand": 0.13879442401960784,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.004876702171653354,
+    "model_bias_contribution": -0.012707269951951115,
+    "ref_bias_contribution": -0.02779564950980392,
+    "ref_share_of_forecasts_exactly_zero": 0.09501763668430335,
+    "model_share_of_forecasts_below_0.05": 0.014991181657848324,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.031190167376937805
+   },
+   "frequency=frequent": {
+    "n_series": 39,
+    "share_of_total_demand": 0.4077512254901961,
+    "share_of_rows_with_zero_demand": 0.20375457875457875,
+    "model_abs_err_share_of_total_demand": 0.23626724237375824,
+    "ref_abs_err_share_of_total_demand": 0.24123774509803922,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.004970502724280974,
+    "model_bias_contribution": -0.030419376838636155,
+    "ref_bias_contribution": -0.05845588235294118,
+    "ref_share_of_forecasts_exactly_zero": 0.10057997557997558,
+    "model_share_of_forecasts_below_0.05": 0.010378510378510378,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.03392441205199489
+   },
+   "frequency=intermittent_or_sparse": {
+    "n_series": 311,
+    "share_of_total_demand": 0.592248774509804,
+    "share_of_rows_with_zero_demand": 0.6814423518603583,
+    "model_abs_err_share_of_total_demand": 0.5983829111438336,
+    "ref_abs_err_share_of_total_demand": 0.5081188725490197,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.09026403859481398,
+    "model_bias_contribution": -0.03502507650892036,
+    "ref_bias_contribution": -0.28034620098039215,
+    "ref_share_of_forecasts_exactly_zero": 0.7605075792374828,
+    "model_share_of_forecasts_below_0.05": 0.01420150053590568,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.37814908695877086
+   },
+   "volume=high": {
+    "n_series": 117,
+    "share_of_total_demand": 0.7755361519607843,
+    "share_of_rows_with_zero_demand": 0.35917785917785916,
+    "model_abs_err_share_of_total_demand": 0.5454233862104422,
+    "ref_abs_err_share_of_total_demand": 0.532421875,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.013001511210442164,
+    "model_bias_contribution": -0.0619460931771969,
+    "ref_bias_contribution": -0.1751455269607843,
+    "ref_share_of_forecasts_exactly_zero": 0.2403846153846154,
+    "model_share_of_forecasts_below_0.05": 0.007020757020757021,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.09167045252533233
+   },
+   "volume=low": {
+    "n_series": 117,
+    "share_of_total_demand": 0.08463541666666667,
+    "share_of_rows_with_zero_demand": 0.8273809523809523,
+    "model_abs_err_share_of_total_demand": 0.11145047000824763,
+    "ref_abs_err_share_of_total_demand": 0.07477022058823529,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.03668024942001234,
+    "model_bias_contribution": -0.002458645514051051,
+    "ref_bias_contribution": -0.060278799019607844,
+    "ref_share_of_forecasts_exactly_zero": 0.9582824582824583,
+    "model_share_of_forecasts_below_0.05": 0.024521774521774523,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.7053393665158371
+   },
+   "volume=mid": {
+    "n_series": 116,
+    "share_of_total_demand": 0.13982843137254902,
+    "share_of_rows_with_zero_demand": 0.6986863711001642,
+    "model_abs_err_share_of_total_demand": 0.17777629729890204,
+    "ref_abs_err_share_of_total_demand": 0.14216452205882352,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.0356117752400785,
+    "model_bias_contribution": -0.0010397146563085628,
+    "ref_bias_contribution": -0.10337775735294118,
+    "ref_share_of_forecasts_exactly_zero": 0.8637623152709359,
+    "model_share_of_forecasts_below_0.05": 0.009749589490968802,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.76522787028922
+   }
+  },
+  "gap_pooled_wape_ref_minus_model": -0.08529353587053301,
+  "ref_forecast_exactly_zero_share_overall": 0.6869727891156463,
+  "ref_zero_forecast_on_positive_demand_rows": 0.42203009926352864,
+  "total_demand_in_rows_where_ref_forecasts_zero_share": 0.23779105392156863,
+  "demand_share_top_decile_series": 0.5154258578431372
+ },
+ "fs1_m5_tx1_H7": {
+  "segment_labels_match_stored": {
+   "pattern": true,
+   "frequency": true,
+   "volume": true
+  },
+  "segment_counts_independent": {
+   "pattern": {
+    "erratic": 12,
+    "intermittent": 262,
+    "lumpy": 49,
+    "smooth": 27
+   },
+   "frequency": {
+    "frequent": 39,
+    "intermittent_or_sparse": 311
+   },
+   "volume": {
+    "high": 117,
+    "low": 117,
+    "mid": 116
+   }
+  },
+  "model": {
+   "pooled_wape": 0.788767429599298,
+   "item_week_wape": 0.40288048075944255,
+   "subset_day_aggregate_wape": 0.09945654456677956,
+   "abs_relative_bias": 0.03621876964900331,
+   "relative_bias": -0.03621876964900331,
+   "subset_week_aggregate_wape": 0.06294052960487997,
+   "aggregate_minus_abs_bias": 0.06323777491777625,
+   "after_global_scale_correction": {
+    "scale": 1.0375798661650766,
+    "pooled_wape": 0.7955037093519334,
+    "subset_day_aggregate_wape": 0.0972746555936731
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "matched_median_reference": {
+   "pooled_wape": 0.7101026348039216,
+   "item_week_wape": 0.4944163602941177,
+   "subset_day_aggregate_wape": 0.32923560049019607,
+   "abs_relative_bias": 0.32105545343137254,
+   "relative_bias": -0.32105545343137254,
+   "subset_week_aggregate_wape": 0.32105545343137254,
+   "aggregate_minus_abs_bias": 0.008180147058823528,
+   "after_global_scale_correction": {
+    "scale": 1.4728743386392609,
+    "pooled_wape": 0.8121764184264795,
+    "subset_day_aggregate_wape": 0.15738425274614432
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "segments": {
+   "pattern=erratic": {
+    "n_series": 12,
+    "share_of_total_demand": 0.15972732843137255,
+    "share_of_rows_with_zero_demand": 0.23809523809523808,
+    "model_abs_err_share_of_total_demand": 0.0894302616865995,
+    "ref_abs_err_share_of_total_demand": 0.09181219362745098,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.0023819319408514773,
+    "model_bias_contribution": -0.01459287010959587,
+    "ref_bias_contribution": -0.0260952818627451,
+    "ref_share_of_forecasts_exactly_zero": 0.12351190476190477,
+    "model_share_of_forecasts_below_0.05": 0.0,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.02416802531888367
+   },
+   "pattern=intermittent": {
+    "n_series": 262,
+    "share_of_total_demand": 0.3835018382352941,
+    "share_of_rows_with_zero_demand": 0.700563431479462,
+    "model_abs_err_share_of_total_demand": 0.38263720655553807,
+    "ref_abs_err_share_of_total_demand": 0.3206112132352941,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.06202599332024393,
+    "model_bias_contribution": -0.0020431779408360906,
+    "ref_bias_contribution": -0.17678462009803922,
+    "ref_share_of_forecasts_exactly_zero": 0.7867366412213741,
+    "model_share_of_forecasts_below_0.05": 0.05254907306434024,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.4145795885759936
+   },
+   "pattern=lumpy": {
+    "n_series": 49,
+    "share_of_total_demand": 0.2087469362745098,
+    "share_of_rows_with_zero_demand": 0.5792031098153547,
+    "model_abs_err_share_of_total_demand": 0.1880041498449453,
+    "ref_abs_err_share_of_total_demand": 0.1653952205882353,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.022608929256710004,
+    "model_bias_contribution": -0.013751033212083355,
+    "ref_bias_contribution": -0.09076286764705882,
+    "ref_share_of_forecasts_exactly_zero": 0.5928085519922255,
+    "model_share_of_forecasts_below_0.05": 0.023080660835762875,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.22484772877375797
+   },
+   "pattern=smooth": {
+    "n_series": 27,
+    "share_of_total_demand": 0.24802389705882352,
+    "share_of_rows_with_zero_demand": 0.1884920634920635,
+    "model_abs_err_share_of_total_demand": 0.1286958115122152,
+    "ref_abs_err_share_of_total_demand": 0.13228400735294119,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.003588195840725972,
+    "model_bias_contribution": -0.005831688386487989,
+    "ref_bias_contribution": -0.02741268382352941,
+    "ref_share_of_forecasts_exactly_zero": 0.08928571428571429,
+    "model_share_of_forecasts_below_0.05": 0.027777777777777776,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.021122846025569762
+   },
+   "frequency=frequent": {
+    "n_series": 39,
+    "share_of_total_demand": 0.4077512254901961,
+    "share_of_rows_with_zero_demand": 0.20375457875457875,
+    "model_abs_err_share_of_total_demand": 0.21812607319881472,
+    "ref_abs_err_share_of_total_demand": 0.22409620098039215,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.005970127781577449,
+    "model_bias_contribution": -0.02042455849608386,
+    "ref_bias_contribution": -0.05350796568627451,
+    "ref_share_of_forecasts_exactly_zero": 0.09981684981684982,
+    "model_share_of_forecasts_below_0.05": 0.019230769230769232,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.022315726200315578
+   },
+   "frequency=intermittent_or_sparse": {
+    "n_series": 311,
+    "share_of_total_demand": 0.592248774509804,
+    "share_of_rows_with_zero_demand": 0.6814423518603583,
+    "model_abs_err_share_of_total_demand": 0.5706413564004833,
+    "ref_abs_err_share_of_total_demand": 0.4860064338235294,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.08463492257695393,
+    "model_bias_contribution": -0.015794211152919447,
+    "ref_bias_contribution": -0.267547487745098,
+    "ref_share_of_forecasts_exactly_zero": 0.7561820548154953,
+    "model_share_of_forecasts_below_0.05": 0.047906139947940594,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.34770575759143346
+   },
+   "volume=high": {
+    "n_series": 117,
+    "share_of_total_demand": 0.7755361519607843,
+    "share_of_rows_with_zero_demand": 0.35917785917785916,
+    "model_abs_err_share_of_total_demand": 0.5075455178594448,
+    "ref_abs_err_share_of_total_demand": 0.49803155637254903,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.009513961486895733,
+    "model_bias_contribution": -0.038695873428225565,
+    "ref_bias_contribution": -0.16339613970588235,
+    "ref_share_of_forecasts_exactly_zero": 0.24053724053724054,
+    "model_share_of_forecasts_below_0.05": 0.024623524623524625,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.07409090011258815
+   },
+   "volume=low": {
+    "n_series": 117,
+    "share_of_total_demand": 0.08463541666666667,
+    "share_of_rows_with_zero_demand": 0.8273809523809523,
+    "model_abs_err_share_of_total_demand": 0.10771238732529895,
+    "ref_abs_err_share_of_total_demand": 0.07318474264705882,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.03452764467824012,
+    "model_bias_contribution": 0.0020925316418844674,
+    "ref_bias_contribution": -0.056931678921568626,
+    "ref_share_of_forecasts_exactly_zero": 0.9548229548229549,
+    "model_share_of_forecasts_below_0.05": 0.06863044363044363,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.6646153846153846
+   },
+   "volume=mid": {
+    "n_series": 116,
+    "share_of_total_demand": 0.13982843137254902,
+    "share_of_rows_with_zero_demand": 0.6986863711001642,
+    "model_abs_err_share_of_total_demand": 0.17350952441455436,
+    "ref_abs_err_share_of_total_demand": 0.13888633578431372,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.03462318863024063,
+    "model_bias_contribution": 0.00038457213733778976,
+    "ref_bias_contribution": -0.10072763480392156,
+    "ref_share_of_forecasts_exactly_zero": 0.8552442528735632,
+    "model_share_of_forecasts_below_0.05": 0.04084564860426929,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.7245836985100789
+   }
+  },
+  "gap_pooled_wape_ref_minus_model": -0.07866479479537647,
+  "ref_forecast_exactly_zero_share_overall": 0.6830442176870748,
+  "ref_zero_forecast_on_positive_demand_rows": 0.3992498055898632,
+  "total_demand_in_rows_where_ref_forecasts_zero_share": 0.21502757352941176,
+  "demand_share_top_decile_series": 0.5154258578431372
+ },
+ "fs1_or2_top100_H28": {
+  "segment_labels_match_stored": {
+   "pattern": true,
+   "frequency": true,
+   "volume": true
+  },
+  "segment_counts_independent": {
+   "pattern": {
+    "erratic": 25,
+    "intermittent": 1,
+    "lumpy": 74
+   },
+   "frequency": {
+    "frequent": 25,
+    "intermittent_or_sparse": 75
+   },
+   "volume": {
+    "high": 33,
+    "low": 34,
+    "mid": 33
+   }
+  },
+  "model": {
+   "pooled_wape": 0.9059598417567414,
+   "item_week_wape": 0.561846558099738,
+   "subset_day_aggregate_wape": 0.3595123424101589,
+   "abs_relative_bias": 0.05011288600396045,
+   "relative_bias": -0.05011288600396045,
+   "subset_week_aggregate_wape": 0.1884586474435446,
+   "aggregate_minus_abs_bias": 0.3093994564061984,
+   "after_global_scale_correction": {
+    "scale": 1.0527566752570658,
+    "pooled_wape": 0.9275868130691096,
+    "subset_day_aggregate_wape": 0.36640465105030867
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "matched_median_reference": {
+   "pooled_wape": 0.873875220236597,
+   "item_week_wape": 0.6508797665492071,
+   "subset_day_aggregate_wape": 0.7301905046564309,
+   "abs_relative_bias": 0.5830862226277372,
+   "relative_bias": -0.5830862226277372,
+   "subset_week_aggregate_wape": 0.5830862226277372,
+   "aggregate_minus_abs_bias": 0.14710428202869363,
+   "after_global_scale_correction": {
+    "scale": 2.39857748598003,
+    "pooled_wape": 1.0476767966421063,
+    "subset_day_aggregate_wape": 0.5577901027488481
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "segments": {
+   "pattern=erratic": {
+    "n_series": 25,
+    "share_of_total_demand": 0.47478487603825825,
+    "share_of_rows_with_zero_demand": 0.19095238095238096,
+    "model_abs_err_share_of_total_demand": 0.39174922489623815,
+    "ref_abs_err_share_of_total_demand": 0.39212339541907876,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.00037417052284061483,
+    "model_bias_contribution": -0.01462898118785625,
+    "ref_bias_contribution": -0.22889661464887995,
+    "ref_share_of_forecasts_exactly_zero": 0.009047619047619047,
+    "model_share_of_forecasts_below_0.05": 0.011428571428571429,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.002828754726671057
+   },
+   "pattern=intermittent": {
+    "n_series": 1,
+    "share_of_total_demand": 0.005169660835640574,
+    "share_of_rows_with_zero_demand": 0.42857142857142855,
+    "model_abs_err_share_of_total_demand": 0.008703377191200028,
+    "ref_abs_err_share_of_total_demand": 0.005312224704253713,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.0033911524869463146,
+    "model_bias_contribution": 0.003489571050423149,
+    "ref_bias_contribution": -0.004167780958973068,
+    "ref_share_of_forecasts_exactly_zero": 0.11904761904761904,
+    "model_share_of_forecasts_below_0.05": 0.0,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.08216051730696082
+   },
+   "pattern=lumpy": {
+    "n_series": 74,
+    "share_of_total_demand": 0.5200454631261012,
+    "share_of_rows_with_zero_demand": 0.35794723294723296,
+    "model_abs_err_share_of_total_demand": 0.5055072396693032,
+    "ref_abs_err_share_of_total_demand": 0.4764396001132645,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.029067639556038645,
+    "model_bias_contribution": -0.03897347586652735,
+    "ref_bias_contribution": -0.3500218270198842,
+    "ref_share_of_forecasts_exactly_zero": 0.23415379665379665,
+    "model_share_of_forecasts_below_0.05": 0.007722007722007722,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.11208246050532016
+   },
+   "frequency=frequent": {
+    "n_series": 25,
+    "share_of_total_demand": 0.47478487603825825,
+    "share_of_rows_with_zero_demand": 0.19095238095238096,
+    "model_abs_err_share_of_total_demand": 0.39174922489623815,
+    "ref_abs_err_share_of_total_demand": 0.39212339541907876,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.00037417052284061483,
+    "model_bias_contribution": -0.01462898118785625,
+    "ref_bias_contribution": -0.22889661464887995,
+    "ref_share_of_forecasts_exactly_zero": 0.009047619047619047,
+    "model_share_of_forecasts_below_0.05": 0.011428571428571429,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.002828754726671057
+   },
+   "frequency=intermittent_or_sparse": {
+    "n_series": 75,
+    "share_of_total_demand": 0.5252151239617417,
+    "share_of_rows_with_zero_demand": 0.35888888888888887,
+    "model_abs_err_share_of_total_demand": 0.5142106168605032,
+    "ref_abs_err_share_of_total_demand": 0.48175182481751827,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.032458792042984956,
+    "model_bias_contribution": -0.035483904816104195,
+    "ref_bias_contribution": -0.3541896079788573,
+    "ref_share_of_forecasts_exactly_zero": 0.23261904761904761,
+    "model_share_of_forecasts_below_0.05": 0.007619047619047619,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.11178794062037851
+   },
+   "volume=high": {
+    "n_series": 33,
+    "share_of_total_demand": 0.6348870500880947,
+    "share_of_rows_with_zero_demand": 0.22925685425685427,
+    "model_abs_err_share_of_total_demand": 0.5398860607722377,
+    "ref_abs_err_share_of_total_demand": 0.5435999638182734,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.0037139030460356984,
+    "model_bias_contribution": -0.0497360755302441,
+    "ref_bias_contribution": -0.3497937248301032,
+    "ref_share_of_forecasts_exactly_zero": 0.07864357864357864,
+    "model_share_of_forecasts_below_0.05": 0.010642135642135642,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.027822515703011756
+   },
+   "volume=low": {
+    "n_series": 34,
+    "share_of_total_demand": 0.09689427070224012,
+    "share_of_rows_with_zero_demand": 0.42507002801120447,
+    "model_abs_err_share_of_total_demand": 0.10964781344431239,
+    "ref_abs_err_share_of_total_demand": 0.0884672712685628,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.021180542175749585,
+    "model_bias_contribution": 0.009591292875110161,
+    "ref_bias_contribution": -0.07254927793858545,
+    "ref_share_of_forecasts_exactly_zero": 0.33105742296918766,
+    "model_share_of_forecasts_below_0.05": 0.004376750700280112,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.184779299847793
+   },
+   "volume=mid": {
+    "n_series": 33,
+    "share_of_total_demand": 0.26821867920966525,
+    "share_of_rows_with_zero_demand": 0.2931096681096681,
+    "model_abs_err_share_of_total_demand": 0.25642596754019137,
+    "ref_abs_err_share_of_total_demand": 0.24180798514976087,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.014617982390430457,
+    "model_bias_contribution": -0.009968103348826505,
+    "ref_bias_contribution": -0.16074321985904858,
+    "ref_share_of_forecasts_exactly_zero": 0.11580086580086581,
+    "model_share_of_forecasts_below_0.05": 0.010822510822510822,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.09129698462621241
+   }
+  },
+  "gap_pooled_wape_ref_minus_model": -0.03208462152014435,
+  "ref_forecast_exactly_zero_share_overall": 0.17672619047619048,
+  "ref_zero_forecast_on_positive_demand_rows": 0.1072673405367724,
+  "total_demand_in_rows_where_ref_forecasts_zero_share": 0.06005576705260508,
+  "demand_share_top_decile_series": 0.34980257362194817
+ },
+ "fs1_or2_top100_H7": {
+  "segment_labels_match_stored": {
+   "pattern": true,
+   "frequency": true,
+   "volume": true
+  },
+  "segment_counts_independent": {
+   "pattern": {
+    "erratic": 25,
+    "intermittent": 1,
+    "lumpy": 74
+   },
+   "frequency": {
+    "frequent": 25,
+    "intermittent_or_sparse": 75
+   },
+   "volume": {
+    "high": 33,
+    "low": 34,
+    "mid": 33
+   }
+  },
+  "model": {
+   "pooled_wape": 0.8786316510238988,
+   "item_week_wape": 0.5235824083921721,
+   "subset_day_aggregate_wape": 0.35742848512537106,
+   "abs_relative_bias": 0.07149803592417721,
+   "relative_bias": -0.07149803592417721,
+   "subset_week_aggregate_wape": 0.1787860372462864,
+   "aggregate_minus_abs_bias": 0.28593044920119387,
+   "after_global_scale_correction": {
+    "scale": 1.0770036453238332,
+    "pooled_wape": 0.90914096547974,
+    "subset_day_aggregate_wape": 0.3686484564084873
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "matched_median_reference": {
+   "pooled_wape": 0.8528180452428895,
+   "item_week_wape": 0.6052524461993456,
+   "subset_day_aggregate_wape": 0.7136540790964007,
+   "abs_relative_bias": 0.5459832384218475,
+   "relative_bias": -0.5459832384218475,
+   "subset_week_aggregate_wape": 0.5459832384218475,
+   "aggregate_minus_abs_bias": 0.16767084067455318,
+   "after_global_scale_correction": {
+    "scale": 2.2025618537166367,
+    "pooled_wape": 1.0105751825948535,
+    "subset_day_aggregate_wape": 0.5370671297182978
+   },
+   "identity_aggregate_wape_ge_abs_bias_holds": true
+  },
+  "segments": {
+   "pattern=erratic": {
+    "n_series": 25,
+    "share_of_total_demand": 0.47478487603825825,
+    "share_of_rows_with_zero_demand": 0.19095238095238096,
+    "model_abs_err_share_of_total_demand": 0.3797648962155586,
+    "ref_abs_err_share_of_total_demand": 0.38676496035741253,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.007000064141853943,
+    "model_bias_contribution": -0.02879412447655597,
+    "ref_bias_contribution": -0.21811878618172664,
+    "ref_share_of_forecasts_exactly_zero": 0.004047619047619047,
+    "model_share_of_forecasts_below_0.05": 0.019523809523809523,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.00043073278414903354
+   },
+   "pattern=intermittent": {
+    "n_series": 1,
+    "share_of_total_demand": 0.005169660835640574,
+    "share_of_rows_with_zero_demand": 0.42857142857142855,
+    "model_abs_err_share_of_total_demand": 0.008090865054634171,
+    "ref_abs_err_share_of_total_demand": 0.005239467971306318,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.002851397083327854,
+    "model_bias_contribution": 0.002600755405751414,
+    "ref_bias_contribution": -0.004370319972313114,
+    "ref_share_of_forecasts_exactly_zero": 0.08928571428571429,
+    "model_share_of_forecasts_below_0.05": 0.0,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.1909471281856219
+   },
+   "pattern=lumpy": {
+    "n_series": 74,
+    "share_of_total_demand": 0.5200454631261012,
+    "share_of_rows_with_zero_demand": 0.35794723294723296,
+    "model_abs_err_share_of_total_demand": 0.4907758897537061,
+    "ref_abs_err_share_of_total_demand": 0.46081361691417067,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.029962272839535443,
+    "model_bias_contribution": -0.04530466685337265,
+    "ref_bias_contribution": -0.3234941322678077,
+    "ref_share_of_forecasts_exactly_zero": 0.20117438867438867,
+    "model_share_of_forecasts_below_0.05": 0.009411196911196911,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.07659207610808194
+   },
+   "frequency=frequent": {
+    "n_series": 25,
+    "share_of_total_demand": 0.47478487603825825,
+    "share_of_rows_with_zero_demand": 0.19095238095238096,
+    "model_abs_err_share_of_total_demand": 0.3797648962155586,
+    "ref_abs_err_share_of_total_demand": 0.38676496035741253,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.007000064141853943,
+    "model_bias_contribution": -0.02879412447655597,
+    "ref_bias_contribution": -0.21811878618172664,
+    "ref_share_of_forecasts_exactly_zero": 0.004047619047619047,
+    "model_share_of_forecasts_below_0.05": 0.019523809523809523,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.00043073278414903354
+   },
+   "frequency=intermittent_or_sparse": {
+    "n_series": 75,
+    "share_of_total_demand": 0.5252151239617417,
+    "share_of_rows_with_zero_demand": 0.35888888888888887,
+    "model_abs_err_share_of_total_demand": 0.49886675480834025,
+    "ref_abs_err_share_of_total_demand": 0.466053084885477,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.032813669922863296,
+    "model_bias_contribution": -0.042703911447621236,
+    "ref_bias_contribution": -0.32786445224012084,
+    "ref_share_of_forecasts_exactly_zero": 0.19968253968253968,
+    "model_share_of_forecasts_below_0.05": 0.009285714285714286,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.07771766599898912
+   },
+   "volume=high": {
+    "n_series": 33,
+    "share_of_total_demand": 0.6348870500880947,
+    "share_of_rows_with_zero_demand": 0.22925685425685427,
+    "model_abs_err_share_of_total_demand": 0.52470559456772,
+    "ref_abs_err_share_of_total_demand": 0.5303985495846967,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": 0.00569295501697671,
+    "model_bias_contribution": -0.06361301037024392,
+    "ref_bias_contribution": -0.3272125912408759,
+    "ref_share_of_forecasts_exactly_zero": 0.06168831168831169,
+    "model_share_of_forecasts_below_0.05": 0.01984126984126984,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.01877237756606415
+   },
+   "volume=low": {
+    "n_series": 34,
+    "share_of_total_demand": 0.09689427070224012,
+    "share_of_rows_with_zero_demand": 0.42507002801120447,
+    "model_abs_err_share_of_total_demand": 0.10220930610318074,
+    "ref_abs_err_share_of_total_demand": 0.0854360684621193,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.016773237641061433,
+    "model_bias_contribution": 0.003442737127916885,
+    "ref_bias_contribution": -0.06517823433173923,
+    "ref_share_of_forecasts_exactly_zero": 0.28904061624649857,
+    "model_share_of_forecasts_below_0.05": 0.005777310924369748,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.1169558599695586
+   },
+   "volume=mid": {
+    "n_series": 33,
+    "share_of_total_demand": 0.26821867920966525,
+    "share_of_rows_with_zero_demand": 0.2931096681096681,
+    "model_abs_err_share_of_total_demand": 0.2517167503529981,
+    "ref_abs_err_share_of_total_demand": 0.2369834271960735,
+    "contribution_to_pooled_wape_gap_(ref_minus_model)": -0.01473332315692463,
+    "model_bias_contribution": -0.011327762681850186,
+    "ref_bias_contribution": -0.1535924128492323,
+    "ref_share_of_forecasts_exactly_zero": 0.09740259740259741,
+    "model_share_of_forecasts_below_0.05": 0.010101010101010102,
+    "share_of_this_segment_demand_in_rows_where_ref_forecasts_zero": 0.06626051128657415
+   }
+  },
+  "gap_pooled_wape_ref_minus_model": -0.02581360578100933,
+  "ref_forecast_exactly_zero_share_overall": 0.15077380952380953,
+  "ref_zero_forecast_on_positive_demand_rows": 0.0779888462879052,
+  "total_demand_in_rows_where_ref_forecasts_zero_share": 0.04102299899320413,
+  "demand_share_top_decile_series": 0.34980257362194817
+ }
+}
