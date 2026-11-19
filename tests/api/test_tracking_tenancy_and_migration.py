@@ -146,7 +146,7 @@ def _insert_generic(con: sqlite3.Connection, table: str, **values):
 def test_migrations_0012_and_0013_create_the_constraints_backfill_and_downgrade_cleanly(tmp_path):
     root = Path(__file__).resolve().parents[2]
     db = tmp_path / "m.db"
-    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(root)}
+    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "MIGRATION_DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(root)}
     r = _alembic(root, env, "upgrade", "0012")
     assert r.returncode == 0, r.stderr[-800:]
     con = sqlite3.connect(db)
@@ -194,7 +194,7 @@ def test_migration_0014_makes_history_append_only_inside_the_database(tmp_path):
     deletes (needed for ON DELETE CASCADE) and inserts still work. Exercised on SQLite; the PostgreSQL trigger code is not run here."""
     root = Path(__file__).resolve().parents[2]
     db = tmp_path / "t.db"
-    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(root)}
+    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "MIGRATION_DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(root)}
     r = _alembic(root, env, "upgrade", "head")
     assert r.returncode == 0, r.stderr[-800:]
     con = sqlite3.connect(db)
@@ -255,7 +255,7 @@ def test_the_application_flows_still_work_on_a_database_with_the_triggers(tmp_pa
 
     root = Path(__file__).resolve().parents[2]
     db = tmp_path / "flows.db"
-    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(root)}
+    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "MIGRATION_DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(root)}
     assert _alembic(root, env, "upgrade", "head").returncode == 0
     engine = create_engine(f"sqlite:///{db.as_posix()}", connect_args={"timeout": 30})
     with sessionmaker(bind=engine, autoflush=False)() as s:

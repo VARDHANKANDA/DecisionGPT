@@ -214,7 +214,13 @@ def test_evaluate_classifiers_end_to_end_on_a_learnable_toy_problem():
     X = rng.normal(size=(900, 4))
     y = (X[:, 0] + 0.5 * rng.normal(size=900) > 0).astype(int)
     r = churn.evaluate_classifiers(X[:500], y[:500], X[500:700], y[500:700], X[700:], y[700:], groups_train=np.arange(500) // 2, seed=1, bootstrap=50)
-    assert set(r["base_models"]) == {"logistic_regression", "random_forest", "xgboost", "catboost"}
+    expected_base_models = {"logistic_regression", "random_forest", "xgboost"}
+    try:
+        import catboost  # noqa: F401
+        expected_base_models.add("catboost")
+    except ImportError:
+        pass
+    assert set(r["base_models"]) == expected_base_models
     for name in ("soft_voting", "stacking_logistic_meta", "logistic_regression"):
         assert 0.8 < r["models"][name]["uncalibrated"]["test"]["roc_auc"] <= 1.0
         assert set(r["models"][name]) >= {"uncalibrated", "sigmoid", "isotonic"}

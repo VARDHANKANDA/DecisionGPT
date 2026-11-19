@@ -108,7 +108,7 @@ def test_docs_are_off_in_hardened_environments_unless_requested():
 
 def test_the_schema_check_reports_an_unmigrated_database_without_connection_details(tmp_path):
     db = tmp_path / "old.db"
-    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(ROOT)}
+    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "MIGRATION_DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(ROOT)}
     assert subprocess.run([sys.executable, "-m", "alembic", "upgrade", "0010"], cwd=ROOT / "backend", env=env, capture_output=True, timeout=300).returncode == 0
     msg = schema_problem(f"sqlite:///{db.as_posix()}")
     assert msg and "'0010'" in msg and "alembic upgrade head" in msg and str(tmp_path) not in msg

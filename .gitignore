@@ -56,6 +56,11 @@ data/external/*
 !data/external/india_ecommerce/raw/**
 !data/external/india_ecommerce/processed/
 !data/external/india_ecommerce/processed/**
+!data/external/india_pos_register/
+!data/external/india_pos_register/processed/india_pos_register_clean.csv
+!data/external/india_pos_register/raw/retail-sales-register-data.zip
+!data/external/m5_forecasting/
+!data/external/m5_forecasting/raw/calendar.csv
 !data/external/india_agmarknet/
 !data/external/india_customer_synthetic/
 !data/external/**/metadata.json
@@ -65,6 +70,8 @@ data/external/india_customer_synthetic/raw/
 data/external/india_customer_synthetic/processed/
 data/external/india_agmarknet/raw/
 data/external/india_agmarknet/processed/
+data/external/m5_forecasting/raw/*
+!data/external/m5_forecasting/raw/calendar.csv
 
 # Python & Virtual Environments
 __pycache__/

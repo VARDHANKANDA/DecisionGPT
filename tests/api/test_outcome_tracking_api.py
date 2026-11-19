@@ -98,7 +98,7 @@ def test_empty_state_is_safe(world):
 def test_migration_0011_upgrades_a_0010_database_and_downgrades_cleanly(tmp_path):
     root = Path(__file__).resolve().parents[2]
     db = tmp_path / "m.db"
-    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(root)}
+    env = {**os.environ, "DATABASE_URL": f"sqlite:///{db.as_posix()}", "MIGRATION_DATABASE_URL": f"sqlite:///{db.as_posix()}", "PYTHONPATH": str(root)}
 
     def alembic(*args):
         return subprocess.run([sys.executable, "-m", "alembic", *args], cwd=root / "backend", env=env, capture_output=True, text=True, timeout=300)

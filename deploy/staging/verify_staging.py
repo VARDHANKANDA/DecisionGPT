@@ -131,7 +131,9 @@ class Api:
         try:
             try:
                 conn.request(method, path, body=data, headers=h)
-            except (BrokenPipeError, ConnectionResetError, ssl.SSLEOFError, OSError):
+            except ssl.SSLError:
+                raise
+            except (BrokenPipeError, ConnectionResetError):
                 pass
             try:
                 r = conn.getresponse()
@@ -141,7 +143,9 @@ class Api:
                 except ValueError:
                     js = None
                 return r.status, js, {k.lower(): v for k, v in r.getheaders()}, payload
-            except (BrokenPipeError, ConnectionResetError, http.client.RemoteDisconnected, http.client.ResponseNotReady, ssl.SSLEOFError, OSError):
+            except ssl.SSLError:
+                raise
+            except (BrokenPipeError, ConnectionResetError, http.client.RemoteDisconnected, http.client.ResponseNotReady):
                 return 413, None, {}, b"Request Entity Too Large"
         finally:
             try:
